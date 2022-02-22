@@ -2,13 +2,13 @@
 
 public class SumFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new SumFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class SumFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<SumFunction>();
         var sumFunction = (SumFunction)actual;
-        sumFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            sumFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            sumFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

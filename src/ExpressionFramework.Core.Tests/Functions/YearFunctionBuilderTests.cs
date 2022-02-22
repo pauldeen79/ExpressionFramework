@@ -2,13 +2,13 @@
 
 public class YearFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new YearFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class YearFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<YearFunction>();
         var yearFunction = (YearFunction)actual;
-        yearFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            yearFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            yearFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

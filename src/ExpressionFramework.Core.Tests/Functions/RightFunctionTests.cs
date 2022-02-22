@@ -2,12 +2,12 @@
 
 public class RightFunctionTests
 {
-    [Fact]
-    public void Can_Create_Builder_With_All_Properties_Filled()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Create_Builder_With_All_Properties_Filled(bool functionFilled)
     {
         // Arrange
-        var functionMock = TestFixtures.CreateFunctionMock();
-        var sut = new RightFunction(10, functionMock.Object);
+        var functionMock = functionFilled ? TestFixtures.CreateFunctionMock() : null;
+        var sut = new RightFunction(10, functionMock?.Object);
 
         // Act
         var actual = sut.ToBuilder();
@@ -15,7 +15,14 @@ public class RightFunctionTests
         // Assert
         actual.Should().BeOfType<RightFunctionBuilder>();
         var leftFunctionBuilder = (RightFunctionBuilder)actual;
-        leftFunctionBuilder.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            leftFunctionBuilder.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            leftFunctionBuilder.InnerFunction.Should().BeNull();
+        }
         leftFunctionBuilder.Length.Should().Be(10);
     }
 }

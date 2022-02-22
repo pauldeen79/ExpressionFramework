@@ -2,12 +2,12 @@
 
 public class UpperFunctionTests
 {
-    [Fact]
-    public void Can_Create_Builder_With_All_Properties_Filled()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Create_Builder_With_All_Properties_Filled(bool functionFilled)
     {
         // Arrange
-        var functionMock = TestFixtures.CreateFunctionMock();
-        var sut = new UpperFunction(functionMock.Object);
+        var functionMock = functionFilled ? TestFixtures.CreateFunctionMock() : null;
+        var sut = new UpperFunction(functionMock?.Object);
 
         // Act
         var actual = sut.ToBuilder();
@@ -15,6 +15,13 @@ public class UpperFunctionTests
         // Assert
         actual.Should().BeOfType<UpperFunctionBuilder>();
         var upperFunctionBuilder = (UpperFunctionBuilder)actual;
-        upperFunctionBuilder.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            upperFunctionBuilder.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            upperFunctionBuilder.InnerFunction.Should().BeNull();
+        }
     }
 }

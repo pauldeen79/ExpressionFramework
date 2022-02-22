@@ -2,12 +2,12 @@
 
 public class LowerFunctionTests
 {
-    [Fact]
-    public void Can_Create_Builder_With_All_Properties_Filled()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Create_Builder_With_All_Properties_Filled(bool functionFilled)
     {
         // Arrange
-        var functionMock = TestFixtures.CreateFunctionMock();
-        var sut = new LowerFunction(functionMock.Object);
+        var functionMock = functionFilled ? TestFixtures.CreateFunctionMock() : null;
+        var sut = new LowerFunction(functionMock?.Object);
 
         // Act
         var actual = sut.ToBuilder();
@@ -15,6 +15,13 @@ public class LowerFunctionTests
         // Assert
         actual.Should().BeOfType<LowerFunctionBuilder>();
         var lowerFunctionBuilder = (LowerFunctionBuilder)actual;
-        lowerFunctionBuilder.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            lowerFunctionBuilder.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            lowerFunctionBuilder.InnerFunction.Should().BeNull();
+        }
     }
 }

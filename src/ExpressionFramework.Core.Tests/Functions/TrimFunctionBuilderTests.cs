@@ -2,13 +2,13 @@
 
 public class TrimFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new TrimFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class TrimFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<TrimFunction>();
         var trimFunction = (TrimFunction)actual;
-        trimFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            trimFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            trimFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

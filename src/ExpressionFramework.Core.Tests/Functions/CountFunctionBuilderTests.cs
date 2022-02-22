@@ -2,14 +2,14 @@
 
 public class CountFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var expressionBuilderMock = TestFixtures.CreateExpressionBuilderMock();
         var sut = new CountFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object)
+            .WithInnerFunction(functionBuilderMock?.Object)
             .WithExpression(expressionBuilderMock.Object);
 
         // Act
@@ -19,6 +19,13 @@ public class CountFunctionBuilderTests
         actual.Should().BeOfType<CountFunction>();
         var countFunction = (CountFunction)actual;
         countFunction.Expression.Should().NotBeNull();
-        countFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            countFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            countFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

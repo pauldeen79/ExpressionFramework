@@ -2,13 +2,13 @@
 
 public class LeftFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new LeftFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class LeftFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<LeftFunction>();
         var leftFunction = (LeftFunction)actual;
-        leftFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            leftFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            leftFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

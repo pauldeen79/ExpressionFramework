@@ -2,13 +2,13 @@
 
 public class LowerFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new LowerFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class LowerFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<LowerFunction>();
         var lowerFunction = (LowerFunction)actual;
-        lowerFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            lowerFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            lowerFunction.InnerFunction.Should().BeNull();
+        }
     }
 }

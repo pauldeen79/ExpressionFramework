@@ -2,13 +2,13 @@
 
 public class LengthFunctionBuilderTests
 {
-    [Fact]
-    public void Can_Build_Full_Entity()
+    [Theory, InlineData(true), InlineData(false)]
+    public void Can_Build_Full_Entity(bool functionFilled)
     {
         // Arrange
-        var functionBuilderMock = TestFixtures.CreateFunctionBuilderMock();
+        var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
         var sut = new LengthFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock.Object);
+            .WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -16,6 +16,13 @@ public class LengthFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<LengthFunction>();
         var lengthFunction = (LengthFunction)actual;
-        lengthFunction.InnerFunction.Should().NotBeNull();
+        if (functionFilled)
+        {
+            lengthFunction.InnerFunction.Should().NotBeNull();
+        }
+        else
+        {
+            lengthFunction.InnerFunction.Should().BeNull();
+        }
     }
 }
