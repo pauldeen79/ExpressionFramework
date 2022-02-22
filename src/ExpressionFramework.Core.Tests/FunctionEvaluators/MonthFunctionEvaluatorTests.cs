@@ -23,7 +23,7 @@ public class MonthFunctionEvaluatorTests
         // Arrange
         var sut = new MonthFunctionEvaluator();
         var value = new DateTime(2020, 2, 3);
-        var function = new MonthFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new MonthFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -40,7 +40,7 @@ public class MonthFunctionEvaluatorTests
         // Arrange
         var sut = new MonthFunctionEvaluator();
         var value = 0; //integer, cannot convert this to DateTime!
-        var function = new MonthFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new MonthFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
