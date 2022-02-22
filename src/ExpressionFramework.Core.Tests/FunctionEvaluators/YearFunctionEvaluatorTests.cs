@@ -23,7 +23,7 @@ public class YearFunctionEvaluatorTests
         // Arrange
         var sut = new YearFunctionEvaluator();
         var value = new DateTime(2020, 2, 3);
-        var function = new YearFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new YearFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -40,7 +40,7 @@ public class YearFunctionEvaluatorTests
         // Arrange
         var sut = new YearFunctionEvaluator();
         var value = 0; //integer, cannot convert this to DateTime!
-        var function = new YearFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new YearFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

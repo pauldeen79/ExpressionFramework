@@ -23,7 +23,7 @@ public class DayFunctionEvaluatorTests
         // Arrange
         var sut = new DayFunctionEvaluator();
         var value = new DateTime(2020, 2, 3);
-        var function = new DayFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new DayFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -40,7 +40,7 @@ public class DayFunctionEvaluatorTests
         // Arrange
         var sut = new DayFunctionEvaluator();
         var value = 0; //integer, cannot convert this to DateTime!
-        var function = new DayFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new DayFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

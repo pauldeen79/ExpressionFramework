@@ -22,7 +22,7 @@ public class RightFunctionEvaluatorTests
     {
         // Arrange
         var sut = new RightFunctionEvaluator();
-        var function = new RightFunction(1);
+        var function = new RightFunction(1, null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -38,7 +38,7 @@ public class RightFunctionEvaluatorTests
     {
         // Arrange
         var sut = new RightFunctionEvaluator();
-        var function = new RightFunction(5);
+        var function = new RightFunction(5, null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -54,7 +54,7 @@ public class RightFunctionEvaluatorTests
     {
         // Arrange
         var sut = new RightFunctionEvaluator();
-        var function = new RightFunction(2);
+        var function = new RightFunction(2, null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

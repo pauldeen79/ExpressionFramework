@@ -2,9 +2,6 @@
 
 public record RightFunction : IExpressionFunction
 {
-    public RightFunction(int length)
-        => Length = length;
-
     public RightFunction(int length, IExpressionFunction? innerFunction)
     {
         Length = length;
