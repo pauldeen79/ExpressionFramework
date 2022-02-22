@@ -222,7 +222,7 @@ public sealed class IntegrationTests : IDisposable
         result.Should().Be(true);
     }
 
-    private ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
+    private static ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
 
     private IExpressionEvaluator CreateEvaluator() => _serviceProvider.GetRequiredService<IExpressionEvaluator>();
 

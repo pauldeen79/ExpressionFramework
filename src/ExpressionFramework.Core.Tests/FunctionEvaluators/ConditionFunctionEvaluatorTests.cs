@@ -3,7 +3,7 @@
 public class ConditionFunctionEvaluatorTests
 {
     private readonly Mock<IExpressionEvaluator> _expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-    private ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
+    private static ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
 
     [Fact]
     public void IsItemValid_Throws_On_Unsupported_Operator()

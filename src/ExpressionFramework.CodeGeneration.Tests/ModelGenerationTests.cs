@@ -110,7 +110,7 @@ public class ModelGenerationTests
         actual.Should().Be("System.Func<System.Object,ExpressionFramework.Abstractions.DomainModel.IExpression,ExpressionFramework.Abstractions.IExpressionEvaluator,System.Object>");
     }
     
-    private void Verify(GenerateCode generatedCode)
+    private static void Verify(GenerateCode generatedCode)
     {
         if (Settings.DryRun)
         {
