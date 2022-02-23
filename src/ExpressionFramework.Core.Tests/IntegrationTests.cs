@@ -21,11 +21,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -40,11 +39,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -59,11 +57,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -78,11 +75,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(false);
+        actual.Should().BeFalse();
     }
 
     [Fact]
@@ -97,11 +93,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(false);
+        actual.Should().BeFalse();
     }
 
     [Fact]
@@ -122,11 +117,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -147,11 +141,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -181,11 +174,10 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2, condition3 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
@@ -215,14 +207,13 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2, condition3 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
-    private static ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
+    private IConditionEvaluator CreateSut() => new ConditionEvaluator(CreateEvaluator());
 
     private IExpressionEvaluator CreateEvaluator() => _serviceProvider.GetRequiredService<IExpressionEvaluator>();
 
