@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core.FunctionEvaluators.ConditionEvaluation;
+﻿namespace ExpressionFramework.Core.ConditionEvaluation;
 
 internal static class Operators
 {

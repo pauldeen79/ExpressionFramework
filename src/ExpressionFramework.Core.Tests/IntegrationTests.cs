@@ -10,10 +10,64 @@ public sealed class IntegrationTests : IDisposable
             .BuildServiceProvider();
 
     [Fact]
+    public void Can_Evaluate_FieldExpression()
+    {
+        // Arrange
+        var expression = new FieldExpressionBuilder().WithFieldName("Name").Build();
+        var context = new { Name = "Hello world" };
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+
+        // Assert
+        actual.Should().Be("Hello world");
+    }
+
+    [Fact]
+    public void Can_Evaluate_ConstantExpression()
+    {
+        // Arrange
+        var expression = new ConstantExpressionBuilder().WithValue("Hello world").Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
+
+        // Assert
+        actual.Should().Be("Hello world");
+    }
+
+    [Fact]
+    public void Can_Evaluate_DelegateExpression()
+    {
+        // Arrange
+        var expression = new DelegateExpressionBuilder().WithValueDelegate((context, _, _) => context?.GetType()?.GetProperty("Name")?.GetValue(context)).Build();
+        var context = new { Name = "Hello world" };
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+
+        // Assert
+        actual.Should().Be("Hello world");
+    }
+
+    [Fact]
+    public void Can_Evaluate_EmptyExpression()
+    {
+        // Arrange
+        var expression = new EmptyExpressionBuilder().Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
+
+        // Assert
+        actual.Should().BeNull();
+    }
+
+    [Fact]
     public void Can_Evaluate_Condition_With_Constant_Expressions_True()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
             .WithOperator(Operator.Equal)
@@ -21,18 +75,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Condition_With_Empty_Expressions_True()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
             .WithLeftExpression(new EmptyExpressionBuilder())
             .WithOperator(Operator.Equal)
@@ -40,18 +93,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Condition_With_Delegate_Expressions_True()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
             .WithLeftExpression(new DelegateExpressionBuilder().WithValueDelegate((_, _, _) => "12345"))
             .WithOperator(Operator.Equal)
@@ -59,18 +111,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Condition_With_Different_Expressions_False()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
             .WithLeftExpression(new EmptyExpressionBuilder())
             .WithOperator(Operator.Equal)
@@ -78,18 +129,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(false);
+        actual.Should().BeFalse();
     }
 
     [Fact]
     public void Can_Evaluate_Condition_With_Constant_Expressions_And_Functions_True()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345").WithFunction(new LeftFunctionBuilder().WithLength(1)))
             .WithOperator(Operator.Equal)
@@ -97,18 +147,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(false);
+        actual.Should().BeFalse();
     }
 
     [Fact]
     public void Can_Evaluate_Multiple_Conditions_With_And_Combination()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition1 = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
             .WithOperator(Operator.Equal)
@@ -122,18 +171,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Multiple_Conditions_With_Or_Combination()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         var condition1 = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
             .WithOperator(Operator.Equal)
@@ -147,18 +195,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_1()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         //This translates to: True&(False|True) -> True
         var condition1 = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
@@ -181,18 +228,17 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2, condition3 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
     [Fact]
     public void Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_2()
     {
         // Arrange
-        var sut = CreateSut();
+        var sut = CreateConditionEvaluator();
         //This translates to: False|(True&True) -> True
         var condition1 = new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
@@ -215,16 +261,15 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var returnValue = sut.TryEvaluate(new ConditionFunction(new[] { condition1, condition2, condition3 }, null), null, CreateEvaluator(), out var result);
+        var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        returnValue.Should().BeTrue();
-        result.Should().Be(true);
+        actual.Should().BeTrue();
     }
 
-    private static ConditionFunctionEvaluator CreateSut() => new ConditionFunctionEvaluator();
+    private IConditionEvaluator CreateConditionEvaluator() => new ConditionEvaluator(CreateExpressionEvaluator());
 
-    private IExpressionEvaluator CreateEvaluator() => _serviceProvider.GetRequiredService<IExpressionEvaluator>();
+    private IExpressionEvaluator CreateExpressionEvaluator() => _serviceProvider.GetRequiredService<IExpressionEvaluator>();
 
     public void Dispose() => _serviceProvider.Dispose();
 }

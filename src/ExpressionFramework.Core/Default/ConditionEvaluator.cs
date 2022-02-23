@@ -1,17 +1,16 @@
-﻿namespace ExpressionFramework.Core.FunctionEvaluators;
+﻿namespace ExpressionFramework.Core.Default;
 
-public class ConditionFunctionEvaluator : IFunctionEvaluator
+public class ConditionEvaluator : IConditionEvaluator
 {
-    public bool TryEvaluate(IExpressionFunction function, object? value, IExpressionEvaluator evaluator, out object? result)
-    {
-        if (!(function is ConditionFunction c))
-        {
-            result = null;
-            return false;
-        }
+    private readonly IExpressionEvaluator _evaluator;
 
+    public ConditionEvaluator(IExpressionEvaluator evaluator)
+        => _evaluator = evaluator;
+
+    public bool Evaluate(object? context, IEnumerable<ICondition> conditions)
+    {
         var builder = new StringBuilder();
-        foreach (var condition in c.Conditions)
+        foreach (var condition in conditions)
         {
             if (builder.Length > 0)
             {
@@ -20,20 +19,19 @@ public class ConditionFunctionEvaluator : IFunctionEvaluator
 
             var prefix = condition.StartGroup ? "(" : string.Empty;
             var suffix = condition.EndGroup ? ")" : string.Empty;
-            var itemResult = IsItemValid(value, condition, evaluator);
+            var itemResult = IsItemValid(context, condition);
             builder.Append(prefix)
                    .Append(itemResult ? "T" : "F")
                    .Append(suffix);
         }
 
-        result = EvaluateBooleanExpression(builder.ToString());
-        return true;
+        return EvaluateBooleanExpression(builder.ToString());
     }
 
-    private bool IsItemValid(object? item, ICondition condition, IExpressionEvaluator evaluator)
+    private bool IsItemValid(object? item, ICondition condition)
     {
-        var leftValue = evaluator.Evaluate(item, condition.LeftExpression);
-        var rightValue = evaluator.Evaluate(item, condition.RightExpression);
+        var leftValue = _evaluator.Evaluate(item, condition.LeftExpression);
+        var rightValue = _evaluator.Evaluate(item, condition.RightExpression);
 
         if (Operators.Items.TryGetValue(condition.Operator, out var predicate))
         {
