@@ -16,3 +16,4 @@ global using ExpressionFramework.Core.ExpressionEvaluatorProviders;
 global using ExpressionFramework.Core.FunctionEvaluators;
 global using ExpressionFramework.Core.Functions;
 global using Microsoft.Extensions.DependencyInjection;
+global using Microsoft.Extensions.DependencyInjection.Extensions;

@@ -9,22 +9,31 @@ public static class ServiceCollectionExtensions
                                                             Action<IServiceCollection> customConfigurationAction)
         => services
             .Chain(customConfigurationAction.Invoke)
-            .AddSingleton<IExpressionEvaluator, ExpressionEvaluator>()
-            .AddSingleton<IConditionEvaluator, ConditionEvaluator>()
-            .AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>()
-            .AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>()
-            .AddSingleton<IExpressionEvaluatorProvider, EmptyExpressionEvaluatorProvider>()
-            .AddSingleton<IExpressionEvaluatorProvider, FieldExpressionEvaluatorProvider>()
-            .AddSingleton<IValueProvider, ValueProvider>()
-            .AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, LeftFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, LengthFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, LowerFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, MonthFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, RightFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, SumFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, TrimFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, UpperFunctionEvaluator>()
-            .AddSingleton<IFunctionEvaluator, YearFunctionEvaluator>();
+            .Chain(x =>
+            {
+                x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
+                x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
+                if (!x.Any(y => y.ImplementationType == typeof(ConstantExpressionEvaluatorProvider)))
+                {
+                    x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, EmptyExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, FieldExpressionEvaluatorProvider>();
+                }
+                x.TryAddSingleton<IValueProvider, ValueProvider>();
+                if (!x.Any(y => y.ImplementationType == typeof(CountFunctionEvaluator)))
+                {
+                    x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, LeftFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, LengthFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, LowerFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, MonthFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, RightFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, SumFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, TrimFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, UpperFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, YearFunctionEvaluator>();
+                }
+            });
 }
