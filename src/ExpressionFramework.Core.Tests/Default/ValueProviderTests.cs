@@ -90,9 +90,7 @@ public class ValueProviderTests
     {
         // Arrange
         var context = CreateOrder();
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        context.DeliveryAddress = null;
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        context.DeliveryAddress = null!;
         var sut = new ValueProvider();
 
         // Act
