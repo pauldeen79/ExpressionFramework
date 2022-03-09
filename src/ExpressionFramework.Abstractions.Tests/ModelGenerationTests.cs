@@ -12,18 +12,17 @@ public class ModelGenerationTests
     [Fact]
     public void Can_Generate_Records_From_Model()
     {
-        Verify(GenerateCode.For<BaseAbstractionsInterfacesModels>(Settings));
-        Verify(GenerateCode.For<CoreAbstractionsInterfacesModels>(Settings));
+        var multipleContentBuilder = new MultipleContentBuilder(Settings.BasePath);
+        GenerateCode.For<BaseAbstractionsInterfacesModels>(Settings, multipleContentBuilder);
+        GenerateCode.For<CoreAbstractionsInterfacesModels>(Settings, multipleContentBuilder);
+        Verify(multipleContentBuilder);
     }
 
-    private static void Verify(GenerateCode generatedCode)
+    private static void Verify(MultipleContentBuilder multipleContentBuilder)
     {
-        if (Settings.DryRun)
-        {
-            var actual = generatedCode.GenerationEnvironment.ToString();
+        var actual = multipleContentBuilder.ToString();
 
-            // Assert
-            actual.NormalizeLineEndings().Should().NotBeNullOrEmpty().And.NotStartWith("Error:");
-        }
+        // Assert
+        actual.NormalizeLineEndings().Should().NotBeNullOrEmpty();
     }
 }
