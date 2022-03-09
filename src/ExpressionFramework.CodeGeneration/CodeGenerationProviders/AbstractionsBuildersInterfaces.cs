@@ -2,7 +2,7 @@
 
 public class AbstractionsBuildersInterfaces : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
-    public override string Path => "ExpressionFramework.Abstractions\\DomainModel\\Builders";
+    public override string Path => "ExpressionFramework.Abstractions/DomainModel/Builders";
     public override string DefaultFileName => "Interfaces.template.generated.cs";
 
     public override object CreateModel()

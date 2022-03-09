@@ -2,7 +2,7 @@
 
 public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
-    public override string Path => "ExpressionFramework.Core\\DomainModel\\Builders";
+    public override string Path => "ExpressionFramework.Core/DomainModel/Builders";
     public override string DefaultFileName => "Builders.template.generated.cs";
 
     public override object CreateModel()

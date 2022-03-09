@@ -2,7 +2,7 @@
 
 public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
-    public override string Path => "ExpressionFramework.Core\\DomainModel";
+    public override string Path => "ExpressionFramework.Core/DomainModel";
     public override string DefaultFileName => "Entities.template.generated.cs";
 
     public override object CreateModel()
