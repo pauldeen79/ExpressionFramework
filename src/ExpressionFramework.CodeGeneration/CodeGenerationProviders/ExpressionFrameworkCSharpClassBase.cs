@@ -2,10 +2,13 @@
 
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
 {
+    public override bool RecurseOnDeleteGeneratedFiles => false;
+
     protected override bool CreateCodeGenerationHeader => true;
     protected override bool EnableNullableContext => true;
     protected override Type RecordCollectionType => typeof(ValueCollection<>);
     protected override string SetMethodNameFormatString => string.Empty;
+    protected override string FileNameSuffix => ".template.generated";
 
     protected override string FormatInstanceTypeName(ITypeBase instance, bool forCreate)
     {
@@ -23,7 +26,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         foreach (var property in classBuilder.Properties)
         {
-            if (property.Name == nameof(IDelegateExpression.ValueDelegate))
+            if (property.Name == "ValueDelegate")
             {
                 //HACK: Fix nullable type in generic parameter
                 property.TypeName = "System.Func`4[[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]";
@@ -67,22 +70,4 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => new Literal(typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
             ? "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()"
             : "new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
-
-    protected static Type[] GetBaseModels()
-        => new[]
-        {
-            typeof(ICondition),
-            typeof(IExpression),
-            typeof(IExpressionFunction)
-        };
-
-    protected static Type[] GetCoreModels()
-        => new[]
-        {
-            typeof(ICondition),
-            typeof(IEmptyExpression),
-            typeof(IConstantExpression),
-            typeof(IDelegateExpression),
-            typeof(IFieldExpression),
-        }.ToArray();
 }

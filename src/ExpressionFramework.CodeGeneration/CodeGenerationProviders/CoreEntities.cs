@@ -2,11 +2,8 @@
 
 public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
-    public override string Path => "ExpressionFramework.Core\\DomainModel";
-
-    public override string DefaultFileName => "Entities.generated.cs";
-
-    public override bool RecurseOnDeleteGeneratedFiles => false;
+    public override string Path => "ExpressionFramework.Core/DomainModel";
+    public override string DefaultFileName => "Entities.template.generated.cs";
 
     public override object CreateModel()
         => GetImmutableClasses
