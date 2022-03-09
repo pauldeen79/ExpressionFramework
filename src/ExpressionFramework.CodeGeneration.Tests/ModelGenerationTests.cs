@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration.Tests;
+﻿using TextTemplateTransformationFramework.Runtime;
+
+namespace ExpressionFramework.CodeGeneration.Tests;
 
 public class ModelGenerationTests
 {
@@ -12,10 +14,12 @@ public class ModelGenerationTests
     [Fact]
     public void Can_Generate_Everything()
     {
-        Verify(GenerateCode.For<AbstractionsBuildersInterfaces>(Settings));
-        Verify(GenerateCode.For<AbstractionsExtensionsBuilders>(Settings));
-        Verify(GenerateCode.For<CoreEntities>(Settings));
-        Verify(GenerateCode.For<CoreBuilders>(Settings));
+        var multipleContentBuilder = new MultipleContentBuilder(Settings.BasePath);
+        GenerateCode.For<AbstractionsBuildersInterfaces>(Settings, multipleContentBuilder);
+        GenerateCode.For<AbstractionsExtensionsBuilders>(Settings, multipleContentBuilder);
+        GenerateCode.For<CoreEntities>(Settings, multipleContentBuilder);
+        GenerateCode.For<CoreBuilders>(Settings, multipleContentBuilder);
+        Verify(multipleContentBuilder);
     }
 
     [Fact]
@@ -109,15 +113,12 @@ public class ModelGenerationTests
         //Note that nullable generic argument types are not recognized
         actual.Should().Be("System.Func<System.Object,ExpressionFramework.Abstractions.DomainModel.IExpression,ExpressionFramework.Abstractions.IExpressionEvaluator,System.Object>");
     }
-    
-    private static void Verify(GenerateCode generatedCode)
-    {
-        if (Settings.DryRun)
-        {
-            var actual = generatedCode.GenerationEnvironment.ToString();
 
-            // Assert
-            actual.NormalizeLineEndings().Should().NotBeNullOrEmpty().And.NotStartWith("Error:");
-        }
+    private static void Verify(MultipleContentBuilder multipleContentBuilder)
+    {
+        var actual = multipleContentBuilder.ToString();
+
+        // Assert
+        actual.NormalizeLineEndings().Should().NotBeNullOrEmpty();
     }
 }
