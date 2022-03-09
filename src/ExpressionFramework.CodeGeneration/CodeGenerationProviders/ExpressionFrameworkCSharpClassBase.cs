@@ -23,7 +23,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         foreach (var property in classBuilder.Properties)
         {
-            if (property.Name == nameof(IDelegateExpression.ValueDelegate))
+            if (property.Name == "ValueDelegate")
             {
                 //HACK: Fix nullable type in generic parameter
                 property.TypeName = "System.Func`4[[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]";

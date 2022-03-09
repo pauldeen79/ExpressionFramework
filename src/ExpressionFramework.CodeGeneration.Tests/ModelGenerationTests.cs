@@ -111,8 +111,11 @@ public class ModelGenerationTests
 
         // Assert
         //Note that nullable generic argument types are not recognized
-        actual.Should().Be("System.Func<System.Object,ExpressionFramework.Abstractions.DomainModel.IExpression,ExpressionFramework.Abstractions.IExpressionEvaluator,System.Object>");
+        actual.Should().Be("System.Func<System.Object,ExpressionFramework.CodeGeneration.Tests.ModelGenerationTests.IExpression,ExpressionFramework.CodeGeneration.Tests.ModelGenerationTests.IExpressionEvaluator,System.Object>");
     }
+
+    private interface IExpression { }
+    private interface IExpressionEvaluator { }
 
     private static void Verify(MultipleContentBuilder multipleContentBuilder)
     {
