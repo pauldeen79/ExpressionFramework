@@ -14,6 +14,7 @@ public class ModelGenerationTests
     [Fact]
     public void Can_Generate_Everything()
     {
+        Console.WriteLine("Current directory is: " + Directory.GetCurrentDirectory());
         var multipleContentBuilder = new MultipleContentBuilder(Settings.BasePath);
         GenerateCode.For<AbstractionsBuildersInterfaces>(Settings, multipleContentBuilder);
         GenerateCode.For<AbstractionsExtensionsBuilders>(Settings, multipleContentBuilder);
