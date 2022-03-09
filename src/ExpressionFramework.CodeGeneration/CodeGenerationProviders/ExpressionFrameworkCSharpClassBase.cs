@@ -67,22 +67,4 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => new Literal(typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
             ? "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()"
             : "new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
-
-    protected static Type[] GetBaseModels()
-        => new[]
-        {
-            typeof(ICondition),
-            typeof(IExpression),
-            typeof(IExpressionFunction)
-        };
-
-    protected static Type[] GetCoreModels()
-        => new[]
-        {
-            typeof(ICondition),
-            typeof(IEmptyExpression),
-            typeof(IConstantExpression),
-            typeof(IDelegateExpression),
-            typeof(IFieldExpression),
-        }.ToArray();
 }
