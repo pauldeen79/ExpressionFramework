@@ -14,7 +14,6 @@ public class ModelGenerationTests
     [Fact]
     public void Can_Generate_Everything()
     {
-        Console.WriteLine("Current directory is: " + Directory.GetCurrentDirectory());
         var multipleContentBuilder = new MultipleContentBuilder(Settings.BasePath);
         GenerateCode.For<AbstractionsBuildersInterfaces>(Settings, multipleContentBuilder);
         GenerateCode.For<AbstractionsExtensionsBuilders>(Settings, multipleContentBuilder);
@@ -120,12 +119,6 @@ public class ModelGenerationTests
 
     private static void Verify(MultipleContentBuilder multipleContentBuilder)
     {
-        Console.WriteLine("BasePath is: " + multipleContentBuilder.BasePath);
-        Console.WriteLine("Files:");
-        foreach (var file in multipleContentBuilder.Contents)
-        {
-            Console.WriteLine(file.FileName);
-        }
         var actual = multipleContentBuilder.ToString();
 
         // Assert
