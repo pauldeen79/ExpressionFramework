@@ -3,10 +3,7 @@
 public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Core\\DomainModel\\Builders";
-
-    public override string DefaultFileName => "Builders.generated.cs";
-
-    public override bool RecurseOnDeleteGeneratedFiles => false;
+    public override string DefaultFileName => "Builders.template.generated.cs";
 
     public override object CreateModel()
         => GetImmutableBuilderClasses

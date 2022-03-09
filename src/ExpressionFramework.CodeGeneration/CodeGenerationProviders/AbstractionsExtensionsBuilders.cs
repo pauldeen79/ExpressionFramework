@@ -3,10 +3,7 @@
 public class AbstractionsExtensionsBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Abstractions\\DomainModel\\Extensions";
-
-    public override string DefaultFileName => "Builders.generated.cs";
-
-    public override bool RecurseOnDeleteGeneratedFiles => false;
+    public override string DefaultFileName => "Builders.template.generated.cs";
 
     protected override string SetMethodNameFormatString => "With{0}";
 
