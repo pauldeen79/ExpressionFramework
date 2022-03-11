@@ -28,5 +28,5 @@ var result = conditionEvaluator.Evaluate(null, new[] { condition });
 
 See unit tests for more examples.
 
-Note that for local development, you first need to run the code generation using the command file in src/CodeGeneration.
+Note that for local development, you first need to run the code generation using CodeGeneration.cmd in the root folder.
 This will generate some code that has not been checked in to Git.
