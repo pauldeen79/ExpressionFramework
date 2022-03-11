@@ -28,4 +28,5 @@ var result = conditionEvaluator.Evaluate(null, new[] { condition });
 
 See unit tests for more examples.
 
-Note that for local development, you first need to build the ExpressionFramework.CodeGeneration solution, and then run all the unit tests there. This will generate some code that has not been checked in to Git.
+Note that for local development, you first need to run the code generation using the command file in src/CodeGeneration.
+This will generate some code that has not been checked in to Git.
