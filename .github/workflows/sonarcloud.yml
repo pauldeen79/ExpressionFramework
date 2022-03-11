@@ -24,7 +24,7 @@ jobs:
       - name: Install t4plus as dotnet local tool
         run: dotnet tool install pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.1.19
       - name: Run code generation using t4plus
-        run: dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src GenerateMultipleFiles:True DryRun:False
+        run: dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src/ GenerateMultipleFiles:True DryRun:False
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.1.2
         with:

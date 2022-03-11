@@ -5,7 +5,7 @@
 <#@ Property Name="DryRun" type="System.Boolean" #>
 <#@ PackageReference name="NETStandard.Library" version="2.0.3" #>
 <#@ PackageReference name="pauldeen79.ModelFramework.CodeGeneration" version="0.3.34" #>
-<#@ Includes path="Includes" searchPattern="*.ttinclude" #>
+<#@ Includes path="$(BasePath)Includes" searchPattern="*.ttinclude" #>
 <#@ Import namespace="CrossCutting.Common" #>
 <#@ Import namespace="CrossCutting.Common.Extensions" #>
 <#@ Import namespace="ModelFramework.CodeGeneration.CodeGenerationProviders" #>
