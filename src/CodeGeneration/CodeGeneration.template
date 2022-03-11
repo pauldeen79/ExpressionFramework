@@ -15,23 +15,22 @@
 <#@ Import namespace="ModelFramework.Objects.Contracts" #>
 <#@ Import namespace="ModelFramework.Objects.Extensions" #>
 <#@ Import namespace="TextTemplateTransformationFramework.Runtime.CodeGeneration" #>
-<#
-    var multipleContentBuilder = new MultipleContentBuilder { BasePath = BasePath };
-    var settings = new CodeGenerationSettings(BasePath, GenerateMultipleFiles, DryRun);
-    GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
-    GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
-    GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
-    GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
-    if (DryRun || string.IsNullOrEmpty(BasePath))
-    { #>
+<# var multipleContentBuilder = new MultipleContentBuilder { BasePath = BasePath };
+   var settings = new CodeGenerationSettings(BasePath, GenerateMultipleFiles, DryRun);
+   GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
+   GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
+   GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
+   GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+   if (DryRun || string.IsNullOrEmpty(BasePath))
+   { #>
 <#= multipleContentBuilder.ToString() #>
-<#  }
-    else
-    { #>
+<# }
+   else
+   { #>
 Code generation completed, check the output in <#= BasePath #>
 Generated files:
-<#      foreach (var content in multipleContentBuilder.Contents)
-        { #>
+<#     foreach (var content in multipleContentBuilder.Contents)
+       { #>
 <#= content.FileName #>
-<#      }
-    } #>
+<#     }
+   } #>
