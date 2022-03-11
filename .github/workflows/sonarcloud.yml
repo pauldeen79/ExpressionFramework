@@ -19,20 +19,19 @@ jobs:
       - name: Fetch origin/main
         run: |
           git fetch --no-tags --prune --depth=1 origin main
-      - name: Restore CodeGeneration
-        run: dotnet restore ExpressionFramework.CodeGeneration.sln
-      - name: Build CodeGeneration
-        run: dotnet build ExpressionFramework.CodeGeneration.sln -c Release --no-restore
-      - name: Test CodeGeneration
-        run: dotnet test ExpressionFramework.CodeGeneration.sln -c Release
+      - name: Prepare for dotnet local tool installation
+        run: dotnet new tool-manifest --force
+      - name: Install t4plus as dotnet local tool
+        run: dotnet tool install pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.1.19
+      - name: Run code generation using t4plus
+        run: dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src $T4.TempPath:./ GenerateMultipleFiles:True DryRun:False
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.1.2
         with:
           sonarProjectKey: pauldeen79_ExpressionFramework
           sonarProjectName: ExpressionFramework
           sonarOrganization: pauldeen79
-          dotnetBuildArguments: ExpressionFramework.sln
-          dotnetTestArguments: ExpressionFramework.sln --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
           sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
     env:
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

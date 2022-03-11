@@ -1,0 +1,32 @@
+﻿<#@ Template language="c#" #>
+<#@ UseTemplateRuntimeBaseClass addReference="false" #>
+<#@ Property Name="BasePath" type="System.String" #>
+<#@ Property Name="GenerateMultipleFiles" type="System.Boolean" #>
+<#@ Property Name="DryRun" type="System.Boolean" #>
+<#@ PackageReference name="NETStandard.Library" version="2.0.3" #>
+<#@ PackageReference name="pauldeen79.ModelFramework.CodeGeneration" version="0.3.34" #>
+<#@ Includes path="Includes" searchPattern="*.ttinclude" #>
+<#@ Import namespace="CrossCutting.Common" #>
+<#@ Import namespace="CrossCutting.Common.Extensions" #>
+<#@ Import namespace="ModelFramework.CodeGeneration.CodeGenerationProviders" #>
+<#@ Import namespace="ModelFramework.Common" #>
+<#@ Import namespace="ModelFramework.Common.Extensions" #>
+<#@ Import namespace="ModelFramework.Objects.Builders" #>
+<#@ Import namespace="ModelFramework.Objects.Contracts" #>
+<#@ Import namespace="ModelFramework.Objects.Extensions" #>
+<#@ Import namespace="TextTemplateTransformationFramework.Runtime.CodeGeneration" #>
+<#
+    var multipleContentBuilder = new MultipleContentBuilder { BasePath = BasePath };
+    var settings = new CodeGenerationSettings(BasePath, GenerateMultipleFiles, DryRun);
+    GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
+    GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
+    GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
+    GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+    if (DryRun || string.IsNullOrEmpty(BasePath))
+    { #>
+<#= multipleContentBuilder.ToString() #>
+<#  }
+    else
+    { #>
+Code generation completed, check the output in <#= BasePath #>
+<#  } #>
