@@ -32,7 +32,7 @@ jobs:
       - name: Install t4plus as dotnet local tool
         run: dotnet tool install pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.1.19
       - name: Run code generation using t4plus
-        run: dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src $T4.TempPath:./ GenerateMultipleFiles:True DryRun:False
+        run: dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src GenerateMultipleFiles:True DryRun:False
       - name: Restore
         run: dotnet restore
       - name: Build
@@ -84,7 +84,7 @@ jobs:
           echo Clean Version: $VERSION
           dotnet new tool-manifest --force
           dotnet tool install pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.1.19
-          dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src $T4.TempPath:./ GenerateMultipleFiles:True DryRun:False
+          dotnet t4plus run -f src/CodeGeneration/CodeGeneration.template BasePath:./src GenerateMultipleFiles:True DryRun:False
           dotnet pack ExpressionFramework.sln -v normal -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed
         run: |
