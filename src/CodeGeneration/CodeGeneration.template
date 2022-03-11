@@ -33,5 +33,5 @@ Generated files:
 <#      foreach (var content in multipleContentBuilder.Contents)
         { #>
 <#= content.FileName #>
-<#      } #>
-<# } #>
+<#      }
+    } #>
