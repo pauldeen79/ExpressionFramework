@@ -30,8 +30,8 @@
     { #>
 Code generation completed, check the output in <#= BasePath #>
 Generated files:
-<# foreach (var content in multipleContentBuilder.Contents)
-   { #>
+<#      foreach (var content in multipleContentBuilder.Contents)
+        { #>
 <#= content.FileName #>
+<#      } #>
 <# } #>
-<#  } #>
