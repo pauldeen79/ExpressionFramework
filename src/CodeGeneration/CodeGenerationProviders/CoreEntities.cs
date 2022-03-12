@@ -1,5 +1,6 @@
-﻿<#@ Template language="c#" #>
-<#+
+﻿namespace CodeGeneration.CodeGenerationProviders;
+
+[ExcludeFromCodeCoverage]
 public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Core/DomainModel";
@@ -29,4 +30,3 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         )
         .ToArray();
 }
-#>

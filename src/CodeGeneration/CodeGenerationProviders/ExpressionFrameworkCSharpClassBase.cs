@@ -1,5 +1,6 @@
-﻿<#@ Template language="c#" #>
-<#+
+﻿namespace CodeGeneration.CodeGenerationProviders;
+
+[ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
 {
     public override bool RecurseOnDeleteGeneratedFiles => false;
@@ -71,4 +72,3 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             ? "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()"
             : "new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
 }
-#>

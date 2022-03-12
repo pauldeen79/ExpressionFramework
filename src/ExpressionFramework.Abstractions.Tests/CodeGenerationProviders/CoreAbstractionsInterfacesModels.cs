@@ -2,7 +2,7 @@
 
 public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
 {
-    public override string Path => "ExpressionFramework.CodeGeneration/CodeGenerationProviders";
+    public override string Path => "CodeGenerationCmd/CodeGenerationProviders";
     public override string DefaultFileName => "ExpressionFrameworkCSharpClassBase.Core.generated.cs";
     public override bool RecurseOnDeleteGeneratedFiles => false;
 
@@ -22,7 +22,7 @@ public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(IFieldExpression),
     };
 
-    protected override string Namespace => "ExpressionFramework.CodeGeneration.CodeGenerationProviders";
+    protected override string Namespace => "CodeGenerationCmd.CodeGenerationProviders";
     protected override string ClassName => "ExpressionFrameworkCSharpClassBase";
     protected override string MethodName => "GetCoreModels";
 }
