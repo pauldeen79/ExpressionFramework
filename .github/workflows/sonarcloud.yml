@@ -19,10 +19,6 @@ jobs:
       - name: Fetch origin/main
         run: |
           git fetch --no-tags --prune --depth=1 origin main
-      - name: Compile code generation
-        run: dotnet build src/CodeGeneration/CodeGeneration.csproj -c Release
-      - name: Run code generation
-        run: ./src/CodeGeneration/CodeGeneration/bin/Release/dotnet6.0/CodeGeneration.exe
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.1.2
         with:

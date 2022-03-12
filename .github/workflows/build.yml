@@ -29,10 +29,6 @@ jobs:
           dotnet-version: 6.0.x
       - name: Restore
         run: dotnet restore
-      - name: Compile code generation
-        run: dotnet build src/CodeGeneration/CodeGeneration.csproj -c Release --no-restore
-      - name: Run code generation
-        run: ./src/CodeGeneration/CodeGeneration/bin/Release/dotnet6.0/CodeGeneration.exe
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
@@ -80,8 +76,6 @@ jobs:
           echo Version: $VERSION
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
-          dotnet build src/CodeGeneration/CodeGeneration.csproj -c Release
-          ./src/CodeGeneration/CodeGeneration/bin/Release/dotnet6.0/CodeGeneration.exe
           dotnet pack ExpressionFramework.sln -v normal -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed
         run: |
