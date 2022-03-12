@@ -76,6 +76,7 @@ jobs:
           echo Version: $VERSION
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
+          dotnet build ExpressionFramework.sln -c Release
           dotnet pack ExpressionFramework.sln -v normal -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed
         run: |
