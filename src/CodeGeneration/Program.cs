@@ -1,12 +1,17 @@
-﻿var basePath = Path.Combine(Directory.GetCurrentDirectory(), @"../");
+﻿// Setup code generation
+var basePath = Path.Combine(Directory.GetCurrentDirectory(), @"../");
 var generateMultipleFiles = true;
 var dryRun = false;
 var multipleContentBuilder = new MultipleContentBuilder { BasePath = basePath };
 var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
+
+// Generate code
 GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
 GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
 GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
 GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+
+// Log output to console
 if (dryRun || string.IsNullOrEmpty(basePath))
 {
     Console.WriteLine(multipleContentBuilder.ToString());
