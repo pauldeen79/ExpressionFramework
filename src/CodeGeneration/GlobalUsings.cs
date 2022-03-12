@@ -1,8 +1,9 @@
 ﻿global using System;
+global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
+global using CodeGeneration.CodeGenerationProviders;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Extensions;
-global using CodeGeneration.CodeGenerationProviders;
 global using ModelFramework.CodeGeneration.CodeGenerationProviders;
 global using ModelFramework.Common;
 global using ModelFramework.Common.Extensions;

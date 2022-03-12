@@ -1,5 +1,6 @@
 ﻿namespace CodeGeneration.CodeGenerationProviders;
 
+[ExcludeFromCodeCoverage]
 public class AbstractionsBuildersInterfaces : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Abstractions/DomainModel/Builders";
