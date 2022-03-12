@@ -1,5 +1,5 @@
-﻿<#@ Template language="c#" #>
-<#+
+﻿namespace CodeGeneration.CodeGenerationProviders;
+
 public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Core/DomainModel/Builders";
@@ -29,4 +29,3 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         )
         .ToArray();
 }
-#>

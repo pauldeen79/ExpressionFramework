@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32210.238
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Abstractions", "src\ExpressionFramework.Abstractions\ExpressionFramework.Abstractions.csproj", "{0F03675B-4D5F-4E91-A403-8A80C89E63DC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC} = {F06035EA-742B-49FB-AD3F-1CB4F90827FC}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Core", "src\ExpressionFramework.Core\ExpressionFramework.Core.csproj", "{4C7C39C0-87A6-4E9E-8F88-8F24F9A11F74}"
+	ProjectSection(ProjectDependencies) = postProject
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC} = {F06035EA-742B-49FB-AD3F-1CB4F90827FC}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Core.Tests", "src\ExpressionFramework.Core.Tests\ExpressionFramework.Core.Tests.csproj", "{7E9C9045-115E-4ECF-B92E-1D7C3A111644}"
 EndProject
@@ -15,7 +21,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Abstractions.Tests", "src\ExpressionFramework.Abstractions.Tests\ExpressionFramework.Abstractions.Tests.csproj", "{801D9225-0609-4DDD-9BEF-3B5903780EEE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Abstractions.Tests", "src\ExpressionFramework.Abstractions.Tests\ExpressionFramework.Abstractions.Tests.csproj", "{801D9225-0609-4DDD-9BEF-3B5903780EEE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "src\CodeGeneration\CodeGeneration.csproj", "{F06035EA-742B-49FB-AD3F-1CB4F90827FC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +47,10 @@ Global
 		{801D9225-0609-4DDD-9BEF-3B5903780EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{801D9225-0609-4DDD-9BEF-3B5903780EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{801D9225-0609-4DDD-9BEF-3B5903780EEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F06035EA-742B-49FB-AD3F-1CB4F90827FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,22 @@
+﻿var basePath = Path.Combine(Directory.GetCurrentDirectory(), @"../");
+var generateMultipleFiles = true;
+var dryRun = false;
+var multipleContentBuilder = new MultipleContentBuilder { BasePath = basePath };
+var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
+GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
+GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
+GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
+GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+if (dryRun || string.IsNullOrEmpty(basePath))
+{
+    Console.WriteLine(multipleContentBuilder.ToString());
+}
+else
+{
+    Console.WriteLine($"Code generation completed, check the output in {basePath}");
+    Console.WriteLine("Generated files:");
+    foreach (var content in multipleContentBuilder.Contents)
+    {
+        Console.WriteLine(content.FileName);
+    }
+}

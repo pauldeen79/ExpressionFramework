@@ -1,5 +1,5 @@
-﻿<#@ Template language="c#" #>
-<#+
+﻿namespace CodeGeneration.CodeGenerationProviders;
+
 public class AbstractionsExtensionsBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Abstractions/DomainModel/Extensions";
@@ -16,4 +16,3 @@ public class AbstractionsExtensionsBuilders : ExpressionFrameworkCSharpClassBase
             "ExpressionFramework.Abstractions.DomainModel.Builders"
         );
 }
-#>

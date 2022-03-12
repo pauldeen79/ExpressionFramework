@@ -1,5 +1,5 @@
-﻿<#@ Template language="c#" #>
-<#+
+﻿namespace CodeGeneration.CodeGenerationProviders;
+
 public class AbstractionsBuildersInterfaces : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
 {
     public override string Path => "ExpressionFramework.Abstractions/DomainModel/Builders";
@@ -23,4 +23,3 @@ public class AbstractionsBuildersInterfaces : ExpressionFrameworkCSharpClassBase
         )
         .ToArray();
 }
-#>
