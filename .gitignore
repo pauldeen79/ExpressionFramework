@@ -351,4 +351,3 @@ MigrationBackup/
 
 # ModelFramework generated files
 *.template.generated.cs
-.config/dotnet-tools.json
