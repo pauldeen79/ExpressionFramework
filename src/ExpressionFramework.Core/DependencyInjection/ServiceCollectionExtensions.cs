@@ -3,7 +3,7 @@
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddExpressionFramework(this IServiceCollection serviceCollection)
-        => serviceCollection.AddExpressionFramework(new Action<IServiceCollection>(_ => { }));
+        => serviceCollection.AddExpressionFramework(new (_ => { }));
 
     public static IServiceCollection AddExpressionFramework(this IServiceCollection services,
                                                             Action<IServiceCollection> customConfigurationAction)
@@ -23,6 +23,7 @@ public static class ServiceCollectionExtensions
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
                 if (!x.Any(y => y.ImplementationType == typeof(CountFunctionEvaluator)))
                 {
+                    x.AddSingleton<IFunctionEvaluator, ContainsFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LeftFunctionEvaluator>();
