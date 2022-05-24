@@ -6,9 +6,8 @@ public class ContainsFunctionTests
     public void Can_Create_Builder_With_All_Properties_Filled(bool functionFilled)
     {
         // Arrange
-        var expressionMock = TestFixtures.CreateExpressionMock();
         var functionMock = functionFilled ? TestFixtures.CreateFunctionMock() : null;
-        var sut = new ContainsFunction(expressionMock.Object, "53", functionMock?.Object);
+        var sut = new ContainsFunction("53", functionMock?.Object);
 
         // Act
         var actual = sut.ToBuilder();
@@ -25,6 +24,5 @@ public class ContainsFunctionTests
             containsFunctionBuilder.InnerFunction.Should().BeNull();
         }
         containsFunctionBuilder.ObjectToContain.Should().Be("53");
-        containsFunctionBuilder.Expression.Should().NotBeNull();
     }
 }

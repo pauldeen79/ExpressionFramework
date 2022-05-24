@@ -23,7 +23,7 @@ public class CountFunctionEvaluatorTests
         // Arrange
         var sut = new CountFunctionEvaluator();
         var value = new List<string> { "1", "2", "3" };
-        var function = new CountFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new CountFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -40,7 +40,7 @@ public class CountFunctionEvaluatorTests
         // Arrange
         var sut = new CountFunctionEvaluator();
         var value = 0; //integer, cannot convert this to IEnumerable!
-        var function = new CountFunction(new EmptyExpressionBuilder().Build(), null);
+        var function = new CountFunction(null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

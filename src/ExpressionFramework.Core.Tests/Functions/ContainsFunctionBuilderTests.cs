@@ -7,11 +7,9 @@ public class ContainsFunctionBuilderTests
     {
         // Arrange
         var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
-        var expressionBuilderMock = TestFixtures.CreateExpressionBuilderMock();
         var sut = new ContainsFunctionBuilder()
             .WithInnerFunction(functionBuilderMock?.Object)
-            .WithObjectToContain("4")
-            .WithExpression(expressionBuilderMock.Object);
+            .WithObjectToContain("4");
 
         // Act
         var actual = sut.Build();
@@ -19,7 +17,6 @@ public class ContainsFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<ContainsFunction>();
         var containsFunction = (ContainsFunction)actual;
-        containsFunction.Expression.Should().NotBeNull();
         containsFunction.ObjectToContain.Should().Be("4");
         if (functionFilled)
         {

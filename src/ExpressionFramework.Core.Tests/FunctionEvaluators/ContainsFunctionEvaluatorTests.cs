@@ -23,7 +23,7 @@ public class ContainsFunctionEvaluatorTests
         // Arrange
         var sut = new ContainsFunctionEvaluator();
         var value = new List<string> { "1", "2", "3" };
-        var function = new ContainsFunction(new EmptyExpressionBuilder().Build(), "2", null);
+        var function = new ContainsFunction("2", null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
@@ -40,7 +40,7 @@ public class ContainsFunctionEvaluatorTests
         // Arrange
         var sut = new ContainsFunctionEvaluator();
         var value = 0; //integer, cannot convert this to IEnumerable!
-        var function = new ContainsFunction(new EmptyExpressionBuilder().Build(), "2", null);
+        var function = new ContainsFunction("2", null);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

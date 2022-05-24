@@ -7,10 +7,7 @@ public class CountFunctionBuilderTests
     {
         // Arrange
         var functionBuilderMock = functionFilled ? TestFixtures.CreateFunctionBuilderMock() : null;
-        var expressionBuilderMock = TestFixtures.CreateExpressionBuilderMock();
-        var sut = new CountFunctionBuilder()
-            .WithInnerFunction(functionBuilderMock?.Object)
-            .WithExpression(expressionBuilderMock.Object);
+        var sut = new CountFunctionBuilder().WithInnerFunction(functionBuilderMock?.Object);
 
         // Act
         var actual = sut.Build();
@@ -18,7 +15,6 @@ public class CountFunctionBuilderTests
         // Assert
         actual.Should().BeOfType<CountFunction>();
         var countFunction = (CountFunction)actual;
-        countFunction.Expression.Should().NotBeNull();
         if (functionFilled)
         {
             countFunction.InnerFunction.Should().NotBeNull();

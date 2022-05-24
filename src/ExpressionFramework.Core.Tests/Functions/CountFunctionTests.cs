@@ -6,9 +6,8 @@ public class CountFunctionTests
     public void Can_Create_Builder_With_All_Properties_Filled(bool functionFilled)
     {
         // Arrange
-        var expressionMock = TestFixtures.CreateExpressionMock();
         var functionMock = functionFilled ? TestFixtures.CreateFunctionMock() : null;
-        var sut = new CountFunction(expressionMock.Object, functionMock?.Object);
+        var sut = new CountFunction(functionMock?.Object);
 
         // Act
         var actual = sut.ToBuilder();
@@ -24,6 +23,5 @@ public class CountFunctionTests
         {
             countFunctionBuilder.InnerFunction.Should().BeNull();
         }
-        countFunctionBuilder.Expression.Should().NotBeNull();
     }
 }
