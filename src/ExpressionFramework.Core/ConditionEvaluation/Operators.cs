@@ -61,7 +61,7 @@ internal static class Operators
 
     private static bool Equal(OperatorData data)
         => data.LeftValue == null && data.RightValue == null
-        || data.LeftValueString.Equals(data.RightValueString, StringComparison.OrdinalIgnoreCase)
+        || data.LeftValue is string leftString && data.RightValue is string rightString && leftString.Equals(rightString, StringComparison.OrdinalIgnoreCase)
         || data.LeftValue != null && data.RightValue != null && data.LeftValue.Equals(data.RightValue);
 
     private static bool StartsWith(OperatorData data)
@@ -75,7 +75,17 @@ internal static class Operators
         && data.LeftValueString.EndsWith(data.RightValueString, StringComparison.CurrentCultureIgnoreCase);
 
     private static bool Contains(OperatorData data)
-        => data.LeftValue != null
-        && !string.IsNullOrEmpty(data.RightValueString)
-        && data.LeftValueString.IndexOf(data.RightValueString, StringComparison.CurrentCultureIgnoreCase) > -1;
+        => StringContains(data)
+        || SequenceContainsItem(data);
+
+    private static bool SequenceContainsItem(OperatorData data)
+        => data.LeftValue is IEnumerable enumerable
+            && !(data.RightValue is IEnumerable && data.RightValue is not string)
+            && enumerable.OfType<object>().Contains(data.RightValue);
+
+    private static bool StringContains(OperatorData data)
+        => data.LeftValue is string leftString
+            && data.RightValue is string rightString
+            && !string.IsNullOrEmpty(rightString)
+            && leftString.IndexOf(rightString, StringComparison.CurrentCultureIgnoreCase) > -1;
 }

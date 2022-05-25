@@ -32,6 +32,12 @@ public class ConditionEvaluatorTests
     [InlineData("A", null, Operator.Equal, false)]
     [InlineData("", "", Operator.Equal, true)]
     [InlineData(null, null, Operator.Equal, true)]
+    [InlineData(true, true, Operator.Equal, true)]
+    [InlineData(true, false, Operator.Equal, false)]
+    [InlineData(1, 1, Operator.Equal, true)]
+    [InlineData(1, 2, Operator.Equal, false)]
+    [InlineData(true, 1, Operator.Equal, false)]
+    [InlineData(true, "", Operator.Equal, false)]
     [InlineData("A", "A", Operator.NotEqual, false)]
     [InlineData("A", "a", Operator.NotEqual, false)]
     [InlineData("A", "b", Operator.NotEqual, true)]
@@ -139,5 +145,119 @@ public class ConditionEvaluatorTests
 
         // Assert
         actual.Should().Be(expectedResult);
+    }
+
+    [Fact]
+    public void IsItemValid_Works_Correctly_On_Equals_With_Sequences()
+    {
+        // Arrange
+        var leftValue = new ValueCollection<string>(new [] { "1", "2", "3" });
+        var rightValue = new ValueCollection<string>(new [] { "1", "2", "3" });
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(rightValue);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Equal);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, IExpression>((_, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return leftExpression.Value;
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return rightExpression.Value;
+                                    }
+
+                                    return null;
+                                });
+
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
+    {
+        // Arrange
+        var leftValue = new ValueCollection<string>(new[] { "1", "2", "3" });
+        var rightValue = "2";
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(rightValue);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Contains);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, IExpression>((_, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return leftExpression.Value;
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return rightExpression.Value;
+                                    }
+
+                                    return null;
+                                });
+
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Should().BeTrue();
+    }
+
+    [Fact]
+    public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Ints()
+    {
+        // Arrange
+        var leftValue = new ValueCollection<int>(new[] { 1, 2, 3 });
+        var rightValue = 2;
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(rightValue);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Contains);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, IExpression>((_, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return leftExpression.Value;
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return rightExpression.Value;
+                                    }
+
+                                    return null;
+                                });
+
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Should().BeTrue();
     }
 }
