@@ -151,8 +151,8 @@ public class ConditionEvaluatorTests
     public void IsItemValid_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
-        var leftValue = new ValueCollection<string>(new [] { "1", "2", "3" });
-        var rightValue = new ValueCollection<string>(new [] { "1", "2", "3" });
+        var leftValue = new ReadOnlyValueCollection<string>(new [] { "1", "2", "3" });
+        var rightValue = new ReadOnlyValueCollection<string>(new [] { "1", "2", "3" });
         var leftExpressionMock = new Mock<IConstantExpression>();
         leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
         var leftExpression = leftExpressionMock.Object;
@@ -189,7 +189,7 @@ public class ConditionEvaluatorTests
     public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
-        var leftValue = new ValueCollection<string>(new[] { "1", "2", "3" });
+        var leftValue = new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" });
         var rightValue = "2";
         var leftExpressionMock = new Mock<IConstantExpression>();
         leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
@@ -227,7 +227,7 @@ public class ConditionEvaluatorTests
     public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Ints()
     {
         // Arrange
-        var leftValue = new ValueCollection<int>(new[] { 1, 2, 3 });
+        var leftValue = new ReadOnlyValueCollection<int>(new[] { 1, 2, 3 });
         var rightValue = 2;
         var leftExpressionMock = new Mock<IConstantExpression>();
         leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
