@@ -3,5 +3,5 @@
 public partial class ConstantExpressionBuilder
 {
     public ConstantExpressionBuilder WithValue(object? value)
-        => this.Chain(x => x.Value = value);
+        => this.With(x => x.Value = value);
 }

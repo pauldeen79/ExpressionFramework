@@ -3,5 +3,5 @@
 public partial class FieldExpressionBuilder
 {
     public FieldExpressionBuilder WithFieldName(string fieldName)
-        => this.Chain(x => x.FieldName = fieldName);
+        => this.With(x => x.FieldName = fieldName);
 }

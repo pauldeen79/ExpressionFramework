@@ -8,8 +8,8 @@ public static class ServiceCollectionExtensions
     public static IServiceCollection AddExpressionFramework(this IServiceCollection services,
                                                             Action<IServiceCollection> customConfigurationAction)
         => services
-            .Chain(customConfigurationAction.Invoke)
-            .Chain(x =>
+            .With(customConfigurationAction.Invoke)
+            .With(x =>
             {
                 x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
