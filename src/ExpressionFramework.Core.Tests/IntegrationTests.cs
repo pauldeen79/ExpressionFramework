@@ -267,7 +267,7 @@ public sealed class IntegrationTests : IDisposable
         actual.Should().BeTrue();
     }
 
-    private IConditionEvaluator CreateConditionEvaluator() => new ConditionEvaluator(CreateExpressionEvaluator());
+    private IConditionEvaluator CreateConditionEvaluator() => _serviceProvider.GetRequiredService<IConditionEvaluator>();
 
     private IExpressionEvaluator CreateExpressionEvaluator() => _serviceProvider.GetRequiredService<IExpressionEvaluator>();
 
