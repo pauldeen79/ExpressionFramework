@@ -27,3 +27,8 @@ var result = conditionEvaluator.Evaluate(null, new[] { condition });
 ```
 
 See unit tests for more examples.
+
+TODO:
+- Add functions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ConvertToDateTime, ConvertToString
+- For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
+- Add POC for mathematic expression with brackets (grouping), add, subtract, multiply and divide

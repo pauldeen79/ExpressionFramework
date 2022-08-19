@@ -63,6 +63,13 @@ public sealed class IntegrationTests : IDisposable
         actual.Should().BeNull();
     }
 
+    //[Fact]
+    //public void Can_Evaluate_Complex_Expression_With_Some_Mathematic_Functions()
+    //{
+    //    // Example: ([Number of hectares] / 10) + 5
+    //    throw new NotImplementedException();
+    //}
+
     [Fact]
     public void Can_Evaluate_Condition_With_Constant_Expressions_True()
     {
