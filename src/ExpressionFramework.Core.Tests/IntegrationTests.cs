@@ -63,12 +63,26 @@ public sealed class IntegrationTests : IDisposable
         actual.Should().BeNull();
     }
 
-    //[Fact]
-    //public void Can_Evaluate_Complex_Expression_With_Some_Mathematic_Functions()
-    //{
-    //    // Example: ([Number of hectares] / 10) + 5
-    //    throw new NotImplementedException();
-    //}
+    [Fact]
+    public void Can_Evaluate_Complex_Expression_With_Some_Mathematic_Functions()
+    {
+        // Example: ([Number of hectares] / 10) + 5
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new ConstantExpressionBuilder(5)
+            .WithFunction(new PlusFunctionBuilder().WithPlusExpression
+            (
+                new FieldExpressionBuilder("NumberOfHectares")
+                    .WithFunction(new DivideFunctionBuilder().WithDivideByExpression(10))
+            ))
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+
+        // Assert
+        actual.Should().Be((calculationModel.NumberOfHectares / 10) + 5);
+    }
 
     [Fact]
     public void Can_Evaluate_Condition_With_Constant_Expressions_True()

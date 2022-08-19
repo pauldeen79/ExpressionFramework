@@ -11,7 +11,7 @@ public class LeftFunctionEvaluatorTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -26,7 +26,7 @@ public class LeftFunctionEvaluatorTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, "test", expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, "test", null, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -42,7 +42,7 @@ public class LeftFunctionEvaluatorTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, "test", expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, "test", null, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -58,7 +58,7 @@ public class LeftFunctionEvaluatorTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, null, null, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

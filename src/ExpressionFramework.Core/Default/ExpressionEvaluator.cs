@@ -36,6 +36,7 @@ public class ExpressionEvaluator : IExpressionEvaluator
             {
                 if (evaluator.TryEvaluate(expression.Function,
                                           expressionResult,
+                                          item,
                                           this,
                                           out var functionResult))
                 {

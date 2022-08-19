@@ -2,7 +2,7 @@
 
 public class LengthFunctionEvaluator : IFunctionEvaluator
 {
-    public bool TryEvaluate(IExpressionFunction function, object? value, IExpressionEvaluator evaluator, out object? result)
+    public bool TryEvaluate(IExpressionFunction function, object? value, object? sourceItem, IExpressionEvaluator evaluator, out object? result)
     {
         if (!(function is LengthFunction))
         {

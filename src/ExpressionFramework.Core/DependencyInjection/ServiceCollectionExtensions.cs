@@ -26,10 +26,14 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IFunctionEvaluator, ContainsFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, DivideFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LeftFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LengthFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LowerFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, MinusFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, MonthFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, MultiplyFunctionEvaluator>();
+                    x.AddSingleton<IFunctionEvaluator, PlusFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, RightFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, SumFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, TrimFunctionEvaluator>();
