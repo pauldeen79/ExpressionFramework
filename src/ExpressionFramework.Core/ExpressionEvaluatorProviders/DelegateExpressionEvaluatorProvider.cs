@@ -2,7 +2,7 @@
 
 public class DelegateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
-    public bool TryEvaluate(object? item, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
     {
         if (expression is IDelegateExpression delegateExpression)
         {

@@ -2,5 +2,5 @@
 
 public interface IExpressionEvaluatorProvider
 {
-    bool TryEvaluate(object? item, IExpression expression, IExpressionEvaluator evaluator, out object? result);
+    bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result);
 }

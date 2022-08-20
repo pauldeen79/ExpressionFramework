@@ -125,8 +125,8 @@ public class ConditionEvaluatorTests
         conditionMock.SetupGet(x => x.Operator).Returns(@operator);
         conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
         conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
-        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
-                                .Returns<object?, IExpression>((_, expression) =>
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
                                 {
                                     if (expression == leftExpression)
                                     {
@@ -163,8 +163,8 @@ public class ConditionEvaluatorTests
         conditionMock.SetupGet(x => x.Operator).Returns(Operator.Equal);
         conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
         conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
-        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
-                                .Returns<object?, IExpression>((_, expression) =>
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
                                 {
                                     if (expression == leftExpression)
                                     {
@@ -201,8 +201,8 @@ public class ConditionEvaluatorTests
         conditionMock.SetupGet(x => x.Operator).Returns(Operator.Contains);
         conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
         conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
-        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
-                                .Returns<object?, IExpression>((_, expression) =>
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
                                 {
                                     if (expression == leftExpression)
                                     {
@@ -239,8 +239,8 @@ public class ConditionEvaluatorTests
         conditionMock.SetupGet(x => x.Operator).Returns(Operator.Contains);
         conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
         conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
-        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
-                                .Returns<object?, IExpression>((_, expression) =>
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
                                 {
                                     if (expression == leftExpression)
                                     {

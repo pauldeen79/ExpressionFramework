@@ -46,6 +46,30 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
                 property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
             }
+            else if (typeName.Contains("Collection<ExpressionFramework."))
+            {
+                if (typeName == "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Abstractions.DomainModel.IExpression>")
+                {
+                    property.ConvertCollectionPropertyToBuilderOnBuilder
+                    (
+                        false,
+                        typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
+                        "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder>",
+                        "{0} = source.{0}.Select(x => x.ToBuilder()).ToList()"
+                    );
+                }
+                else
+                {
+                    property.ConvertCollectionPropertyToBuilderOnBuilder
+                    (
+                        false,
+                        typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
+                        typeName
+                            .Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.", StringComparison.InvariantCulture)
+                            .ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
+                    );
+                }
+            }
             else if (typeName.IsBooleanTypeName() || typeName.IsNullableBooleanTypeName())
             {
                 property.SetDefaultArgumentValueForWithMethod(true);
@@ -56,7 +80,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     private static string GetCustomBuilderConstructorInitializeExpression(ClassPropertyBuilder property, string typeName)
     {
         if (typeName == "ExpressionFramework.Abstractions.DomainModel.IExpressionFunction"
-            || typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression")
+            || typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
+            || typeName == "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction")
         {
             return property.IsNullable
                 ? "{0} = source.{0} == null ? null : source.{0}.ToBuilder()"
@@ -69,7 +94,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     }
 
     private static Literal GetDefaultValueForBuilderClassConstructor(string typeName)
-        => new Literal(typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
-            ? "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()"
-            : "new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
+    {
+        if (typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression")
+        {
+            return new("new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()");
+        }
+
+        if (typeName == "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction")
+        {
+            return new("new ExpressionFramework.Core.DomainModel.Builders.EmptyCompositeFunctionBuilder()");
+        }
+
+        return new("new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
+    }
 }

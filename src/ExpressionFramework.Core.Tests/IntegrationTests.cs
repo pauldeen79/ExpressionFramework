@@ -17,7 +17,7 @@ public sealed class IntegrationTests : IDisposable
         var context = new { Name = "Hello world" };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
 
         // Assert
         actual.Should().Be("Hello world");
@@ -30,7 +30,7 @@ public sealed class IntegrationTests : IDisposable
         var expression = new ConstantExpressionBuilder().WithValue("Hello world").Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
         actual.Should().Be("Hello world");
@@ -44,7 +44,7 @@ public sealed class IntegrationTests : IDisposable
         var context = new { Name = "Hello world" };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
 
         // Assert
         actual.Should().Be("Hello world");
@@ -57,7 +57,7 @@ public sealed class IntegrationTests : IDisposable
         var expression = new EmptyExpressionBuilder().Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
         actual.Should().BeNull();
@@ -66,22 +66,29 @@ public sealed class IntegrationTests : IDisposable
     [Fact]
     public void Can_Evaluate_Complex_Expression_With_Some_Mathematic_Functions()
     {
-        // Example: ([Number of hectares] / 10) + 5
+        // Example: 5 + ([Number of hectares] / 10)
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
-        var expression = new ConstantExpressionBuilder(5)
-            .WithFunction(new PlusFunctionBuilder().WithPlusExpression
+        var expression = new CompositeExpressionBuilder()
+            .AddExpressions
             (
-                new FieldExpressionBuilder("NumberOfHectares")
-                    .WithFunction(new DivideFunctionBuilder().WithDivideByExpression(10))
-            ))
+                new ConstantExpressionBuilder(5),
+                new CompositeExpressionBuilder()
+                    .AddExpressions
+                    (
+                        new FieldExpressionBuilder("NumberOfHectares"),
+                        new ConstantExpressionBuilder(10)
+                    )
+                    .WithCompositeFunction(new DivideCompositeFunctionBuilder())
+            )
+            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        actual.Should().Be((calculationModel.NumberOfHectares / 10) + 5);
+        actual.Should().Be(5 + (calculationModel.NumberOfHectares / 10));
     }
 
     [Fact]

@@ -11,7 +11,7 @@ public class EmptyExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
 
         // Assert
         actual.Should().BeFalse();
@@ -27,7 +27,7 @@ public class EmptyExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
 
         // Assert
         actual.Should().BeTrue();

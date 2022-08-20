@@ -6,7 +6,7 @@ public class FieldExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 
     public FieldExpressionEvaluatorProvider(IValueProvider valueProvider) => _valueProvider = valueProvider;
 
-    public bool TryEvaluate(object? item, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
     {
         if (expression is IFieldExpression fieldExpression)
         {

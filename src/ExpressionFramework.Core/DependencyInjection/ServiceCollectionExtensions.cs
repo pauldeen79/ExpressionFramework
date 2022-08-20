@@ -13,8 +13,9 @@ public static class ServiceCollectionExtensions
             {
                 x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
-                if (!x.Any(y => y.ImplementationType == typeof(ConstantExpressionEvaluatorProvider)))
+                if (!x.Any(y => y.ImplementationType == typeof(CompositeExpressionEvaluatorProvider)))
                 {
+                    x.AddSingleton<IExpressionEvaluatorProvider, CompositeExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, EmptyExpressionEvaluatorProvider>();
@@ -26,14 +27,10 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IFunctionEvaluator, ContainsFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
-                    x.AddSingleton<IFunctionEvaluator, DivideFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LeftFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LengthFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, LowerFunctionEvaluator>();
-                    x.AddSingleton<IFunctionEvaluator, MinusFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, MonthFunctionEvaluator>();
-                    x.AddSingleton<IFunctionEvaluator, MultiplyFunctionEvaluator>();
-                    x.AddSingleton<IFunctionEvaluator, PlusFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, RightFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, SumFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, TrimFunctionEvaluator>();

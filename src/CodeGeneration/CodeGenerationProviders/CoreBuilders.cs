@@ -25,6 +25,11 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
                         y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder";
                         y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.IExpression";
                     }
+                    else if (y.Interfaces[0].EndsWith("CompositeFunctionBuilder"))
+                    {
+                        y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.ICompositeFunctionBuilder";
+                        y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction";
+                    }
                 })
                 .Build()
         )

@@ -11,13 +11,13 @@ public class ExpressionEvaluator : IExpressionEvaluator
         _functionEvaluators = functionEvaluators;
     }
 
-    public object? Evaluate(object? item, IExpression expression)
+    public object? Evaluate(object? item, object? context, IExpression expression)
     {
         object? expressionResult = null;
         var handled = false;
         foreach (var evaluatorProvider in _expressionEvaluatorProviders)
         {
-            if (evaluatorProvider.TryEvaluate(item, expression, this, out var evaluatorResult))
+            if (evaluatorProvider.TryEvaluate(item, context, expression, this, out var evaluatorResult))
             {
                 expressionResult = evaluatorResult;
                 handled = true;
