@@ -13,7 +13,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
             {
                 if (first)
                 {
-                    result = evaluator.Evaluate(context, item, innerExpression);
+                    result = evaluator.Evaluate(item: context, context: item, innerExpression);
                     first = false;
                 }
                 else
