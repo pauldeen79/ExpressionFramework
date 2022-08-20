@@ -6,7 +6,7 @@ public class ModelGenerationTests
     (
         basePath: Path.Combine(Directory.GetCurrentDirectory(), @"../../../../"),
         generateMultipleFiles: false,
-        dryRun: false
+        dryRun: true
     );
 
     [Fact]
