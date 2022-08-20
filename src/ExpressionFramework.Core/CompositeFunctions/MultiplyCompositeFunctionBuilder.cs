@@ -1,9 +1,7 @@
-﻿namespace ExpressionFramework.Core.Functions;
+﻿namespace ExpressionFramework.Core.CompositeFunctions;
 
 public class MultiplyCompositeFunctionBuilder : ICompositeFunctionBuilder
 {
-    public string Name { get; set; } = nameof(MultiplyCompositeFunction);
-
     public ICompositeFunction Build()
         => new MultiplyCompositeFunction();
 }

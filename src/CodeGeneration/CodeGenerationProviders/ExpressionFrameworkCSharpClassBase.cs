@@ -102,7 +102,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         if (typeName == "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction")
         {
-            return new("new ExpressionFramework.Core.DomainModel.Builders.EmptyCompositeFunctionBuilder()");
+            return new("new ExpressionFramework.Core.CompositeFunctions.EmptyCompositeFunctionBuilder()");
         }
 
         return new("new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");

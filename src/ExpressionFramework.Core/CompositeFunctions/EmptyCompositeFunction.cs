@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Core.CompositeFunctions;
 
-public class DivideCompositeFunction : ICompositeFunction
+public class EmptyCompositeFunction : ICompositeFunction
 {
     public ICompositeFunctionBuilder ToBuilder()
-        => new DivideCompositeFunctionBuilder();
+        => new EmptyCompositeFunctionBuilder();
 }

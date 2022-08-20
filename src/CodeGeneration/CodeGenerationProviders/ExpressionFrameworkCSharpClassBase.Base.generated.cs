@@ -81,41 +81,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionFunctionBuilder"))
                     .WithName(@"IExpressionFunction"),
-                new ClassBuilder()
-                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
-                    .AddProperties(
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"Name")
-                            .WithTypeName(@"System.String"))
-                    .AddMethods(
-                        new ClassMethodBuilder()
-                            .WithVirtual(true)
-                            .WithAbstract(true)
-                            .WithName(@"Combine")
-                            .AddParameters(
-                                new ParameterBuilder()
-                                    .WithTypeName(@"System.Object")
-                                    .WithIsNullable(true)
-                                    .WithName(@"previousValue"),
-                                new ParameterBuilder()
-                                    .WithTypeName(@"System.Object")
-                                    .WithIsNullable(true)
-                                    .WithName(@"context"),
-                                new ParameterBuilder()
-                                    .WithTypeName(@"ExpressionFramework.Abstractions.IExpressionEvaluator")
-                                    .WithName(@"evaluator"),
-                                new ParameterBuilder()
-                                    .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
-                                    .WithName(@"expression"))
-                            .WithTypeName(@"System.Object")
-                            .WithIsNullable(true),
-                        new ClassMethodBuilder()
-                            .WithVirtual(true)
-                            .WithAbstract(true)
-                            .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.ICompositeFunctionBuilder"))
-                    .WithName(@"ICompositeFunction"),
             }.Select(x => x.Build()).ToArray();
         }
     }

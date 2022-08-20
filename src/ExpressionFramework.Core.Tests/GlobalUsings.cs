@@ -7,6 +7,8 @@ global using ExpressionFramework.Abstractions.DomainModel;
 global using ExpressionFramework.Abstractions.DomainModel.Builders;
 global using ExpressionFramework.Abstractions.DomainModel.Domains;
 global using ExpressionFramework.Abstractions.DomainModel.Extensions;
+global using ExpressionFramework.Core.CompositeFunctionEvaluators;
+global using ExpressionFramework.Core.CompositeFunctions;
 global using ExpressionFramework.Core.Default;
 global using ExpressionFramework.Core.DependencyInjection;
 global using ExpressionFramework.Core.DomainModel.Builders;

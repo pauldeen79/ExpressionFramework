@@ -2,6 +2,11 @@
 
 public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
+    private readonly IEnumerable<ICompositeFunctionEvaluator> _evaluators;
+
+    public CompositeExpressionEvaluatorProvider(IEnumerable<ICompositeFunctionEvaluator> evaluators)
+        => _evaluators = evaluators;
+
     public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
     {
         result = default;
@@ -21,7 +26,16 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                 }
                 else
                 {
-                    result = compositeExpression.CompositeFunction.Combine(result, item, evaluator, innerExpression);
+                    foreach (var eval in _evaluators)
+                    {
+                        if (eval.TryEvaluate(compositeExpression.CompositeFunction, result, item, evaluator, innerExpression, out var evaluatorResult))
+                        {
+                            result = evaluatorResult;
+                            return true;
+                        }
+                    }
+                    // Unknown composite function
+                    return false;
                 }
             }
 

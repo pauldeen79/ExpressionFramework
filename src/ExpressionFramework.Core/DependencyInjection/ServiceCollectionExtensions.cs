@@ -37,5 +37,13 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IFunctionEvaluator, UpperFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, YearFunctionEvaluator>();
                 }
+                if (!x.Any(y => y.ImplementationType == typeof(DivideCompositeFunctionEvaluator)))
+                {
+                    x.AddSingleton<ICompositeFunctionEvaluator, DivideCompositeFunctionEvaluator>();
+                    x.AddSingleton<ICompositeFunctionEvaluator, EmptyCompositeFunctionEvaluator>();
+                    x.AddSingleton<ICompositeFunctionEvaluator, MinusCompositeFunctionEvaluator>();
+                    x.AddSingleton<ICompositeFunctionEvaluator, MultiplyCompositeFunctionEvaluator>();
+                    x.AddSingleton<ICompositeFunctionEvaluator, PlusCompositeFunctionEvaluator>();
+                }
             });
 }
