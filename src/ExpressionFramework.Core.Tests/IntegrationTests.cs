@@ -133,9 +133,9 @@ public sealed class IntegrationTests : IDisposable
         // Arrange
         var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
-            .WithLeftExpression(new DelegateExpressionBuilder().WithValueDelegate((_, _, _) => "12345"))
+            .WithLeftExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .WithOperator(Operator.Equal)
-            .WithRightExpression(new DelegateExpressionBuilder().WithValueDelegate((_, _, _) => "12345"))
+            .WithRightExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .Build();
 
         // Act
