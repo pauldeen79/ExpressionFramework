@@ -62,7 +62,7 @@ public class ExpressionEvaluatorTests
         expressionMock.SetupGet(x => x.Function).Returns(functionMock.Object);
         var expression = expressionMock.Object;
         _expressionEvaluatorProviderMock.Delegate = new((_, _, _, _) => new Tuple<bool, object?>(true, 12345));
-        _functionEvaluatorMock.Delegate = new((_, value, _, _) => new Tuple<bool, object?>(true, Convert.ToInt32(value) * 2));
+        _functionEvaluatorMock.Delegate = new((_, value, _, _, _) => new Tuple<bool, object?>(true, Convert.ToInt32(value) * 2));
 
         // Act
         var actual = sut.Evaluate(null, null, expression);

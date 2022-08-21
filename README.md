@@ -32,3 +32,4 @@ TODO:
 - Add functions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce
 - For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
 - Add composite functions: Min, Max, First, Last, ElementAt
+- Check if we can refactor functions to inner expressions. e.g. new FieldExpressionBuilder("FieldName").WithInnerExpression(new ToUpperExpressionBuilder());

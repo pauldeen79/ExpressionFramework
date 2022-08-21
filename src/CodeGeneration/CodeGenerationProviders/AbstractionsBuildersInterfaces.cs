@@ -19,7 +19,7 @@ public class AbstractionsBuildersInterfaces : ExpressionFrameworkCSharpClassBase
                   .WithPartial()
                   .WithNamespace("ExpressionFramework.Abstractions.DomainModel.Builders")
                   .WithName($"I{x.Name}")
-                  .Chain(x => x.Methods.RemoveAll(y => y.Static))
+                  .With(x => x.Methods.RemoveAll(y => y.Static))
                   .Build()
         )
         .ToArray();

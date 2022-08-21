@@ -8,10 +8,11 @@ public class LowerFunctionEvaluatorTests
         // Arrange
         var sut = new LowerFunctionEvaluator();
         var functionMock = new Mock<IExpressionFunction>();
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -23,10 +24,11 @@ public class LowerFunctionEvaluatorTests
         // Arrange
         var sut = new LowerFunctionEvaluator();
         var function = new LowerFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, "TEST", null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, "TEST", null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -39,10 +41,11 @@ public class LowerFunctionEvaluatorTests
         // Arrange
         var sut = new LowerFunctionEvaluator();
         var function = new LowerFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, null, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, null, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

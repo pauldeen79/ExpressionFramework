@@ -8,10 +8,11 @@ public class LeftFunctionEvaluatorTests
         // Arrange
         var sut = new LeftFunctionEvaluator();
         var functionMock = new Mock<IExpressionFunction>();
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -23,10 +24,11 @@ public class LeftFunctionEvaluatorTests
         // Arrange
         var sut = new LeftFunctionEvaluator();
         var function = new LeftFunction(1, null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, "test", null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -39,10 +41,11 @@ public class LeftFunctionEvaluatorTests
         // Arrange
         var sut = new LeftFunctionEvaluator();
         var function = new LeftFunction(5, null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, "test", null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -55,10 +58,11 @@ public class LeftFunctionEvaluatorTests
         // Arrange
         var sut = new LeftFunctionEvaluator();
         var function = new LeftFunction(2, null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, null, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, null, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

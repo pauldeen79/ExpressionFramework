@@ -8,10 +8,11 @@ public class MonthFunctionEvaluatorTests
         // Arrange
         var sut = new MonthFunctionEvaluator();
         var functionMock = new Mock<IExpressionFunction>();
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -24,10 +25,11 @@ public class MonthFunctionEvaluatorTests
         var sut = new MonthFunctionEvaluator();
         var value = new DateTime(2020, 2, 3);
         var function = new MonthFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -41,10 +43,11 @@ public class MonthFunctionEvaluatorTests
         var sut = new MonthFunctionEvaluator();
         var value = 0; //integer, cannot convert this to DateTime!
         var function = new MonthFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

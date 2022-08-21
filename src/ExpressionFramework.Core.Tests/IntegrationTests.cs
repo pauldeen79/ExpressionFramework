@@ -76,7 +76,7 @@ public sealed class IntegrationTests : IDisposable
                 new CompositeExpressionBuilder()
                     .AddExpressions
                     (
-                        new FieldExpressionBuilder("NumberOfHectares"),
+                        new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares)),
                         new ConstantExpressionBuilder(10)
                     )
                     .WithCompositeFunction(new DivideCompositeFunctionBuilder())
@@ -142,6 +142,87 @@ public sealed class IntegrationTests : IDisposable
 
         // Assert
         actual.Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
+    }
+
+    [Fact]
+    public void Can_Evaluate_CompositeExpression_With_SwitchExpression()
+    {
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new CompositeExpressionBuilder()
+            .AddExpressions
+            (
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(5000))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(10)),
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(500))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(20)),
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(50))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(30)), // <--------- this one gets selected, it's the first one which condition evaluates to true
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(5))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(40)),
+                //new ConditionalExpressionBuilder()
+                //    //.AddConditions
+                //    //(
+                //    //    new ConditionBuilder()
+                //    //    .WithLeftExpression(new ConstantExpressionBuilder(true))
+                //    //    .WithOperator(Operator.Equal)
+                //    //    .WithRightExpression(new ConstantExpressionBuilder(true)) // true == true is the default condition (1)
+                //    //) // no conditions means it's always true (2)
+                //    .WithResultExpression(new ConstantExpressionBuilder(50))
+                new ConstantExpressionBuilder(50), // non conditional expression will take the result (3)
+                new ConstantExpressionBuilder(60)
+            )
+            //.AddExpressionConditions(new ConditionBuilder()
+            //    .WithLeftExpression(new ConditionalExpressionConditionResultExpressionBuilder())
+            //    .WithOperator(Operator.Equal)
+            //    .WithRightExpression(new ConstantExpressionBuilder(true)))
+            .AddExpressionConditions(new ConditionBuilder()
+                .WithLeftExpression(new ContextExpressionBuilder())
+                .WithOperator(Operator.IsNotNull))
+            .WithCompositeFunction(new FirstCompositeFunctionBuilder())
+            //.WithFunction(new ConditionalExpressionExpressionResultFunctionBuilder())
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+
+        // Assert
+        var expected = new List<(Func<bool> Condition, object? Result)>
+        {
+            new(() => false, 10),
+            new(() => false, 20),
+            new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(() => true, 40),
+        };
+        actual.Should().Be(expected.First(x => x.Condition.Invoke()).Result); // 30
     }
 
     [Fact]

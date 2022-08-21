@@ -23,6 +23,8 @@ public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(ICompositeExpression),
         typeof(IItemExpression),
         typeof(IContextExpression),
+        typeof(IConditionalExpression),
+        typeof(IConditionalExpressionConditionResultExpression)
     };
 
     protected override string Namespace => "CodeGeneration.CodeGenerationProviders";

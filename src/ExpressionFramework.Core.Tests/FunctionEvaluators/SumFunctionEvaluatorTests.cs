@@ -8,10 +8,11 @@ public class SumFunctionEvaluatorTests
         // Arrange
         var sut = new SumFunctionEvaluator();
         var functionMock = new Mock<IExpressionFunction>();
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -24,10 +25,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new[] { 1, 2, 3 };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -41,10 +43,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new int?[] { 1, 2, null, 3 };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -58,10 +61,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new[] { 1L, 2L, 3L };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -75,10 +79,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new long?[] { 1L, 2L, null, 3L };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -92,10 +97,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new[] { 1d, 2d, 3d };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -109,10 +115,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new double?[] { 1d, 2d, null, 3d };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -126,10 +133,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new[] { 1M, 2M, 3M };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -143,10 +151,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new decimal?[] { 1M, 2M, null, 3M };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -160,10 +169,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new[] { 1f, 2f, 3f };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -177,10 +187,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new float?[] { 1f, 2f, null, 3f };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -194,10 +205,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = new object[] { 1, 2L, 3 };
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -211,10 +223,11 @@ public class SumFunctionEvaluatorTests
         var sut = new SumFunctionEvaluator();
         var value = 0; //integer, cannot convert this to IEnumerable of ints!
         var function = new SumFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, null, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

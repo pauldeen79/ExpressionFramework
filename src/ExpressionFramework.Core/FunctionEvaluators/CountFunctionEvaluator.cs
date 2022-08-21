@@ -2,7 +2,7 @@
 
 public class CountFunctionEvaluator : IFunctionEvaluator
 {
-    public bool TryEvaluate(IExpressionFunction function, object? value, object? sourceItem, IExpressionEvaluator evaluator, out object? result)
+    public bool TryEvaluate(IExpressionFunction function, object? value, object? sourceItem, IExpression expression, IExpressionEvaluator evaluator, out object? result)
     {
         result = null;
         if (!(function is CountFunction))

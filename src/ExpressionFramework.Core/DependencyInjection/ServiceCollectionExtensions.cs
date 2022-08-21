@@ -17,6 +17,8 @@ public static class ServiceCollectionExtensions
                 if (!x.Any(y => y.ImplementationType == typeof(CompositeExpressionEvaluatorProvider)))
                 {
                     x.AddSingleton<IExpressionEvaluatorProvider, CompositeExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionConditionResultExpressionProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ContextExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>();
@@ -25,8 +27,9 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IExpressionEvaluatorProvider, ItemExpressionEvaluatorProvider>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
-                if (!x.Any(y => y.ImplementationType == typeof(CountFunctionEvaluator)))
+                if (!x.Any(y => y.ImplementationType == typeof(ConditionalExpressionExpressionResultFunctionEvaluator)))
                 {
+                    x.AddSingleton<IFunctionEvaluator, ConditionalExpressionExpressionResultFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, ContainsFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
@@ -44,6 +47,7 @@ public static class ServiceCollectionExtensions
                 {
                     x.AddSingleton<ICompositeFunctionEvaluator, DivideCompositeFunctionEvaluator>();
                     x.AddSingleton<ICompositeFunctionEvaluator, EmptyCompositeFunctionEvaluator>();
+                    x.AddSingleton<ICompositeFunctionEvaluator, FirstCompositeFunctionEvaluator>();
                     x.AddSingleton<ICompositeFunctionEvaluator, MinusCompositeFunctionEvaluator>();
                     x.AddSingleton<ICompositeFunctionEvaluator, MultiplyCompositeFunctionEvaluator>();
                     x.AddSingleton<ICompositeFunctionEvaluator, PlusCompositeFunctionEvaluator>();

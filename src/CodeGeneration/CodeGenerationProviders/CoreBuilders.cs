@@ -17,8 +17,7 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         .Select
         (
             x => new ClassBuilder(x)
-                .Chain(y => y.Methods.RemoveAll(z => z.Static))
-                .Chain(y =>
+                .With(y =>
                 {
                     if (y.Interfaces[0].EndsWith("ExpressionBuilder"))
                     {

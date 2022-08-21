@@ -13,6 +13,13 @@ public class ExpressionEvaluator : IExpressionEvaluator
 
     public object? Evaluate(object? item, object? context, IExpression expression)
     {
+        var innerExpression = expression.InnerExpression;
+        while (innerExpression != null)
+        {
+            item = Evaluate(item, context, innerExpression);
+            innerExpression = innerExpression.InnerExpression;
+        }
+
         object? expressionResult = null;
         var handled = false;
         foreach (var evaluatorProvider in _expressionEvaluatorProviders)
@@ -37,6 +44,7 @@ public class ExpressionEvaluator : IExpressionEvaluator
                 if (evaluator.TryEvaluate(expression.Function,
                                           expressionResult,
                                           item,
+                                          expression,
                                           this,
                                           out var functionResult))
                 {
