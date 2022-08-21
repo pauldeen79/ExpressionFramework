@@ -13,13 +13,16 @@ public static class ServiceCollectionExtensions
             {
                 x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
+                x.TryAddSingleton<IConditionEvaluatorProvider, ConditionEvaluatorProvider>();
                 if (!x.Any(y => y.ImplementationType == typeof(CompositeExpressionEvaluatorProvider)))
                 {
                     x.AddSingleton<IExpressionEvaluatorProvider, CompositeExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, ContextExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, EmptyExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, FieldExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, ItemExpressionEvaluatorProvider>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
                 if (!x.Any(y => y.ImplementationType == typeof(CountFunctionEvaluator)))

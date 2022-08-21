@@ -64,9 +64,9 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_Complex_Expression_With_Some_Mathematic_Functions()
+    public void Can_Evaluate_CompositeExpression_With_Some_Mathematic_Functions()
     {
-        // Example: 5 + ([Number of hectares] / 10)
+        /// Example: 5 + (calculationModel.NumberOfHectares / 10)
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
         var expression = new CompositeExpressionBuilder()
@@ -89,6 +89,59 @@ public sealed class IntegrationTests : IDisposable
 
         // Assert
         actual.Should().Be(5 + (calculationModel.NumberOfHectares / 10));
+    }
+
+    [Fact]
+    public void Can_Evaluate_CompositeExpression_With_Function()
+    {
+        /// Example: 5 + new[] { 10 }.Length
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new CompositeExpressionBuilder()
+            .AddExpressions
+            (
+                new ConstantExpressionBuilder(5),
+                new CompositeExpressionBuilder()
+                    .AddExpressions
+                    (
+                        new ConstantExpressionBuilder(new[] { 10 })
+                    )
+                    .WithFunction(new CountFunctionBuilder())
+            )
+            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+
+        // Assert
+        actual.Should().Be(5 + new[] { 10 }.Length);
+    }
+
+    [Fact]
+    public void Can_Evaluate_CompositeExpression_With_Condition()
+    {
+        /// Example: new[] { 5, 5, 10 }.Where(x => x <= 5).Sum();
+        // Arrange
+        var expression = new CompositeExpressionBuilder()
+            .AddExpressions
+            (
+                new ConstantExpressionBuilder(5),
+                new ConstantExpressionBuilder(5),
+                new ConstantExpressionBuilder(10) // this one gets ignored
+            )
+            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
+            .AddExpressionConditions(new ConditionBuilder()
+                .WithLeftExpression(new ContextExpressionBuilder())
+                .WithOperator(Operator.SmallerOrEqual)
+                .WithRightExpression(new ConstantExpressionBuilder(5)))
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
+
+        // Assert
+        actual.Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
     }
 
     [Fact]

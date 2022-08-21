@@ -1,11 +1,19 @@
-﻿namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
+﻿using System.Linq;
+
+namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
 
 public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
+    private readonly IConditionEvaluatorProvider _conditionEvaluatorProvider;
     private readonly IEnumerable<ICompositeFunctionEvaluator> _evaluators;
 
-    public CompositeExpressionEvaluatorProvider(IEnumerable<ICompositeFunctionEvaluator> evaluators)
-        => _evaluators = evaluators;
+    public CompositeExpressionEvaluatorProvider(
+        IConditionEvaluatorProvider conditionEvaluatorProvider,
+        IEnumerable<ICompositeFunctionEvaluator> evaluators)
+    {
+        _conditionEvaluatorProvider = conditionEvaluatorProvider;
+        _evaluators = evaluators;
+    }
 
     public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
     {
@@ -17,7 +25,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         }
 
         bool first = true;
-        foreach (var innerExpression in compositeExpression.Expressions)
+        foreach (var innerExpression in GetValidExpressions(compositeExpression, context, evaluator))
         {
             if (first)
             {
@@ -44,5 +52,19 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 
         // No expressions
         return true;
+    }
+
+    private IReadOnlyCollection<IExpression> GetValidExpressions(ICompositeExpression compositeExpression, object? context, IExpressionEvaluator expressionEvaluator)
+    {
+        if (!compositeExpression.ExpressionConditions.Any())
+        {
+            return compositeExpression.Expressions;
+        }
+
+        var conditionEvaluator = _conditionEvaluatorProvider.Get(expressionEvaluator);
+        return compositeExpression.Expressions
+            .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(context, context, expression), compositeExpression.ExpressionConditions))
+            .ToList()
+            .AsReadOnly();
     }
 }

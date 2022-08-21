@@ -143,6 +143,10 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
+                            .WithName(@"ExpressionConditions")
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
                             .WithName(@"CompositeFunction")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.ICompositeFunction"),
                         new ClassPropertyBuilder()
@@ -157,6 +161,40 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
                     .WithName(@"ICompositeExpression"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddInterfaces(
+                        @"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Function")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
+                            .WithIsNullable(true))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                    .WithName(@"IItemExpression"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddInterfaces(
+                        @"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Function")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
+                            .WithIsNullable(true))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                    .WithName(@"IContextExpression"),
             }.Select(x => x.Build()).ToArray();
         }
     }
