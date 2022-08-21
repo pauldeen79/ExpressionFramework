@@ -2,6 +2,6 @@
 
 public partial class CompositeExpressionBuilder
 {
-    public CompositeExpressionBuilder WithCompositeFunction(ICompositeFunctionBuilder compositeFunction)
+    public CompositeExpressionBuilder WithCompositeFunction(ICompositeFunction compositeFunction)
         => this.With(x => x.CompositeFunction = compositeFunction);
 }
