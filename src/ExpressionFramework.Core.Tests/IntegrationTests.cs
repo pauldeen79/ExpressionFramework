@@ -79,9 +79,9 @@ public sealed class IntegrationTests : IDisposable
                         new FieldExpressionBuilder("NumberOfHectares"),
                         new ConstantExpressionBuilder(10)
                     )
-                    .WithCompositeFunction(new DivideCompositeFunction())
+                    .WithCompositeFunction(new DivideCompositeFunctionBuilder())
             )
-            .WithCompositeFunction(new PlusCompositeFunction())
+            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
             .Build();
 
         // Act
