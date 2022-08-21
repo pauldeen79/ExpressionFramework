@@ -38,10 +38,11 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                     }
                 }
                 // Unknown composite function
-                return false;
+                return true;
             }
         }
 
+        // No expressions
         return true;
     }
 }
