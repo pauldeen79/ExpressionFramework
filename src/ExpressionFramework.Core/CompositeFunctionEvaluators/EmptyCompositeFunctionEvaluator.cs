@@ -1,5 +1,6 @@
 ﻿namespace ExpressionFramework.Core.CompositeFunctionEvaluators;
 
+[ExcludeFromCodeCoverage]
 internal class EmptyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
     public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
