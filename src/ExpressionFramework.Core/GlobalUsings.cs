@@ -14,6 +14,7 @@ global using ExpressionFramework.Core.CompositeFunctionEvaluators;
 global using ExpressionFramework.Core.CompositeFunctions;
 global using ExpressionFramework.Core.ConditionEvaluation;
 global using ExpressionFramework.Core.Default;
+global using ExpressionFramework.Core.DomainModel.Builders;
 global using ExpressionFramework.Core.ExpressionEvaluatorProviders;
 global using ExpressionFramework.Core.FunctionEvaluators;
 global using ExpressionFramework.Core.Functions;

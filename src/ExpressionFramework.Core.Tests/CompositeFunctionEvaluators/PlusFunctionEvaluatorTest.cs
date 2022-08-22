@@ -13,12 +13,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -32,12 +32,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -51,12 +51,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -70,12 +70,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -89,12 +89,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -108,12 +108,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
@@ -127,16 +127,16 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().Be(10 + value);
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().Be(10 + value);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Null_When_Value_Is_Not_Of_Correct_Type()
+    public void TryEvaluate_Returns_Null_Result_When_Value_Is_Not_Of_Correct_Type()
     {
         // Arrange
         var sut = new PlusCompositeFunctionEvaluator();
@@ -146,16 +146,17 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new PlusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeTrue();
-        shouldContinue.Should().BeTrue();
-        result.Should().BeNull();
+        actual.IsSupported.Should().BeTrue();
+        actual.ShouldContinue.Should().BeFalse();
+        actual.Result.Should().BeNull();
+        actual.ErrorMessage.Should().Be("Type of current value is not supported");
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Null_When_Function_Is_Not_Of_Correct_Type()
+    public void TryEvaluate_Returns_NotSupported_When_Function_Is_Not_Of_Correct_Type()
     {
         // Arrange
         var sut = new PlusCompositeFunctionEvaluator();
@@ -165,11 +166,12 @@ public class PlusCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new MinusCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression, out var result, out var shouldContinue);
+        var actual = sut.TryEvaluate(new MultiplyCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
-        actual.Should().BeFalse();
-        shouldContinue.Should().BeTrue();
-        result.Should().BeNull();
+        actual.IsSupported.Should().BeFalse();
+        actual.ShouldContinue.Should().BeTrue();
+        actual.Result.Should().BeNull();
     }
 }
+

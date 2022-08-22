@@ -24,6 +24,7 @@ public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(IItemExpression),
         typeof(IContextExpression),
         typeof(IConditionalExpression),
+        typeof(ICompositeFunctionEvaluatorResult),
     };
 
     protected override string Namespace => "CodeGeneration.CodeGenerationProviders";

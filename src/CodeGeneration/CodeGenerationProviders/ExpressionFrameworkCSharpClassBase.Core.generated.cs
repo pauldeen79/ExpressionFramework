@@ -264,6 +264,28 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
                     .WithName(@"IConditionalExpression"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"IsSupported")
+                            .WithTypeName(@"System.Boolean"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Result")
+                            .WithTypeName(@"System.Object")
+                            .WithIsNullable(true),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"ErrorMessage")
+                            .WithTypeName(@"System.String")
+                            .WithIsNullable(true),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"ShouldContinue")
+                            .WithTypeName(@"System.Boolean"))
+                    .WithName(@"ICompositeFunctionEvaluatorResult"),
             }.Select(x => x.Build()).ToArray();
         }
     }

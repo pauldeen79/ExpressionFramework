@@ -2,31 +2,25 @@
 
 public record FirstCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
-    public bool TryEvaluate(ICompositeFunction function,
-                            bool isFirstItem,
-                            object? previousValue,
-                            object? context,
-                            IExpressionEvaluator evaluator,
-                            IExpression expression,
-                            out object? result,
-                            out bool shouldContinue)
+    public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
+                                                         bool isFirstItem,
+                                                         object? previousValue,
+                                                         object? context,
+                                                         IExpressionEvaluator evaluator,
+                                                         IExpression expression)
     {
-        shouldContinue = true;
-
         if (function is not FirstCompositeFunction)
         {
-            result = null;
-            return false;
+            return CompositeFunctionEvaluatorResultBuilder.NotSupported.Build();
         }
+
+        var resultBuilder = CompositeFunctionEvaluatorResultBuilder.Supported;
 
         if (isFirstItem)
         {
-            result = previousValue;
-            shouldContinue = false;
-            return true;
+            return resultBuilder.WithResult(previousValue).Stop().Build();
         }
 
-        result = previousValue;
-        return true;
+        return CompositeFunctionEvaluatorResultBuilder.Error("Not supposed to come here, as we said to stop!").Build();
     }
 }

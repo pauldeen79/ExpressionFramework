@@ -1,31 +1,26 @@
 ﻿namespace ExpressionFramework.Core.CompositeFunctionEvaluators;
 
-public class EmptyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
+internal class EmptyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
-    public bool TryEvaluate(ICompositeFunction function,
-                            bool isFirstItem,
-                            object? previousValue,
-                            object? context,
-                            IExpressionEvaluator evaluator,
-                            IExpression expression,
-                            out object? result,
-                            out bool shouldContinue)
+    public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
+                                                         bool isFirstItem,
+                                                         object? previousValue,
+                                                         object? context,
+                                                         IExpressionEvaluator evaluator,
+                                                         IExpression expression)
     {
-        shouldContinue = true;
-
         if (function is not EmptyCompositeFunction)
         {
-            result = null;
-            return false;
+            return CompositeFunctionEvaluatorResultBuilder.NotSupported.Build();
         }
+
+        var resultBuilder = CompositeFunctionEvaluatorResultBuilder.Supported;
 
         if (isFirstItem)
         {
-            result = previousValue;
-            return true;
+            return resultBuilder.WithResult(previousValue).Build();
         }
 
-        result = null;
-        return true;
+        return resultBuilder.Build();
     }
 }

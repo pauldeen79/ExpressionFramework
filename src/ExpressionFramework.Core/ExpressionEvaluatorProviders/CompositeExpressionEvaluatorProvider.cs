@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Core.Default;
-
-namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
+﻿namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
 
 public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
@@ -31,26 +29,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
             var shouldContinue = true;
             if (first)
             {
-                result = evaluator.Evaluate(item, context, innerExpression);
-                System.Diagnostics.Debug.WriteLine($"First pure result: {result}");
-
-                var found = false;
-                foreach (var eval in _evaluators)
-                {
-                    if (eval.TryEvaluate(compositeExpression.CompositeFunction, true, result, item, evaluator, innerExpression, out var evaluatorResult, out shouldContinue))
-                    {
-                        found = true;
-                        result = evaluatorResult;
-                        System.Diagnostics.Debug.WriteLine($"Composite result of first pure result: {result}");
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    // Unknown composite function evaluator
-                    result = default;
-                }
+                result = ProcessFirstExpression(item, context, evaluator, compositeExpression, innerExpression, ref shouldContinue);
 
                 if (!shouldContinue)
                 {
@@ -61,23 +40,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
             }
             else
             {
-                var found = false;
-                foreach (var eval in _evaluators)
-                {
-                    if (eval.TryEvaluate(compositeExpression.CompositeFunction, false, result, item, evaluator, innerExpression, out var evaluatorResult, out shouldContinue))
-                    {
-                        found = true;
-                        result = evaluatorResult;
-                        System.Diagnostics.Debug.WriteLine($"Subsequent result: {result}");
-                        break;
-                    }
-                }
-
-                if (!found)
-                {
-                    // Unknown composite function evaluator
-                    result = default;
-                }
+                ProcessSubSequentExpression(item, evaluator, ref result, compositeExpression, innerExpression, ref shouldContinue);
 
                 if (!shouldContinue)
                 {
@@ -89,6 +52,54 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         return true;
     }
 
+    private object? ProcessFirstExpression(object? item, object? context, IExpressionEvaluator evaluator, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
+    {
+        var result = evaluator.Evaluate(item, context, innerExpression);
+
+        var found = false;
+        foreach (var eval in _evaluators)
+        {
+            var evalResult = eval.TryEvaluate(compositeExpression.CompositeFunction, true, result, item, evaluator, innerExpression);
+            if (evalResult.IsSupported)
+            {
+                found = true;
+                result = evalResult.Result;
+                shouldContinue = evalResult.ShouldContinue;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            // Unknown composite function evaluator
+            result = default;
+        }
+
+        return result;
+    }
+
+    private void ProcessSubSequentExpression(object? item, IExpressionEvaluator evaluator, ref object? result, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
+    {
+        var found = false;
+        foreach (var eval in _evaluators)
+        {
+            var evalResult = eval.TryEvaluate(compositeExpression.CompositeFunction, false, result, item, evaluator, innerExpression);
+            if (evalResult.IsSupported)
+            {
+                found = true;
+                result = evalResult.Result;
+                shouldContinue = evalResult.ShouldContinue;
+                break;
+            }
+        }
+
+        if (!found)
+        {
+            // Unknown composite function evaluator
+            result = default;
+        }
+    }
+
     private IEnumerable<IExpression> GetValidExpressions(ICompositeExpression compositeExpression,
                                                          object? item,
                                                          object? context,
@@ -96,11 +107,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                                                          IConditionEvaluator conditionEvaluator)
     {
         return compositeExpression.Expressions
-            .Where(expression =>
-            {
-                var x = conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression), compositeExpression.ExpressionConditions);
-                System.Diagnostics.Debug.WriteLine($"Expression [{expression}] evaluates to {x}");
-                return x;
-            });
+            .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression),
+                                                             compositeExpression.ExpressionConditions));
     }
 }

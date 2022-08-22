@@ -2,67 +2,55 @@
 
 public record MultiplyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
-    public bool TryEvaluate(ICompositeFunction function,
-                            bool isFirstItem,
-                            object? previousValue,
-                            object? context,
-                            IExpressionEvaluator evaluator,
-                            IExpression expression,
-                            out object? result,
-                            out bool shouldContinue)
+    public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
+                                                     bool isFirstItem,
+                                                     object? previousValue,
+                                                     object? context,
+                                                     IExpressionEvaluator evaluator,
+                                                     IExpression expression)
     {
-        shouldContinue = true;
-
         if (function is not MultiplyCompositeFunction)
         {
-            result = null;
-            return false;
+            return CompositeFunctionEvaluatorResultBuilder.NotSupported.Build();
         }
+
+        var resultBuilder = CompositeFunctionEvaluatorResultBuilder.Supported;
 
         if (isFirstItem)
         {
-            result = previousValue;
-            return true;
+            return resultBuilder.WithResult(previousValue).Build();
         }
 
         var currentValue = evaluator.Evaluate(context, context, expression);
         if (currentValue is byte b)
         {
-            result = Convert.ToByte(previousValue) * b;
-            return true;
+            return resultBuilder.WithResult(Convert.ToByte(previousValue) * b).Build();
         }
         else if (currentValue is short s)
         {
-            result =  Convert.ToInt16(previousValue) * s;
-            return true;
+            return resultBuilder.WithResult(Convert.ToInt16(previousValue) * s).Build();
         }
         else if (currentValue is int i)
         {
-            result = Convert.ToInt32(previousValue) * i;
-            return true;
+            return resultBuilder.WithResult(Convert.ToInt32(previousValue) * i).Build();
         }
         else if (currentValue is long l)
         {
-            result = Convert.ToInt64(previousValue) * l;
-            return true;
+            return resultBuilder.WithResult(Convert.ToInt64(previousValue) * l).Build();
         }
         else if (currentValue is float flt)
         {
-            result = Convert.ToSingle(previousValue) * flt;
-            return true;
+            return resultBuilder.WithResult(Convert.ToSingle(previousValue) * flt).Build();
         }
         else if (currentValue is double dbl)
         {
-            result = Convert.ToDouble(previousValue) * dbl;
-            return true;
+            return resultBuilder.WithResult(Convert.ToDouble(previousValue) * dbl).Build();
         }
         else if (currentValue is decimal dec)
         {
-            result = Convert.ToDecimal(previousValue) * dec;
-            return true;
+            return resultBuilder.WithResult(Convert.ToDecimal(previousValue) * dec).Build();
         }
 
-        result = default;
-        return true;
+        return CompositeFunctionEvaluatorResultBuilder.Error("Type of current value is not supported").Build();
     }
 }
