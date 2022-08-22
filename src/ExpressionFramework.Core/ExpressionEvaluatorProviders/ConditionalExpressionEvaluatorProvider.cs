@@ -21,9 +21,8 @@ public class ConditionalExpressionEvaluatorProvider : IExpressionEvaluatorProvid
         }
         else
         {
-            result = default; //TODO: Add default/false expression
+            result = evaluator.Evaluate(item, context, conditionalExpression.DefaultExpression);
         }
-        //result = _conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions);
         return true;
     }
 }

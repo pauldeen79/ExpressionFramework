@@ -245,6 +245,10 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
+                            .WithName(@"DefaultExpression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
                             .WithIsNullable(true),
