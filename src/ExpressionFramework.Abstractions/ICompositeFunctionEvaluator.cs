@@ -2,5 +2,12 @@
 
 public interface ICompositeFunctionEvaluator
 {
-    bool TryEvaluate(ICompositeFunction function, object? previousValue, object? context, IExpressionEvaluator evaluator, IExpression expression, out object? result);
+    bool TryEvaluate(ICompositeFunction function,
+                     bool isFirstItem,
+                     object? previousValue,
+                     object? context,
+                     IExpressionEvaluator evaluator,
+                     IExpression expression,
+                     out object? result,
+                     out bool shouldContinue);
 }

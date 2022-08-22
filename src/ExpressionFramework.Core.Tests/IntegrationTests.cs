@@ -188,27 +188,13 @@ public sealed class IntegrationTests : IDisposable
                             .WithRightExpression(new ConstantExpressionBuilder(5))
                     )
                     .WithResultExpression(new ConstantExpressionBuilder(40)),
-                //new ConditionalExpressionBuilder()
-                //    //.AddConditions
-                //    //(
-                //    //    new ConditionBuilder()
-                //    //    .WithLeftExpression(new ConstantExpressionBuilder(true))
-                //    //    .WithOperator(Operator.Equal)
-                //    //    .WithRightExpression(new ConstantExpressionBuilder(true)) // true == true is the default condition (1)
-                //    //) // no conditions means it's always true (2)
-                //    .WithResultExpression(new ConstantExpressionBuilder(50))
                 new ConstantExpressionBuilder(50), // non conditional expression will take the result (3)
                 new ConstantExpressionBuilder(60)
             )
-            //.AddExpressionConditions(new ConditionBuilder()
-            //    .WithLeftExpression(new ConditionalExpressionConditionResultExpressionBuilder())
-            //    .WithOperator(Operator.Equal)
-            //    .WithRightExpression(new ConstantExpressionBuilder(true)))
             .AddExpressionConditions(new ConditionBuilder()
                 .WithLeftExpression(new ContextExpressionBuilder())
                 .WithOperator(Operator.IsNotNull))
             .WithCompositeFunction(new FirstCompositeFunctionBuilder())
-            //.WithFunction(new ConditionalExpressionExpressionResultFunctionBuilder())
             .Build();
 
         // Act

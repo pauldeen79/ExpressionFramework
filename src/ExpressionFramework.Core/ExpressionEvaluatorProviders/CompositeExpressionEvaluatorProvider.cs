@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
+﻿using ExpressionFramework.Core.Default;
+
+namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
 
 public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
@@ -23,13 +25,38 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         }
 
         bool first = true;
-        var expressions = GetValidExpressions(compositeExpression, item, context, evaluator);
+        var expressions = GetValidExpressions(compositeExpression, item, context, evaluator, _conditionEvaluatorProvider.Get(evaluator));
         foreach (var innerExpression in expressions)
         {
+            var shouldContinue = true;
             if (first)
             {
                 result = evaluator.Evaluate(item, context, innerExpression);
-                System.Diagnostics.Debug.WriteLine($"First result: {result}");
+                System.Diagnostics.Debug.WriteLine($"First pure result: {result}");
+
+                var found = false;
+                foreach (var eval in _evaluators)
+                {
+                    if (eval.TryEvaluate(compositeExpression.CompositeFunction, true, result, item, evaluator, innerExpression, out var evaluatorResult, out shouldContinue))
+                    {
+                        found = true;
+                        result = evaluatorResult;
+                        System.Diagnostics.Debug.WriteLine($"Composite result of first pure result: {result}");
+                        break;
+                    }
+                }
+
+                if (!found)
+                {
+                    // Unknown composite function evaluator
+                    result = default;
+                }
+
+                if (!shouldContinue)
+                {
+                    break;
+                }
+
                 first = false;
             }
             else
@@ -37,7 +64,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                 var found = false;
                 foreach (var eval in _evaluators)
                 {
-                    if (eval.TryEvaluate(compositeExpression.CompositeFunction, result, item, evaluator, innerExpression, out var evaluatorResult))
+                    if (eval.TryEvaluate(compositeExpression.CompositeFunction, false, result, item, evaluator, innerExpression, out var evaluatorResult, out shouldContinue))
                     {
                         found = true;
                         result = evaluatorResult;
@@ -45,10 +72,16 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                         break;
                     }
                 }
+
                 if (!found)
                 {
                     // Unknown composite function evaluator
                     result = default;
+                }
+
+                if (!shouldContinue)
+                {
+                    break;
                 }
             }
         }
@@ -56,22 +89,18 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         return true;
     }
 
-    private IReadOnlyCollection<IExpression> GetValidExpressions(ICompositeExpression compositeExpression, object? item, object? context, IExpressionEvaluator expressionEvaluator)
+    private IEnumerable<IExpression> GetValidExpressions(ICompositeExpression compositeExpression,
+                                                         object? item,
+                                                         object? context,
+                                                         IExpressionEvaluator expressionEvaluator,
+                                                         IConditionEvaluator conditionEvaluator)
     {
-        if (!compositeExpression.ExpressionConditions.Any())
-        {
-            return compositeExpression.Expressions;
-        }
-
-        var conditionEvaluator = _conditionEvaluatorProvider.Get(expressionEvaluator);
         return compositeExpression.Expressions
             .Where(expression =>
             {
                 var x = conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression), compositeExpression.ExpressionConditions);
                 System.Diagnostics.Debug.WriteLine($"Expression [{expression}] evaluates to {x}");
                 return x;
-            })
-            .ToList()
-            .AsReadOnly();
+            });
     }
 }
