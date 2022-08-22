@@ -15,13 +15,6 @@ internal class EmptyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
             return CompositeFunctionEvaluatorResultBuilder.NotSupported.Build();
         }
 
-        var resultBuilder = CompositeFunctionEvaluatorResultBuilder.Supported;
-
-        if (isFirstItem)
-        {
-            return resultBuilder.WithResult(previousValue).Build();
-        }
-
-        return resultBuilder.Build();
+        return CompositeFunctionEvaluatorResultBuilder.Error("No composite function was selected").Build();
     }
 }

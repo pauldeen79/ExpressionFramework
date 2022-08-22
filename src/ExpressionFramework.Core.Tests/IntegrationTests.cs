@@ -101,12 +101,7 @@ public sealed class IntegrationTests : IDisposable
             .AddExpressions
             (
                 new ConstantExpressionBuilder(5),
-                new CompositeExpressionBuilder()
-                    .AddExpressions
-                    (
-                        new ConstantExpressionBuilder(new[] { 10 })
-                    )
-                    .WithFunction(new CountFunctionBuilder())
+                new ConstantExpressionBuilder(new[] { 10 }).WithFunction(new CountFunctionBuilder())
             )
             .WithCompositeFunction(new PlusCompositeFunctionBuilder())
             .Build();
