@@ -17,7 +17,6 @@ public static class ServiceCollectionExtensions
                 if (!x.Any(y => y.ImplementationType == typeof(CompositeExpressionEvaluatorProvider)))
                 {
                     x.AddSingleton<IExpressionEvaluatorProvider, CompositeExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionConditionResultExpressionProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ContextExpressionEvaluatorProvider>();
