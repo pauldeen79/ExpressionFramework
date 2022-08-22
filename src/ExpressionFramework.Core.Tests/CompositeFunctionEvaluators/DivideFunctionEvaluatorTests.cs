@@ -157,7 +157,7 @@ public class DivideCompositeFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
 
         // Act
-        var actual = sut.TryEvaluate(new EmptyCompositeFunction(), 10, null, expressionEvaluatorMock.Object, expression, out var result);
+        var actual = sut.TryEvaluate(new MultiplyCompositeFunction(), 10, null, expressionEvaluatorMock.Object, expression, out var result);
 
         // Assert
         actual.Should().BeFalse();

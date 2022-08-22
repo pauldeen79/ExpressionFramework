@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Core.CompositeFunctions;
 
 [ExcludeFromCodeCoverage]
-public class EmptyCompositeFunctionBuilder : ICompositeFunctionBuilder
+internal class EmptyCompositeFunctionBuilder : ICompositeFunctionBuilder
 {
     public ICompositeFunction Build()
         => new EmptyCompositeFunction();
