@@ -27,9 +27,8 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IExpressionEvaluatorProvider, ItemExpressionEvaluatorProvider>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
-                if (!x.Any(y => y.ImplementationType == typeof(ConditionalExpressionExpressionResultFunctionEvaluator)))
+                if (!x.Any(y => y.ImplementationType == typeof(ContainsFunctionEvaluator)))
                 {
-                    x.AddSingleton<IFunctionEvaluator, ConditionalExpressionExpressionResultFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, ContainsFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, CountFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, DayFunctionEvaluator>();
