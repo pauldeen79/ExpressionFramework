@@ -15,7 +15,7 @@ public class ConditionalExpressionEvaluatorProvider : IExpressionEvaluatorProvid
             return false;
         }
 
-        if (_conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions)) //TODO: Review if we need item or context here...
+        if (_conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions))
         {
             result = evaluator.Evaluate(item, context, conditionalExpression.ResultExpression);
         }
