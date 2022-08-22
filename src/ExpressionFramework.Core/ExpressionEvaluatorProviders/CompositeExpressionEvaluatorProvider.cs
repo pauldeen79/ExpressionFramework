@@ -65,6 +65,11 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                 found = true;
                 result = evalResult.Result;
                 shouldContinue = evalResult.ShouldContinue;
+                if (!string.IsNullOrEmpty(evalResult.ErrorMessage))
+                {
+                    // Something went wrong in the composite function evaluator
+                    result = evalResult.ErrorMessage;
+                }
                 break;
             }
         }
@@ -89,6 +94,11 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                 found = true;
                 result = evalResult.Result;
                 shouldContinue = evalResult.ShouldContinue;
+                if (!string.IsNullOrEmpty(evalResult.ErrorMessage))
+                {
+                    // Something went wrong in the composite function evaluator
+                    result = evalResult.ErrorMessage;
+                }
                 break;
             }
         }
@@ -105,9 +115,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                                                          object? context,
                                                          IExpressionEvaluator expressionEvaluator,
                                                          IConditionEvaluator conditionEvaluator)
-    {
-        return compositeExpression.Expressions
+        => compositeExpression.Expressions
             .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression),
                                                              compositeExpression.ExpressionConditions));
-    }
 }
