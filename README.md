@@ -34,3 +34,4 @@ TODO:
 - Add composite functions: Min, Max, First, Last, ElementAt
 - Check if we can refactor functions to inner expressions. e.g. new FieldExpressionBuilder("FieldName").WithInnerExpression(new ToUpperExpressionBuilder());
 - Think if we want to be able to preprocess expressions, like sorting... the filtering is now hard-coded into the CompositeExpressionEvaluatorProvider, which might be wrong. Can't alter it from the expression right now.
+- Refactor TryEvaluate on IExpressionEvaluatorProvider (and IFunctionEvaluator?) from out parameters to result type, like we did on ICompositeFunctionEvaluator

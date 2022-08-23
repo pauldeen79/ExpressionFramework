@@ -5,7 +5,7 @@ internal class EmptyCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
     public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
                                                          bool isFirstItem,
-                                                         object? previousValue,
+                                                         object? value,
                                                          object? context,
                                                          IExpressionEvaluator evaluator,
                                                          IExpression expression)

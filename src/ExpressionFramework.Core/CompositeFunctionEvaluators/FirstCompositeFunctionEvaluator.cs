@@ -4,7 +4,7 @@ public record FirstCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 {
     public ICompositeFunctionEvaluatorResult TryEvaluate(ICompositeFunction function,
                                                          bool isFirstItem,
-                                                         object? previousValue,
+                                                         object? value,
                                                          object? context,
                                                          IExpressionEvaluator evaluator,
                                                          IExpression expression)
@@ -18,7 +18,7 @@ public record FirstCompositeFunctionEvaluator : ICompositeFunctionEvaluator
 
         if (isFirstItem)
         {
-            return resultBuilder.WithResult(previousValue).Stop().Build();
+            return resultBuilder.WithResult(value).Stop().Build();
         }
 
         return CompositeFunctionEvaluatorResultBuilder.Error("Not supposed to come here, as we said to stop!").Build();
