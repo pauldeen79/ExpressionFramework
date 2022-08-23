@@ -34,9 +34,7 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
         object tempResult = 1 + 2;
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -60,9 +58,7 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.NotSupported.Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -83,9 +79,7 @@ public class CompositeExpressionEvaluatorProviderTests
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>());
@@ -110,9 +104,7 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
         object tempResult = 1;
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).WithShouldContinue(false).Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -137,7 +129,6 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
         object tempResult = 1;
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(),
                                                It.IsAny<bool>(),
                                                It.IsAny<object?>(),
@@ -150,7 +141,6 @@ public class CompositeExpressionEvaluatorProviderTests
                 .WithResult(tempResult)
                 .WithShouldContinue(isFirstItem)
                 .Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -174,9 +164,7 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Error("Kaboom").Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -200,7 +188,6 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(),
                                        It.IsAny<bool>(),
                                        It.IsAny<object?>(),
@@ -211,7 +198,6 @@ public class CompositeExpressionEvaluatorProviderTests
     ((function, isFirstItem, value, context, evaluator, expression) =>
         isFirstItem ? CompositeFunctionEvaluatorResultBuilder.Supported.Build()
                     : CompositeFunctionEvaluatorResultBuilder.Error("Kaboom").Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
@@ -236,9 +222,7 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((context , _)=> Convert.ToInt32(context) == 1);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
         object tempResult = 1;
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).Build());
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
         expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
