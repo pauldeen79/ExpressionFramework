@@ -28,10 +28,11 @@ var result = conditionEvaluator.Evaluate(null, new[] { condition });
 
 See unit tests for more examples.
 
-TODO:
+//TODO:
 - Add functions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce
 - For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
 - Add composite functions: Min, Max, First, Last, ElementAt
 - Check if we can refactor functions to inner expressions. e.g. new FieldExpressionBuilder("FieldName").WithInnerExpression(new ToUpperExpressionBuilder());
 - Think if we want to be able to preprocess expressions, like sorting... the filtering is now hard-coded into the CompositeExpressionEvaluatorProvider, which might be wrong. Can't alter it from the expression right now.
 - Refactor TryEvaluate on IExpressionEvaluatorProvider (and IFunctionEvaluator?) from out parameters to result type, like we did on ICompositeFunctionEvaluator
+- Add SwitchExpression, which makes one of the scenarios in the integration tests a little easier.
