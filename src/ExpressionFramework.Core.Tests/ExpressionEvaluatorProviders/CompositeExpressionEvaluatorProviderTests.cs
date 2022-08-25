@@ -81,7 +81,7 @@ public class CompositeExpressionEvaluatorProviderTests
         // Assert
         actual.IsSuccessful().Should().BeFalse();
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Unknown composite function: [Mock<ICompositeFunction:1>.Object]");
+        actual.ErrorMessage.Should().StartWith("Unknown composite function: [Mock<ICompositeFunction").And.EndWith(">.Object]");
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class CompositeExpressionEvaluatorProviderTests
         // Assert
         actual.IsSuccessful().Should().BeFalse();
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Unknown composite function: [Mock<ICompositeFunction:1>.Object]");
+        actual.ErrorMessage.Should().StartWith("Unknown composite function: [Mock<ICompositeFunction").And.EndWith(">.Object]");
     }
 
     [Fact]
