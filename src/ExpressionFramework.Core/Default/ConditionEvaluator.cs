@@ -30,8 +30,8 @@ public class ConditionEvaluator : IConditionEvaluator
 
     private bool IsItemValid(object? item, ICondition condition)
     {
-        var leftValue = _evaluator.Evaluate(item, item, condition.LeftExpression);
-        var rightValue = _evaluator.Evaluate(item, item, condition.RightExpression);
+        var leftValue = _evaluator.Evaluate(item, item, condition.LeftExpression).Value;
+        var rightValue = _evaluator.Evaluate(item, item, condition.RightExpression).Value;
 
         if (Operators.Items.TryGetValue(condition.Operator, out var predicate))
         {

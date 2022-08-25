@@ -2,15 +2,13 @@
 
 public class ItemExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IItemExpression)
         {
-            result = item;
-            return true;
+            return Result<object?>.Success(item);
         }
 
-        result = default;
-        return false;
+        return Result<object?>.NotSupported();
     }
 }

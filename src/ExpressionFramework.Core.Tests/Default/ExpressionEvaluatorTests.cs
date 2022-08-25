@@ -13,10 +13,11 @@ public class ExpressionEvaluatorTests
         var expression = new Mock<IExpression>().Object;
 
         // Act
-        sut.Invoking(x => x.Evaluate(null, null, expression))
-           .Should().ThrowExactly<ArgumentOutOfRangeException>()
-           .WithParameterName("expression")
-           .And.Message.Should().StartWith("Unsupported expression: [IExpressionProxy]");
+        var result = sut.Evaluate(null, null, expression);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+        result.ErrorMessage.Should().Be("Unsupported expression: [IExpressionProxy]");
     }
 
     [Fact]
@@ -31,10 +32,11 @@ public class ExpressionEvaluatorTests
         _expressionEvaluatorProviderMock.Delegate = new ((_, _, _, _) => new Tuple<bool, object?>(true, null));
 
         // Act
-        sut.Invoking(x => x.Evaluate(null, null, expression))
-           .Should().ThrowExactly<ArgumentOutOfRangeException>()
-           .WithParameterName("expression")
-           .And.Message.Should().StartWith("Unsupported function: [IExpressionFunctionProxy]");
+        var result = sut.Evaluate(null, null, expression);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+        result.ErrorMessage.Should().Be("Unsupported function: [IExpressionFunctionProxy]");
     }
 
     [Fact]
@@ -46,10 +48,11 @@ public class ExpressionEvaluatorTests
         _expressionEvaluatorProviderMock.Delegate = new((_, _, _, _) => new Tuple<bool, object?>(true, 12345));
 
         // Act
-        var actual = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, null, expression);
 
         // Assert
-        actual.Should().Be(12345);
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(12345);
     }
 
     [Fact]
@@ -65,10 +68,12 @@ public class ExpressionEvaluatorTests
         _functionEvaluatorMock.Delegate = new((_, value, _, _, _) => new Tuple<bool, object?>(true, Convert.ToInt32(value) * 2));
 
         // Act
-        var actual = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, null, expression);
 
         // Assert
-        actual.Should().Be(12345 * 2);
+
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(12345 * 2);
     }
 
     private ExpressionEvaluator CreateSut()

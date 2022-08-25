@@ -2,15 +2,13 @@
 
 public class ConstantExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IConstantExpression constantExpression)
         {
-            result = constantExpression.Value;
-            return true;
+            return Result<object?>.Success(constantExpression.Value);
         }
 
-        result = default;
-        return false;
+        return Result<object?>.NotSupported();
     }
 }

@@ -20,7 +20,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
@@ -33,7 +33,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
@@ -47,7 +47,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
-        actual.Should().BeNull();
+        actual.Value.Should().BeNull();
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        actual.Should().Be(5 + (calculationModel.NumberOfHectares / 10));
+        actual.Value.Should().Be(5 + (calculationModel.NumberOfHectares / 10));
     }
 
     [Fact]
@@ -110,7 +110,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        actual.Should().Be(5 + new[] { 10 }.Length);
+        actual.Value.Should().Be(5 + new[] { 10 }.Length);
     }
 
     [Fact]
@@ -136,7 +136,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
-        actual.Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
+        actual.Value.Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
     }
 
     [Fact]
@@ -203,7 +203,7 @@ public sealed class IntegrationTests : IDisposable
             new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
             new(() => true, 40),
         };
-        actual.Should().Be(expected.First(x => x.Condition.Invoke()).Result); // 30
+        actual.Value.Should().Be(expected.First(x => x.Condition.Invoke()).Result); // 30
     }
 
     [Fact]

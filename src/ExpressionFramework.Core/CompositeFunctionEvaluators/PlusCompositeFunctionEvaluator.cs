@@ -21,7 +21,13 @@ public record PlusCompositeFunctionEvaluator : ICompositeFunctionEvaluator
             return resultBuilder.WithResult(value).Build();
         }
 
-        var currentValue = evaluator.Evaluate(context, context, expression);
+        var result = evaluator.Evaluate(context, context, expression);
+        if (!result.IsSuccessful())
+        {
+            return CompositeFunctionEvaluatorResultBuilder.Error(result.ErrorMessage.WhenNullOrEmpty("Something went wrong")).Build();
+        }
+
+        var currentValue = result.GetValueOrThrow();
         if (currentValue is byte b)
         {
             return resultBuilder.WithResult(Convert.ToByte(value) + b).Build();

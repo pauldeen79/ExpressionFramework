@@ -2,8 +2,8 @@
 
 public class ConditionEvaluatorTests
 {
-    private readonly Mock<IExpressionEvaluator> _expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-    private ConditionEvaluator CreateSut() => new ConditionEvaluator(_expressionEvaluatorMock.Object);
+    private readonly Mock<IExpressionEvaluator> _expressionEvaluatorMock = new();
+    private ConditionEvaluator CreateSut() => new(_expressionEvaluatorMock.Object);
 
     [Fact]
     public void IsItemValid_Throws_On_Unsupported_Operator()
@@ -16,6 +16,9 @@ public class ConditionEvaluatorTests
                      .Returns(new EmptyExpressionBuilder().Build());
         conditionMock.SetupGet(x => x.RightExpression)
                      .Returns(new EmptyExpressionBuilder().Build());
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression)
+                                    => Result<object?>.Success(null));
 
         // Act
         CreateSut().Invoking(x => x.Evaluate(null, new[] { conditionMock.Object }))
@@ -130,14 +133,14 @@ public class ConditionEvaluatorTests
                                 {
                                     if (expression == leftExpression)
                                     {
-                                        return leftExpression.Value;
+                                        return Result<object?>.Success(leftExpression.Value);
                                     }
                                     if (expression == rightExpression)
                                     {
-                                        return rightExpression.Value;
+                                        return Result<object?>.Success(rightExpression.Value);
                                     }
 
-                                    return null;
+                                    return Result<object?>.NotSupported();
                                 });
 
         // Act
@@ -168,14 +171,14 @@ public class ConditionEvaluatorTests
                                 {
                                     if (expression == leftExpression)
                                     {
-                                        return leftExpression.Value;
+                                        return Result<object?>.Success(leftExpression.Value);
                                     }
                                     if (expression == rightExpression)
                                     {
-                                        return rightExpression.Value;
+                                        return Result<object?>.Success(rightExpression.Value);
                                     }
 
-                                    return null;
+                                    return Result<object?>.NotSupported();
                                 });
 
         // Act
@@ -206,14 +209,14 @@ public class ConditionEvaluatorTests
                                 {
                                     if (expression == leftExpression)
                                     {
-                                        return leftExpression.Value;
+                                        return Result<object?>.Success(leftExpression.Value);
                                     }
                                     if (expression == rightExpression)
                                     {
-                                        return rightExpression.Value;
+                                        return Result<object?>.Success(rightExpression.Value);
                                     }
 
-                                    return null;
+                                    return Result<object?>.NotSupported();
                                 });
 
         // Act
@@ -244,14 +247,14 @@ public class ConditionEvaluatorTests
                                 {
                                     if (expression == leftExpression)
                                     {
-                                        return leftExpression.Value;
+                                        return Result<object?>.Success(leftExpression.Value);
                                     }
                                     if (expression == rightExpression)
                                     {
-                                        return rightExpression.Value;
+                                        return Result<object?>.Success(rightExpression.Value);
                                     }
 
-                                    return null;
+                                    return Result<object?>.NotSupported();
                                 });
 
         // Act

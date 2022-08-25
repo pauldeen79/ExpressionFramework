@@ -1,13 +1,9 @@
-﻿using System.Linq.Expressions;
-using System.Runtime.Intrinsics.X86;
-using Newtonsoft.Json.Linq;
-
-namespace ExpressionFramework.Core.Tests.ExpressionEvaluatorProviders;
+﻿namespace ExpressionFramework.Core.Tests.ExpressionEvaluatorProviders;
 
 public class CompositeExpressionEvaluatorProviderTests
 {
     [Fact]
-    public void TryEvaluate_Returns_False_When_Expression_Is_Not_A_CompositeExpression()
+    public void Evaluate_Returns_NotSupported_When_Expression_Is_Not_A_CompositeExpression()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -17,40 +13,79 @@ public class CompositeExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeFalse();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.NotSupported);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Known()
+    public void Evaluate_Returns_Success_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Known()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
         object tempResult = 1 + 2;
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo(tempResult);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().BeEquivalentTo(tempResult);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Unknown()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Unknown_On_First_Item()
+    {
+        // Arrange
+        var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
+        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
+        conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(true);
+        var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
+        evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>()))
+                     .Returns(CompositeFunctionEvaluatorResultBuilder.NotSupported.Build());
+        var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
+        var expressionMock = new Mock<ICompositeExpression>();
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
+        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
+
+        // Act
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+
+        // Assert
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Unknown composite function: [Mock<ICompositeFunction:1>.Object]");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Unknown_On_Subsequent_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -58,23 +93,45 @@ public class CompositeExpressionEvaluatorProviderTests
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
         var evaluatorMock = new Mock<ICompositeFunctionEvaluator>();
-        evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.NotSupported.Build());
+        object tempResult = 1;
+        evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(),
+                                               It.IsAny<bool>(),
+                                               It.IsAny<object?>(),
+                                               It.IsAny<object?>(),
+                                               It.IsAny<IExpressionEvaluator>(),
+                                               It.IsAny<IExpression>()))
+            .Returns<ICompositeFunction, bool, object?, object?, IExpressionEvaluator, IExpression>
+            ((function, isFirstItem, value, context, evaluator, expression)
+            => isFirstItem
+                ? CompositeFunctionEvaluatorResultBuilder.Supported
+                    .WithResult(tempResult)
+                    .WithShouldContinue(isFirstItem)
+                    .Build()
+                : CompositeFunctionEvaluatorResultBuilder.NotSupported.Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Unknown composite function: [Mock<ICompositeFunction:1>.Object]");
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Known_And_No_Expressions_Are_Provided()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_A_CompositeExpression_And_CompositeFunction_Is_Known_And_No_Expressions_Are_Provided()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -82,20 +139,28 @@ public class CompositeExpressionEvaluatorProviderTests
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>());
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>());
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("No expressions found");
     }
 
     [Fact]
-    public void TryEvaluate_Should_Not_Continue_When_CompositeFunction_Says_To_Stop_In_First_Item()
+    public void Evaluate_Should_Not_Continue_When_CompositeFunction_Says_To_Stop_In_First_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -107,20 +172,27 @@ public class CompositeExpressionEvaluatorProviderTests
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).WithShouldContinue(false).Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo(tempResult);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().BeEquivalentTo(tempResult);
     }
 
     [Fact]
-    public void TryEvaluate_Should_Not_Continue_When_CompositeFunction_Says_To_Stop_In_Subsequent_Item()
+    public void Evaluate_Should_Not_Continue_When_CompositeFunction_Says_To_Stop_In_Subsequent_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -143,20 +215,27 @@ public class CompositeExpressionEvaluatorProviderTests
                 .Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo(tempResult);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().BeEquivalentTo(tempResult);
     }
 
     [Fact]
-    public void TryEvaluate_Should_Return_ErrorMessage_When_CompositeFunction_Gives_Error_In_First_Item()
+    public void Evaluate_Should_Return_ErrorMessage_When_CompositeFunction_Gives_Error_In_First_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -167,20 +246,28 @@ public class CompositeExpressionEvaluatorProviderTests
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Error("Kaboom").Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo("Kaboom");
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().BeEquivalentTo("Kaboom");
     }
 
     [Fact]
-    public void TryEvaluate_Should_Return_ErrorMessage_When_CompositeFunction_Gives_Error_In_Subsequent_Item()
+    public void Evaluate_Should_Return_ErrorMessage_When_CompositeFunction_Gives_Error_In_Subsequent_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -200,16 +287,24 @@ public class CompositeExpressionEvaluatorProviderTests
                     : CompositeFunctionEvaluatorResultBuilder.Error("Kaboom").Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo("Kaboom");
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().BeEquivalentTo("Kaboom");
     }
 
     [Fact]
@@ -225,16 +320,22 @@ public class CompositeExpressionEvaluatorProviderTests
         evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<ICompositeFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>())).Returns(CompositeFunctionEvaluatorResultBuilder.Supported.WithResult(tempResult).Build());
         var sut = new CompositeExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<ICompositeExpression>();
-        expressionMock.SetupGet(x => x.Expressions).Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
-        expressionMock.SetupGet(x => x.ExpressionConditions).Returns(new ReadOnlyValueCollection<ICondition>(new[] { new ConditionBuilder().WithLeftExpression(new FieldExpressionBuilder("SourceValue")).WithOperator(Operator.Equal).WithRightExpression(new ConstantExpressionBuilder(1)).Build() } ));
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>(new[] { new ConditionBuilder().WithLeftExpression(new FieldExpressionBuilder("SourceValue")).WithOperator(Operator.Equal).WithRightExpression(new ConstantExpressionBuilder(1)).Build() } ));
+        expressionMock.SetupGet(x => x.CompositeFunction)
+                      .Returns(new Mock<ICompositeFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>())).Returns<object?, object?, IExpression>((item, context, expression) => { return ((IConstantExpression)expression).Value; });
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeEquivalentTo(tempResult);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().BeEquivalentTo(tempResult);
     }
 }

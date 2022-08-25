@@ -3,7 +3,7 @@
 public class ItemExpressionEvaluatorProviderTests
 {
     [Fact]
-    public void TryEvaluate_Returns_False_When_Expression_Is_Not_A_ItemExpression()
+    public void Evaluate_Returns_False_When_Expression_Is_Not_A_ItemExpression()
     {
         // Arrange
         var sut = new ItemExpressionEvaluatorProvider();
@@ -11,15 +11,15 @@ public class ItemExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeFalse();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.NotSupported);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_ItemExpression()
+    public void Evaluate_Returns_True_When_Expression_Is_A_ItemExpression()
     {
         // Arrange
         var sut = new ItemExpressionEvaluatorProvider();
@@ -27,10 +27,10 @@ public class ItemExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(12345, null, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(12345, null, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().Be(12345);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().Be(12345);
     }
 }

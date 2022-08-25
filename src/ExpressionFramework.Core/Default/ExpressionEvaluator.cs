@@ -11,12 +11,17 @@ public class ExpressionEvaluator : IExpressionEvaluator
         _functionEvaluators = functionEvaluators;
     }
 
-    public object? Evaluate(object? item, object? context, IExpression expression)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression)
     {
         var innerExpression = expression.InnerExpression;
         while (innerExpression != null)
         {
-            item = Evaluate(item, context, innerExpression);
+            var evalResult = Evaluate(item, context, innerExpression);
+            if (!evalResult.IsSuccessful())
+            {
+                return evalResult;
+            }
+            item = evalResult.Value;
             innerExpression = innerExpression.InnerExpression;
         }
 
@@ -24,17 +29,23 @@ public class ExpressionEvaluator : IExpressionEvaluator
         var handled = false;
         foreach (var evaluatorProvider in _expressionEvaluatorProviders)
         {
-            if (evaluatorProvider.TryEvaluate(item, context, expression, this, out var evaluatorResult))
+            var result = evaluatorProvider.Evaluate(item, context, expression, this);
+            if (result.IsSuccessful())
             {
-                expressionResult = evaluatorResult;
+                expressionResult = result.Value;
                 handled = true;
                 break;
+            }
+            else if (result.Status != ResultStatus.NotSupported)
+            {
+                // something went wrong... return the result
+                return result;
             }
         }
 
         if (!handled)
         {
-            throw new ArgumentOutOfRangeException(nameof(expression), $"Unsupported expression: [{expression.GetType().Name}]");
+            return Result<object?>.NotSupported($"Unsupported expression: [{expression.GetType().Name}]");
         }
 
         if (expression.Function != null)
@@ -48,12 +59,12 @@ public class ExpressionEvaluator : IExpressionEvaluator
                                           this,
                                           out var functionResult))
                 {
-                    return functionResult;
+                    return Result<object?>.Success(functionResult);
                 }
             }
-            throw new ArgumentOutOfRangeException(nameof(expression), $"Unsupported function: [{expression.Function.GetType().Name}]");
+            return Result<object?>.NotSupported($"Unsupported function: [{expression.Function.GetType().Name}]");
         }
 
-        return expressionResult;
+        return Result<object?>.Success(expressionResult);
     }
 }

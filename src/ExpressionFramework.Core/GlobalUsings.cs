@@ -5,6 +5,7 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
 global using System.Text;
 global using CrossCutting.Common.Extensions;
+global using CrossCutting.Common.Results;
 global using ExpressionFramework.Abstractions;
 global using ExpressionFramework.Abstractions.DomainModel;
 global using ExpressionFramework.Abstractions.DomainModel.Builders;

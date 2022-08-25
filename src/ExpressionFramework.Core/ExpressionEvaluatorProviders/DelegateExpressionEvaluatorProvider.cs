@@ -2,15 +2,13 @@
 
 public class DelegateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IDelegateExpression delegateExpression)
         {
-            result = delegateExpression.ValueDelegate.Invoke(item, expression, evaluator);
-            return true;
+            return Result<object?>.Success(delegateExpression.ValueDelegate.Invoke(item, expression, evaluator));
         }
 
-        result = default;
-        return false;
+        return Result<object?>.NotSupported();
     }
 }

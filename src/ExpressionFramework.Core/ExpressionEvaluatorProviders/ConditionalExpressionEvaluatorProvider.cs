@@ -7,22 +7,20 @@ public class ConditionalExpressionEvaluatorProvider : IExpressionEvaluatorProvid
     public ConditionalExpressionEvaluatorProvider(IConditionEvaluatorProvider conditionEvaluatorProvider)
         => _conditionEvaluatorProvider = conditionEvaluatorProvider;
 
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IConditionalExpression conditionalExpression)
         {
-            result = default;
-            return false;
+            return Result<object?>.NotSupported();
         }
 
         if (_conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions))
         {
-            result = evaluator.Evaluate(item, context, conditionalExpression.ResultExpression);
+            return evaluator.Evaluate(item, context, conditionalExpression.ResultExpression);
         }
         else
         {
-            result = evaluator.Evaluate(item, context, conditionalExpression.DefaultExpression);
+            return evaluator.Evaluate(item, context, conditionalExpression.DefaultExpression);
         }
-        return true;
     }
 }

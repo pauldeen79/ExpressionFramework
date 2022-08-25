@@ -13,16 +13,15 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         _evaluators = evaluators;
     }
 
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
-        result = default;
-
         if (expression is not ICompositeExpression compositeExpression)
         {
-            return false;
+            return Result<object?>.NotSupported();
         }
 
         bool first = true;
+        Result<object?>? result = null;
         var expressions = GetValidExpressions(compositeExpression, item, context, evaluator, _conditionEvaluatorProvider.Get(evaluator));
         foreach (var innerExpression in expressions)
         {
@@ -40,7 +39,7 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
             }
             else
             {
-                ProcessSubSequentExpression(item, evaluator, ref result, compositeExpression, innerExpression, ref shouldContinue);
+                result = ProcessSubSequentExpression(item, evaluator, result!, compositeExpression, innerExpression, ref shouldContinue);
 
                 if (!shouldContinue)
                 {
@@ -49,65 +48,59 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
             }
         }
 
-        return true;
+        return result ?? Result<object?>.Invalid("No expressions found");
     }
 
-    private object? ProcessFirstExpression(object? item, object? context, IExpressionEvaluator evaluator, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
+    private Result<object?> ProcessFirstExpression(object? item, object? context, IExpressionEvaluator evaluator, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
     {
-        var result = evaluator.Evaluate(item, context, innerExpression);
+        var firstResult = evaluator.Evaluate(item, context, innerExpression);
+        if (!firstResult.IsSuccessful())
+        {
+            return firstResult;
+        }
+        var result = firstResult.Value;
 
-        var found = false;
         foreach (var eval in _evaluators)
         {
             var evalResult = eval.TryEvaluate(compositeExpression.CompositeFunction, true, result, item, evaluator, innerExpression);
             if (evalResult.IsSupported)
             {
-                found = true;
-                result = evalResult.Result;
                 shouldContinue = evalResult.ShouldContinue;
                 if (!string.IsNullOrEmpty(evalResult.ErrorMessage))
                 {
                     // Something went wrong in the composite function evaluator
-                    result = evalResult.ErrorMessage;
+                    return Result<object?>.Error(evalResult.ErrorMessage!);
                 }
-                break;
+                return Result<object?>.Success(evalResult.Result);
             }
         }
 
-        if (!found)
-        {
-            // Unknown composite function evaluator
-            result = default;
-        }
-
-        return result;
+        // Unknown composite function evaluator
+        shouldContinue = false;
+        return Result<object?>.Invalid($"Unknown composite function: [{compositeExpression.CompositeFunction}]");
     }
 
-    private void ProcessSubSequentExpression(object? item, IExpressionEvaluator evaluator, ref object? result, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
+    private Result<object?> ProcessSubSequentExpression(object? item, IExpressionEvaluator evaluator, Result<object?> previousResult, ICompositeExpression compositeExpression, IExpression innerExpression, ref bool shouldContinue)
     {
-        var found = false;
         foreach (var eval in _evaluators)
         {
-            var evalResult = eval.TryEvaluate(compositeExpression.CompositeFunction, false, result, item, evaluator, innerExpression);
+            var evalResult = eval.TryEvaluate(compositeExpression.CompositeFunction, false, previousResult.Value, item, evaluator, innerExpression);
             if (evalResult.IsSupported)
             {
-                found = true;
-                result = evalResult.Result;
                 shouldContinue = evalResult.ShouldContinue;
                 if (!string.IsNullOrEmpty(evalResult.ErrorMessage))
                 {
                     // Something went wrong in the composite function evaluator
-                    result = evalResult.ErrorMessage;
+                    shouldContinue = false;
+                    return Result<object?>.Error(evalResult.ErrorMessage!);
                 }
-                break;
+                return Result<object?>.Success(evalResult.Result);
             }
         }
 
-        if (!found)
-        {
-            // Unknown composite function evaluator
-            result = default;
-        }
+        // Unknown composite function evaluator
+        shouldContinue = false;
+        return Result<object?>.Invalid($"Unknown composite function: [{compositeExpression.CompositeFunction}]");
     }
 
     private IEnumerable<IExpression> GetValidExpressions(ICompositeExpression compositeExpression,
@@ -116,6 +109,6 @@ public class CompositeExpressionEvaluatorProvider : IExpressionEvaluatorProvider
                                                          IExpressionEvaluator expressionEvaluator,
                                                          IConditionEvaluator conditionEvaluator)
         => compositeExpression.Expressions
-            .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression),
+            .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression).Value,
                                                              compositeExpression.ExpressionConditions));
 }

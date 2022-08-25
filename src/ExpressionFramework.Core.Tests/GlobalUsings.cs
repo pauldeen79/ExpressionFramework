@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.Linq;
 global using CrossCutting.Common;
+global using CrossCutting.Common.Results;
 global using ExpressionFramework.Abstractions;
 global using ExpressionFramework.Abstractions.DomainModel;
 global using ExpressionFramework.Abstractions.DomainModel.Builders;

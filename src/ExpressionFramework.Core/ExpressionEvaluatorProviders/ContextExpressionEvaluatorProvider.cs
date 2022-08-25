@@ -2,15 +2,13 @@
 
 public class ContextExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 {
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IContextExpression)
         {
-            result = context;
-            return true;
+            return Result<object?>.Success(context);
         }
 
-        result = default;
-        return false;
+        return Result<object?>.NotSupported();
     }
 }

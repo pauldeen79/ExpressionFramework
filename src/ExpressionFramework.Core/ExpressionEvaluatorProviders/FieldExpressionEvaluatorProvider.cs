@@ -6,15 +6,13 @@ public class FieldExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 
     public FieldExpressionEvaluatorProvider(IValueProvider valueProvider) => _valueProvider = valueProvider;
 
-    public bool TryEvaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator, out object? result)
+    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IFieldExpression fieldExpression)
         {
-            result = _valueProvider.GetValue(item, fieldExpression.FieldName);
-            return true;
+            return Result<object?>.Success(_valueProvider.GetValue(item, fieldExpression.FieldName));
         }
 
-        result = default;
-        return false;
+        return Result<object?>.NotSupported();
     }
 }

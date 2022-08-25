@@ -3,7 +3,7 @@
 public class DelegateExpressionEvaluatorProviderTests
 {
     [Fact]
-    public void TryEvaluate_Returns_False_When_Expression_Is_Not_A_DelegateExpression()
+    public void Evaluate_Returns_False_When_Expression_Is_Not_A_DelegateExpression()
     {
         // Arrange
         var sut = new DelegateExpressionEvaluatorProvider();
@@ -11,15 +11,15 @@ public class DelegateExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeFalse();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.NotSupported);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_DelegateExpression()
+    public void Evaluate_Returns_True_When_Expression_Is_A_DelegateExpression()
     {
         // Arrange
         var sut = new DelegateExpressionEvaluatorProvider();
@@ -28,10 +28,10 @@ public class DelegateExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().Be(12345);
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().Be(12345);
     }
 }

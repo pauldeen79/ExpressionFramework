@@ -3,7 +3,7 @@
 public class EmptyExpressionEvaluatorProviderTests
 {
     [Fact]
-    public void TryEvaluate_Returns_False_When_Expression_Is_Not_A_EmptyExpression()
+    public void Evaluate_Returns_False_When_Expression_Is_Not_A_EmptyExpression()
     {
         // Arrange
         var sut = new EmptyExpressionEvaluatorProvider();
@@ -11,15 +11,15 @@ public class EmptyExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeFalse();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.NotSupported);
     }
 
     [Fact]
-    public void TryEvaluate_Returns_True_When_Expression_Is_A_EmptyExpression()
+    public void Evaluate_Returns_True_When_Expression_Is_A_EmptyExpression()
     {
         // Arrange
         var sut = new EmptyExpressionEvaluatorProvider();
@@ -27,10 +27,10 @@ public class EmptyExpressionEvaluatorProviderTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object, out var result);
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
-        actual.Should().BeTrue();
-        result.Should().BeNull();
+        actual.IsSuccessful().Should().BeTrue();
+        actual.Value.Should().BeNull();
     }
 }

@@ -10,7 +10,7 @@ public class FirstCompositeFunctionTests
         const byte value = 2;
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.TryEvaluate(new FirstCompositeFunction(), true, 10, null, expressionEvaluatorMock.Object, expression);
@@ -29,7 +29,7 @@ public class FirstCompositeFunctionTests
         const string value = "2";
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.TryEvaluate(new FirstCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
@@ -49,7 +49,7 @@ public class FirstCompositeFunctionTests
         const int value = 2;
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(value);
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.TryEvaluate(new MultiplyCompositeFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
