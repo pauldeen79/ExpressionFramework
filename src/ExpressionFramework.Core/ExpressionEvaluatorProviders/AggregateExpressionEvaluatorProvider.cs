@@ -54,6 +54,7 @@ public class AggregateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         var firstResult = evaluator.Evaluate(item, context, innerExpression);
         if (!firstResult.IsSuccessful())
         {
+            shouldContinue = false;
             return firstResult;
         }
         var result = firstResult.Value;

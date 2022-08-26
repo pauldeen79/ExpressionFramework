@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Core.Tests.ExpressionEvaluatorProviders;
+﻿using ExpressionFramework.Core.DomainModel;
+
+namespace ExpressionFramework.Core.Tests.ExpressionEvaluatorProviders;
 
 public class AggregateExpressionEvaluatorProviderTests
 {
@@ -253,6 +255,39 @@ public class AggregateExpressionEvaluatorProviderTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
                                .Returns<object?, object?, IExpression>((item, context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
+
+        // Act
+        var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+
+        // Assert
+        actual.IsSuccessful().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().BeEquivalentTo("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Should_Return_ErrorMessage_When_ExpressionEvaluator_Gives_Error_In_First_Item()
+    {
+        // Arrange
+        var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
+        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
+        conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
+        evaluatorMock.Setup(x => x.TryEvaluate(It.IsAny<IAggregateFunction>(), It.IsAny<bool>(), It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpressionEvaluator>(), It.IsAny<IExpression>()))
+                     .Returns(Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder().Build()));
+        var sut = new AggregateExpressionEvaluatorProvider(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
+        var expressionMock = new Mock<IAggregateExpression>();
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>());
+        expressionMock.SetupGet(x => x.AggregateFunction)
+                      .Returns(new Mock<IAggregateFunction>().Object);
+        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Error("Kaboom"));
 
         // Act
         var actual = sut.Evaluate(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
