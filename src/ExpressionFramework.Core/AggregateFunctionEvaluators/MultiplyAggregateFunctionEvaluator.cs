@@ -2,13 +2,13 @@
 
 public class MultiplyAggregateFunctionEvaluator : AggregateFunctionEvaluatorBase<MultiplyAggregateFunction>
 {
-    protected override Result<IAggregateFunctionResultValue?> TryEvaluate(MultiplyAggregateFunction function,
-                                                                          bool isFirstItem,
-                                                                          object? value,
-                                                                          object? context,
-                                                                          IExpressionEvaluator evaluator,
-                                                                          IExpression expression,
-                                                                          Result<object?> result)
+    protected override Result<IAggregateFunctionResultValue?> Evaluate(MultiplyAggregateFunction function,
+                                                                       bool isFirstItem,
+                                                                       object? value,
+                                                                       object? context,
+                                                                       IExpressionEvaluator evaluator,
+                                                                       IExpression expression,
+                                                                       Result<object?> result)
     {
         var currentValue = result.Value;
         if (currentValue is byte b)

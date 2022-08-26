@@ -2,13 +2,13 @@
 
 public class PlusAggregateFunctionEvaluator : AggregateFunctionEvaluatorBase<PlusAggregateFunction>
 {
-    protected override Result<IAggregateFunctionResultValue?> TryEvaluate(PlusAggregateFunction function,
-                                                                          bool isFirstItem,
-                                                                          object? value,
-                                                                          object? context,
-                                                                          IExpressionEvaluator evaluator,
-                                                                          IExpression expression,
-                                                                          Result<object?> result)
+    protected override Result<IAggregateFunctionResultValue?> Evaluate(PlusAggregateFunction function,
+                                                                       bool isFirstItem,
+                                                                       object? value,
+                                                                       object? context,
+                                                                       IExpressionEvaluator evaluator,
+                                                                       IExpression expression,
+                                                                       Result<object?> result)
     {
         var currentValue = result.Value;
         if (currentValue is byte b)

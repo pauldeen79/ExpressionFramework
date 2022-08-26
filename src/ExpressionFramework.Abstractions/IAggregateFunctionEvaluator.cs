@@ -2,10 +2,10 @@
 
 public interface IAggregateFunctionEvaluator
 {
-    Result<IAggregateFunctionResultValue?> TryEvaluate(IAggregateFunction function,
-                                                  bool isFirstItem,
-                                                  object? value,
-                                                  object? context,
-                                                  IExpressionEvaluator evaluator,
-                                                  IExpression expression);
+    Result<IAggregateFunctionResultValue?> Evaluate(IAggregateFunction function,
+                                                    bool isFirstItem,
+                                                    object? value,
+                                                    object? context,
+                                                    IExpressionEvaluator evaluator,
+                                                    IExpression expression);
 }

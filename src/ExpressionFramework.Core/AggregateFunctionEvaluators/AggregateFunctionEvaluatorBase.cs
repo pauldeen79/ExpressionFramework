@@ -3,12 +3,12 @@
 public abstract class AggregateFunctionEvaluatorBase<TFunction> : IAggregateFunctionEvaluator
     where TFunction : IAggregateFunction
 {
-    public Result<IAggregateFunctionResultValue?> TryEvaluate(IAggregateFunction function,
-                                                              bool isFirstItem,
-                                                              object? value,
-                                                              object? context,
-                                                              IExpressionEvaluator evaluator,
-                                                              IExpression expression)
+    public Result<IAggregateFunctionResultValue?> Evaluate(IAggregateFunction function,
+                                                           bool isFirstItem,
+                                                           object? value,
+                                                           object? context,
+                                                           IExpressionEvaluator evaluator,
+                                                           IExpression expression)
     {
         if (function is not TFunction tfunction)
         {
@@ -26,14 +26,14 @@ public abstract class AggregateFunctionEvaluatorBase<TFunction> : IAggregateFunc
             return Result<IAggregateFunctionResultValue?>.FromExistingResult(result);
         }
 
-        return TryEvaluate(tfunction, isFirstItem, value, context, evaluator, expression, result);
+        return Evaluate(tfunction, isFirstItem, value, context, evaluator, expression, result);
     }
 
-    protected abstract Result<IAggregateFunctionResultValue?> TryEvaluate(TFunction function,
-                                                                          bool isFirstItem,
-                                                                          object? value,
-                                                                          object? context,
-                                                                          IExpressionEvaluator evaluator,
-                                                                          IExpression expression,
-                                                                          Result<object?> result);
+    protected abstract Result<IAggregateFunctionResultValue?> Evaluate(TFunction function,
+                                                                       bool isFirstItem,
+                                                                       object? value,
+                                                                       object? context,
+                                                                       IExpressionEvaluator evaluator,
+                                                                       IExpression expression,
+                                                                       Result<object?> result);
 }

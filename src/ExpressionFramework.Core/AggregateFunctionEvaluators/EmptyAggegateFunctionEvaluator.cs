@@ -3,12 +3,12 @@
 [ExcludeFromCodeCoverage]
 internal class EmptyAggegateFunctionEvaluator : IAggregateFunctionEvaluator
 {
-    public Result<IAggregateFunctionResultValue?> TryEvaluate(IAggregateFunction function,
-                                                              bool isFirstItem,
-                                                              object? value,
-                                                              object? context,
-                                                              IExpressionEvaluator evaluator,
-                                                              IExpression expression)
+    public Result<IAggregateFunctionResultValue?> Evaluate(IAggregateFunction function,
+                                                           bool isFirstItem,
+                                                           object? value,
+                                                           object? context,
+                                                           IExpressionEvaluator evaluator,
+                                                           IExpression expression)
     {
         if (function is not EmptyAggregateFunction)
         {

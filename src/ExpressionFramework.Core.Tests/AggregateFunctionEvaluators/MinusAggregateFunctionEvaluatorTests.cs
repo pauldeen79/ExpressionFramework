@@ -3,7 +3,7 @@
 public class MinusAggregateFunctionTests
 {
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Byte()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Byte()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -13,7 +13,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -22,7 +22,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Int16()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Int16()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -32,7 +32,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -41,7 +41,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Int32()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Int32()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -51,7 +51,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -60,7 +60,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Int64()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Int64()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -70,7 +70,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -79,7 +79,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Single()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Single()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -89,7 +89,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -98,7 +98,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Double()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Double()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -108,7 +108,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -117,7 +117,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Value_Is_Decimal()
+    public void Evaluate_Returns_Correct_Result_When_Value_Is_Decimal()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -127,7 +127,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -136,7 +136,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Null_Result_When_Value_Is_Not_Of_Correct_Type()
+    public void Evaluate_Returns_Null_Result_When_Value_Is_Not_Of_Correct_Type()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -146,7 +146,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -156,7 +156,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Null_Result_When_Value_Is_First()
+    public void Evaluate_Returns_Null_Result_When_Value_Is_First()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -164,7 +164,7 @@ public class MinusAggregateFunctionTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(new MinusAggregateFunction(), true, 2, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MinusAggregateFunction(), true, 2, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -174,7 +174,7 @@ public class MinusAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_NotSupported_When_Function_Is_Not_Of_Correct_Type()
+    public void Evaluate_Returns_NotSupported_When_Function_Is_Not_Of_Correct_Type()
     {
         // Arrange
         var sut = new MinusAggregateFunctionEvaluator();
@@ -184,7 +184,7 @@ public class MinusAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MultiplyAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MultiplyAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeFalse();

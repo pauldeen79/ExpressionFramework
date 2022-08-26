@@ -61,7 +61,7 @@ public class AggregateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
 
         foreach (var eval in _evaluators)
         {
-            var evalResult = eval.TryEvaluate(aggregateExpression.AggregateFunction, true, result, item, evaluator, innerExpression);
+            var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction, true, result, item, evaluator, innerExpression);
             if (evalResult.IsSupported())
             {
                 shouldContinue = evalResult.ShouldContinue();
@@ -77,7 +77,7 @@ public class AggregateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
     {
         foreach (var eval in _evaluators)
         {
-            var evalResult = eval.TryEvaluate(aggregateExpression.AggregateFunction, false, previousResult.Value, item, evaluator, innerExpression);
+            var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction, false, previousResult.Value, item, evaluator, innerExpression);
             if (evalResult.IsSupported())
             {
                 shouldContinue = evalResult.ShouldContinue();

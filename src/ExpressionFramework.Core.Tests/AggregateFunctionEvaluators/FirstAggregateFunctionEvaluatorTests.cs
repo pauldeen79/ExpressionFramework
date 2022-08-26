@@ -3,7 +3,7 @@
 public class FirstAggregateFunctionTests
 {
     [Fact]
-    public void TryEvaluate_Returns_Correct_Result_When_Item_Is_First()
+    public void Evaluate_Returns_Correct_Result_When_Item_Is_First()
     {
         // Arrange
         var sut = new FirstAggregateFunctionEvaluator();
@@ -13,7 +13,7 @@ public class FirstAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new FirstAggregateFunction(), true, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new FirstAggregateFunction(), true, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -22,7 +22,7 @@ public class FirstAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_Null_Result_When_Item_Is_Not_First()
+    public void Evaluate_Returns_Null_Result_When_Item_Is_Not_First()
     {
         // Arrange
         var sut = new FirstAggregateFunctionEvaluator();
@@ -32,7 +32,7 @@ public class FirstAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new FirstAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new FirstAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeTrue();
@@ -42,7 +42,7 @@ public class FirstAggregateFunctionTests
     }
 
     [Fact]
-    public void TryEvaluate_Returns_NotSupported_When_Function_Is_Not_Of_Correct_Type()
+    public void Evaluate_Returns_NotSupported_When_Function_Is_Not_Of_Correct_Type()
     {
         // Arrange
         var sut = new FirstAggregateFunctionEvaluator();
@@ -52,7 +52,7 @@ public class FirstAggregateFunctionTests
         expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
-        var actual = sut.TryEvaluate(new MultiplyAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+        var actual = sut.Evaluate(new MultiplyAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
 
         // Assert
         actual.IsSupported().Should().BeFalse();
