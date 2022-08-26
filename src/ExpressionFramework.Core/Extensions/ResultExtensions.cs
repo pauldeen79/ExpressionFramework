@@ -6,9 +6,7 @@ public static class ResultExtensions
         => instance.Status != ResultStatus.NotSupported;
 
     public static bool ShouldContinue(this Result<IAggregateFunctionResultValue?> instance)
-        => !instance.IsSupported()
-            ? true
-            : instance.Value?.Continue ?? false;
+        => !instance.IsSupported() || (instance.Value?.Continue ?? false);
 
     public static object? GetResultValue(this Result<IAggregateFunctionResultValue?> instance)
         => instance.Value?.Value;
