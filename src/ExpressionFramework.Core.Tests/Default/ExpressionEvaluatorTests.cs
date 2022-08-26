@@ -2,16 +2,20 @@
 
 public class ExpressionEvaluatorTests
 {
-    private readonly ExpressionEvaluatorProviderMock _expressionEvaluatorProviderMock = new();
+    private readonly Mock<IExpressionEvaluatorProvider> _expressionEvaluatorProviderMock = new();
     private readonly FunctionEvaluatorMock _functionEvaluatorMock = new();
 
     [Fact]
-    public void Evaluate_Throws_When_Expression_Is_Not_Supported()
+    public void Evaluate_Returns_Unsupported_When_Expression_Is_Not_Supported()
     {
         // Arrange
         var sut = CreateSut();
         var expression = new Mock<IExpression>().Object;
-
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.NotSupported());
         // Act
         var result = sut.Evaluate(null, null, expression);
 
@@ -21,7 +25,7 @@ public class ExpressionEvaluatorTests
     }
 
     [Fact]
-    public void Evaluate_Throws_When_Function_Is_Not_Supported()
+    public void Evaluate_Returns_Unsupported_When_Function_Is_Not_Supported()
     {
         // Arrange
         var sut = CreateSut();
@@ -29,7 +33,11 @@ public class ExpressionEvaluatorTests
         var expressionMock = new Mock<IExpression>();
         expressionMock.SetupGet(x => x.Function).Returns(functionMock.Object);
         var expression = expressionMock.Object;
-        _expressionEvaluatorProviderMock.Delegate = new ((_, _, _, _) => new Tuple<bool, object?>(true, null));
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.Success(default));
 
         // Act
         var result = sut.Evaluate(null, null, expression);
@@ -40,12 +48,55 @@ public class ExpressionEvaluatorTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_InnerExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var expressionMock = new Mock<IExpression>();
+        expressionMock.SetupGet(x => x.InnerExpression).Returns(new Mock<IExpression>().Object);
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.Error("Kaboom"));
+        // Act
+        var result = sut.Evaluate(null, null, expressionMock.Object);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_ExpressionProvider_Returns_Error()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var expression = new Mock<IExpression>().Object;
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.Error("Kaboom"));
+        // Act
+        var result = sut.Evaluate(null, null, expression);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Correct_Value_Without_Function()
     {
         // Arrange
         var sut = CreateSut();
         var expression = new Mock<IExpression>().Object;
-        _expressionEvaluatorProviderMock.Delegate = new((_, _, _, _) => new Tuple<bool, object?>(true, 12345));
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.Success(12345));
 
         // Act
         var result = sut.Evaluate(null, null, expression);
@@ -64,7 +115,11 @@ public class ExpressionEvaluatorTests
         var expressionMock = new Mock<IExpression>();
         expressionMock.SetupGet(x => x.Function).Returns(functionMock.Object);
         var expression = expressionMock.Object;
-        _expressionEvaluatorProviderMock.Delegate = new((_, _, _, _) => new Tuple<bool, object?>(true, 12345));
+        _expressionEvaluatorProviderMock.Setup(x => x.Evaluate(It.IsAny<object?>(),
+                                                               It.IsAny<object?>(),
+                                                               It.IsAny<IExpression>(),
+                                                               It.IsAny<IExpressionEvaluator>()))
+                                        .Returns(Result<object?>.Success(12345));
         _functionEvaluatorMock.Delegate = new((_, value, _, _, _) => new Tuple<bool, object?>(true, Convert.ToInt32(value) * 2));
 
         // Act
@@ -77,6 +132,6 @@ public class ExpressionEvaluatorTests
     }
 
     private ExpressionEvaluator CreateSut()
-        => new(new[] { _expressionEvaluatorProviderMock },
+        => new(new[] { _expressionEvaluatorProviderMock.Object },
                new[] { _functionEvaluatorMock });
 }
