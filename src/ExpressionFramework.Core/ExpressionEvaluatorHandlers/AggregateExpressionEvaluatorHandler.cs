@@ -1,11 +1,11 @@
-﻿namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
+﻿namespace ExpressionFramework.Core.ExpressionEvaluatorHandlers;
 
-public class AggregateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
+public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 {
     private readonly IConditionEvaluatorProvider _conditionEvaluatorProvider;
     private readonly IEnumerable<IAggregateFunctionEvaluator> _evaluators;
 
-    public AggregateExpressionEvaluatorProvider(
+    public AggregateExpressionEvaluatorHandler(
         IConditionEvaluatorProvider conditionEvaluatorProvider,
         IEnumerable<IAggregateFunctionEvaluator> evaluators)
     {
@@ -13,7 +13,7 @@ public class AggregateExpressionEvaluatorProvider : IExpressionEvaluatorProvider
         _evaluators = evaluators;
     }
 
-    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IAggregateExpression aggregateExpression)
         {

@@ -1,13 +1,13 @@
-﻿namespace ExpressionFramework.Core.ExpressionEvaluatorProviders;
+﻿namespace ExpressionFramework.Core.ExpressionEvaluatorHandlers;
 
-public class ConditionalExpressionEvaluatorProvider : IExpressionEvaluatorProvider
+public class ConditionalExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 {
     private readonly IConditionEvaluatorProvider _conditionEvaluatorProvider;
 
-    public ConditionalExpressionEvaluatorProvider(IConditionEvaluatorProvider conditionEvaluatorProvider)
+    public ConditionalExpressionEvaluatorHandler(IConditionEvaluatorProvider conditionEvaluatorProvider)
         => _conditionEvaluatorProvider = conditionEvaluatorProvider;
 
-    public Result<object?> Evaluate(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IConditionalExpression conditionalExpression)
         {

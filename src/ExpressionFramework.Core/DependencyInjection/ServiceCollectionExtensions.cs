@@ -14,16 +14,16 @@ public static class ServiceCollectionExtensions
                 x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluatorProvider, ConditionEvaluatorProvider>();
-                if (!x.Any(y => y.ImplementationType == typeof(AggregateExpressionEvaluatorProvider)))
+                if (!x.Any(y => y.ImplementationType == typeof(AggregateExpressionEvaluatorHandler)))
                 {
-                    x.AddSingleton<IExpressionEvaluatorProvider, AggregateExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, ContextExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, DelegateExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, EmptyExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, FieldExpressionEvaluatorProvider>();
-                    x.AddSingleton<IExpressionEvaluatorProvider, ItemExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, AggregateExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, ConditionalExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, ConstantExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, ContextExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, DelegateExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, EmptyExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, FieldExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, ItemExpressionEvaluatorHandler>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
                 if (!x.Any(y => y.ImplementationType == typeof(ContainsFunctionEvaluator)))

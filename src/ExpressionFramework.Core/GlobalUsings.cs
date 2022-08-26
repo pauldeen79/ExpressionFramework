@@ -16,7 +16,7 @@ global using ExpressionFramework.Core.AggregateFunctions;
 global using ExpressionFramework.Core.ConditionEvaluation;
 global using ExpressionFramework.Core.Default;
 global using ExpressionFramework.Core.DomainModel.Builders;
-global using ExpressionFramework.Core.ExpressionEvaluatorProviders;
+global using ExpressionFramework.Core.ExpressionEvaluatorHandlers;
 global using ExpressionFramework.Core.Extensions;
 global using ExpressionFramework.Core.FunctionEvaluators;
 global using ExpressionFramework.Core.Functions;

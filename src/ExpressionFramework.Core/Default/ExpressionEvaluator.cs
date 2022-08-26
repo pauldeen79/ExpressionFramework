@@ -2,13 +2,15 @@
 
 public class ExpressionEvaluator : IExpressionEvaluator
 {
-    private readonly IEnumerable<IExpressionEvaluatorProvider> _expressionEvaluatorProviders;
-    private readonly IEnumerable<IFunctionEvaluator> _functionEvaluators;
+    private readonly IEnumerable<IExpressionEvaluatorHandler> _handlers;
+    private readonly IEnumerable<IFunctionEvaluator> _evaluators;
 
-    public ExpressionEvaluator(IEnumerable<IExpressionEvaluatorProvider> expressionEvaluators, IEnumerable<IFunctionEvaluator> functionEvaluators)
+    public ExpressionEvaluator(
+        IEnumerable<IExpressionEvaluatorHandler> handlers,
+        IEnumerable<IFunctionEvaluator> evaluators)
     {
-        _expressionEvaluatorProviders = expressionEvaluators;
-        _functionEvaluators = functionEvaluators;
+        _handlers = handlers;
+        _evaluators = evaluators;
     }
 
     public Result<object?> Evaluate(object? item, object? context, IExpression expression)
@@ -27,9 +29,9 @@ public class ExpressionEvaluator : IExpressionEvaluator
 
         object? expressionResult = null;
         var handled = false;
-        foreach (var evaluatorProvider in _expressionEvaluatorProviders)
+        foreach (var handler in _handlers)
         {
-            var result = evaluatorProvider.Evaluate(item, context, expression, this);
+            var result = handler.Handle(item, context, expression, this);
             if (result.IsSuccessful())
             {
                 expressionResult = result.Value;
@@ -50,7 +52,7 @@ public class ExpressionEvaluator : IExpressionEvaluator
 
         if (expression.Function != null)
         {
-            foreach (var evaluator in _functionEvaluators)
+            foreach (var evaluator in _evaluators)
             {
                 if (evaluator.TryEvaluate(expression.Function,
                                           expressionResult,
