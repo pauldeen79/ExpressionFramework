@@ -22,13 +22,16 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 
         bool first = true;
         Result<object?>? result = null;
-        var expressions = GetValidExpressions(aggregateExpression, item, context, evaluator, _conditionEvaluatorProvider.Get(evaluator));
-        foreach (var innerExpression in expressions)
+        foreach (var exp in GetValidExpressions(aggregateExpression,
+                                                item,
+                                                context,
+                                                evaluator,
+                                                _conditionEvaluatorProvider.Get(evaluator)))
         {
             var shouldContinue = true;
             if (first)
             {
-                result = ProcessFirstExpression(item, context, evaluator, aggregateExpression, innerExpression, ref shouldContinue);
+                result = ProcessFirstExpression(item, context, evaluator, aggregateExpression, exp, ref shouldContinue);
                 if (!shouldContinue)
                 {
                     break;
@@ -38,7 +41,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             }
             else
             {
-                result = ProcessSubSequentExpression(item, evaluator, result!, aggregateExpression, innerExpression, ref shouldContinue);
+                result = ProcessSubSequentExpression(item, evaluator, result!, aggregateExpression, exp, ref shouldContinue);
                 if (!shouldContinue)
                 {
                     break;
@@ -49,7 +52,12 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         return result ?? Result<object?>.Invalid("No expressions found");
     }
 
-    private Result<object?> ProcessFirstExpression(object? item, object? context, IExpressionEvaluator evaluator, IAggregateExpression aggregateExpression, IExpression innerExpression, ref bool shouldContinue)
+    private Result<object?> ProcessFirstExpression(object? item,
+                                                   object? context,
+                                                   IExpressionEvaluator evaluator,
+                                                   IAggregateExpression aggregateExpression,
+                                                   IExpression innerExpression,
+                                                   ref bool shouldContinue)
     {
         var firstResult = evaluator.Evaluate(item, context, innerExpression);
         if (!firstResult.IsSuccessful())
@@ -57,27 +65,34 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             shouldContinue = false;
             return firstResult;
         }
-        var result = firstResult.Value;
 
-        foreach (var eval in _evaluators)
-        {
-            var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction, true, result, item, evaluator, innerExpression);
-            if (evalResult.IsSupported())
-            {
-                shouldContinue = evalResult.ShouldContinue();
-                return Result<object?>.FromExistingResult(evalResult, evalResult.GetResultValue());
-            }
-        }
-
-        shouldContinue = false;
-        return Result<object?>.Invalid($"Unknown aggregate function: [{aggregateExpression.AggregateFunction}]");
+        return ProcessExpression(item, evaluator, aggregateExpression, innerExpression, out shouldContinue, firstResult, true);
     }
 
-    private Result<object?> ProcessSubSequentExpression(object? item, IExpressionEvaluator evaluator, Result<object?> previousResult, IAggregateExpression aggregateExpression, IExpression innerExpression, ref bool shouldContinue)
+    private Result<object?> ProcessSubSequentExpression(object? item,
+                                                        IExpressionEvaluator evaluator,
+                                                        Result<object?> previousResult,
+                                                        IAggregateExpression aggregateExpression,
+                                                        IExpression innerExpression,
+                                                        ref bool shouldContinue)
+        => ProcessExpression(item, evaluator, aggregateExpression, innerExpression, out shouldContinue, previousResult, false);
+
+    private Result<object?> ProcessExpression(object? item,
+                                              IExpressionEvaluator evaluator,
+                                              IAggregateExpression aggregateExpression,
+                                              IExpression innerExpression,
+                                              out bool shouldContinue,
+                                              Result<object?> result,
+                                              bool isFirstExpression)
     {
         foreach (var eval in _evaluators)
         {
-            var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction, false, previousResult.Value, item, evaluator, innerExpression);
+            var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction,
+                                           isFirstExpression,
+                                           result.Value,
+                                           item,
+                                           evaluator,
+                                           innerExpression);
             if (evalResult.IsSupported())
             {
                 shouldContinue = evalResult.ShouldContinue();
