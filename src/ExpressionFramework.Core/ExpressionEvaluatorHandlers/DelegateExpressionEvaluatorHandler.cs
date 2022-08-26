@@ -6,7 +6,7 @@ public class DelegateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
     {
         if (expression is IDelegateExpression delegateExpression)
         {
-            return Result<object?>.Success(delegateExpression.ValueDelegate.Invoke(item, expression, evaluator));
+            return Result<object?>.Success(delegateExpression.ValueDelegate.Invoke(item, context, expression, evaluator));
         }
 
         return Result<object?>.NotSupported();

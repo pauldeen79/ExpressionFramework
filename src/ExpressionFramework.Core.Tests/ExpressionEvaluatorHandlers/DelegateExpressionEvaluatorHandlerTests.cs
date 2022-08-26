@@ -24,7 +24,8 @@ public class DelegateExpressionEvaluatorHandlerTests
         // Arrange
         var sut = new DelegateExpressionEvaluatorHandler();
         var expressionMock = new Mock<IDelegateExpression>();
-        expressionMock.SetupGet(x => x.ValueDelegate).Returns(new Func<object?, IExpression, IExpressionEvaluator, object?>((_, _, _) => 12345));
+        expressionMock.SetupGet(x => x.ValueDelegate)
+                      .Returns(new Func<object?, object?, IExpression, IExpressionEvaluator, object?>((_, _, _, _) => 12345));
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
