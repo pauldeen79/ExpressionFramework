@@ -191,4 +191,24 @@ public class DivideAggregateFunctionTests
         actual.ShouldContinue().Should().BeTrue();
         actual.GetResultValue().Should().BeNull();
     }
+
+    [Fact]
+    public void TryEvaluate_Returns_Error_When_ExpressionProvider_Returns_Error()
+    {
+        // Arrange
+        var sut = new DivideAggregateFunctionEvaluator();
+        const byte value = 2;
+        var expression = new ConstantExpressionBuilder(value).Build();
+        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Error("Kaboom"));
+
+        // Act
+        var actual = sut.TryEvaluate(new DivideAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
+
+        // Assert
+        actual.IsSupported().Should().BeTrue();
+        actual.ShouldContinue().Should().BeFalse();
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
 }

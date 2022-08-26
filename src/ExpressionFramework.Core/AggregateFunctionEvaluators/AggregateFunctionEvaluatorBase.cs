@@ -23,7 +23,7 @@ public abstract class AggregateFunctionEvaluatorBase<TFunction> : IAggregateFunc
         var result = evaluator.Evaluate(context, context, expression);
         if (!result.IsSuccessful())
         {
-            return Result<IAggregateFunctionResultValue?>.Error(result.ErrorMessage.WhenNullOrEmpty("Something went wrong"));
+            return Result<IAggregateFunctionResultValue?>.FromExistingResult(result);
         }
 
         return TryEvaluate(tfunction, isFirstItem, value, context, evaluator, expression, result);
