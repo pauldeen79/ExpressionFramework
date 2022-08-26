@@ -108,7 +108,7 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"ValueDelegate")
-                            .WithTypeName(@"System.Func`4[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"),
+                            .WithTypeName(@"System.Func`5[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
@@ -264,6 +264,32 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
                     .WithName(@"IConditionalExpression"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddInterfaces(
+                        @"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Expressions")
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Function")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
+                            .WithIsNullable(true),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"InnerExpression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithIsNullable(true))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                    .WithName(@"IComposableExpression"),
                 new ClassBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddProperties(

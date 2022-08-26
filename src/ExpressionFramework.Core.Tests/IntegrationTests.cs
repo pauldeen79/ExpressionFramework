@@ -38,19 +38,23 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_Nested_FieldExpression_Using_PostExpression()
+    public void Can_Evaluate_Nested_FieldExpression_Using_ComposableExpression()
     {
-        //// Arrange
-        //var expression = new FieldExpressionBuilder().WithFieldName("InnerProperty")
-        //    .AddPostExpressions(new FieldExpressionBuilder().WithFieldName("Name"))
-        //    .Build();
-        //var context = new { InnerProperty = new { Name = "Hello world" } };
+        // Arrange
+        var expression = new ComposableExpressionBuilder()
+            .AddExpressions
+            (
+                new FieldExpressionBuilder().WithFieldName("InnerProperty"),
+                new FieldExpressionBuilder().WithFieldName("Name")
+            )
+            .Build();
+        var context = new { InnerProperty = new { Name = "Hello world" } };
 
-        //// Act
-        //var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
 
-        //// Assert
-        //actual.Value.Should().Be("Hello world");
+        // Assert
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
