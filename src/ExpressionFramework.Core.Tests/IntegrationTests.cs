@@ -94,7 +94,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_CompositeExpression_With_Some_Mathematic_Functions()
+    public void Can_Evaluate_AggregateExpression_With_Some_Mathematic_Functions()
     {
         /// Example: 5 + (calculationModel.NumberOfHectares / 10)
         // Arrange
@@ -122,7 +122,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_CompositeExpression_With_Function()
+    public void Can_Evaluate_AggregateExpression_With_Function()
     {
         /// Example: 5 + new[] { 10 }.Length
         // Arrange
@@ -144,7 +144,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_CompositeExpression_With_Condition()
+    public void Can_Evaluate_AggregateExpression_With_Condition()
     {
         /// Example: new[] { 5, 5, 10 }.Where(x => x <= 5).Sum();
         // Arrange
@@ -170,7 +170,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_CompositeExpression_With_SwitchExpression()
+    public void Can_Evaluate_AggregateExpression_With_SwitchExpression()
     {
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
