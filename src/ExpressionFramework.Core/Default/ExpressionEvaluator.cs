@@ -36,7 +36,7 @@ public class ExpressionEvaluator : IExpressionEvaluator
                 handled = true;
                 break;
             }
-            else if (result.Status != ResultStatus.NotSupported)
+            else if (result.IsSupported())
             {
                 // something went wrong... return the result
                 return result;
