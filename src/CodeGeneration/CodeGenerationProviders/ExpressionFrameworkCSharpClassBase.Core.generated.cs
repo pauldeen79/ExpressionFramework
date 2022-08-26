@@ -167,8 +167,8 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
-                            .WithName(@"CompositeFunction")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.ICompositeFunction"),
+                            .WithName(@"AggregateFunction")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunction"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
@@ -185,7 +185,7 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
-                    .WithName(@"ICompositeExpression"),
+                    .WithName(@"IAggregateExpression"),
                 new ClassBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
@@ -269,23 +269,14 @@ namespace CodeGeneration.CodeGenerationProviders
                     .AddProperties(
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
-                            .WithName(@"IsSupported")
-                            .WithTypeName(@"System.Boolean"),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"Result")
+                            .WithName(@"Value")
                             .WithTypeName(@"System.Object")
                             .WithIsNullable(true),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
-                            .WithName(@"ErrorMessage")
-                            .WithTypeName(@"System.String")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"ShouldContinue")
+                            .WithName(@"Continue")
                             .WithTypeName(@"System.Boolean"))
-                    .WithName(@"ICompositeFunctionEvaluatorResult"),
+                    .WithName(@"IAggregateFunctionResultValue"),
             }.Select(x => x.Build()).ToArray();
         }
     }

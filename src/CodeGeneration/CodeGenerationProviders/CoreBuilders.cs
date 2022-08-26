@@ -24,10 +24,10 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
                         y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder";
                         y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.IExpression";
                     }
-                    else if (y.Interfaces[0].EndsWith("CompositeFunctionBuilder"))
+                    else if (y.Interfaces[0].EndsWith("AggregateFunctionBuilder"))
                     {
-                        y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.ICompositeFunctionBuilder";
-                        y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction";
+                        y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.IAggregateFunctionBuilder";
+                        y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction";
                     }
                 })
                 .Build()

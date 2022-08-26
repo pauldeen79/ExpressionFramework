@@ -14,9 +14,9 @@ public static class ServiceCollectionExtensions
                 x.TryAddSingleton<IExpressionEvaluator, ExpressionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluator, ConditionEvaluator>();
                 x.TryAddSingleton<IConditionEvaluatorProvider, ConditionEvaluatorProvider>();
-                if (!x.Any(y => y.ImplementationType == typeof(CompositeExpressionEvaluatorProvider)))
+                if (!x.Any(y => y.ImplementationType == typeof(AggregateExpressionEvaluatorProvider)))
                 {
-                    x.AddSingleton<IExpressionEvaluatorProvider, CompositeExpressionEvaluatorProvider>();
+                    x.AddSingleton<IExpressionEvaluatorProvider, AggregateExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConditionalExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ConstantExpressionEvaluatorProvider>();
                     x.AddSingleton<IExpressionEvaluatorProvider, ContextExpressionEvaluatorProvider>();
@@ -41,14 +41,14 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IFunctionEvaluator, UpperFunctionEvaluator>();
                     x.AddSingleton<IFunctionEvaluator, YearFunctionEvaluator>();
                 }
-                if (!x.Any(y => y.ImplementationType == typeof(DivideCompositeFunctionEvaluator)))
+                if (!x.Any(y => y.ImplementationType == typeof(DivideAggregateFunctionEvaluator)))
                 {
-                    x.AddSingleton<ICompositeFunctionEvaluator, DivideCompositeFunctionEvaluator>();
-                    x.AddSingleton<ICompositeFunctionEvaluator, EmptyCompositeFunctionEvaluator>();
-                    x.AddSingleton<ICompositeFunctionEvaluator, FirstCompositeFunctionEvaluator>();
-                    x.AddSingleton<ICompositeFunctionEvaluator, MinusCompositeFunctionEvaluator>();
-                    x.AddSingleton<ICompositeFunctionEvaluator, MultiplyCompositeFunctionEvaluator>();
-                    x.AddSingleton<ICompositeFunctionEvaluator, PlusCompositeFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, DivideAggregateFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, EmptyAggegateFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, FirstAggregateFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, MinusAggregateFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, MultiplyAggregateFunctionEvaluator>();
+                    x.AddSingleton<IAggregateFunctionEvaluator, PlusAggregateFunctionEvaluator>();
                 }
             });
 }

@@ -35,6 +35,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 // Fix initialization in builder c'tor, because the object it not nullable
                 property.SetDefaultValueForBuilderClassConstructor(new Literal("new Func<object?, IExpression, IExpressionEvaluator, object?>((_, _, _) => null)"));
             }
+
             var typeName = property.TypeName.FixTypeName();
             if (typeName.StartsWith("ExpressionFramework.Abstractions.DomainModel.I", StringComparison.InvariantCulture))
             {
@@ -73,6 +74,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             else if (typeName.IsBooleanTypeName() || typeName.IsNullableBooleanTypeName())
             {
                 property.SetDefaultArgumentValueForWithMethod(true);
+                if (property.Name == "Continue")
+                {
+                    property.SetDefaultValueForBuilderClassConstructor(new Literal("true"));
+                }
             }
         }
     }
@@ -81,7 +86,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (typeName == "ExpressionFramework.Abstractions.DomainModel.IExpressionFunction"
             || typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
-            || typeName == "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction")
+            || typeName == "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction")
         {
             return property.IsNullable
                 ? "{0} = source.{0} == null ? null : source.{0}.ToBuilder()"
@@ -100,9 +105,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             return new("new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()");
         }
 
-        if (typeName == "ExpressionFramework.Abstractions.DomainModel.ICompositeFunction")
+        if (typeName == "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction")
         {
-            return new("new ExpressionFramework.Core.CompositeFunctions.EmptyCompositeFunctionBuilder()");
+            return new("new ExpressionFramework.Core.AggregateFunctions.EmptyAggregateFunctionBuilder()");
         }
 
         return new("new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");

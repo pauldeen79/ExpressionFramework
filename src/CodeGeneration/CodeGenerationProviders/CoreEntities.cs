@@ -24,11 +24,11 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
                             .AddLiteralCodeStatements($"return new ExpressionFramework.Core.DomainModel.Builders.{y.Name}Builder(this);")
                         );
                     }
-                    else if (y.Interfaces[0].EndsWith("CompositeFunction"))
+                    else if (y.Interfaces[0].EndsWith("AggregateFunction"))
                     {
                         y.Methods.Add(new ClassMethodBuilder()
                             .WithName("ToBuilder")
-                            .WithTypeName("ExpressionFramework.Abstractions.DomainModel.Builders.ICompositeFunctionBuilder")
+                            .WithTypeName("ExpressionFramework.Abstractions.DomainModel.Builders.IAggregateFunctionBuilder")
                             .AddLiteralCodeStatements($"return new ExpressionFramework.Core.DomainModel.Builders.{y.Name}Builder(this);")
                         );
                     }

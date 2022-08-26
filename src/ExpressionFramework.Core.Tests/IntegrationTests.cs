@@ -99,19 +99,19 @@ public sealed class IntegrationTests : IDisposable
         /// Example: 5 + (calculationModel.NumberOfHectares / 10)
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
-        var expression = new CompositeExpressionBuilder()
+        var expression = new AggregateExpressionBuilder()
             .AddExpressions
             (
                 new ConstantExpressionBuilder(5),
-                new CompositeExpressionBuilder()
+                new AggregateExpressionBuilder()
                     .AddExpressions
                     (
                         new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares)),
                         new ConstantExpressionBuilder(10)
                     )
-                    .WithCompositeFunction(new DivideCompositeFunctionBuilder())
+                    .WithAggregateFunction(new DivideAggregateFunctionBuilder())
             )
-            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
             .Build();
 
         // Act
@@ -127,13 +127,13 @@ public sealed class IntegrationTests : IDisposable
         /// Example: 5 + new[] { 10 }.Length
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
-        var expression = new CompositeExpressionBuilder()
+        var expression = new AggregateExpressionBuilder()
             .AddExpressions
             (
                 new ConstantExpressionBuilder(5),
                 new ConstantExpressionBuilder(new[] { 10 }).WithFunction(new CountFunctionBuilder())
             )
-            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
             .Build();
 
         // Act
@@ -148,14 +148,14 @@ public sealed class IntegrationTests : IDisposable
     {
         /// Example: new[] { 5, 5, 10 }.Where(x => x <= 5).Sum();
         // Arrange
-        var expression = new CompositeExpressionBuilder()
+        var expression = new AggregateExpressionBuilder()
             .AddExpressions
             (
                 new ConstantExpressionBuilder(5),
                 new ConstantExpressionBuilder(5),
                 new ConstantExpressionBuilder(10) // this one gets ignored
             )
-            .WithCompositeFunction(new PlusCompositeFunctionBuilder())
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
             .AddExpressionConditions(new ConditionBuilder()
                 .WithLeftExpression(new ContextExpressionBuilder())
                 .WithOperator(Operator.SmallerOrEqual)
@@ -174,7 +174,7 @@ public sealed class IntegrationTests : IDisposable
     {
         // Arrange
         var calculationModel = new { NumberOfHectares = 50 };
-        var expression = new CompositeExpressionBuilder()
+        var expression = new AggregateExpressionBuilder()
             .AddExpressions
             (
                 new ConditionalExpressionBuilder()
@@ -219,21 +219,23 @@ public sealed class IntegrationTests : IDisposable
             .AddExpressionConditions(new ConditionBuilder()
                 .WithLeftExpression(new ContextExpressionBuilder())
                 .WithOperator(Operator.IsNotNull))
-            .WithCompositeFunction(new FirstCompositeFunctionBuilder())
+            .WithAggregateFunction(new FirstAggregateFunctionBuilder())
             .Build();
 
         // Act
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        var expected = new List<(Func<bool> Condition, object? Result)>
+        var expected = new List<(Func<bool>? Condition, object? Result)>
         {
             new(() => false, 10),
             new(() => false, 20),
             new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
             new(() => true, 40),
+            new(null, 50),
+            new(null, 60),
         };
-        actual.Value.Should().Be(expected.First(x => x.Condition.Invoke()).Result); // 30
+        actual.Value.Should().Be(expected.First(x => x.Condition == null || x.Condition.Invoke()).Result); // 30
     }
 
     [Fact]
