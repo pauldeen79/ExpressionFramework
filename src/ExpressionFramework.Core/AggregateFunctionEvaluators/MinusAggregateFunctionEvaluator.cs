@@ -1,31 +1,16 @@
 ﻿namespace ExpressionFramework.Core.AggregateFunctionEvaluators;
 
-public class MinusAggregateFunctionEvaluator : IAggregateFunctionEvaluator
+public class MinusAggregateFunctionEvaluator : AggregateFunctionEvaluatorBase<MinusAggregateFunction>
 {
-    public Result<IAggregateFunctionResultValue?> TryEvaluate(IAggregateFunction function,
-                                                         bool isFirstItem,
-                                                         object? value,
-                                                         object? context,
-                                                         IExpressionEvaluator evaluator,
-                                                         IExpression expression)
+    protected override Result<IAggregateFunctionResultValue?> TryEvaluate(MinusAggregateFunction function,
+                                                                          bool isFirstItem,
+                                                                          object? value,
+                                                                          object? context,
+                                                                          IExpressionEvaluator evaluator,
+                                                                          IExpression expression,
+                                                                          Result<object?> result)
     {
-        if (function is not MinusAggregateFunction)
-        {
-            return Result<IAggregateFunctionResultValue?>.NotSupported();
-        }
-
-        if (isFirstItem)
-        {
-            return Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(value).Build());
-        }
-
-        var result = evaluator.Evaluate(context, context, expression);
-        if (!result.IsSuccessful())
-        {
-            return Result<IAggregateFunctionResultValue?>.Error(result.ErrorMessage.WhenNullOrEmpty("Something went wrong"));
-        }
-
-        var currentValue = result.GetValueOrThrow();
+        var currentValue = result.Value;
         if (currentValue is byte b)
         {
             return Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(Convert.ToByte(value) - b).Build());

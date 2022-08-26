@@ -1,31 +1,16 @@
 ﻿namespace ExpressionFramework.Core.AggregateFunctionEvaluators;
 
-public class DivideAggregateFunctionEvaluator : IAggregateFunctionEvaluator
+public class DivideAggregateFunctionEvaluator : AggregateFunctionEvaluatorBase<DivideAggregateFunction>
 {
-    public Result<IAggregateFunctionResultValue?> TryEvaluate(IAggregateFunction function,
-                                                         bool isFirstItem,
-                                                         object? value,
-                                                         object? context,
-                                                         IExpressionEvaluator evaluator,
-                                                         IExpression expression)
+    protected override Result<IAggregateFunctionResultValue?> TryEvaluate(DivideAggregateFunction function,
+                                                                          bool isFirstItem,
+                                                                          object? value,
+                                                                          object? context,
+                                                                          IExpressionEvaluator evaluator,
+                                                                          IExpression expression,
+                                                                          Result<object?> result)
     {
-        if (function is not DivideAggregateFunction)
-        {
-            return Result<IAggregateFunctionResultValue?>.NotSupported();
-        }
-
-        if (isFirstItem)
-        {
-            return Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(value).Build());
-        }
-
-        var result = evaluator.Evaluate(context, context, expression);
-        if (!result.IsSuccessful())
-        {
-            return Result<IAggregateFunctionResultValue?>.Error(result.ErrorMessage.WhenNullOrEmpty("Something went wrong"));
-        }
-
-        var currentValue = result.GetValueOrThrow();
+        var currentValue = result.Value;
         if (currentValue is byte b)
         {
             return Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(Convert.ToByte(value) / b).Build());
