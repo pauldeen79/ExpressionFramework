@@ -28,12 +28,10 @@ var result = conditionEvaluator.Evaluate(null, new[] { condition });
 
 See unit tests for more examples.
 
-//TODO:
-- Add aggregate functions: Min, Max, First, Last, ElementAt, Count, Sum
-- Think if we want to be able to preprocess expressions in the aggregate expression evaluator, like sorting... the filtering is now hard-coded into the AggregateExpressionEvaluatorProvider, which might be wrong. Can't alter it from the expression right now.
-- Add SwitchExpression, which makes one of the scenarios in the integration tests a little easier.
-- Add SequenceExpression, which evaluates all expressions, and returns them as a sequence.
-- Add WhereExpression, which filters expressions by conditions.
-- Refactor functions to expressions. You can use them in a CompositeExpression for pre-processing or post-processing values.
-- Add functions/expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce
-- For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
+# Code generation
+
+Due to some limitations of the used code generator (of which I am the author by the way), you have to generate the code generation manually.
+To do this, you go to the one and only unit test in the ExpressionFramework.Abstractions.Tests project, change the `dryrun` setting to false, run the unit test, and revert this change.
+This way, the code generation model is updated. You have to check in this file to git.
+After building the solution, the code generation will run in the post build event of the CodeGeneration project.
+This works both locally and in build pipelines. (e.g. Github Actions)
