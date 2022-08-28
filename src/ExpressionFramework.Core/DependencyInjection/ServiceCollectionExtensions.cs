@@ -25,6 +25,7 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IExpressionEvaluatorHandler, EmptyExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, FieldExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, ItemExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, SwitchEpressionEvaluationHandler>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();
                 if (!x.Any(y => y.ImplementationType == typeof(ContainsFunctionEvaluator)))

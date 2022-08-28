@@ -28,7 +28,7 @@ public class FieldExpressionEvaluatorHandlerTests
         var expressionMock = new Mock<IFieldExpression>();
         expressionMock.SetupGet(x => x.Function).Returns(default(IExpressionFunction));
         expressionMock.SetupGet(x => x.FieldName).Returns("Test");
-        valueProviderMock.Setup(x => x.GetValue(It.IsAny<object?>(), "Test")).Returns(12345);
+        valueProviderMock.Setup(x => x.GetValue(It.IsAny<object?>(), "Test")).Returns(Result<object?>.Success(12345));
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act

@@ -12,21 +12,22 @@ public class ValueProviderTests
         var actual = sut.GetValue(null, string.Empty);
 
         // Assert
-        actual.Should().BeNull();
+        actual.GetValueOrThrow().Should().BeNull();
     }
 
     [Fact]
-    public void GetValue_Throws_When_Property_Is_Not_Found()
+    public void GetValue_Returns_Invalid_When_Property_Is_Not_Found()
     {
         // Arrange
         var context = CreateOrder();
         var sut = new ValueProvider();
 
-        // Act & Assert
-        sut.Invoking(x => x.GetValue(context, "NonExistingProperty"))
-           .Should().ThrowExactly<ArgumentOutOfRangeException>()
-           .WithParameterName("fieldName")
-           .And.Message.Should().StartWith("Fieldname [NonExistingProperty] is not found on type [ExpressionFramework.Core.Tests.Default.ValueProviderTests+Order]");
+        // Act
+        var actual = sut.GetValue(context, "NonExistingProperty");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().StartWith("Fieldname [NonExistingProperty] is not found on type [ExpressionFramework.Core.Tests.Default.ValueProviderTests+Order]");
     }
 
     [Fact]
@@ -40,7 +41,7 @@ public class ValueProviderTests
         var actual = sut.GetValue(context, nameof(Order.EmptyField));
 
         // Assert
-        actual.Should().BeNull();
+        actual.GetValueOrThrow().Should().BeNull();
     }
 
     [Fact]
@@ -54,7 +55,7 @@ public class ValueProviderTests
         var actual = sut.GetValue(context, nameof(Order.OrderNumber));
 
         // Assert
-        actual.Should().Be(context.OrderNumber);
+        actual.GetValueOrThrow().Should().Be(context.OrderNumber);
     }
 
     [Fact]
@@ -68,7 +69,7 @@ public class ValueProviderTests
         var actual = sut.GetValue(context, $"{nameof(Order.OrderLines)}.{nameof(Order.OrderLines.Count)}");
 
         // Assert
-        actual.Should().Be(context.OrderLines.Count);
+        actual.GetValueOrThrow().Should().Be(context.OrderLines.Count);
     }
 
     [Fact]
@@ -82,7 +83,7 @@ public class ValueProviderTests
         var actual = sut.GetValue(context, $"{nameof(Order.DeliveryAddress)}.{nameof(Order.DeliveryAddress.ContactInformation)}.{nameof(Order.DeliveryAddress.ContactInformation.EmailAddress)}");
 
         // Assert
-        actual.Should().Be(context.DeliveryAddress.ContactInformation.EmailAddress);
+        actual.GetValueOrThrow().Should().Be(context.DeliveryAddress.ContactInformation.EmailAddress);
     }
 
     [Fact]
@@ -97,7 +98,7 @@ public class ValueProviderTests
         var actual = sut.GetValue(context, $"{nameof(Order.DeliveryAddress)}.{nameof(Order.DeliveryAddress.ContactInformation)}.{nameof(Order.DeliveryAddress.ContactInformation.EmailAddress)}");
 
         // Assert
-        actual.Should().BeNull();
+        actual.GetValueOrThrow().Should().BeNull();
     }
 
     private static Order CreateOrder()

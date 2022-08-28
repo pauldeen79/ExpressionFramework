@@ -10,7 +10,7 @@ public class FieldExpressionEvaluatorHandler : IExpressionEvaluatorHandler
     {
         if (expression is IFieldExpression fieldExpression)
         {
-            return Result<object?>.Success(_valueProvider.GetValue(item, fieldExpression.FieldName));
+            return _valueProvider.GetValue(item, fieldExpression.FieldName);
         }
 
         return Result<object?>.NotSupported();

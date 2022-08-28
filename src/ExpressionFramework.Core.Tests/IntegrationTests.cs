@@ -123,7 +123,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        actual.Value.Should().Be(5 + (calculationModel.NumberOfHectares / 10));
+        actual.GetValueOrThrow().Should().Be(5 + (calculationModel.NumberOfHectares / 10));
     }
 
     [Fact]
@@ -145,7 +145,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        actual.Value.Should().Be(5 + new[] { 10 }.Length);
+        actual.GetValueOrThrow().Should().Be(5 + new[] { 10 }.Length);
     }
 
     [Fact]
@@ -171,7 +171,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
 
         // Assert
-        actual.Value.Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
+        actual.GetValueOrThrow().Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
     }
 
     [Fact]
@@ -231,16 +231,76 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        var expected = new List<(Func<bool>? Condition, object? Result)>
+        var expected = new List<(Func<bool> Condition, object? Result)>
         {
             new(() => false, 10),
             new(() => false, 20),
             new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
-            new(() => true, 40),
-            new(null, 50),
-            new(null, 60),
+            new(() => true, 40)
         };
-        actual.Value.Should().Be(expected.First(x => x.Condition == null || x.Condition.Invoke()).Result); // 30
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke()).Result ?? 50); // 30
+    }
+
+    [Fact]
+    public void Can_Evaluate_SwitchExpression()
+    {
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new SwitchExpressionBuilder()
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(5000))
+                ).Then(new ConstantExpressionBuilder(10))
+            )
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(500))
+                ).Then(new ConstantExpressionBuilder(20))
+            )
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(50))
+                ).Then(new ConstantExpressionBuilder(30))
+            )
+            .Case(
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ItemExpressionBuilder().WithInnerExpression(new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(5))
+                ).Then(new ConstantExpressionBuilder(40))
+            )
+            .Default(new ConstantExpressionBuilder(50))
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+
+        // Assert
+        var expected = new List<(Func<bool> Condition, object? Result)>
+        {
+            new(() => false, 10),
+            new(() => false, 20),
+            new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(() => true, 40)
+        };
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke()).Result ?? 50); // 30
     }
 
     [Fact]

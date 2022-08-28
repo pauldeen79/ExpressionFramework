@@ -303,6 +303,48 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"Continue")
                             .WithTypeName(@"System.Boolean"))
                     .WithName(@"IAggregateFunctionResultValue"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddInterfaces(
+                        @"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Cases")
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICase, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"DefaultExpression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Function")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
+                            .WithIsNullable(true),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"InnerExpression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithIsNullable(true))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                    .WithName(@"ISwitchExpression"),
+                new ClassBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Conditions")
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Expression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
+                    .WithName(@"ICase"),
             }.Select(x => x.Build()).ToArray();
         }
     }
