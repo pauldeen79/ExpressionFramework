@@ -231,14 +231,15 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        var expected = new List<(Func<bool> Condition, object? Result)>
+        var expected = new List<(Func<int, bool> Condition, object Result)>
         {
-            new(() => false, 10),
-            new(() => false, 20),
-            new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
-            new(() => true, 40)
+            new(hectares => hectares >= 5000, 10),
+            new(hectares => hectares >= 500, 20),
+            new(hectares => hectares >= 50, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(hectares => hectares >= 5, 40),
+            new(_ => true, 50),
         };
-        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke()).Result ?? 50); // 30
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke(calculationModel.NumberOfHectares)).Result); // 30
     }
 
     [Fact]
@@ -293,14 +294,15 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
 
         // Assert
-        var expected = new List<(Func<bool> Condition, object? Result)>
+        var expected = new List<(Func<int, bool> Condition, object Result)>
         {
-            new(() => false, 10),
-            new(() => false, 20),
-            new(() => true, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
-            new(() => true, 40)
+            new(hectares => hectares >= 5000, 10),
+            new(hectares => hectares >= 500, 20),
+            new(hectares => hectares >= 50, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(hectares => hectares >= 5, 40),
+            new(_ => true, 50),
         };
-        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke()).Result ?? 50); // 30
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke(calculationModel.NumberOfHectares)).Result); // 30
     }
 
     [Fact]
