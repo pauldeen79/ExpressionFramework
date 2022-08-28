@@ -9,6 +9,38 @@ public class ConditionEvaluator : IConditionEvaluator
 
     public Result<bool> Evaluate(object? context, IEnumerable<ICondition> conditions)
     {
+        if (CanEvaluateSimpleConditions(conditions))
+        {
+            return EvaluateSimpleConditions(context, conditions);
+        }
+        
+        return EvaluateComplexConditions(context, conditions);
+    }
+
+    private bool CanEvaluateSimpleConditions(IEnumerable<ICondition> conditions)
+        => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
+
+    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ICondition> conditions)
+    {
+        foreach (var condition in conditions)
+        {
+            var itemResult = IsItemValid(context, condition);
+            if (!itemResult.IsSuccessful())
+            {
+                return itemResult;
+            }
+
+            if (!itemResult.Value)
+            {
+                return itemResult;
+            }
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ICondition> conditions)
+    {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
         {

@@ -16,7 +16,6 @@ condition evaluation:
  e.g. .Where("Field").IsEqualToAny("A", "B")
 -check if we can support Equals, StartsWith, EndsWith, NotEquals for multiple values, when the value is an IEnumerable (and not of type string)
  e.g. .Where("Field").IsEqualTo(new[] { "A", "B" })
--add faster evaluation when the conditions don't contain OR or brackets. You can simply evaluate every condition, return false on the first failing one, or else return true
 
 code generation:
 -check if we can upgrade to latest version of model framework

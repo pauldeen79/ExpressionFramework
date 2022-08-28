@@ -153,6 +153,45 @@ public class ConditionEvaluatorTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Failure_On_Failing_Complex_Conditions()
+    {
+        // Arrange
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(1);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(2);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.StartGroup).Returns(true);
+        conditionMock.SetupGet(x => x.EndGroup).Returns(true);
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Equal);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return Result<object?>.Success(leftExpression.Value);
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return Result<object?>.Error("Kaboom");
+                                    }
+
+                                    return Result<object?>.NotSupported();
+                                });
+
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
