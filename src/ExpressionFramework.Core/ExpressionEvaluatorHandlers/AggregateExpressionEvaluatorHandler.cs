@@ -37,7 +37,12 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             var shouldContinue = true;
             if (first)
             {
-                result = ProcessFirstExpression(item, context, evaluator, aggregateExpression, exp, ref shouldContinue);
+                result = ProcessFirstExpression(item,
+                                                context,
+                                                evaluator,
+                                                aggregateExpression, 
+                                                exp,
+                                                ref shouldContinue);
                 if (!shouldContinue)
                 {
                     break;
@@ -47,7 +52,12 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             }
             else
             {
-                result = ProcessSubSequentExpression(item, evaluator, result!, aggregateExpression, exp, ref shouldContinue);
+                result = ProcessSubSequentExpression(item,
+                                                     evaluator,
+                                                     result!,
+                                                     aggregateExpression,
+                                                     exp,
+                                                     ref shouldContinue);
                 if (!shouldContinue)
                 {
                     break;
@@ -64,16 +74,13 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
                                                    IAggregateExpression aggregateExpression,
                                                    IExpression innerExpression,
                                                    ref bool shouldContinue)
-    {
-        var firstResult = evaluator.Evaluate(item, context, innerExpression);
-        if (!firstResult.IsSuccessful())
-        {
-            shouldContinue = false;
-            return firstResult;
-        }
-
-        return ProcessExpression(item, evaluator, aggregateExpression, innerExpression, out shouldContinue, firstResult, true);
-    }
+        => ProcessExpression(item,
+                             evaluator,
+                             aggregateExpression,
+                             innerExpression,
+                             out shouldContinue,
+                             evaluator.Evaluate(item, context, innerExpression),
+                             true);
 
     private Result<object?> ProcessSubSequentExpression(object? item,
                                                         IExpressionEvaluator evaluator,
@@ -81,7 +88,13 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
                                                         IAggregateExpression aggregateExpression,
                                                         IExpression innerExpression,
                                                         ref bool shouldContinue)
-        => ProcessExpression(item, evaluator, aggregateExpression, innerExpression, out shouldContinue, previousResult, false);
+        => ProcessExpression(item,
+                             evaluator,
+                             aggregateExpression,
+                             innerExpression,
+                             out shouldContinue,
+                             previousResult,
+                             false);
 
     private Result<object?> ProcessExpression(object? item,
                                               IExpressionEvaluator evaluator,
