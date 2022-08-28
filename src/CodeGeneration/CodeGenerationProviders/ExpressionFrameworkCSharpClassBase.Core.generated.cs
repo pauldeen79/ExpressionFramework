@@ -289,7 +289,7 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
-                    .WithName(@"IComposableExpression"),
+                    .WithName(@"IChainedExpression"),
                 new ClassBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddProperties(

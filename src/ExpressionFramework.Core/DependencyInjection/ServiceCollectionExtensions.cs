@@ -18,7 +18,7 @@ public static class ServiceCollectionExtensions
                 {
                     x.AddSingleton<IExpressionEvaluatorHandler, AggregateExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, ConditionalExpressionEvaluatorHandler>();
-                    x.AddSingleton<IExpressionEvaluatorHandler, ComposableExpressionEvaluatorHandler>();
+                    x.AddSingleton<IExpressionEvaluatorHandler, ChainedExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, ConstantExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, ContextExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, DelegateExpressionEvaluatorHandler>();

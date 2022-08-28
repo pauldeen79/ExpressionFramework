@@ -38,10 +38,10 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Evaluate_Nested_FieldExpression_Using_ComposableExpression()
+    public void Can_Evaluate_Nested_FieldExpression_Using_ChainedExpression()
     {
         // Arrange
-        var expression = new ComposableExpressionBuilder()
+        var expression = new ChainedExpressionBuilder()
             .AddExpressions
             (
                 new FieldExpressionBuilder().WithFieldName("InnerProperty"),

@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Abstractions.DomainModel;
 
-public interface IComposableExpression : IExpression
+public interface IChainedExpression : IExpression
 {
     IReadOnlyCollection<IExpression> Expressions { get; }
 }

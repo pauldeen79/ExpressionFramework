@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Core.Tests.ExpressionEvaluatorHandlers;
 
-public class ComposableExpressionEvaluatorHandlerTests
+public class ChainedExpressionEvaluatorHandlerTests
 {
     [Fact]
-    public void Handle_Returns_NotSupported_When_Expression_Is_Not_A_ComposableExpression()
+    public void Handle_Returns_NotSupported_When_Expression_Is_Not_A_ChainedExpression()
     {
         // Arrange
-        var sut = new ComposableExpressionEvaluatorHandler();
+        var sut = new ChainedExpressionEvaluatorHandler();
         var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
@@ -22,8 +22,8 @@ public class ComposableExpressionEvaluatorHandlerTests
     public void Handle_Returns_Error_When_ExpressionEvaluation_Fails()
     {
         // Arrange
-        var sut = new ComposableExpressionEvaluatorHandler();
-        var expressionMock = new Mock<IComposableExpression>();
+        var sut = new ChainedExpressionEvaluatorHandler();
+        var expressionMock = new Mock<IChainedExpression>();
         expressionMock.SetupGet(x => x.Expressions)
                       .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new Mock<IExpression>().Object }));
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
@@ -42,8 +42,8 @@ public class ComposableExpressionEvaluatorHandlerTests
     public void Handle_Returns_Invalid_When_No_Expressions_Are_Provided()
     {
         // Arrange
-        var sut = new ComposableExpressionEvaluatorHandler();
-        var expressionMock = new Mock<IComposableExpression>();
+        var sut = new ChainedExpressionEvaluatorHandler();
+        var expressionMock = new Mock<IChainedExpression>();
         expressionMock.SetupGet(x => x.Expressions)
                       .Returns(new ReadOnlyValueCollection<IExpression>());
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();

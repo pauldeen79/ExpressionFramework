@@ -24,7 +24,7 @@ public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(IItemExpression),
         typeof(IContextExpression),
         typeof(IConditionalExpression),
-        typeof(IComposableExpression),
+        typeof(IChainedExpression),
         typeof(IAggregateFunctionResultValue),
         typeof(ISwitchExpression),
         typeof(ICase),

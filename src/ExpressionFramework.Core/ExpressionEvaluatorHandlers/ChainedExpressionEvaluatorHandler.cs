@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Core.ExpressionEvaluatorHandlers;
 
-public class ComposableExpressionEvaluatorHandler : IExpressionEvaluatorHandler
+public class ChainedExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 {
     public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
-        if (expression is not IComposableExpression composableExpression)
+        if (expression is not IChainedExpression composableExpression)
         {
             return Result<object?>.NotSupported();
         }
