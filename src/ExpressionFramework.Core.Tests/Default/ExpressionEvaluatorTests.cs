@@ -53,7 +53,6 @@ public class ExpressionEvaluatorTests
         // Arrange
         var sut = CreateSut();
         var expressionMock = new Mock<IExpression>();
-        expressionMock.SetupGet(x => x.InnerExpression).Returns(new Mock<IExpression>().Object);
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
                                                      It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),

@@ -3,7 +3,7 @@
 public partial class DelegateExpressionBuilder
 {
     public DelegateExpressionBuilder(Func<object?, object?, IExpression, IExpressionEvaluator, object?> sourceValueDelegate)
-        : this(new DelegateExpression(sourceValueDelegate, null, null))
+        : this(new DelegateExpression(sourceValueDelegate, null))
     {
     }
 

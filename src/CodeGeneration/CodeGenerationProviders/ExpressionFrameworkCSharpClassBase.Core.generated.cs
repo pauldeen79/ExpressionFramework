@@ -60,11 +60,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -87,11 +82,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -113,11 +103,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -139,11 +124,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -173,11 +153,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -195,11 +170,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -217,11 +187,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -251,11 +216,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -277,11 +237,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -320,11 +275,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true),
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"InnerExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithIsNullable(true))
                     .AddMethods(
                         new ClassMethodBuilder()

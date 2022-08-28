@@ -2,7 +2,7 @@
 
 public partial class FieldExpressionBuilder
 {
-    public FieldExpressionBuilder(string sourceFieldName) : this(new FieldExpression(sourceFieldName, null, null))
+    public FieldExpressionBuilder(string sourceFieldName) : this(new FieldExpression(sourceFieldName, null))
     {
     }
 

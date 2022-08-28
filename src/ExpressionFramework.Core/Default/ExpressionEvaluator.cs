@@ -15,18 +15,6 @@ public class ExpressionEvaluator : IExpressionEvaluator
 
     public Result<object?> Evaluate(object? item, object? context, IExpression expression)
     {
-        var innerExpression = expression.InnerExpression;
-        while (innerExpression != null)
-        {
-            var evalResult = Evaluate(item, context, innerExpression);
-            if (!evalResult.IsSuccessful())
-            {
-                return evalResult;
-            }
-            item = evalResult.Value;
-            innerExpression = innerExpression.InnerExpression;
-        }
-
         object? expressionResult = null;
         var handled = false;
         foreach (var handler in _handlers)
