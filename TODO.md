@@ -9,13 +9,10 @@ expression evaluator:
 - Refactor functions to expressions. You can use them in a CompositeExpression for pre-processing or post-processing values.
 - Refactor aggregate functions to expressions. Use these from the AggregateExpressionEvaluator.
 - Add functions/expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce/FirstNotNull
-- For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
 
 condition evaluation:
 -check if we have extension method IsEqualToAny, StartsWithAny, EndsWithAny, IsNotEqualToAny, NotStartsWithAny and EndsWithAny
  e.g. .Where("Field").IsEqualToAny("A", "B")
--check if we can support Equals, StartsWith, EndsWith, NotEquals for multiple values, when the value is an IEnumerable (and not of type string)
- e.g. .Where("Field").IsEqualTo(new[] { "A", "B" })
 
 code generation:
 -check if we can upgrade to latest version of model framework
