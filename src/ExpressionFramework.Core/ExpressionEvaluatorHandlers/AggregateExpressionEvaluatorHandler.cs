@@ -20,13 +20,19 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             return Result<object?>.NotSupported();
         }
 
+        var validExpressionsResult = GetValidExpressions(aggregateExpression,
+                                                         item,
+                                                         context,
+                                                         evaluator,
+                                                         _conditionEvaluatorProvider.Get(evaluator));
+        if (!validExpressionsResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(validExpressionsResult);
+        }
+
         bool first = true;
         Result<object?>? result = null;
-        foreach (var exp in GetValidExpressions(aggregateExpression,
-                                                item,
-                                                context,
-                                                evaluator,
-                                                _conditionEvaluatorProvider.Get(evaluator)))
+        foreach (var exp in validExpressionsResult.Value!)
         {
             var shouldContinue = true;
             if (first)
@@ -104,12 +110,39 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         return Result<object?>.Invalid($"Unknown aggregate function: [{aggregateExpression.AggregateFunction}]");
     }
 
-    private IEnumerable<IExpression> GetValidExpressions(IAggregateExpression aggregateExpression,
-                                                         object? item,
-                                                         object? context,
-                                                         IExpressionEvaluator expressionEvaluator,
-                                                         IConditionEvaluator conditionEvaluator)
-        => aggregateExpression.Expressions
-            .Where(expression => conditionEvaluator.Evaluate(expressionEvaluator.Evaluate(item, context, expression).Value,
-                                                             aggregateExpression.ExpressionConditions));
+    private Result<IEnumerable<IExpression>> GetValidExpressions(IAggregateExpression aggregateExpression,
+                                                                 object? item,
+                                                                 object? context,
+                                                                 IExpressionEvaluator expressionEvaluator,
+                                                                 IConditionEvaluator conditionEvaluator)
+    {
+        var valid = new List<IExpression>();
+        Result<IEnumerable<IExpression>>? invalidResult = null;
+        foreach (var @expression in aggregateExpression.Expressions)
+        {
+            var expressionResult = expressionEvaluator.Evaluate(item, context, expression);
+            if (!expressionResult.IsSuccessful())
+            {
+                invalidResult = Result<IEnumerable<IExpression>>.FromExistingResult(expressionResult);
+                break;
+            }
+            var conditionResult = conditionEvaluator.Evaluate(expressionResult.Value, aggregateExpression.ExpressionConditions);
+            if (!conditionResult.IsSuccessful())
+            {
+                invalidResult = Result<IEnumerable<IExpression>>.FromExistingResult(conditionResult);
+                break;
+            }
+            if (conditionResult.Value)
+            {
+                valid.Add(@expression);
+            }
+        }
+
+        if (invalidResult != null)
+        {
+            return invalidResult;
+        }
+
+        return Result<IEnumerable<IExpression>>.Success(valid);
+    }
 }

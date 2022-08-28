@@ -18,7 +18,11 @@ public class SwitchEpressionEvaluationHandler : IExpressionEvaluatorHandler
         foreach (var @case in switchExpression.Cases)
         {
             var caseResult = conditionEvaluator.Evaluate(item, @case.Conditions);
-            if (caseResult)
+            if (!caseResult.IsSuccessful())
+            {
+                return Result<object?>.FromExistingResult(caseResult);
+            }
+            if (caseResult.Value)
             {
                 return evaluator.Evaluate(item, context, @case.Expression);
             }

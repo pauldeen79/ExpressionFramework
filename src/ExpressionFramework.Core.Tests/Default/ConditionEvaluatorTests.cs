@@ -147,7 +147,7 @@ public class ConditionEvaluatorTests
         var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
 
         // Assert
-        actual.Should().Be(expectedResult);
+        actual.GetValueOrThrow().Should().Be(expectedResult);
     }
 
     [Fact]
@@ -185,7 +185,7 @@ public class ConditionEvaluatorTests
         var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -223,7 +223,7 @@ public class ConditionEvaluatorTests
         var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -261,6 +261,6 @@ public class ConditionEvaluatorTests
         var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 }

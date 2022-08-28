@@ -7,7 +7,7 @@ public class ConditionEvaluator : IConditionEvaluator
     public ConditionEvaluator(IExpressionEvaluator evaluator)
         => _evaluator = evaluator;
 
-    public bool Evaluate(object? context, IEnumerable<ICondition> conditions)
+    public Result<bool> Evaluate(object? context, IEnumerable<ICondition> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -20,30 +20,47 @@ public class ConditionEvaluator : IConditionEvaluator
             var prefix = condition.StartGroup ? "(" : string.Empty;
             var suffix = condition.EndGroup ? ")" : string.Empty;
             var itemResult = IsItemValid(context, condition);
+            if (!itemResult.IsSuccessful())
+            {
+                return itemResult;
+            }
             builder.Append(prefix)
-                   .Append(itemResult ? "T" : "F")
+                   .Append(itemResult.Value ? "T" : "F")
                    .Append(suffix);
         }
 
         return EvaluateBooleanExpression(builder.ToString());
     }
 
-    private bool IsItemValid(object? item, ICondition condition)
+    private Result<bool> IsItemValid(object? item, ICondition condition)
     {
-        var leftValue = _evaluator.Evaluate(item, item, condition.LeftExpression).Value;
-        var rightValue = _evaluator.Evaluate(item, item, condition.RightExpression).Value;
+        var leftResult = _evaluator.Evaluate(item, item, condition.LeftExpression);
+        if (!leftResult.IsSuccessful())
+        {
+            return Result<bool>.FromExistingResult(leftResult);
+        }
+
+        var rightResult = _evaluator.Evaluate(item, item, condition.RightExpression);
+        if (!rightResult.IsSuccessful())
+        {
+            return Result<bool>.FromExistingResult(rightResult);
+        }
 
         if (Operators.Items.TryGetValue(condition.Operator, out var predicate))
         {
-            return predicate.Invoke(new OperatorData(leftValue, rightValue));
+            return Result<bool>.Success(predicate.Invoke(new OperatorData(leftResult.Value, rightResult.Value)));
         }
 
         throw new ArgumentOutOfRangeException(nameof(condition), $"Unsupported operator: {condition.Operator}");
     }
 
-    private static bool EvaluateBooleanExpression(string expression)
+    private static Result<bool> EvaluateBooleanExpression(string expression)
     {
         var result = ProcessRecursive(ref expression);
+        if (!result.IsSuccessful())
+        {
+            return result;
+        }
 
         var @operator = "&";
         foreach (var character in expression)
@@ -61,8 +78,8 @@ public class ConditionEvaluator : IConditionEvaluator
                 case 'F':
                     currentResult = character == 'T';
                     result = @operator == "&"
-                        ? result && currentResult
-                        : result || currentResult;
+                        ? Result<bool>.Success(result.Value && currentResult)
+                        : Result<bool>.Success(result.Value || currentResult);
                     break;
             }
         }
@@ -70,9 +87,9 @@ public class ConditionEvaluator : IConditionEvaluator
         return result;
     }
 
-    private static bool ProcessRecursive(ref string expression)
+    private static Result<bool> ProcessRecursive(ref string expression)
     {
-        var result = true;
+        var result = Result<bool>.Success(true);
         var openIndex = -1;
         int closeIndex;
         do
@@ -98,8 +115,8 @@ public class ConditionEvaluator : IConditionEvaluator
             ? string.Empty
             : expression.Substring(0, openIndex - 2);
 
-    private static string GetCurrent(bool result)
-        => result
+    private static string GetCurrent(Result<bool> result)
+        => result.Value
             ? "T"
             : "F";
 

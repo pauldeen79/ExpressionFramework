@@ -26,7 +26,8 @@ public class SwitchEpressionEvaluationHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var sut = new SwitchEpressionEvaluationHandler(conditionEvaluatorProviderMock.Object);
         const string tempResult = "yes";
         var switchExpression = new SwitchExpressionBuilder()
@@ -65,7 +66,7 @@ public class SwitchEpressionEvaluationHandlerTests
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>()))
                                       .Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
-                              .Returns(false);
+                              .Returns(Result<bool>.Success(false));
         var sut = new SwitchEpressionEvaluationHandler(conditionEvaluatorProviderMock.Object);
         const string tempResult = "yes";
         var switchExpression = new SwitchExpressionBuilder()

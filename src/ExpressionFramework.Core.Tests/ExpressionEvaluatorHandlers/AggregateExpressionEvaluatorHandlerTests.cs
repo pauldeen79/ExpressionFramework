@@ -27,7 +27,7 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1 + 2;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
@@ -64,7 +64,7 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
                                             It.IsAny<bool>(),
@@ -103,7 +103,7 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
-                              .Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
@@ -181,7 +181,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
@@ -219,7 +220,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
@@ -259,7 +261,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
                                             It.IsAny<bool>(),
@@ -297,7 +300,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
                                             It.IsAny<bool>(),
@@ -316,8 +320,7 @@ public class AggregateExpressionEvaluatorHandlerTests
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
         expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
-                               => Result<object?>.Error("Kaboom"));
+                               .Returns(Result<object?>.Error("Kaboom"));
 
         // Act
         var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
@@ -335,7 +338,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((_, _) => true);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
                                             It.IsAny<bool>(),
@@ -376,7 +380,8 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>())).Returns<object?, IEnumerable<ICondition>>((context , _)=> Convert.ToInt32(context) == 1);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                               .Returns<object?, IEnumerable<ICondition>>((context , _)=> Result<bool>.Success(Convert.ToInt32(context) == 1));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),

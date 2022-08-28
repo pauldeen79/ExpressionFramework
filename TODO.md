@@ -12,7 +12,6 @@ expression evaluator:
 - For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
 
 condition evaluation:
--replace object? return value with Result<object?>
 -check if we have extension method IsEqualToAny, StartsWithAny, EndsWithAny, IsNotEqualToAny, NotStartsWithAny and EndsWithAny
  e.g. .Where("Field").IsEqualToAny("A", "B")
 -check if we can support Equals, StartsWith, EndsWith, NotEquals for multiple values, when the value is an IEnumerable (and not of type string)

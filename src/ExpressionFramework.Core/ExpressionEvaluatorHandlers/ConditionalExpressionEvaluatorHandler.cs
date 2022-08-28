@@ -14,13 +14,19 @@ public class ConditionalExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             return Result<object?>.NotSupported();
         }
 
-        if (_conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions))
+        var conditionResult = _conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions);
+        if (!conditionResult.IsSuccessful())
         {
-            return evaluator.Evaluate(item, context, conditionalExpression.ResultExpression);
+            return Result<object?>.FromExistingResult(conditionResult);
         }
-        else
-        {
-            return evaluator.Evaluate(item, context, conditionalExpression.DefaultExpression);
-        }
+
+        return evaluator.Evaluate
+        (
+            item,
+            context,
+            conditionResult.Value
+                ? conditionalExpression.ResultExpression
+                : conditionalExpression.DefaultExpression
+        );
     }
 }

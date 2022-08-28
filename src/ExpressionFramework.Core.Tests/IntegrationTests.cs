@@ -318,7 +318,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -336,7 +336,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -354,7 +354,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -372,7 +372,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeFalse();
+        actual.GetValueOrThrow().Should().BeFalse();
     }
 
     [Fact]
@@ -390,7 +390,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeFalse();
+        actual.GetValueOrThrow().Should().BeFalse();
     }
 
     [Fact]
@@ -414,7 +414,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -438,7 +438,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -471,7 +471,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -504,7 +504,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     private IConditionEvaluator CreateConditionEvaluator() => _serviceProvider.GetRequiredService<IConditionEvaluator>();
