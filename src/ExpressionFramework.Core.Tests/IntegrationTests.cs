@@ -1,6 +1,4 @@
-﻿using CrossCutting.Common.Extensions;
-
-namespace ExpressionFramework.Core.Tests;
+﻿namespace ExpressionFramework.Core.Tests;
 
 public sealed class IntegrationTests : IDisposable
 {
