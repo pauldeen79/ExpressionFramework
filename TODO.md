@@ -3,12 +3,12 @@ expression evaluator:
 - Add aggregate functions/expressions: Min, Max, First, Last, ElementAt, Count, Sum
 - Think if we want to be able to preprocess expressions in the aggregate expression evaluator, like sorting... the filtering is now hard-coded into the AggregateExpressionEvaluatorProvider, which might be wrong. Can't alter it from the expression right now.
 - Add SequenceExpression, which evaluates all expressions, and returns them as a sequence.
-- Add WhereExpression, which filters expressions by conditions.
-- Add OrderByExpression, which orders expressions.
-- Add expressions for each operator on condition, so you can use these as an expression.
+- Add WhereExpression/FilterExpression, which filters expressions by conditions.
+- Add OrderByExpression/SortExpression, which orders expressions.
+- Add expressions for each operator on condition, so you can use these as an expression. e.g. EqualsExpression, NotEqualsExpression.
 - Refactor functions to expressions. You can use them in a CompositeExpression for pre-processing or post-processing values.
 - Refactor aggregate functions to expressions. Use these from the AggregateExpressionEvaluator.
-- Add functions/expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce
+- Add functions/expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce/FirstNotNull
 - For IsNotEmpty and IsEmpty, write it so it can be extended by type using IoC with components which has a boolean CanDetermine function, and a Determine function. Default implementation is last.
 
 condition evaluation:
