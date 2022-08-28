@@ -29,7 +29,7 @@ public class ConditionEvaluator : IConditionEvaluator
                    .Append(suffix);
         }
 
-        return EvaluateBooleanExpression(builder.ToString());
+        return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
     private Result<bool> IsItemValid(object? item, ICondition condition)
@@ -54,13 +54,9 @@ public class ConditionEvaluator : IConditionEvaluator
         return Result<bool>.Invalid($"Unsupported operator: {condition.Operator}");
     }
 
-    private static Result<bool> EvaluateBooleanExpression(string expression)
+    private static bool EvaluateBooleanExpression(string expression)
     {
         var result = ProcessRecursive(ref expression);
-        if (!result.IsSuccessful())
-        {
-            return result;
-        }
 
         var @operator = "&";
         foreach (var character in expression)
@@ -78,8 +74,8 @@ public class ConditionEvaluator : IConditionEvaluator
                 case 'F':
                     currentResult = character == 'T';
                     result = @operator == "&"
-                        ? Result<bool>.Success(result.Value && currentResult)
-                        : Result<bool>.Success(result.Value || currentResult);
+                        ? result && currentResult
+                        : result || currentResult;
                     break;
             }
         }
@@ -87,9 +83,9 @@ public class ConditionEvaluator : IConditionEvaluator
         return result;
     }
 
-    private static Result<bool> ProcessRecursive(ref string expression)
+    private static bool ProcessRecursive(ref string expression)
     {
-        var result = Result<bool>.Success(true);
+        var result = true;
         var openIndex = -1;
         int closeIndex;
         do
@@ -115,8 +111,8 @@ public class ConditionEvaluator : IConditionEvaluator
             ? string.Empty
             : expression.Substring(0, openIndex - 2);
 
-    private static string GetCurrent(Result<bool> result)
-        => result.Value
+    private static string GetCurrent(bool result)
+        => result
             ? "T"
             : "F";
 
