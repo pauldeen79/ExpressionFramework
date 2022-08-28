@@ -2,6 +2,11 @@
 
 public partial class DelegateExpressionBuilder
 {
+    public DelegateExpressionBuilder(Func<object?, IExpression, IExpressionEvaluator, object?> sourceValueDelegate)
+        : this(new DelegateExpression(sourceValueDelegate, null))
+    {
+    }
+
     public DelegateExpressionBuilder WithValueDelegate(Func<object?, IExpression, IExpressionEvaluator, object?> valueDelegate)
-        => this.Chain(x => x.ValueDelegate = valueDelegate);
+        => this.With(x => x.ValueDelegate = valueDelegate);
 }

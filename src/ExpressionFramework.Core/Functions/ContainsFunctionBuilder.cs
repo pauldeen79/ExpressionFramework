@@ -6,7 +6,7 @@ public class ContainsFunctionBuilder : IExpressionFunctionBuilder
     public IExpressionFunctionBuilder? InnerFunction { get; set; }
 
     public ContainsFunctionBuilder WithObjectToContain(object? objectToContain)
-        => this.Chain(x => x.ObjectToContain = objectToContain);
+        => this.With(x => x.ObjectToContain = objectToContain);
 
     public IExpressionFunction Build()
         => new ContainsFunction(ObjectToContain, InnerFunction?.Build());

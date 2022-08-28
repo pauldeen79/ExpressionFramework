@@ -2,11 +2,11 @@
 
 public class ValueProvider : IValueProvider
 {
-    public object? GetValue(object? context, string fieldName)
+    public Result<object?> GetValue(object? context, string fieldName)
     {
         if (context == null)
         {
-            return null;
+            return Result<object?>.Success(default);
         }
 
         var type = context.GetType();
@@ -17,7 +17,7 @@ public class ValueProvider : IValueProvider
 
             if (property == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(fieldName), $"Fieldname [{fieldName}] is not found on type [{type.FullName}]");
+                return Result<object?>.Invalid($"Fieldname [{fieldName}] is not found on type [{type.FullName}]");
             }
 
             returnValue = property.GetValue(context);
@@ -29,6 +29,6 @@ public class ValueProvider : IValueProvider
             type = returnValue.GetType();
         }
 
-        return returnValue;
+        return Result<object?>.Success(returnValue);
     }
 }

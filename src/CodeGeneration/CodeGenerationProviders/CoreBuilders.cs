@@ -17,13 +17,17 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         .Select
         (
             x => new ClassBuilder(x)
-                .Chain(y => y.Methods.RemoveAll(z => z.Static))
-                .Chain(y =>
+                .With(y =>
                 {
                     if (y.Interfaces[0].EndsWith("ExpressionBuilder"))
                     {
                         y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder";
                         y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.IExpression";
+                    }
+                    else if (y.Interfaces[0].EndsWith("AggregateFunctionBuilder"))
+                    {
+                        y.Interfaces[0] = "ExpressionFramework.Abstractions.DomainModel.Builders.IAggregateFunctionBuilder";
+                        y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction";
                     }
                 })
                 .Build()

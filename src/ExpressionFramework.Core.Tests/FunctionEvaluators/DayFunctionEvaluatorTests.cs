@@ -8,10 +8,11 @@ public class DayFunctionEvaluatorTests
         // Arrange
         var sut = new DayFunctionEvaluator();
         var functionMock = new Mock<IExpressionFunction>();
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(functionMock.Object, "test", expressionEvaluatorMock.Object, out var _);
+        var actual = sut.TryEvaluate(functionMock.Object, "test", null, expressionMock.Object, expressionEvaluatorMock.Object, out var _);
 
         // Assert
         actual.Should().BeFalse();
@@ -24,10 +25,11 @@ public class DayFunctionEvaluatorTests
         var sut = new DayFunctionEvaluator();
         var value = new DateTime(2020, 2, 3);
         var function = new DayFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();
@@ -41,10 +43,11 @@ public class DayFunctionEvaluatorTests
         var sut = new DayFunctionEvaluator();
         var value = 0; //integer, cannot convert this to DateTime!
         var function = new DayFunction(null);
+        var expressionMock = new Mock<IExpression>();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.TryEvaluate(function, value, expressionEvaluatorMock.Object, out var functionResult);
+        var actual = sut.TryEvaluate(function, value, null, expressionMock.Object, expressionEvaluatorMock.Object, out var functionResult);
 
         // Assert
         actual.Should().BeTrue();

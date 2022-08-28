@@ -20,6 +20,13 @@ public class CoreAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(IConstantExpression),
         typeof(IDelegateExpression),
         typeof(IFieldExpression),
+        typeof(IAggregateExpression),
+        typeof(IContextExpression),
+        typeof(IConditionalExpression),
+        typeof(IChainedExpression),
+        typeof(IAggregateFunctionResultValue),
+        typeof(ISwitchExpression),
+        typeof(ICase),
     };
 
     protected override string Namespace => "CodeGeneration.CodeGenerationProviders";

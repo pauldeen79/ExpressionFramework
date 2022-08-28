@@ -2,5 +2,5 @@
 
 public interface IValueProvider
 {
-    object? GetValue(object? context, string fieldName);
+    Result<object?> GetValue(object? context, string fieldName);
 }

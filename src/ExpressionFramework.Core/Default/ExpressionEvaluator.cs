@@ -2,49 +2,59 @@
 
 public class ExpressionEvaluator : IExpressionEvaluator
 {
-    private readonly IEnumerable<IExpressionEvaluatorProvider> _expressionEvaluatorProviders;
-    private readonly IEnumerable<IFunctionEvaluator> _functionEvaluators;
+    private readonly IEnumerable<IExpressionEvaluatorHandler> _handlers;
+    private readonly IEnumerable<IFunctionEvaluator> _evaluators;
 
-    public ExpressionEvaluator(IEnumerable<IExpressionEvaluatorProvider> expressionEvaluators, IEnumerable<IFunctionEvaluator> functionEvaluators)
+    public ExpressionEvaluator(
+        IEnumerable<IExpressionEvaluatorHandler> handlers,
+        IEnumerable<IFunctionEvaluator> evaluators)
     {
-        _expressionEvaluatorProviders = expressionEvaluators;
-        _functionEvaluators = functionEvaluators;
+        _handlers = handlers;
+        _evaluators = evaluators;
     }
 
-    public object? Evaluate(object? item, IExpression expression)
+    public Result<object?> Evaluate(object? context, IExpression expression)
     {
         object? expressionResult = null;
         var handled = false;
-        foreach (var evaluatorProvider in _expressionEvaluatorProviders)
+        foreach (var handler in _handlers)
         {
-            if (evaluatorProvider.TryEvaluate(item, expression, this, out var evaluatorResult))
+            var result = handler.Handle(context, expression, this);
+            if (result.IsSuccessful())
             {
-                expressionResult = evaluatorResult;
+                expressionResult = result.Value;
                 handled = true;
                 break;
+            }
+            else if (result.IsSupported())
+            {
+                // something went wrong... return the result
+                return result;
             }
         }
 
         if (!handled)
         {
-            throw new ArgumentOutOfRangeException(nameof(expression), $"Unsupported expression: [{expression.GetType().Name}]");
+            return Result<object?>.NotSupported($"Unsupported expression: [{expression.GetType().Name}]");
         }
 
         if (expression.Function != null)
         {
-            foreach (var evaluator in _functionEvaluators)
+            foreach (var evaluator in _evaluators)
             {
                 if (evaluator.TryEvaluate(expression.Function,
                                           expressionResult,
+                                          context,
+                                          expression,
                                           this,
                                           out var functionResult))
                 {
-                    return functionResult;
+                    return Result<object?>.Success(functionResult);
                 }
             }
-            throw new ArgumentOutOfRangeException(nameof(expression), $"Unsupported function: [{expression.Function.GetType().Name}]");
+            return Result<object?>.NotSupported($"Unsupported function: [{expression.Function.GetType().Name}]");
         }
 
-        return expressionResult;
+        return Result<object?>.Success(expressionResult);
     }
 }

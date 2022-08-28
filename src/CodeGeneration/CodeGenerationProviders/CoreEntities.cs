@@ -14,14 +14,21 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         ).Select
         (
             x => new ClassBuilder(x)
-                .Chain(y => y.Methods.RemoveAll(z => z.Static))
-                .Chain(y =>
+                .With(y =>
                 {
                     if (y.Interfaces[0].EndsWith("Expression"))
                     {
                         y.Methods.Add(new ClassMethodBuilder()
                             .WithName("ToBuilder")
                             .WithTypeName("ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .AddLiteralCodeStatements($"return new ExpressionFramework.Core.DomainModel.Builders.{y.Name}Builder(this);")
+                        );
+                    }
+                    else if (y.Interfaces[0].EndsWith("AggregateFunction"))
+                    {
+                        y.Methods.Add(new ClassMethodBuilder()
+                            .WithName("ToBuilder")
+                            .WithTypeName("ExpressionFramework.Abstractions.DomainModel.Builders.IAggregateFunctionBuilder")
                             .AddLiteralCodeStatements($"return new ExpressionFramework.Core.DomainModel.Builders.{y.Name}Builder(this);")
                         );
                     }

@@ -20,7 +20,41 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
+    }
+
+    [Fact]
+    public void Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
+    {
+        // Arrange
+        var expression = new FieldExpressionBuilder().WithFieldName("InnerProperty.Name").Build();
+        var context = new { InnerProperty = new { Name = "Hello world" } };
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+
+        // Assert
+        actual.Value.Should().Be("Hello world");
+    }
+
+    [Fact]
+    public void Can_Evaluate_Nested_FieldExpression_Using_ChainedExpression()
+    {
+        // Arrange
+        var expression = new ChainedExpressionBuilder()
+            .Chain
+            (
+                new FieldExpressionBuilder().WithFieldName("InnerProperty"),
+                new FieldExpressionBuilder().WithFieldName("Name")
+            )
+            .Build();
+        var context = new { InnerProperty = new { Name = "Hello world" } };
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
+
+        // Assert
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
@@ -33,21 +67,22 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
     public void Can_Evaluate_DelegateExpression()
     {
         // Arrange
-        var expression = new DelegateExpressionBuilder().WithValueDelegate((context, _, _) => context?.GetType()?.GetProperty("Name")?.GetValue(context)).Build();
+        var expression = new DelegateExpressionBuilder().WithValueDelegate((context, _, _)
+            => context?.GetType()?.GetProperty("Name")?.GetValue(context)).Build();
         var context = new { Name = "Hello world" };
 
         // Act
         var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
-        actual.Should().Be("Hello world");
+        actual.Value.Should().Be("Hello world");
     }
 
     [Fact]
@@ -60,7 +95,214 @@ public sealed class IntegrationTests : IDisposable
         var actual = CreateExpressionEvaluator().Evaluate(null, expression);
 
         // Assert
-        actual.Should().BeNull();
+        actual.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public void Can_Evaluate_AggregateExpression_With_Some_Mathematic_Functions()
+    {
+        /// Example: 5 + (calculationModel.NumberOfHectares / 10)
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new AggregateExpressionBuilder()
+            .Aggregate
+            (
+                new ConstantExpressionBuilder(5),
+                new AggregateExpressionBuilder()
+                    .Aggregate
+                    (
+                        new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares)),
+                        new ConstantExpressionBuilder(10)
+                    )
+                    .WithAggregateFunction(new DivideAggregateFunctionBuilder())
+            )
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+
+        // Assert
+        actual.GetValueOrThrow().Should().Be(5 + (calculationModel.NumberOfHectares / 10));
+    }
+
+    [Fact]
+    public void Can_Evaluate_AggregateExpression_With_Function()
+    {
+        /// Example: 5 + new[] { 10 }.Length
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new AggregateExpressionBuilder()
+            .Aggregate
+            (
+                new ConstantExpressionBuilder(5),
+                new ConstantExpressionBuilder(new[] { 10 }).WithFunction(new CountFunctionBuilder())
+            )
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+
+        // Assert
+        actual.GetValueOrThrow().Should().Be(5 + new[] { 10 }.Length);
+    }
+
+    [Fact]
+    public void Can_Evaluate_AggregateExpression_With_Condition()
+    {
+        /// Example: new[] { 5, 5, 10 }.Where(x => x <= 5).Sum();
+        // Arrange
+        var expression = new AggregateExpressionBuilder()
+            .Aggregate
+            (
+                new ConstantExpressionBuilder(5),
+                new ConstantExpressionBuilder(5),
+                new ConstantExpressionBuilder(10) // this one gets ignored
+            )
+            .WithAggregateFunction(new PlusAggregateFunctionBuilder())
+            .AddExpressionConditions(new ConditionBuilder()
+                .WithLeftExpression(new ContextExpressionBuilder())
+                .WithOperator(Operator.SmallerOrEqual)
+                .WithRightExpression(new ConstantExpressionBuilder(5)))
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
+
+        // Assert
+        actual.GetValueOrThrow().Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
+    }
+
+    [Fact]
+    public void Can_Evaluate_AggregateExpression_With_SwitchExpression()
+    {
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new AggregateExpressionBuilder()
+            .Aggregate
+            (
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(5000))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(10)),
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(500))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(20)),
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(50))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(30)), // <--------- this one gets selected, it's the first one which condition evaluates to true
+                new ConditionalExpressionBuilder()
+                    .AddConditions
+                    (
+                        new ConditionBuilder()
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithOperator(Operator.GreaterOrEqual)
+                            .WithRightExpression(new ConstantExpressionBuilder(5))
+                    )
+                    .WithResultExpression(new ConstantExpressionBuilder(40)),
+                new ConstantExpressionBuilder(50), // non conditional expression will take the result (3)
+                new ConstantExpressionBuilder(60)
+            )
+            .AddExpressionConditions(new ConditionBuilder()
+                .WithLeftExpression(new ContextExpressionBuilder())
+                .WithOperator(Operator.IsNotNull))
+            .WithAggregateFunction(new FirstAggregateFunctionBuilder())
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+
+        // Assert
+        var expected = new List<(Func<int, bool> Condition, object Result)>
+        {
+            new(hectares => hectares >= 5000, 10),
+            new(hectares => hectares >= 500, 20),
+            new(hectares => hectares >= 50, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(hectares => hectares >= 5, 40),
+            new(_ => true, 50),
+        };
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke(calculationModel.NumberOfHectares)).Result); // 30
+    }
+
+    [Fact]
+    public void Can_Evaluate_SwitchExpression()
+    {
+        // Arrange
+        var calculationModel = new { NumberOfHectares = 50 };
+        var expression = new SwitchExpressionBuilder()
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(5000))
+                ).Then(new ConstantExpressionBuilder(10))
+            )
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(500))
+                ).Then(new ConstantExpressionBuilder(20))
+            )
+            .Case
+            (
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(50))
+                ).Then(new ConstantExpressionBuilder(30))
+            )
+            .Case(
+                new CaseBuilder().When
+                (
+                    new ConditionBuilder()
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithOperator(Operator.GreaterOrEqual)
+                        .WithRightExpression(new ConstantExpressionBuilder(5))
+                ).Then(new ConstantExpressionBuilder(40))
+            )
+            .Default(new ConstantExpressionBuilder(50))
+            .Build();
+
+        // Act
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
+
+        // Assert
+        var expected = new List<(Func<int, bool> Condition, object Result)>
+        {
+            new(hectares => hectares >= 5000, 10),
+            new(hectares => hectares >= 500, 20),
+            new(hectares => hectares >= 50, 30), // <--------- this one gets selected, it's the first one which condition evaluates to true
+            new(hectares => hectares >= 5, 40),
+            new(_ => true, 50),
+        };
+        actual.GetValueOrThrow().Should().Be(expected.FirstOrDefault(x => x.Condition.Invoke(calculationModel.NumberOfHectares)).Result); // 30
     }
 
     [Fact]
@@ -78,7 +320,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -96,7 +338,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -105,16 +347,16 @@ public sealed class IntegrationTests : IDisposable
         // Arrange
         var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
-            .WithLeftExpression(new DelegateExpressionBuilder().WithValueDelegate((_, _, _) => "12345"))
+            .WithLeftExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .WithOperator(Operator.Equal)
-            .WithRightExpression(new DelegateExpressionBuilder().WithValueDelegate((_, _, _) => "12345"))
+            .WithRightExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .Build();
 
         // Act
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -132,7 +374,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeFalse();
+        actual.GetValueOrThrow().Should().BeFalse();
     }
 
     [Fact]
@@ -150,7 +392,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition });
 
         // Assert
-        actual.Should().BeFalse();
+        actual.GetValueOrThrow().Should().BeFalse();
     }
 
     [Fact]
@@ -174,7 +416,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -198,7 +440,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -231,7 +473,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
@@ -264,7 +506,7 @@ public sealed class IntegrationTests : IDisposable
         var actual = sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
-        actual.Should().BeTrue();
+        actual.GetValueOrThrow().Should().BeTrue();
     }
 
     private IConditionEvaluator CreateConditionEvaluator() => _serviceProvider.GetRequiredService<IConditionEvaluator>();

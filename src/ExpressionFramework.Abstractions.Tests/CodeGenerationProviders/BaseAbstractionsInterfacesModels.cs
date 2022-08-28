@@ -17,7 +17,7 @@ public class BaseAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
     {
         typeof(ICondition),
         typeof(IExpression),
-        typeof(IExpressionFunction)
+        typeof(IExpressionFunction),
     };
 
     protected override string Namespace => "CodeGeneration.CodeGenerationProviders";

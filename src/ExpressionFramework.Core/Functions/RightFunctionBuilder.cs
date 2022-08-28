@@ -6,7 +6,7 @@ public class RightFunctionBuilder : IExpressionFunctionBuilder
     public IExpressionFunctionBuilder? InnerFunction { get; set; }
 
     public RightFunctionBuilder WithLength(int length)
-        => this.Chain(x => x.Length = length);
+        => this.With(x => x.Length = length);
 
     public IExpressionFunction Build()
         => new RightFunction(Length, InnerFunction?.Build());

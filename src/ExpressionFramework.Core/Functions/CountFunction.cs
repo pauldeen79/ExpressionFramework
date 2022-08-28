@@ -2,10 +2,7 @@
 
 public record CountFunction : IExpressionFunction
 {
-    public CountFunction(IExpressionFunction? innerFunction)
-    {
-        InnerFunction = innerFunction;
-    }
+    public CountFunction(IExpressionFunction? innerFunction) => InnerFunction = innerFunction;
 
     public IExpressionFunction? InnerFunction { get; }
 

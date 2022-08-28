@@ -31,10 +31,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             if (property.Name == "ValueDelegate")
             {
                 //HACK: Fix nullable type in generic parameter
-                property.TypeName = "System.Func`4[[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]";
-                // Fix initialization in builder c'tor, because the object it not nullable
+                property.TypeName = "System.Func`5[[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]";
+                // Fix initialization in builder c'tor, because the object is not nullable
                 property.SetDefaultValueForBuilderClassConstructor(new Literal("new Func<object?, IExpression, IExpressionEvaluator, object?>((_, _, _) => null)"));
             }
+
             var typeName = property.TypeName.FixTypeName();
             if (typeName.StartsWith("ExpressionFramework.Abstractions.DomainModel.I", StringComparison.InvariantCulture))
             {
@@ -46,9 +47,37 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
                 property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
             }
+            else if (typeName.Contains("Collection<ExpressionFramework."))
+            {
+                if (typeName == "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Abstractions.DomainModel.IExpression>")
+                {
+                    property.ConvertCollectionPropertyToBuilderOnBuilder
+                    (
+                        false,
+                        typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
+                        "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder>",
+                        "{0} = source.{0}.Select(x => x.ToBuilder()).ToList()"
+                    );
+                }
+                else
+                {
+                    property.ConvertCollectionPropertyToBuilderOnBuilder
+                    (
+                        false,
+                        typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
+                        typeName
+                            .Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.", StringComparison.InvariantCulture)
+                            .ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
+                    );
+                }
+            }
             else if (typeName.IsBooleanTypeName() || typeName.IsNullableBooleanTypeName())
             {
                 property.SetDefaultArgumentValueForWithMethod(true);
+                if (property.Name == "Continue")
+                {
+                    property.SetDefaultValueForBuilderClassConstructor(new Literal("true"));
+                }
             }
         }
     }
@@ -56,7 +85,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     private static string GetCustomBuilderConstructorInitializeExpression(ClassPropertyBuilder property, string typeName)
     {
         if (typeName == "ExpressionFramework.Abstractions.DomainModel.IExpressionFunction"
-            || typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression")
+            || typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
+            || typeName == "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction")
         {
             return property.IsNullable
                 ? "{0} = source.{0} == null ? null : source.{0}.ToBuilder()"
@@ -69,7 +99,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     }
 
     private static Literal GetDefaultValueForBuilderClassConstructor(string typeName)
-        => new Literal(typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression"
-            ? "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()"
-            : "new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
+    {
+        if (typeName == "ExpressionFramework.Abstractions.DomainModel.IExpression")
+        {
+            return new("new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()");
+        }
+
+        if (typeName == "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction")
+        {
+            return new("new ExpressionFramework.Core.AggregateFunctions.EmptyAggregateFunctionBuilder()");
+        }
+
+        return new("new " + typeName.Replace("ExpressionFramework.Abstractions.DomainModel.I", "ExpressionFramework.Core.DomainModel.Builders.") + "Builder()");
+    }
 }

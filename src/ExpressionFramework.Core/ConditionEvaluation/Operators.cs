@@ -2,7 +2,7 @@
 
 internal static class Operators
 {
-    internal static readonly Dictionary<Operator, Predicate<OperatorData>> Items = new Dictionary<Operator, Predicate<OperatorData>>
+    internal static readonly Dictionary<Operator, Predicate<OperatorData>> Items = new()
     {
         { Operator.Contains, Contains },
         { Operator.NotContains, data => data.LeftValue != null && !Contains(data) },

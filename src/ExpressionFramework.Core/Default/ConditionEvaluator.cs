@@ -7,7 +7,39 @@ public class ConditionEvaluator : IConditionEvaluator
     public ConditionEvaluator(IExpressionEvaluator evaluator)
         => _evaluator = evaluator;
 
-    public bool Evaluate(object? context, IEnumerable<ICondition> conditions)
+    public Result<bool> Evaluate(object? context, IEnumerable<ICondition> conditions)
+    {
+        if (CanEvaluateSimpleConditions(conditions))
+        {
+            return EvaluateSimpleConditions(context, conditions);
+        }
+        
+        return EvaluateComplexConditions(context, conditions);
+    }
+
+    private bool CanEvaluateSimpleConditions(IEnumerable<ICondition> conditions)
+        => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
+
+    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ICondition> conditions)
+    {
+        foreach (var condition in conditions)
+        {
+            var itemResult = IsItemValid(context, condition);
+            if (!itemResult.IsSuccessful())
+            {
+                return itemResult;
+            }
+
+            if (!itemResult.Value)
+            {
+                return itemResult;
+            }
+        }
+
+        return Result<bool>.Success(true);
+    }
+
+    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ICondition> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -20,25 +52,38 @@ public class ConditionEvaluator : IConditionEvaluator
             var prefix = condition.StartGroup ? "(" : string.Empty;
             var suffix = condition.EndGroup ? ")" : string.Empty;
             var itemResult = IsItemValid(context, condition);
+            if (!itemResult.IsSuccessful())
+            {
+                return itemResult;
+            }
             builder.Append(prefix)
-                   .Append(itemResult ? "T" : "F")
+                   .Append(itemResult.Value ? "T" : "F")
                    .Append(suffix);
         }
 
-        return EvaluateBooleanExpression(builder.ToString());
+        return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private bool IsItemValid(object? item, ICondition condition)
+    private Result<bool> IsItemValid(object? context, ICondition condition)
     {
-        var leftValue = _evaluator.Evaluate(item, condition.LeftExpression);
-        var rightValue = _evaluator.Evaluate(item, condition.RightExpression);
+        var leftResult = _evaluator.Evaluate(context, condition.LeftExpression);
+        if (!leftResult.IsSuccessful())
+        {
+            return Result<bool>.FromExistingResult(leftResult);
+        }
+
+        var rightResult = _evaluator.Evaluate(context, condition.RightExpression);
+        if (!rightResult.IsSuccessful())
+        {
+            return Result<bool>.FromExistingResult(rightResult);
+        }
 
         if (Operators.Items.TryGetValue(condition.Operator, out var predicate))
         {
-            return predicate.Invoke(new OperatorData(leftValue, rightValue));
+            return Result<bool>.Success(predicate.Invoke(new OperatorData(leftResult.Value, rightResult.Value)));
         }
 
-        throw new ArgumentOutOfRangeException(nameof(condition), $"Unsupported operator: {condition.Operator}");
+        return Result<bool>.Invalid($"Unsupported operator: {condition.Operator}");
     }
 
     private static bool EvaluateBooleanExpression(string expression)

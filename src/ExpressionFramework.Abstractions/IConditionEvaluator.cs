@@ -2,5 +2,5 @@
 
 public interface IConditionEvaluator
 {
-    bool Evaluate(object? context, IEnumerable<ICondition> conditions);
+    Result<bool> Evaluate(object? context, IEnumerable<ICondition> conditions);
 }
