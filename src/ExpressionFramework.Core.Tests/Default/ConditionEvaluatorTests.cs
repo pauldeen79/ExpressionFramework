@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Core.Tests.Default;
+﻿using ExpressionFramework.Abstractions.DomainModel.Domains;
+
+namespace ExpressionFramework.Core.Tests.Default;
 
 public class ConditionEvaluatorTests
 {
@@ -6,7 +8,7 @@ public class ConditionEvaluatorTests
     private ConditionEvaluator CreateSut() => new(_expressionEvaluatorMock.Object);
 
     [Fact]
-    public void IsItemValid_Throws_On_Unsupported_Operator()
+    public void Evaluate_Returns_Invalid_On_Unsupported_Operator()
     {
         // Arrange
         var conditionMock = new Mock<ICondition>();
@@ -17,14 +19,14 @@ public class ConditionEvaluatorTests
         conditionMock.SetupGet(x => x.RightExpression)
                      .Returns(new EmptyExpressionBuilder().Build());
         _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                                .Returns<object?, object?, IExpression>((_, _, expression)
-                                    => Result<object?>.Success(null));
+                                .Returns(Result<object?>.Success(null));
 
         // Act
-        CreateSut().Invoking(x => x.Evaluate(null, new[] { conditionMock.Object }))
-                   .Should().ThrowExactly<ArgumentOutOfRangeException>()
-                   .WithParameterName("condition")
-                   .And.Message.Should().StartWith($"Unsupported operator: {int.MaxValue}");
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be($"Unsupported operator: {int.MaxValue}");
     }
 
     [Theory]
@@ -112,10 +114,10 @@ public class ConditionEvaluatorTests
     [InlineData("Pizza", "a", Operator.NotEndsWith, false)]
     [InlineData("Pizza", "A", Operator.NotEndsWith, false)]
     [InlineData(null, "A", Operator.NotEndsWith, false)]
-    public void IsItemValid_Returns_Correct_Result_On_Contains_Condition(object? leftValue,
-                                                                         object? rightValue,
-                                                                         Operator @operator,
-                                                                         bool expectedResult)
+    public void Evaluate_Returns_Correct_Result_On_Contains_Condition(object? leftValue,
+                                                                      object? rightValue,
+                                                                      Operator @operator,
+                                                                      bool expectedResult)
     {
         // Arrange
         var leftExpressionMock = new Mock<IConstantExpression>();
@@ -151,11 +153,11 @@ public class ConditionEvaluatorTests
     }
 
     [Fact]
-    public void IsItemValid_Works_Correctly_On_Equals_With_Sequences()
+    public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
-        var leftValue = new ReadOnlyValueCollection<string>(new [] { "1", "2", "3" });
-        var rightValue = new ReadOnlyValueCollection<string>(new [] { "1", "2", "3" });
+        var leftValue = new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" });
+        var rightValue = new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" });
         var leftExpressionMock = new Mock<IConstantExpression>();
         leftExpressionMock.SetupGet(x => x.Value).Returns(leftValue);
         var leftExpression = leftExpressionMock.Object;
@@ -189,7 +191,7 @@ public class ConditionEvaluatorTests
     }
 
     [Fact]
-    public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
+    public void Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
         var leftValue = new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" });
@@ -227,7 +229,7 @@ public class ConditionEvaluatorTests
     }
 
     [Fact]
-    public void IsItemValid_Works_Correctly_On_Contains_With_Sequence_Of_Ints()
+    public void Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Ints()
     {
         // Arrange
         var leftValue = new ReadOnlyValueCollection<int>(new[] { 1, 2, 3 });
@@ -262,5 +264,77 @@ public class ConditionEvaluatorTests
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
+    }
+
+    [Fact]
+    public void Evaluate_Returns_NonSuccessfulResult_On_Unsuccessful_ExpressionEvaluation_In_LeftExpression()
+    {
+        // Arrange
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(1);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(2);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Equal);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return Result<object?>.Error("Kaboom");
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return Result<object?>.Success(rightExpression.Value);
+                                    }
+
+                                    return Result<object?>.NotSupported();
+                                });
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_NonSuccessfulResult_On_Unsuccessful_ExpressionEvaluation_In_RightExpression()
+    {
+        // Arrange
+        var leftExpressionMock = new Mock<IConstantExpression>();
+        leftExpressionMock.SetupGet(x => x.Value).Returns(1);
+        var leftExpression = leftExpressionMock.Object;
+        var rightExpressionMock = new Mock<IConstantExpression>();
+        rightExpressionMock.SetupGet(x => x.Value).Returns(2);
+        var rightExpression = rightExpressionMock.Object;
+        var conditionMock = new Mock<ICondition>();
+        conditionMock.SetupGet(x => x.Operator).Returns(Operator.Equal);
+        conditionMock.SetupGet(x => x.LeftExpression).Returns(leftExpression);
+        conditionMock.SetupGet(x => x.RightExpression).Returns(rightExpression);
+        _expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                                .Returns<object?, object?, IExpression>((_, _, expression) =>
+                                {
+                                    if (expression == leftExpression)
+                                    {
+                                        return Result<object?>.Success(leftExpression.Value);
+                                    }
+                                    if (expression == rightExpression)
+                                    {
+                                        return Result<object?>.Error("Kaboom");
+                                    }
+
+                                    return Result<object?>.NotSupported();
+                                });
+        // Act
+        var actual = CreateSut().Evaluate(null, new[] { conditionMock.Object });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
     }
 }

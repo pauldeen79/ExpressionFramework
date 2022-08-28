@@ -51,7 +51,7 @@ public class ConditionEvaluator : IConditionEvaluator
             return Result<bool>.Success(predicate.Invoke(new OperatorData(leftResult.Value, rightResult.Value)));
         }
 
-        throw new ArgumentOutOfRangeException(nameof(condition), $"Unsupported operator: {condition.Operator}");
+        return Result<bool>.Invalid($"Unsupported operator: {condition.Operator}");
     }
 
     private static Result<bool> EvaluateBooleanExpression(string expression)

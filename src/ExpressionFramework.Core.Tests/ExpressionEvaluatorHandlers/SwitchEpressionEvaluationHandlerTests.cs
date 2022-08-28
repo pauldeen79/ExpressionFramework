@@ -70,16 +70,16 @@ public class SwitchEpressionEvaluationHandlerTests
         var sut = new SwitchEpressionEvaluationHandler(conditionEvaluatorProviderMock.Object);
         const string tempResult = "yes";
         var switchExpression = new SwitchExpressionBuilder()
-            .Case
+            .AddCases
             (
                 new CaseBuilder()
-                    .When(new ConditionBuilder()
+                    .AddConditions(new ConditionBuilder()
                         .WithLeftExpression(new ConstantExpressionBuilder(true))
                         .WithOperator(Operator.Equal)
                         .WithRightExpression(new ConstantExpressionBuilder(false)))
-                    .Then(new ConstantExpressionBuilder("no"))
+                    .WithExpression(new ConstantExpressionBuilder("no"))
             )
-            .Default
+            .WithDefaultExpression
             (
                 new ConstantExpressionBuilder(tempResult)
             )
@@ -94,5 +94,42 @@ public class SwitchEpressionEvaluationHandlerTests
         // Assert
         actual.IsSuccessful().Should().BeTrue();
         actual.Value.Should().BeEquivalentTo(tempResult);
+    }
+
+    [Fact]
+    public void Handle_Returns_Correct_Result_When_ConditionEvaluation_Fails()
+    {
+        // Arrange
+        var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
+        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
+        conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                              .Returns(Result<bool>.Error("Something went wrong, please check"));
+        var sut = new SwitchEpressionEvaluationHandler(conditionEvaluatorProviderMock.Object);
+        var switchExpression = new SwitchExpressionBuilder()
+            .Case
+            (
+                new CaseBuilder()
+                    .When(new ConditionBuilder()
+                        .WithLeftExpression(new ConstantExpressionBuilder(true))
+                        .WithOperator(Operator.Equal)
+                        .WithRightExpression(new ConstantExpressionBuilder(true)))
+                    .Then(new ConstantExpressionBuilder("yes"))
+            )
+            .Default
+            (
+                new ConstantExpressionBuilder("no")
+            )
+            .Build();
+        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
+
+        // Act
+        var actual = sut.Handle(default, default, switchExpression, expressionEvaluatorMock.Object);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Something went wrong, please check");
     }
 }

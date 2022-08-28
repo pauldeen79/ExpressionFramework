@@ -255,7 +255,7 @@ public class AggregateExpressionEvaluatorHandlerTests
     }
 
     [Fact]
-    public void Handle_Should_Return_ErrorMessage_When_AggregateFunction_Gives_Error_In_First_Item()
+    public void Handle_Returns_ErrorMessage_When_AggregateFunction_Gives_Error_In_First_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -264,13 +264,6 @@ public class AggregateExpressionEvaluatorHandlerTests
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
                               .Returns(Result<bool>.Success(true));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
-        evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
-                                            It.IsAny<bool>(),
-                                            It.IsAny<object?>(),
-                                            It.IsAny<object?>(),
-                                            It.IsAny<IExpressionEvaluator>(),
-                                            It.IsAny<IExpression>()))
-                     .Returns(Result<IAggregateFunctionResultValue?>.Error("Kaboom"));
         var sut = new AggregateExpressionEvaluatorHandler(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
         var expressionMock = new Mock<IAggregateExpression>();
         expressionMock.SetupGet(x => x.Expressions)
@@ -282,7 +275,9 @@ public class AggregateExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
         expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
                                .Returns<object?, object?, IExpression>((item, context, expression)
-                               => Result<object?>.Success(((IConstantExpression)expression).Value));
+                               => Convert.ToInt32(((IConstantExpression)expression).Value) == 1
+                               ? Result<object?>.Error("Kaboom")
+                               : Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
         var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
@@ -294,7 +289,7 @@ public class AggregateExpressionEvaluatorHandlerTests
     }
 
     [Fact]
-    public void Handle_Should_Return_ErrorMessage_When_ExpressionEvaluator_Gives_Error_In_First_Item()
+    public void Handle_Returns_ErrorMessage_When_ExpressionEvaluator_Gives_Error_In_First_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -332,7 +327,7 @@ public class AggregateExpressionEvaluatorHandlerTests
     }
 
     [Fact]
-    public void Handle_Should_Return_ErrorMessage_When_AggregateFunction_Gives_Error_In_Subsequent_Item()
+    public void Handle_Returns_ErrorMessage_When_AggregateFunction_Gives_Error_In_Subsequent_Item()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
@@ -374,14 +369,54 @@ public class AggregateExpressionEvaluatorHandlerTests
     }
 
     [Fact]
-    public void Can_Use_Conditions_On_TryEvaluate()
+    public void Handle_Returns_ErrorMessage_When_ConditionEvaluation_Fails()
     {
         // Arrange
         var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
-                               .Returns<object?, IEnumerable<ICondition>>((context , _)=> Result<bool>.Success(Convert.ToInt32(context) == 1));
+                               .Returns(Result<bool>.Error("Kaboomski"));
+        var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
+        object tempResult = 1;
+        evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
+                                            It.IsAny<bool>(),
+                                            It.IsAny<object?>(),
+                                            It.IsAny<object?>(),
+                                            It.IsAny<IExpressionEvaluator>(),
+                                            It.IsAny<IExpression>()))
+                     .Returns(Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(tempResult).Build()));
+        var sut = new AggregateExpressionEvaluatorHandler(conditionEvaluatorProviderMock.Object, new[] { evaluatorMock.Object });
+        var expressionMock = new Mock<IAggregateExpression>();
+        expressionMock.SetupGet(x => x.Expressions)
+                      .Returns(new ReadOnlyValueCollection<IExpression>(new[] { new ConstantExpressionBuilder(1).Build(), new ConstantExpressionBuilder(2).Build() }));
+        expressionMock.SetupGet(x => x.ExpressionConditions)
+                      .Returns(new ReadOnlyValueCollection<ICondition>(new[] { new ConditionBuilder().WithLeftExpression(new FieldExpressionBuilder("SourceValue")).WithOperator(Operator.Equal).WithRightExpression(new ConstantExpressionBuilder(1)).Build() }));
+        expressionMock.SetupGet(x => x.AggregateFunction)
+                      .Returns(new Mock<IAggregateFunction>().Object);
+        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, object?, IExpression>((item, context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
+
+        // Act
+        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboomski");
+    }
+
+    [Fact]
+    public void Can_Use_Conditions_On_Handle()
+    {
+        // Arrange
+        var conditionEvaluatorProviderMock = new Mock<IConditionEvaluatorProvider>();
+        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
+        conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
+        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
+                               .Returns<object?, IEnumerable<ICondition>>((context , _)
+                               => Result<bool>.Success(Convert.ToInt32(context) == 1));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
