@@ -10,7 +10,7 @@ public class FirstAggregateFunctionTests
         const byte value = 2;
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.Evaluate(new FirstAggregateFunction(), true, 10, null, expressionEvaluatorMock.Object, expression);
@@ -29,7 +29,7 @@ public class FirstAggregateFunctionTests
         const string value = "2";
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.Evaluate(new FirstAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);
@@ -49,7 +49,7 @@ public class FirstAggregateFunctionTests
         const int value = 2;
         var expression = new ConstantExpressionBuilder(value).Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(null, null, expression)).Returns(Result<object?>.Success(value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(null, expression)).Returns(Result<object?>.Success(value));
 
         // Act
         var actual = sut.Evaluate(new MultiplyAggregateFunction(), false, 10, null, expressionEvaluatorMock.Object, expression);

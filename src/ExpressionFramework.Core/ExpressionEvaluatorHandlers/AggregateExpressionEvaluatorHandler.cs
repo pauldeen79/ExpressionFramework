@@ -13,7 +13,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         _evaluators = evaluators;
     }
 
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IAggregateExpression aggregateExpression)
         {
@@ -21,7 +21,6 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         }
 
         var validExpressionsResult = GetValidExpressions(aggregateExpression,
-                                                         item,
                                                          context,
                                                          evaluator,
                                                          _conditionEvaluatorProvider.Get(evaluator));
@@ -37,8 +36,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             var shouldContinue = true;
             if (first)
             {
-                result = ProcessFirstExpression(item,
-                                                context,
+                result = ProcessFirstExpression(context,
                                                 evaluator,
                                                 aggregateExpression, 
                                                 exp,
@@ -52,7 +50,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             }
             else
             {
-                result = ProcessSubSequentExpression(item,
+                result = ProcessSubSequentExpression(context,
                                                      evaluator,
                                                      result!,
                                                      aggregateExpression,
@@ -68,27 +66,26 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         return result ?? Result<object?>.Invalid("No expressions found");
     }
 
-    private Result<object?> ProcessFirstExpression(object? item,
-                                                   object? context,
+    private Result<object?> ProcessFirstExpression(object? context,
                                                    IExpressionEvaluator evaluator,
                                                    IAggregateExpression aggregateExpression,
                                                    IExpression innerExpression,
                                                    ref bool shouldContinue)
-        => ProcessExpression(item,
+        => ProcessExpression(context,
                              evaluator,
                              aggregateExpression,
                              innerExpression,
                              out shouldContinue,
-                             evaluator.Evaluate(item, context, innerExpression),
+                             evaluator.Evaluate(context, innerExpression),
                              true);
 
-    private Result<object?> ProcessSubSequentExpression(object? item,
+    private Result<object?> ProcessSubSequentExpression(object? context,
                                                         IExpressionEvaluator evaluator,
                                                         Result<object?> previousResult,
                                                         IAggregateExpression aggregateExpression,
                                                         IExpression innerExpression,
                                                         ref bool shouldContinue)
-        => ProcessExpression(item,
+        => ProcessExpression(context,
                              evaluator,
                              aggregateExpression,
                              innerExpression,
@@ -96,7 +93,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
                              previousResult,
                              false);
 
-    private Result<object?> ProcessExpression(object? item,
+    private Result<object?> ProcessExpression(object? context,
                                               IExpressionEvaluator evaluator,
                                               IAggregateExpression aggregateExpression,
                                               IExpression innerExpression,
@@ -109,7 +106,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
             var evalResult = eval.Evaluate(aggregateExpression.AggregateFunction,
                                            isFirstExpression,
                                            result.Value,
-                                           item,
+                                           context,
                                            evaluator,
                                            innerExpression);
             if (evalResult.IsSupported())
@@ -124,7 +121,6 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
     }
 
     private Result<IEnumerable<IExpression>> GetValidExpressions(IAggregateExpression aggregateExpression,
-                                                                 object? item,
                                                                  object? context,
                                                                  IExpressionEvaluator expressionEvaluator,
                                                                  IConditionEvaluator conditionEvaluator)
@@ -133,7 +129,7 @@ public class AggregateExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         Result<IEnumerable<IExpression>>? invalidResult = null;
         foreach (var @expression in aggregateExpression.Expressions)
         {
-            var expressionResult = expressionEvaluator.Evaluate(item, context, expression);
+            var expressionResult = expressionEvaluator.Evaluate(context, expression);
             if (!expressionResult.IsSuccessful())
             {
                 invalidResult = Result<IEnumerable<IExpression>>.FromExistingResult(expressionResult);

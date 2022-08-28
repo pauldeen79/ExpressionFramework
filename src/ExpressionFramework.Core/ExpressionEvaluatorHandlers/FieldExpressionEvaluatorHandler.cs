@@ -6,11 +6,11 @@ public class FieldExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 
     public FieldExpressionEvaluatorHandler(IValueProvider valueProvider) => _valueProvider = valueProvider;
 
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IFieldExpression fieldExpression)
         {
-            return _valueProvider.GetValue(item, fieldExpression.FieldName);
+            return _valueProvider.GetValue(context, fieldExpression.FieldName);
         }
 
         return Result<object?>.NotSupported();

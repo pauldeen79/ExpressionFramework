@@ -11,7 +11,7 @@ public class ConstantExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -28,7 +28,7 @@ public class ConstantExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();

@@ -2,7 +2,7 @@
 
 public class EmptyExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 {
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is IEmptyExpression constantExpression)
         {

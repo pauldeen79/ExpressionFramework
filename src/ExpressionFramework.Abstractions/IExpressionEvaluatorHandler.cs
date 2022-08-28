@@ -2,5 +2,5 @@
 
 public interface IExpressionEvaluatorHandler
 {
-    Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator);
+    Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator);
 }

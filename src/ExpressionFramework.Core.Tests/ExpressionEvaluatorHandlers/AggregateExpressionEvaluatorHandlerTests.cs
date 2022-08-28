@@ -13,7 +13,7 @@ public class AggregateExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -46,11 +46,11 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -82,12 +82,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -126,12 +126,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -161,12 +161,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -201,12 +201,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -242,12 +242,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -273,14 +273,14 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Convert.ToInt32(((IConstantExpression)expression).Value) == 1
                                ? Result<object?>.Error("Kaboom")
                                : Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -314,11 +314,11 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
                                .Returns(Result<object?>.Error("Kaboom"));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -355,12 +355,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -376,7 +376,7 @@ public class AggregateExpressionEvaluatorHandlerTests
         var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
         conditionEvaluatorProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>())).Returns(conditionEvaluatorMock.Object);
         conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<ICondition>>()))
-                               .Returns(Result<bool>.Error("Kaboomski"));
+                              .Returns(Result<bool>.Error("Kaboomski"));
         var evaluatorMock = new Mock<IAggregateFunctionEvaluator>();
         object tempResult = 1;
         evaluatorMock.Setup(x => x.Evaluate(It.IsAny<IAggregateFunction>(),
@@ -395,12 +395,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -435,12 +435,12 @@ public class AggregateExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.AggregateFunction)
                       .Returns(new Mock<IAggregateFunction>().Object);
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();

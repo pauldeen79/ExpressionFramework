@@ -12,12 +12,11 @@ public class ExpressionEvaluatorTests
         var sut = CreateSut();
         var expression = new Mock<IExpression>().Object;
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.NotSupported());
         // Act
-        var result = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, expression);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
@@ -34,13 +33,12 @@ public class ExpressionEvaluatorTests
         expressionMock.SetupGet(x => x.Function).Returns(functionMock.Object);
         var expression = expressionMock.Object;
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.Success(default));
 
         // Act
-        var result = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, expression);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
@@ -54,12 +52,11 @@ public class ExpressionEvaluatorTests
         var sut = CreateSut();
         var expressionMock = new Mock<IExpression>();
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.Error("Kaboom"));
         // Act
-        var result = sut.Evaluate(null, null, expressionMock.Object);
+        var result = sut.Evaluate(null, expressionMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -73,12 +70,11 @@ public class ExpressionEvaluatorTests
         var sut = CreateSut();
         var expression = new Mock<IExpression>().Object;
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.Error("Kaboom"));
         // Act
-        var result = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, expression);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -92,13 +88,12 @@ public class ExpressionEvaluatorTests
         var sut = CreateSut();
         var expression = new Mock<IExpression>().Object;
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.Success(12345));
 
         // Act
-        var result = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, expression);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -115,14 +110,13 @@ public class ExpressionEvaluatorTests
         expressionMock.SetupGet(x => x.Function).Returns(functionMock.Object);
         var expression = expressionMock.Object;
         _expressionEvaluatorMock.Setup(x => x.Handle(It.IsAny<object?>(),
-                                                     It.IsAny<object?>(),
                                                      It.IsAny<IExpression>(),
                                                      It.IsAny<IExpressionEvaluator>()))
                                 .Returns(Result<object?>.Success(12345));
         _functionEvaluatorMock.Delegate = new((_, value, _, _, _) => new Tuple<bool, object?>(true, Convert.ToInt32(value) * 2));
 
         // Act
-        var result = sut.Evaluate(null, null, expression);
+        var result = sut.Evaluate(null, expression);
 
         // Assert
 

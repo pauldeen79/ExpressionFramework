@@ -13,13 +13,13 @@ public class ExpressionEvaluator : IExpressionEvaluator
         _evaluators = evaluators;
     }
 
-    public Result<object?> Evaluate(object? item, object? context, IExpression expression)
+    public Result<object?> Evaluate(object? context, IExpression expression)
     {
         object? expressionResult = null;
         var handled = false;
         foreach (var handler in _handlers)
         {
-            var result = handler.Handle(item, context, expression, this);
+            var result = handler.Handle(context, expression, this);
             if (result.IsSuccessful())
             {
                 expressionResult = result.Value;
@@ -44,7 +44,7 @@ public class ExpressionEvaluator : IExpressionEvaluator
             {
                 if (evaluator.TryEvaluate(expression.Function,
                                           expressionResult,
-                                          item,
+                                          context,
                                           expression,
                                           this,
                                           out var functionResult))

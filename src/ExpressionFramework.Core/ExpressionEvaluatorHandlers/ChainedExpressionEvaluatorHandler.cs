@@ -2,7 +2,7 @@
 
 public class ChainedExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 {
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IChainedExpression composableExpression)
         {
@@ -15,12 +15,12 @@ public class ChainedExpressionEvaluatorHandler : IExpressionEvaluatorHandler
         {
             if (first)
             {
-                result = evaluator.Evaluate(item, context, exp);
+                result = evaluator.Evaluate(context, exp);
                 first = false;
             }
             else
             {
-                result = evaluator.Evaluate(result!.Value, context, exp);
+                result = evaluator.Evaluate(result!.Value, exp);
             }
             if (!result.IsSuccessful())
             {

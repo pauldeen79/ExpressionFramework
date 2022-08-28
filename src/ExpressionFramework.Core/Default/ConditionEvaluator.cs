@@ -64,15 +64,15 @@ public class ConditionEvaluator : IConditionEvaluator
         return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private Result<bool> IsItemValid(object? item, ICondition condition)
+    private Result<bool> IsItemValid(object? context, ICondition condition)
     {
-        var leftResult = _evaluator.Evaluate(item, item, condition.LeftExpression);
+        var leftResult = _evaluator.Evaluate(context, condition.LeftExpression);
         if (!leftResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(leftResult);
         }
 
-        var rightResult = _evaluator.Evaluate(item, item, condition.RightExpression);
+        var rightResult = _evaluator.Evaluate(context, condition.RightExpression);
         if (!rightResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(rightResult);

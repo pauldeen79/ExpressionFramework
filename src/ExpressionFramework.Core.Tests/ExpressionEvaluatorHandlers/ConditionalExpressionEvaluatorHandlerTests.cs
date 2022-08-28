@@ -12,7 +12,7 @@ public class ConditionalExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -37,12 +37,12 @@ public class ConditionalExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.Conditions)
                       .Returns(new ReadOnlyValueCollection<ICondition>());
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -67,12 +67,12 @@ public class ConditionalExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.Conditions)
                       .Returns(new ReadOnlyValueCollection<ICondition>());
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -97,12 +97,12 @@ public class ConditionalExpressionEvaluatorHandlerTests
         expressionMock.SetupGet(x => x.Conditions)
                       .Returns(new ReadOnlyValueCollection<ICondition>());
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression)
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
                                => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();

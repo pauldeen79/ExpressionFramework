@@ -7,14 +7,14 @@ public class ConditionalExpressionEvaluatorHandler : IExpressionEvaluatorHandler
     public ConditionalExpressionEvaluatorHandler(IConditionEvaluatorProvider conditionEvaluatorProvider)
         => _conditionEvaluatorProvider = conditionEvaluatorProvider;
 
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not IConditionalExpression conditionalExpression)
         {
             return Result<object?>.NotSupported();
         }
 
-        var conditionResult = _conditionEvaluatorProvider.Get(evaluator).Evaluate(item, conditionalExpression.Conditions);
+        var conditionResult = _conditionEvaluatorProvider.Get(evaluator).Evaluate(context, conditionalExpression.Conditions);
         if (!conditionResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(conditionResult);
@@ -22,7 +22,6 @@ public class ConditionalExpressionEvaluatorHandler : IExpressionEvaluatorHandler
 
         return evaluator.Evaluate
         (
-            item,
             context,
             conditionResult.Value
                 ? conditionalExpression.ResultExpression

@@ -20,7 +20,7 @@ public abstract class AggregateFunctionEvaluatorBase<TFunction> : IAggregateFunc
             return Result<IAggregateFunctionResultValue?>.Success(new AggregateFunctionResultValueBuilder(value).Build());
         }
 
-        var result = evaluator.Evaluate(context, context, expression);
+        var result = evaluator.Evaluate(context, expression);
         if (!result.IsSuccessful())
         {
             return Result<IAggregateFunctionResultValue?>.FromExistingResult(result);

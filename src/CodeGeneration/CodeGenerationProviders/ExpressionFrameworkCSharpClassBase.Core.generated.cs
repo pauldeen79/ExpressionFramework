@@ -177,23 +177,6 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
-                    .WithName(@"IItemExpression"),
-                new ClassBuilder()
-                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
-                    .AddInterfaces(
-                        @"ExpressionFramework.Abstractions.DomainModel.IExpression")
-                    .AddProperties(
-                        new ClassPropertyBuilder()
-                            .WithHasSetter(false)
-                            .WithName(@"Function")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
-                    .AddMethods(
-                        new ClassMethodBuilder()
-                            .WithVirtual(true)
-                            .WithAbstract(true)
-                            .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
                     .WithName(@"IContextExpression"),
                 new ClassBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")

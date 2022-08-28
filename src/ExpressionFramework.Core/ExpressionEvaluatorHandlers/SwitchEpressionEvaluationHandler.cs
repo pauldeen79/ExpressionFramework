@@ -7,7 +7,7 @@ public class SwitchEpressionEvaluationHandler : IExpressionEvaluatorHandler
     public SwitchEpressionEvaluationHandler(IConditionEvaluatorProvider conditionEvaluatorProvider)
         => _conditionEvaluatorProvider = conditionEvaluatorProvider;
 
-    public Result<object?> Handle(object? item, object? context, IExpression expression, IExpressionEvaluator evaluator)
+    public Result<object?> Handle(object? context, IExpression expression, IExpressionEvaluator evaluator)
     {
         if (expression is not ISwitchExpression switchExpression)
         {
@@ -17,17 +17,17 @@ public class SwitchEpressionEvaluationHandler : IExpressionEvaluatorHandler
         var conditionEvaluator = _conditionEvaluatorProvider.Get(evaluator);
         foreach (var @case in switchExpression.Cases)
         {
-            var caseResult = conditionEvaluator.Evaluate(item, @case.Conditions);
+            var caseResult = conditionEvaluator.Evaluate(context, @case.Conditions);
             if (!caseResult.IsSuccessful())
             {
                 return Result<object?>.FromExistingResult(caseResult);
             }
             if (caseResult.Value)
             {
-                return evaluator.Evaluate(item, context, @case.Expression);
+                return evaluator.Evaluate(context, @case.Expression);
             }
         }
 
-        return evaluator.Evaluate(item, context, switchExpression.DefaultExpression);
+        return evaluator.Evaluate(context, switchExpression.DefaultExpression);
     }
 }

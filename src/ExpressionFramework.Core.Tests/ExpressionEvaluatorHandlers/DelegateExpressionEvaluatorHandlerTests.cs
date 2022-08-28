@@ -11,7 +11,7 @@ public class DelegateExpressionEvaluatorHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -25,11 +25,11 @@ public class DelegateExpressionEvaluatorHandlerTests
         var sut = new DelegateExpressionEvaluatorHandler();
         var expressionMock = new Mock<IDelegateExpression>();
         expressionMock.SetupGet(x => x.ValueDelegate)
-                      .Returns(new Func<object?, object?, IExpression, IExpressionEvaluator, object?>((_, _, _, _) => 12345));
+                      .Returns(new Func<object?, IExpression, IExpressionEvaluator, object?>((_, _, _) => 12345));
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();

@@ -24,7 +24,6 @@ public static class ServiceCollectionExtensions
                     x.AddSingleton<IExpressionEvaluatorHandler, DelegateExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, EmptyExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, FieldExpressionEvaluatorHandler>();
-                    x.AddSingleton<IExpressionEvaluatorHandler, ItemExpressionEvaluatorHandler>();
                     x.AddSingleton<IExpressionEvaluatorHandler, SwitchEpressionEvaluationHandler>();
                 }
                 x.TryAddSingleton<IValueProvider, ValueProvider>();

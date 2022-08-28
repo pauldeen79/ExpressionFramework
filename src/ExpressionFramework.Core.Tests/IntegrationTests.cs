@@ -19,7 +19,7 @@ public sealed class IntegrationTests : IDisposable
         var context = new { Name = "Hello world" };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
         actual.Value.Should().Be("Hello world");
@@ -33,7 +33,7 @@ public sealed class IntegrationTests : IDisposable
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
         actual.Value.Should().Be("Hello world");
@@ -53,7 +53,7 @@ public sealed class IntegrationTests : IDisposable
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
         actual.Value.Should().Be("Hello world");
@@ -66,7 +66,7 @@ public sealed class IntegrationTests : IDisposable
         var expression = new ConstantExpressionBuilder().WithValue("Hello world").Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
 
         // Assert
         actual.Value.Should().Be("Hello world");
@@ -76,12 +76,12 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Evaluate_DelegateExpression()
     {
         // Arrange
-        var expression = new DelegateExpressionBuilder().WithValueDelegate((context, _, _, _)
+        var expression = new DelegateExpressionBuilder().WithValueDelegate((context, _, _)
             => context?.GetType()?.GetProperty("Name")?.GetValue(context)).Build();
         var context = new { Name = "Hello world" };
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(context, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(context, expression);
 
         // Assert
         actual.Value.Should().Be("Hello world");
@@ -94,7 +94,7 @@ public sealed class IntegrationTests : IDisposable
         var expression = new EmptyExpressionBuilder().Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
 
         // Assert
         actual.Value.Should().BeNull();
@@ -122,7 +122,7 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
 
         // Assert
         actual.GetValueOrThrow().Should().Be(5 + (calculationModel.NumberOfHectares / 10));
@@ -144,7 +144,7 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
 
         // Assert
         actual.GetValueOrThrow().Should().Be(5 + new[] { 10 }.Length);
@@ -170,7 +170,7 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(null, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(null, expression);
 
         // Assert
         actual.GetValueOrThrow().Should().Be(new[] { 5, 5, 10 }.Where(x => x <= 5).Sum());
@@ -188,7 +188,7 @@ public sealed class IntegrationTests : IDisposable
                     .AddConditions
                     (
                         new ConditionBuilder()
-                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                             .WithOperator(Operator.GreaterOrEqual)
                             .WithRightExpression(new ConstantExpressionBuilder(5000))
                     )
@@ -197,7 +197,7 @@ public sealed class IntegrationTests : IDisposable
                     .AddConditions
                     (
                         new ConditionBuilder()
-                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                             .WithOperator(Operator.GreaterOrEqual)
                             .WithRightExpression(new ConstantExpressionBuilder(500))
                     )
@@ -206,7 +206,7 @@ public sealed class IntegrationTests : IDisposable
                     .AddConditions
                     (
                         new ConditionBuilder()
-                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                             .WithOperator(Operator.GreaterOrEqual)
                             .WithRightExpression(new ConstantExpressionBuilder(50))
                     )
@@ -215,7 +215,7 @@ public sealed class IntegrationTests : IDisposable
                     .AddConditions
                     (
                         new ConditionBuilder()
-                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                            .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                             .WithOperator(Operator.GreaterOrEqual)
                             .WithRightExpression(new ConstantExpressionBuilder(5))
                     )
@@ -230,7 +230,7 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
 
         // Assert
         var expected = new List<(Func<int, bool> Condition, object Result)>
@@ -255,7 +255,7 @@ public sealed class IntegrationTests : IDisposable
                 new CaseBuilder().When
                 (
                     new ConditionBuilder()
-                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                         .WithOperator(Operator.GreaterOrEqual)
                         .WithRightExpression(new ConstantExpressionBuilder(5000))
                 ).Then(new ConstantExpressionBuilder(10))
@@ -265,7 +265,7 @@ public sealed class IntegrationTests : IDisposable
                 new CaseBuilder().When
                 (
                     new ConditionBuilder()
-                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                         .WithOperator(Operator.GreaterOrEqual)
                         .WithRightExpression(new ConstantExpressionBuilder(500))
                 ).Then(new ConstantExpressionBuilder(20))
@@ -275,7 +275,7 @@ public sealed class IntegrationTests : IDisposable
                 new CaseBuilder().When
                 (
                     new ConditionBuilder()
-                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                         .WithOperator(Operator.GreaterOrEqual)
                         .WithRightExpression(new ConstantExpressionBuilder(50))
                 ).Then(new ConstantExpressionBuilder(30))
@@ -284,7 +284,7 @@ public sealed class IntegrationTests : IDisposable
                 new CaseBuilder().When
                 (
                     new ConditionBuilder()
-                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ItemExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
+                        .WithLeftExpression(new ChainedExpressionBuilder().Chain(new ContextExpressionBuilder(), new FieldExpressionBuilder(nameof(calculationModel.NumberOfHectares))))
                         .WithOperator(Operator.GreaterOrEqual)
                         .WithRightExpression(new ConstantExpressionBuilder(5))
                 ).Then(new ConstantExpressionBuilder(40))
@@ -293,7 +293,7 @@ public sealed class IntegrationTests : IDisposable
             .Build();
 
         // Act
-        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, null, expression);
+        var actual = CreateExpressionEvaluator().Evaluate(calculationModel, expression);
 
         // Assert
         var expected = new List<(Func<int, bool> Condition, object Result)>
@@ -349,9 +349,9 @@ public sealed class IntegrationTests : IDisposable
         // Arrange
         var sut = CreateConditionEvaluator();
         var condition = new ConditionBuilder()
-            .WithLeftExpression(new DelegateExpressionBuilder((_, _, _, _) => "12345"))
+            .WithLeftExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .WithOperator(Operator.Equal)
-            .WithRightExpression(new DelegateExpressionBuilder((_, _, _, _) => "12345"))
+            .WithRightExpression(new DelegateExpressionBuilder((_, _, _) => "12345"))
             .Build();
 
         // Act

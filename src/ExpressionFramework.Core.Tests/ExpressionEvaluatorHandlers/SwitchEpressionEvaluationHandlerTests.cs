@@ -12,7 +12,7 @@ public class SwitchEpressionEvaluationHandlerTests
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeFalse();
@@ -46,11 +46,12 @@ public class SwitchEpressionEvaluationHandlerTests
             )
             .Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, switchExpression, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, switchExpression, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -85,11 +86,12 @@ public class SwitchEpressionEvaluationHandlerTests
             )
             .Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, switchExpression, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, switchExpression, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();
@@ -122,11 +124,12 @@ public class SwitchEpressionEvaluationHandlerTests
             )
             .Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<object?>(), It.IsAny<IExpression>()))
-                               .Returns<object?, object?, IExpression>((item, context, expression) => Result<object?>.Success(((IConstantExpression)expression).Value));
+        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IExpression>()))
+                               .Returns<object?, IExpression>((context, expression)
+                               => Result<object?>.Success(((IConstantExpression)expression).Value));
 
         // Act
-        var actual = sut.Handle(default, default, switchExpression, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, switchExpression, expressionEvaluatorMock.Object);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
