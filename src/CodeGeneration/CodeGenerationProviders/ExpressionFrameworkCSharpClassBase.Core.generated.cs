@@ -23,35 +23,41 @@ namespace CodeGeneration.CodeGenerationProviders
         {
             return new[]
             {
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddProperties(
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"LeftExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Operator")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Operator"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Operator")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"RightExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"StartGroup")
-                            .WithTypeName(@"System.Boolean"),
+                            .WithTypeName(@"System.Boolean")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"EndGroup")
-                            .WithTypeName(@"System.Boolean"),
+                            .WithTypeName(@"System.Boolean")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Combination")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Combination"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Combination")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"))
                     .WithName(@"ICondition"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -60,15 +66,17 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IEmptyExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -77,20 +85,23 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Value")
                             .WithTypeName(@"System.Object")
-                            .WithIsNullable(true),
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IConstantExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IConstantExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -98,20 +109,23 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"ValueDelegate")
-                            .WithTypeName(@"System.Func`5[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]"),
+                            .WithTypeName(@"System.Func`4[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IDelegateExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -119,20 +133,23 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"FieldName")
-                            .WithTypeName(@"System.String"),
+                            .WithTypeName(@"System.String")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IFieldExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IFieldExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -140,28 +157,33 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Expressions")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"ExpressionConditions")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"AggregateFunction")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunction"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunction")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IAggregateExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -170,15 +192,17 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IContextExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -186,28 +210,33 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Conditions")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IConditionalExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"ResultExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IConditionalExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"DefaultExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IConditionalExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IConditionalExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -215,33 +244,38 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Expressions")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IChainedExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"IChainedExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddProperties(
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Value")
                             .WithTypeName(@"System.Object")
-                            .WithIsNullable(true),
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunctionResultValue"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Continue")
-                            .WithTypeName(@"System.Boolean"))
+                            .WithTypeName(@"System.Boolean")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunctionResultValue"))
                     .WithName(@"IAggregateFunctionResultValue"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddInterfaces(
                         @"ExpressionFramework.Abstractions.DomainModel.IExpression")
@@ -249,34 +283,40 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Cases")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICase, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICase, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ISwitchExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"DefaultExpression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"),
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ISwitchExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Function")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction")
-                            .WithIsNullable(true))
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .AddMethods(
                         new ClassMethodBuilder()
                             .WithVirtual(true)
                             .WithAbstract(true)
                             .WithName(@"ToBuilder")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
                     .WithName(@"ISwitchExpression"),
-                new ClassBuilder()
+                new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
                     .AddProperties(
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Conditions")
-                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]"),
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Expression")
-                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression"))
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"))
                     .WithName(@"ICase"),
             }.Select(x => x.Build()).ToArray();
         }

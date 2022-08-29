@@ -14,6 +14,7 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
             "ExpressionFramework.Core.DomainModel.Builders",
             "ExpressionFramework.Abstractions.DomainModel.Builders.I{0}"
         )
+        .Cast<IClass>()
         .Select
         (
             x => new ClassBuilder(x)

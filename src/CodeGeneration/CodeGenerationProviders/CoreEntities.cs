@@ -11,7 +11,9 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
         (
             GetCoreModels(),
             "ExpressionFramework.Core.DomainModel"
-        ).Select
+        )
+        .Cast<IClass>()
+        .Select
         (
             x => new ClassBuilder(x)
                 .With(y =>

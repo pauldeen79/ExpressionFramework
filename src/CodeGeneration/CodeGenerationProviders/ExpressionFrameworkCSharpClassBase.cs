@@ -24,9 +24,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         return string.Empty;
     }
 
-    protected override void FixImmutableBuilderProperties(ClassBuilder classBuilder)
+    protected override void FixImmutableClassProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+        => FixImmutableBuilderProperties(typeBaseBuilder);
+
+    protected override void FixImmutableBuilderProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        foreach (var property in classBuilder.Properties)
+        foreach (var property in typeBaseBuilder.Properties)
         {
             if (property.Name == "ValueDelegate")
             {
