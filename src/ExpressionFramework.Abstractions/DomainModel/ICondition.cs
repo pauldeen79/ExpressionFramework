@@ -8,4 +8,5 @@ public interface ICondition
     bool StartGroup { get; }
     bool EndGroup { get; }
     Combination Combination { get; }
+    IConditionBuilder ToBuilder();
 }

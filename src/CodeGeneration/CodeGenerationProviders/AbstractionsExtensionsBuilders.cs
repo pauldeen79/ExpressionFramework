@@ -7,6 +7,7 @@ public class AbstractionsExtensionsBuilders : ExpressionFrameworkCSharpClassBase
     public override string DefaultFileName => "Builders.template.generated.cs";
 
     protected override string SetMethodNameFormatString => "With{0}";
+    protected override string AddMethodNameFormatString => "Add{0}";
 
     public override object CreateModel()
         => GetImmutableBuilderExtensionClasses

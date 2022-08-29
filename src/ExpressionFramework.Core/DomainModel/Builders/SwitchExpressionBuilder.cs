@@ -5,6 +5,9 @@ public partial class SwitchExpressionBuilder
     public SwitchExpressionBuilder Case(CaseBuilder caseBuilder)
         => AddCases(caseBuilder);
 
+    public SwitchExpressionBuilder AddCases(params CaseBuilder[] caseBuilder)
+        => this.With(x => x.Cases.AddRange(caseBuilder));
+
     public SwitchExpressionBuilder Default(IExpressionBuilder defaultExpression)
         => WithDefaultExpression(defaultExpression);
 

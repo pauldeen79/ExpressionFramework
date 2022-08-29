@@ -18,6 +18,9 @@ public class BaseAbstractionsInterfacesModels : CSharpExpressionDumperClassBase
         typeof(ICondition),
         typeof(IExpression),
         typeof(IExpressionFunction),
+        typeof(IAggregateFunction),
+        typeof(IAggregateFunctionResultValue),
+        typeof(ICase),
     };
 
     protected override string Namespace => "CodeGeneration.CodeGenerationProviders";

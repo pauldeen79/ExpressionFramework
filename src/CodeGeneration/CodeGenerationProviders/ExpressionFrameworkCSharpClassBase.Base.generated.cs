@@ -91,6 +91,45 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IExpressionFunctionBuilder")
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IExpressionFunction"))
                     .WithName(@"IExpressionFunction"),
+                new InterfaceBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IAggregateFunctionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunction"))
+                    .WithName(@"IAggregateFunction"),
+                new InterfaceBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Value")
+                            .WithTypeName(@"System.Object")
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunctionResultValue"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Continue")
+                            .WithTypeName(@"System.Boolean")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunctionResultValue"))
+                    .WithName(@"IAggregateFunctionResultValue"),
+                new InterfaceBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Conditions")
+                            .WithTypeName(@"System.Collections.Generic.IReadOnlyCollection`1[[ExpressionFramework.Abstractions.DomainModel.ICondition, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Expression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"))
+                    .WithName(@"ICase"),
             }.Select(x => x.Build()).ToArray();
         }
     }
