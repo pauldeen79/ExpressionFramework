@@ -53,10 +53,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         {
             if (property.Name == "ValueDelegate")
             {
-                //HACK: Fix nullable type in generic parameter
-                property.TypeName = "System.Func`5[[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object?, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]";
                 // Fix initialization in builder c'tor, because the object is not nullable
-                property.SetDefaultValueForBuilderClassConstructor(new Literal("new((_, _, _) => null)"));
+                property.SetDefaultValueForBuilderClassConstructor(new Literal("new(_ => null)"));
             }
 
             var typeName = property.TypeName.FixTypeName();

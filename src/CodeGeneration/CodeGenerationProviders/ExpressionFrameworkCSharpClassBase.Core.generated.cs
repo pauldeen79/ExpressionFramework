@@ -56,6 +56,13 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"Combination")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Combination")
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.IConditionBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"))
                     .WithName(@"ICondition"),
                 new InterfaceBuilder()
                     .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
@@ -109,7 +116,7 @@ namespace CodeGeneration.CodeGenerationProviders
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"ValueDelegate")
-                            .WithTypeName(@"System.Func`4[[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[ExpressionFramework.Abstractions.DomainModel.IExpression, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.IExpressionEvaluator, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=6.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]")
+                            .WithTypeName(@"System.Func`2[[ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionRequest, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionResponse, ExpressionFramework.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]")
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpression"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
@@ -317,7 +324,44 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithName(@"Expression")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"))
+                    .AddMethods(
+                        new ClassMethodBuilder()
+                            .WithVirtual(true)
+                            .WithAbstract(true)
+                            .WithName(@"ToBuilder")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Builders.ICaseBuilder")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICase"))
                     .WithName(@"ICase"),
+                new InterfaceBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Context")
+                            .WithTypeName(@"System.Object")
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionRequest"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Expression")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.IExpression")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionRequest"),
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Evaluator")
+                            .WithTypeName(@"ExpressionFramework.Abstractions.IExpressionEvaluator")
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionRequest"))
+                    .WithName(@"IDelegateExpressionRequest"),
+                new InterfaceBuilder()
+                    .WithNamespace(@"ExpressionFramework.Abstractions.DomainModel")
+                    .AddProperties(
+                        new ClassPropertyBuilder()
+                            .WithHasSetter(false)
+                            .WithName(@"Result")
+                            .WithTypeName(@"System.Object")
+                            .WithIsNullable(true)
+                            .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionResponse"))
+                    .WithName(@"IDelegateExpressionResponse"),
             }.Select(x => x.Build()).ToArray();
         }
     }
