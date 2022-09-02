@@ -15,6 +15,5 @@ condition evaluation:
  e.g. .Where("Field").IsEqualToAny("A", "B")
 
 code generation:
--check if we can upgrade to latest version of model framework
 -check if we can refactor to non-inheritance, add null checks in c'tors, and remove static builder extensions (which is a pain in the ***)
 -add template file for generation of code generation models, instead of unit test with dryrun = false/true
