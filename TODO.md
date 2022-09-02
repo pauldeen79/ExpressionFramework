@@ -14,6 +14,13 @@ condition evaluation:
 -check if we have extension method IsEqualToAny, StartsWithAny, EndsWithAny, IsNotEqualToAny, NotStartsWithAny and EndsWithAny
  e.g. .Where("Field").IsEqualToAny("A", "B")
 
-code generation:
--check if we can refactor to non-inheritance, add null checks in c'tors, and remove static builder extensions (which is a pain in the ***)
--add template file for generation of code generation models, instead of unit test with dryrun = false/true
+code generation vNext:
+-check if we can refactor to non-inheritance and remove static builder extensions (which is a pain in the ***)
+-one-step code generation from a console app
+  -models in the code generation project
+  -no in-between models or inheritance
+  -concrete types, no inheritance or reference to the code generation project from the domain
+  -namespace mapping to accomplish this
+  -note that enums can be modeled as enums in the code generation project as well (we will use namespace mapping), but don't need values
+  -new project which does not have the 'Core' suffix anymore.
+  -remove Abstractions project
