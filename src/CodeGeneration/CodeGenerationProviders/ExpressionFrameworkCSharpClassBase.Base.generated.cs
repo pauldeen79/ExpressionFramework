@@ -35,6 +35,7 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Operator")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Operator")
+                            .WithIsValueType(true)
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
@@ -45,16 +46,19 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"StartGroup")
                             .WithTypeName(@"System.Boolean")
+                            .WithIsValueType(true)
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"EndGroup")
                             .WithTypeName(@"System.Boolean")
+                            .WithIsValueType(true)
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"),
                         new ClassPropertyBuilder()
                             .WithHasSetter(false)
                             .WithName(@"Combination")
                             .WithTypeName(@"ExpressionFramework.Abstractions.DomainModel.Domains.Combination")
+                            .WithIsValueType(true)
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.ICondition"))
                     .AddMethods(
                         new ClassMethodBuilder()
@@ -121,6 +125,7 @@ namespace CodeGeneration.CodeGenerationProviders
                             .WithHasSetter(false)
                             .WithName(@"Continue")
                             .WithTypeName(@"System.Boolean")
+                            .WithIsValueType(true)
                             .WithParentTypeFullName(@"ExpressionFramework.Abstractions.DomainModel.IAggregateFunctionResultValue"))
                     .WithName(@"IAggregateFunctionResultValue"),
                 new InterfaceBuilder()

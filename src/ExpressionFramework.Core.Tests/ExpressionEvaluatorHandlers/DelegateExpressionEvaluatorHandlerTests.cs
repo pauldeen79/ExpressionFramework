@@ -23,13 +23,13 @@ public class DelegateExpressionEvaluatorHandlerTests
     {
         // Arrange
         var sut = new DelegateExpressionEvaluatorHandler();
-        var expressionMock = new Mock<IDelegateExpression>();
-        expressionMock.SetupGet(x => x.ValueDelegate)
-                      .Returns(new Func<IDelegateExpressionRequest, IDelegateExpressionResponse>(_ => new DelegateExpressionResponseBuilder().WithResult(12345).Build()));
+        var expression = new DelegateExpressionBuilder()
+            .WithValueDelegate(new Func<IDelegateExpressionRequest, IDelegateExpressionResponse>(_ => new DelegateExpressionResponseBuilder().WithResult(12345).Build()))
+            .Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
         // Act
-        var actual = sut.Handle(default, expressionMock.Object, expressionEvaluatorMock.Object);
+        var actual = sut.Handle(default, expression, expressionEvaluatorMock.Object);
 
         // Assert
         actual.IsSuccessful().Should().BeTrue();

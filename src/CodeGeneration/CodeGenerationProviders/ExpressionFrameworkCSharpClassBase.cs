@@ -12,6 +12,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override string AddMethodNameFormatString => string.Empty;
     protected override string FileNameSuffix => ".template.generated";
     protected override bool UseLazyInitialization => false; // this needs to be disabled, because extension method-based builders currently don't support this
+    protected override bool AddNullChecks => true;
 
     protected static readonly string[] CustomBuilderTypes = new[]
     {
@@ -26,6 +27,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         { "ExpressionFramework.Abstractions.DomainModel.IExpression", "new ExpressionFramework.Core.DomainModel.Builders.EmptyExpressionBuilder()" },
         { "ExpressionFramework.Abstractions.DomainModel.IAggregateFunction", "new ExpressionFramework.Core.AggregateFunctions.EmptyAggregateFunctionBuilder()" },
+        { "ExpressionFramework.Abstractions.IExpressionEvaluator", "new ExpressionFramework.Core.EmptyExpressionEvaluator()" },
+        { "System.Func<ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionRequest,ExpressionFramework.Abstractions.DomainModel.IDelegateExpressionResponse>", "new(_ => null)" },
     };
 
     protected override string FormatInstanceTypeName(ITypeBase instance, bool forCreate)
@@ -51,12 +54,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         foreach (var property in typeBaseBuilder.Properties)
         {
-            if (property.Name == "ValueDelegate")
-            {
-                // Fix initialization in builder c'tor, because the object is not nullable
-                property.SetDefaultValueForBuilderClassConstructor(new Literal("new(_ => null)"));
-            }
-
             var typeName = property.TypeName.FixTypeName();
             if (typeName.StartsWith("ExpressionFramework.Abstractions.DomainModel.I", StringComparison.InvariantCulture))
             {
@@ -101,6 +98,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 {
                     property.SetDefaultValueForBuilderClassConstructor(new Literal("true"));
                 }
+            }
+            else if (CustomDefaultValueForBuilderClassConstructorValues.ContainsKey(typeName))
+            {
+                // Allow default values for other types as well (not just domain model ones)
+                property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
             }
         }
     }
