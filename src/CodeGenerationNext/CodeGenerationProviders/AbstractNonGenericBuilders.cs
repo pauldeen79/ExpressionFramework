@@ -22,7 +22,7 @@ public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("Build")
                     .WithAbstract()
-                    .WithTypeName(x.GetFullName().Replace("ExpressionFramework.Domain.Builders.", "ExpressionFramework.Domain.", StringComparison.InvariantCulture).ReplaceSuffix("Builder", string.Empty, StringComparison.InvariantCulture)))
+                    .WithTypeName(GetEntityTypeName(x.GetFullName())))
                 .Build()
         )
         .ToArray();

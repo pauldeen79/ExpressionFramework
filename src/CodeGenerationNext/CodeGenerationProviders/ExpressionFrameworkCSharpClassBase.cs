@@ -143,6 +143,19 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected static string GetEntityClassName(string className)
         => CustomBuilderTypes.FirstOrDefault(x => className.EndsWith(x, StringComparison.InvariantCulture)) ?? string.Empty;
 
+    protected static string GetEntityTypeName(string builderFullName)
+    {
+        var match = BuilderNamespaceMappings
+            .Select(x => new { x.Key, x.Value })
+            .FirstOrDefault(x => builderFullName.StartsWith($"{x.Value}.", StringComparison.InvariantCulture));
+
+        return match == null
+            ? builderFullName.ReplaceSuffix("Builder", string.Empty, StringComparison.InvariantCulture)
+            : builderFullName
+                .Replace($"{match.Value}.", $"{match.Key}.", StringComparison.InvariantCulture)
+                .ReplaceSuffix("Builder", string.Empty, StringComparison.InvariantCulture);
+    }
+
     //TODO: Move to ModelFramework, like namespace mappings for models contained in code generation projects
     private static ITypeBase[] MapCodeGenerationModelsToDomain(Type[] types)
         => types

@@ -22,11 +22,10 @@ public class AbstractRecords : ExpressionFrameworkCSharpClassBase
                 .With(y =>
                 {
                     //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-                    var className = GetEntityClassName(y.Name);
                     y.Methods.Add(new ClassMethodBuilder()
                         .WithName("ToBuilder")
                         .WithAbstract()
-                        .WithTypeName($"ExpressionFramework.Domain.Builders.{className}Builder")
+                        .WithTypeName($"{GetBuilderNamespace($"ExpressionFramework.Domain.{y.Name}")}.{y.Name}Builder")
                     );
                 })
                 .Build()
