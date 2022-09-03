@@ -23,10 +23,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Expressions.Builders.EmptyExpressionBuilder()" },
     };
 
-    protected static readonly Dictionary<string, string> NamespaceMappings = new()
+    protected static readonly Dictionary<string, string> BuilderNamespaceMappings = new()
     {
         { "ExpressionFramework.Domain.Expressions", "ExpressionFramework.Domain.Expressions.Builders" },
         { "ExpressionFramework.Domain", "ExpressionFramework.Domain.Builders" },
+    };
+
+    protected static readonly Dictionary<string, string> ModelMappings = new()
+    {
+        { "CodeGenerationNext.Models.I", "ExpressionFramework.Domain." },
+        { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
+        { "CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains." },
     };
 
     protected override void FixImmutableClassProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
@@ -37,7 +44,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         foreach (var property in typeBaseBuilder.Properties)
         {
             var typeName = property.TypeName.FixTypeName();
-            if (!property.IsValueType && typeName.StartsWithAny(StringComparison.InvariantCulture, NamespaceMappings.Keys.Select(x => $"{x}.")))
+            if (!property.IsValueType && typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{x}.")))
             {
                 property.ConvertSinglePropertyToBuilderOnBuilder
                 (
@@ -51,7 +58,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
                 property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
             }
-            else if (typeName.StartsWithAny(StringComparison.InvariantCulture, NamespaceMappings.Keys.Select(x => $"{RecordCollectionType.WithoutGenerics()}<{x}.")))
+            else if (typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{RecordCollectionType.WithoutGenerics()}<{x}.")))
             {
                 if (TypeNameNeedsSpecialTreatmentForBuilderInCollection(typeName))
                 {
@@ -113,17 +120,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     });
 
     protected static string GetBuilderNamespace(string typeName)
-    => NamespaceMappings
-        .Where(x => typeName.StartsWith(x.Key + ".", StringComparison.InvariantCulture))
-        .Select(x => x.Value)
-        .FirstOrDefault() ?? string.Empty;
+        => BuilderNamespaceMappings
+            .Where(x => typeName.StartsWith(x.Key + ".", StringComparison.InvariantCulture))
+            .Select(x => x.Value)
+            .FirstOrDefault() ?? string.Empty;
 
     protected static string GetBuilderTypeName(string typeName)
         => $"{GetBuilderNamespace(typeName)}.{typeName.GetClassName()}Builder";
 
     protected static string ReplaceWithBuilderNamespaces(string typeName)
     {
-        var match = NamespaceMappings
+        var match = BuilderNamespaceMappings
             .Select(x => new { x.Key, x.Value })
             .FirstOrDefault(x => typeName.Contains($"{x.Key}.", StringComparison.InvariantCulture));
 
@@ -142,15 +149,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             .Select(x => x.ToClassBuilder(new ClassSettings())
                 .WithNamespace("ExpressionFramework.Domain")
                 .WithName(x.Name.Substring(1))
-                .With(y => y.Properties.ForEach(z => z.TypeName = z.TypeName
-                    .Replace("CodeGenerationNext.Models.I", "ExpressionFramework.Domain.")
-                    .Replace("CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions.")
-                    .Replace("CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains.")))
+                .With(y => y.Properties.ForEach(z => ModelMappings.ToList().ForEach(m => z.TypeName = z.TypeName.Replace(m.Key, m.Value))))
                 .Build())
             .ToArray();
 
     private static bool TypeNameNeedsSpecialTreatmentForBuilderInCollection(string typeName)
-        => CustomBuilderTypes.Any(x => NamespaceMappings.Any(y => typeName == $"System.Collections.Generic.IReadOnlyCollection<{y.Key}.{x}>"));
+        => CustomBuilderTypes.Any(x => BuilderNamespaceMappings.Any(y => typeName == $"System.Collections.Generic.IReadOnlyCollection<{y.Key}.{x}>"));
 
     private static string GetCustomBuilderConstructorInitializeExpression(ClassPropertyBuilder property, string typeName)
     {
@@ -167,7 +171,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     }
 
     private static bool TypeNameNeedsSpecialTreatmentForBuilderConstructorInitializeExpression(string typeName)
-        => CustomBuilderTypes.Any(x => NamespaceMappings.Any(y => typeName == $"{y.Key}.{x}"));
+        => CustomBuilderTypes.Any(x => BuilderNamespaceMappings.Any(y => typeName == $"{y.Key}.{x}"));
 
     private static Literal GetDefaultValueForBuilderClassConstructor(string typeName)
     {
