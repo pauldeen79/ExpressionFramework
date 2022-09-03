@@ -1,4 +1,4 @@
-﻿namespace CodeGenerationNext.Models;
+﻿namespace CodeGenerationNext.Models.Expressions;
 
 public interface IAggregateExpression : IExpression
 {

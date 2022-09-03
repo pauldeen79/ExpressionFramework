@@ -2,7 +2,7 @@
 
 public class ObjectsOverrideRecords : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain";
+    public override string Path => "ExpressionFramework.Domain/Expressions";
     public override string DefaultFileName => "Entities.generated.cs";
     public override bool RecurseOnDeleteGeneratedFiles => false;
 
@@ -11,7 +11,7 @@ public class ObjectsOverrideRecords : ExpressionFrameworkCSharpClassBase
     protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), "ExpressionFramework.Domain");
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideModels(), "ExpressionFramework.Domain")
+        => GetImmutableClasses(GetOverrideModels(), "ExpressionFramework.Domain.Expressions")
         .Cast<IClass>()
         .Select
         (
@@ -24,7 +24,7 @@ public class ObjectsOverrideRecords : ExpressionFrameworkCSharpClassBase
                         .WithName("ToBuilder")
                         .WithOverride()
                         .WithTypeName($"ExpressionFramework.Domain.Builders.{className}Builder")
-                        .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Builders.{y.Name}Builder(this);")
+                        .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Expressions.Builders.{y.Name}Builder(this);")
                     );
                 })
                 .Build()
