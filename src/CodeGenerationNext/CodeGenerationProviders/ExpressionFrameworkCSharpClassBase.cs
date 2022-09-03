@@ -128,14 +128,22 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (TypeNameNeedsSpecialTreatmentForBuilderConstructorInitializeExpression(typeName))
         {
+            //return property.IsNullable
+            //    ? "{0} = source.{0} == null ? null : source.{0}.ToBuilder()"
+            //    : "{0} = source.{0}.ToBuilder()";
+
             return property.IsNullable
-                ? "{0} = source.{0} == null ? null : source.{0}.ToBuilder()"
-                : "{0} = source.{0}.ToBuilder()";
+                ? "_{1}Delegate = new (() => source.{0} == null ? null : source.{0}.ToBuilder())"
+                : "_{1}Delegate = new (() => source.{0}.ToBuilder())";
         }
 
+        //return property.IsNullable
+        //    ? "{0} = source.{0} == null ? null : new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.", StringComparison.InvariantCulture) + "Builder" + "(source.{0})"
+        //    : "{0} = new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.", StringComparison.InvariantCulture) + "Builder" + "(source.{0})";
+
         return property.IsNullable
-            ? "{0} = source.{0} == null ? null : new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.") + "Builder" + "(source.{0})"
-            : "{0} = new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.") + "Builder" + "(source.{0})";
+            ? "_{1}Delegate = new (() => source.{0} == null ? null : new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.", StringComparison.InvariantCulture).GetNamespaceWithDefault() + ".{5}Builder(source.{0}))"
+            : "_{1}Delegate = new (() => new " + typeName.Replace("ExpressionFramework.Domain.", "ExpressionFramework.Domain.Builders.", StringComparison.InvariantCulture).GetNamespaceWithDefault() + ".{5}Builder(source.{0}))";
     }
 
     private static bool TypeNameNeedsSpecialTreatmentForBuilderConstructorInitializeExpression(string typeName)
