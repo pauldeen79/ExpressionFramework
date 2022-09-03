@@ -1,4 +1,4 @@
-﻿namespace CodeGeneration
+﻿namespace CodeGenerationNext
 {
     [ExcludeFromCodeCoverage]
     internal static class Program
@@ -13,10 +13,13 @@
             var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
 
             // Generate code
-            GenerateCode.For<AbstractionsBuildersInterfaces>(settings, multipleContentBuilder);
-            GenerateCode.For<AbstractionsExtensionsBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractNonGenericBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractRecords>(settings, multipleContentBuilder);
             GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
             GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+            GenerateCode.For<ObjectsOverrideBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<ObjectsOverrideRecords>(settings, multipleContentBuilder);
 
             // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous

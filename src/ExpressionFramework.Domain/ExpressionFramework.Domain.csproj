@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>10.0</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageId>pauldeen79.ExpressionFramework.Abstractions</PackageId>
+    <PackageId>pauldeen79.ExpressionFramework.Domain</PackageId>
     <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
     <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <PackageReference Include="pauldeen79.CrossCutting.Common" Version="2.7.22" />
-    <PackageReference Include="pauldeen79.CrossCutting.Data.Abstractions" Version="2.7.22" />
   </ItemGroup>
 
 </Project>
