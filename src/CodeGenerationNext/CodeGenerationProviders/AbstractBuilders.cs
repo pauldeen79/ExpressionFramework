@@ -18,7 +18,6 @@ public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
         (
             //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
             x => new ClassBuilder(x)
-                //.Chain(y => y.Methods.RemoveAll(z => z.Name == "Build"))
                 .Chain(y => y.Methods.Single(z => z.Name == "Build").Name = "BuildTyped")
                 .Build()
         )

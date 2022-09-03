@@ -19,7 +19,6 @@ public class ObjectsOverrideBuilders : ExpressionFrameworkCSharpClassBase
         (
             //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
             x => new ClassBuilder(x)
-                //.With(y => y.Methods.Single(z => z.Name == "Build").TypeName = "ExpressionFramework.Domain.Expression")
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("BuildTyped")
                     .WithOverride()
