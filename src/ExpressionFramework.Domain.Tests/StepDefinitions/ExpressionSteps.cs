@@ -21,11 +21,11 @@ public sealed class ExpressionSteps
     public async Task WhenIEvaluateTheExpression()
         => _result = await ApplicationEntrypoint.ExpressionEvaluator.Evaluate(_context, _expression ?? throw new InvalidOperationException("First initialize the expression using 'Given I have the expression'"));
 
-    [Then(@"the expression result should be '([^']*)'")]
+    [Then(@"the result value should be '([^']*)'")]
     public void ThenTheExpressionResultShouldBe(string expectedResult)
         => Result.Value.Should().BeEquivalentTo(expectedResult);
 
-    [Then(@"the expression result should be unsuccessful")]
-    public void ThenTheExpressionResultShouldBeUnsuccessful()
-        => Result.Status.Should().Be(ResultStatus.Invalid);
+    [Then(@"the result status should be '([^']*)'")]
+    public void ThenTheResultStatusShouldBe(ResultStatus status)
+        => Result.Status.Should().Be(status);
 }
