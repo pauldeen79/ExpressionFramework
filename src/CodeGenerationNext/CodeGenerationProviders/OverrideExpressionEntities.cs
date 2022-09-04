@@ -16,18 +16,14 @@ public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
         .Cast<IClass>()
         .Select
         (
+            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
             x => new ClassBuilder(x)
-                .With(y =>
-                {
-                    //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-                    var className = GetEntityClassName(y.Name);
-                    y.Methods.Add(new ClassMethodBuilder()
-                        .WithName("ToBuilder")
-                        .WithOverride()
-                        .WithTypeName($"ExpressionFramework.Domain.Builders.{className}Builder")
-                        .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Expressions.Builders.{y.Name}Builder(this);")
-                    );
-                })
+                .AddMethods(new ClassMethodBuilder()
+                    .WithName("ToBuilder")
+                    .WithOverride()
+                    .WithTypeName($"ExpressionFramework.Domain.Builders.{GetEntityClassName(x.Name)}Builder")
+                    .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Expressions.Builders.{x.Name}Builder(this);")
+                )
                 .Build()
         )
         .ToArray();

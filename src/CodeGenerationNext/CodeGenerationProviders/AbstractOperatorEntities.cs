@@ -19,17 +19,13 @@ public class AbstractOperatorEntities : ExpressionFrameworkCSharpClassBase
         .Cast<IClass>()
         .Select
         (
+            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
             x => new ClassBuilder(x)
-                .With(y =>
-                {
-                    //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-                    y.Methods.Add(new ClassMethodBuilder()
-                        .WithName("ToBuilder")
-                        .WithAbstract()
-                        .WithTypeName($"{GetBuilderNamespace($"ExpressionFramework.Domain.{y.Name}")}.{y.Name}Builder")
-                    );
-                })
-                .Build()
+                .AddMethods(new ClassMethodBuilder()
+                    .WithName("ToBuilder")
+                    .WithAbstract()
+                    .WithTypeName($"{GetBuilderNamespace($"ExpressionFramework.Domain.{x.Name}")}.{x.Name}Builder")
+                ).Build()
         )
         .ToArray();
 }
