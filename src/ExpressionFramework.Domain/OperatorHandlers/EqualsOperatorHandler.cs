@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.OperatorHandlers;
 
-public class EqualsOperatorHandler : OperatorHandlerBase
+public class EqualsOperatorHandler : OperatorHandlerBase<EqualsOperator>
 {
     protected override bool Evaluate(object? leftValue, object? rightValue)
         => (leftValue == null && rightValue == null)
