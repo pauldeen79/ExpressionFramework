@@ -95,7 +95,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(new[]
     {
         typeof(ICondition),
-        typeof(IAggregateFunctionResultValue),
         typeof(ICase),
     });
 
