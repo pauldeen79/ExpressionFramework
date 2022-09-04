@@ -13,19 +13,5 @@ public class OverrideOperatorEntities : ExpressionFrameworkCSharpClassBase
     protected override bool ValidateArgumentsInConstructor => false; // there are no properties in operators, so this is not necessary
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideOperatorModels(), "ExpressionFramework.Domain.Operators")
-        .Cast<IClass>()
-        .Select
-        (
-            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-            x => new ClassBuilder(x)
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("ToBuilder")
-                    .WithOverride()
-                    .WithTypeName($"ExpressionFramework.Domain.Builders.{GetEntityClassName(x.Name)}Builder")
-                    .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Operators.Builders.{x.Name}Builder(this);")
-                )
-                .Build()
-        )
-        .ToArray();
+        => GetImmutableClasses(GetOverrideOperatorModels(), "ExpressionFramework.Domain.Operators");
 }

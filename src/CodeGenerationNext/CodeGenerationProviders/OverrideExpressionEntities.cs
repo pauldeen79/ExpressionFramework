@@ -12,19 +12,5 @@ public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
     protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), "ExpressionFramework.Domain");
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideExpressionModels(), "ExpressionFramework.Domain.Expressions")
-        .Cast<IClass>()
-        .Select
-        (
-            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-            x => new ClassBuilder(x)
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("ToBuilder")
-                    .WithOverride()
-                    .WithTypeName($"ExpressionFramework.Domain.Builders.{GetEntityClassName(x.Name)}Builder")
-                    .AddLiteralCodeStatements($"return new ExpressionFramework.Domain.Expressions.Builders.{x.Name}Builder(this);")
-                )
-                .Build()
-        )
-        .ToArray();
+        => GetImmutableClasses(GetOverrideExpressionModels(), "ExpressionFramework.Domain.Expressions");
 }

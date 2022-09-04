@@ -11,21 +11,5 @@ public class AbstractExpressionEntities : ExpressionFrameworkCSharpClassBase
     protected override bool EnableBuilderInhericance => true;
 
     public override object CreateModel()
-        => GetImmutableClasses
-        (
-            GetAbstractExpressionModels(),
-            "ExpressionFramework.Domain"
-        )
-        .Cast<IClass>()
-        .Select
-        (
-            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-            x => new ClassBuilder(x)
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("ToBuilder")
-                    .WithAbstract()
-                    .WithTypeName($"{GetBuilderNamespace($"ExpressionFramework.Domain.{x.Name}")}.{x.Name}Builder")
-                ).Build()
-        )
-        .ToArray();
+        => GetImmutableClasses(GetAbstractExpressionModels(), "ExpressionFramework.Domain");
 }
