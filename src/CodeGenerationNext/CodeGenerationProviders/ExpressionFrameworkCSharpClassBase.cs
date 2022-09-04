@@ -9,7 +9,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override bool EnableNullableContext => true;
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override string FileNameSuffix => ".template.generated";
-    protected override bool AddNullChecks => true;
 
     protected static readonly string[] CustomBuilderTypes = new[]
     {
