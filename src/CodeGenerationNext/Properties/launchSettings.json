@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "CodeGenerationNext": {
-      "commandName": "Project",
-      "commandLineArgs": "C:\\Git\\ExpressionFramework\\src"
-    }
-  }
-}

@@ -24,7 +24,7 @@ jobs:
       - name: Build code generation
         run: dotnet build src/CodeGenerationNext/CodeGenerationNext.csproj -c Release --no-restore
       - name: Run code generation
-        run: dotnet src/CodeGenerationNext/bin/Release/net6.0/CodeGenerationNext.dll src/
+        run: dotnet src/CodeGenerationNext/bin/Release/net6.0/CodeGenerationNext.dll
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.1.2
         with:

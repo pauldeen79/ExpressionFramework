@@ -6,7 +6,10 @@
         private static void Main(string[] args)
         {
             // Setup code generation
-            var basePath = args.Length == 1 ? args[0] : Path.Combine(Directory.GetCurrentDirectory(), @"../");
+            var currentDirectory = Directory.GetCurrentDirectory();
+            var basePath = currentDirectory.EndsWith("ExpressionFramework")
+                ? Path.Combine(currentDirectory, @"src/")
+                : Path.Combine(currentDirectory, @"../../../../");
             var generateMultipleFiles = true;
             var dryRun = false;
             var multipleContentBuilder = new MultipleContentBuilder { BasePath = basePath };
