@@ -1,5 +1,6 @@
 ﻿namespace CodeGenerationNext.CodeGenerationProviders;
 
+[ExcludeFromCodeCoverage]
 public class AbstractOperatorEntities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain";
