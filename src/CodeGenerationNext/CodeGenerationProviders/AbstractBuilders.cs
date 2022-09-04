@@ -12,14 +12,5 @@ public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(GetAbstractModels(),
                                       "ExpressionFramework.Domain",
-                                      "ExpressionFramework.Domain.Builders")
-        .Cast<IClass>()
-        .Select
-        (
-            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-            x => new ClassBuilder(x)
-                .Chain(y => y.Methods.Single(z => z.Name == "Build").Name = "BuildTyped")
-                .Build()
-        )
-        .ToArray();
+                                      "ExpressionFramework.Domain.Builders");
 }

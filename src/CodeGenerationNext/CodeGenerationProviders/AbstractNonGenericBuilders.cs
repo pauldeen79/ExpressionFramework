@@ -13,17 +13,5 @@ public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableNonGenericBuilderClasses(GetAbstractModels(),
                                                 "ExpressionFramework.Domain",
-                                                "ExpressionFramework.Domain.Builders")
-        .Cast<IClass>()
-        .Select
-        (
-            //TODO: Move to ModelFramework (configurable if we want typed or untyped Build method, maybe even BuildTyped?)
-            x => new ClassBuilder(x)
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("Build")
-                    .WithAbstract()
-                    .WithTypeName(GetEntityTypeName(x.GetFullName())))
-                .Build()
-        )
-        .ToArray();
+                                                "ExpressionFramework.Domain.Builders");
 }

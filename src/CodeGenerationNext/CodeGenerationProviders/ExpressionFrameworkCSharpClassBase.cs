@@ -1,6 +1,4 @@
-﻿using ModelFramework.Objects;
-
-namespace CodeGenerationNext.CodeGenerationProviders;
+﻿namespace CodeGenerationNext.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
@@ -53,7 +51,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     //TODO: See if we can move this to ModelFramework... But how do we know that we need the casting? Or can we call BuildTyped?
                     string.IsNullOrEmpty(GetEntityClassName(typeName))
                         ? string.Empty
-                        : "({3}){0}{2}.Build()" //"(" + typeName +"){0}{2}.Build()"
+                        : "({3}){0}{2}.Build()"
                 );
 
                 property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
