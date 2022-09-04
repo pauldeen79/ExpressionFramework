@@ -2,5 +2,5 @@
 
 public interface IExpressionEvaluator
 {
-    Result<object?> Evaluate(object? context, Expression expression);
+    Task<Result<object?>> Evaluate(object? context, Expression expression);
 }

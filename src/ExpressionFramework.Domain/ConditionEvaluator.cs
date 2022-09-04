@@ -11,7 +11,7 @@ public class ConditionEvaluator : IConditionEvaluator
         _handlers = handlers;
     }
 
-    public Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
+    public Task<Result<bool>> Evaluate(object? context, IEnumerable<Condition> conditions)
     {
         if (CanEvaluateSimpleConditions(conditions))
         {
@@ -24,11 +24,11 @@ public class ConditionEvaluator : IConditionEvaluator
     private bool CanEvaluateSimpleConditions(IEnumerable<Condition> conditions)
         => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
 
-    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<Condition> conditions)
+    private async Task<Result<bool>> EvaluateSimpleConditions(object? context, IEnumerable<Condition> conditions)
     {
         foreach (var condition in conditions)
         {
-            var itemResult = IsItemValid(context, condition);
+            var itemResult = await IsItemValid(context, condition);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -43,7 +43,7 @@ public class ConditionEvaluator : IConditionEvaluator
         return Result<bool>.Success(true);
     }
 
-    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<Condition> conditions)
+    private async Task<Result<bool>> EvaluateComplexConditions(object? context, IEnumerable<Condition> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -55,7 +55,7 @@ public class ConditionEvaluator : IConditionEvaluator
 
             var prefix = condition.StartGroup ? "(" : string.Empty;
             var suffix = condition.EndGroup ? ")" : string.Empty;
-            var itemResult = IsItemValid(context, condition);
+            var itemResult = await IsItemValid(context, condition);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -68,15 +68,15 @@ public class ConditionEvaluator : IConditionEvaluator
         return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private Result<bool> IsItemValid(object? context, Condition condition)
+    private async Task<Result<bool>> IsItemValid(object? context, Condition condition)
     {
-        var leftResult = _expressionEvaluator.Evaluate(context, condition.LeftExpression);
+        var leftResult = await _expressionEvaluator.Evaluate(context, condition.LeftExpression);
         if (!leftResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(leftResult);
         }
 
-        var rightResult = _expressionEvaluator.Evaluate(context, condition.RightExpression);
+        var rightResult = await _expressionEvaluator.Evaluate(context, condition.RightExpression);
         if (!rightResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(rightResult);
