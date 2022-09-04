@@ -18,15 +18,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static readonly Dictionary<string, string> CustomDefaultValueForBuilderClassConstructorValues = new()
     {
-        { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Expressions.Builders.EmptyExpressionBuilder()" },
-        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Operators.Builders.EqualsOperatorBuilder()" },
+        { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Tests.Support.Builders.Expressions.EmptyExpressionBuilder()" },
+        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Tests.Support.Builders.Operators.EqualsOperatorBuilder()" },
     };
 
     protected static readonly Dictionary<string, string> BuilderNamespaceMappings = new()
     {
-        { "ExpressionFramework.Domain.Expressions", "ExpressionFramework.Domain.Expressions.Builders" },
-        { "ExpressionFramework.Domain.Operators", "ExpressionFramework.Domain.Operators.Builders" },
-        { "ExpressionFramework.Domain", "ExpressionFramework.Domain.Builders" },
+        { "ExpressionFramework.Domain.Expressions", "ExpressionFramework.Domain.Tests.Support.Builders.Expressions" },
+        { "ExpressionFramework.Domain.Operators", "ExpressionFramework.Domain.Tests.Support.Builders.Operators" },
+        { "ExpressionFramework.Domain", "ExpressionFramework.Domain.Tests.Support.Builders" },
     };
 
     protected static readonly Dictionary<string, string> ModelMappings = new()
@@ -69,7 +69,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                         typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
                         ReplaceWithBuilderNamespaces(typeName)
                             .ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture),
-                        "{0} = source.{0}.Select(x => ExpressionFramework.Domain.Builders." + GetEntityClassName(typeName.GetGenericArguments()) + "BuilderFactory.Create(x)).ToList()"
+                        "{0} = source.{0}.Select(x => ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName.GetGenericArguments()) + "BuilderFactory.Create(x)).ToList()"
                     );
                 }
                 else
@@ -200,8 +200,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         if (TypeNameNeedsSpecialTreatmentForBuilderConstructorInitializeExpression(typeName))
         {
             return property.IsNullable
-                ? "_{1}Delegate = new (() => source.{0} == null ? null : ExpressionFramework.Domain.Builders." + GetEntityClassName(typeName) + "BuilderFactory.Create(source.{0}))"
-                : "_{1}Delegate = new (() => ExpressionFramework.Domain.Builders." + GetEntityClassName(typeName) + "BuilderFactory.Create(source.{0}))";
+                ? "_{1}Delegate = new (() => source.{0} == null ? null : ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName) + "BuilderFactory.Create(source.{0}))"
+                : "_{1}Delegate = new (() => ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName) + "BuilderFactory.Create(source.{0}))";
         }
 
         return property.IsNullable

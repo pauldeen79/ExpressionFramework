@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class AbstractOperatorBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Operators";
+    public override string Path => "ExpressionFramework.Domain.Tests/Support/Builders";
     public override string DefaultFileName => "Builders.generated.cs";
     public override bool RecurseOnDeleteGeneratedFiles => false;
 
@@ -13,5 +13,5 @@ public class AbstractOperatorBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(GetAbstractOperatorModels(),
                                       "ExpressionFramework.Domain",
-                                      "ExpressionFramework.Domain.Builders");
+                                      "ExpressionFramework.Domain.Tests.Support.Builders");
 }
