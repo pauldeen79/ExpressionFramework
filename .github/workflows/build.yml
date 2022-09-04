@@ -30,9 +30,9 @@ jobs:
       - name: Restore
         run: dotnet restore
       - name: Build code generator
-        run: dotnet build -c Release src/CodeGenerationNext/CodeGenerationNext.csproj
+        run: dotnet build src/CodeGenerationNext/CodeGenerationNext.csproj -c Release --no-restore
       - name: Run code generator
-        run: dotnet src/CodeGenerationNext/bin/release/net6.0/CodeGenerationNext.dll
+        run: dotnet src/CodeGenerationNext/bin/Release/net6.0/CodeGenerationNext.dll
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
