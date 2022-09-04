@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain;
 
-public interface IExpressionEvaluatorHandler
+public interface IExpressionHandler
 {
     Result<object?> Handle(object? context, Expression expression, IExpressionEvaluator evaluator);
 }
