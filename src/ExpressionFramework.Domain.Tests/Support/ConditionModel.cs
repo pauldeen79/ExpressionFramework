@@ -10,9 +10,9 @@ public class ConditionModel
     public Combination Combination { get; set; }
     public Condition ToCondition() =>
         new(
-            new ConstantExpression(StringExpression.Evaluate(LeftExpression)),
+            new ConstantExpression(StringExpression.Parse(LeftExpression)),
             OperatorExpression.Evaluate(Operator),
-            new ConstantExpression(StringExpression.Evaluate(RightExpression)),
+            new ConstantExpression(StringExpression.Parse(RightExpression)),
             StartGroup,
             EndGroup,
             Combination); 

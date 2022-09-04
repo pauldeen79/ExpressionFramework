@@ -8,7 +8,7 @@ public static class StringExpression
     /// <remarks>You can use expressions like [null], [boolean:true], [boolean:false] and [today]</remarks>
     /// <param name="value">input value (automatically mapped table value)</param>
     /// <returns>Corrected value</returns>
-    public static object? Evaluate(object? value)
+    public static object? Parse(object? value)
     {
         if (value is string s)
         {

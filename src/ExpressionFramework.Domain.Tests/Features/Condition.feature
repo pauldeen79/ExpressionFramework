@@ -9,7 +9,10 @@ Scenario: Same expressions with Equals operator should result in true
         | Operator        | Equals      |
         | RightExpression | Hello world |
     When I evaluate the condition
-    Then the condition evaluation result value should be 'true'
+    Then the condition evaluation result should contain the content
+        | Field  | Value |
+        | Status | Ok    |
+        | Value  | true  |
 
 Scenario: Different expressions with Equals operator should result in false
     Given I have the following condition
@@ -18,7 +21,10 @@ Scenario: Different expressions with Equals operator should result in false
         | Operator        | Equals         |
         | RightExpression | Something else |
     When I evaluate the condition
-    Then the condition evaluation result value should be 'false'
+    Then the condition evaluation result should contain the content
+        | Field  | Value |
+        | Status | Ok    |
+        | Value  | false |
 
 Scenario: Unknown operator should result in error
     Given I have the following condition
@@ -27,4 +33,6 @@ Scenario: Unknown operator should result in error
         | Operator        | Unknown     |
         | RightExpression | Hello world |
     When I evaluate the condition
-    Then the condition evaluation result status should be 'Invalid'
+    Then the condition evaluation result should contain the content
+        | Field  | Value   |
+        | Status | Invalid |

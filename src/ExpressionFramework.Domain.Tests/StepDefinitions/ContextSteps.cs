@@ -7,7 +7,7 @@ public sealed class ContextSteps
 
     [Given(@"I set the context to '([^']*)'")]
     public void GivenISetTheContextTo(string context)
-        => _context = StringExpression.Evaluate(context);
+        => _context = StringExpression.Parse(context);
 
     public object? Context => _context;
 }
