@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Support;
+﻿using OperatorFramework.Domain.Tests.Support;
+
+namespace ExpressionFramework.Domain.Tests.Support;
 
 public static class OperatorExpression
 {
@@ -38,6 +40,7 @@ public static class OperatorExpression
             "notendswith" => new NotEndsWithOperator(),
             "notequals" => new NotEqualsOperator(),
             "startsswith" => new StartsWithOperator(),
+            "unknown" => new UnknownOperator(),
             _ => throw new ArgumentOutOfRangeException($"Unknown operator: [{@operator}]")
         };
 }

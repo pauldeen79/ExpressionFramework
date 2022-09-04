@@ -21,7 +21,11 @@ public sealed class ConditionSteps
     public async Task WhenIEvaluateTheCondition()
         => _result = await ApplicationEntrypoint.ConditionEvaluator.Evaluate(_contextSteps.Context, new[] { Condition });
 
-    [Then(@"the condition evaluation should return in '([^']*)'")]
-    public void ThenTheConditionEvaluationShouldReturnIn(string result)
+    [Then(@"the condition evaluation result value should be '([^']*)'")]
+    public void ThenTheConditionEvaluationResultValueShouldBe(string result)
         => Result.Value.Should().Be(result.IsTrue());
+
+    [Then(@"the condition evaluation result status should be '([^']*)'")]
+    public void ThenTheConditionEvaluationResultStatusShouldBe(ResultStatus status)
+        => Result.Status.Should().Be(status);
 }
