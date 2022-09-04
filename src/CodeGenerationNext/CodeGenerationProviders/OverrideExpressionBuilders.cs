@@ -1,6 +1,6 @@
 ﻿namespace CodeGenerationNext.CodeGenerationProviders;
 
-public class ObjectsOverrideBuilders : ExpressionFrameworkCSharpClassBase
+public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain/Expressions/Builders";
     public override string DefaultFileName => "Builders.generated.cs";
@@ -12,7 +12,7 @@ public class ObjectsOverrideBuilders : ExpressionFrameworkCSharpClassBase
     protected override string BaseClassBuilderNameSpace => "ExpressionFramework.Domain.Builders";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(GetOverrideModels(),
+        => GetImmutableBuilderClasses(GetOverrideExpressionModels(),
                                       "ExpressionFramework.Domain.Expressions",
                                       "ExpressionFramework.Domain.Expressions.Builders");
 }

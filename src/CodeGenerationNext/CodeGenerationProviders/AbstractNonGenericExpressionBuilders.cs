@@ -1,6 +1,6 @@
 ﻿namespace CodeGenerationNext.CodeGenerationProviders;
 
-public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
+public class AbstractNonGenericExpressionBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain/Builders";
     public override string DefaultFileName => "Builders.generated.cs";
@@ -8,9 +8,10 @@ public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
+    protected override string FileNameSuffix => ".nongeneric.template.generated";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(GetAbstractModels(),
-                                      "ExpressionFramework.Domain",
-                                      "ExpressionFramework.Domain.Builders");
+        => GetImmutableNonGenericBuilderClasses(GetAbstractExpressionModels(),
+                                                "ExpressionFramework.Domain",
+                                                "ExpressionFramework.Domain.Builders");
 }

@@ -13,13 +13,20 @@
             var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
 
             // Generate code
-            GenerateCode.For<AbstractBuilders>(settings, multipleContentBuilder);
-            GenerateCode.For<AbstractNonGenericBuilders>(settings, multipleContentBuilder);
-            GenerateCode.For<AbstractRecords>(settings, multipleContentBuilder);
             GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
             GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
-            GenerateCode.For<ObjectsOverrideBuilders>(settings, multipleContentBuilder);
-            GenerateCode.For<ObjectsOverrideRecords>(settings, multipleContentBuilder);
+
+            GenerateCode.For<AbstractExpressionBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractNonGenericExpressionBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractExpressionEntities>(settings, multipleContentBuilder);
+            GenerateCode.For<OverrideExpressionBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<OverrideExpressionEntities>(settings, multipleContentBuilder);
+
+            GenerateCode.For<AbstractOperatorBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractNonGenericOperatorBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<AbstractOperatorEntities>(settings, multipleContentBuilder);
+            GenerateCode.For<OverrideOperatorBuilders>(settings, multipleContentBuilder);
+            GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
 
             // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous

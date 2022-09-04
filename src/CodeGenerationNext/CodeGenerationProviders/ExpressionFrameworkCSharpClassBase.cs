@@ -13,16 +13,19 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected static readonly string[] CustomBuilderTypes = new[]
     {
         "Expression",
+        "Operator",
     };
 
     protected static readonly Dictionary<string, string> CustomDefaultValueForBuilderClassConstructorValues = new()
     {
         { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Expressions.Builders.EmptyExpressionBuilder()" },
+        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Operators.Builders.EqualsOperatorBuilder()" },
     };
 
     protected static readonly Dictionary<string, string> BuilderNamespaceMappings = new()
     {
         { "ExpressionFramework.Domain.Expressions", "ExpressionFramework.Domain.Expressions.Builders" },
+        { "ExpressionFramework.Domain.Operators", "ExpressionFramework.Domain.Operators.Builders" },
         { "ExpressionFramework.Domain", "ExpressionFramework.Domain.Builders" },
     };
 
@@ -30,6 +33,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         { "CodeGenerationNext.Models.I", "ExpressionFramework.Domain." },
         { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
+        { "CodeGenerationNext.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
         { "CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains." },
     };
 
@@ -97,12 +101,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         typeof(ICase),
     });
 
-    protected static ITypeBase[] GetAbstractModels() => MapCodeGenerationModelsToDomain(new[]
+    protected static ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]
     {
         typeof(IExpression),
     });
 
-    protected static ITypeBase[] GetOverrideModels() => MapCodeGenerationModelsToDomain(new[]
+    protected static ITypeBase[] GetAbstractOperatorModels() => MapCodeGenerationModelsToDomain(new[]
+{
+        typeof(IOperator),
+    });
+
+    protected static ITypeBase[] GetOverrideExpressionModels() => MapCodeGenerationModelsToDomain(new[]
     {
         typeof(IAccumulatorExpression),
         typeof(IAggregateExpression),
@@ -113,6 +122,27 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         typeof(IEmptyExpression),
         typeof(IFieldExpression),
         typeof(ISwitchExpression),
+    });
+
+    protected static ITypeBase[] GetOverrideOperatorModels() => MapCodeGenerationModelsToDomain(new[]
+    {
+        typeof(IContainsOperator),
+        typeof(IEndsWithOperator),
+        typeof(IEqualsOperator),
+        typeof(IIsGreaterOperator),
+        typeof(IIsGreaterOrEqualOperator),
+        typeof(IIsNotNullOperator),
+        typeof(IIsNotNullOrEmptyOperator),
+        typeof(IIsNotNullOrWhiteSpaceOperator),
+        typeof(IIsNullOperator),
+        typeof(IIsNullOrEmptyOperator),
+        typeof(IIsNullOrWhiteSpaceOperator),
+        typeof(IIsSmallerOperator),
+        typeof(IIsSmallerOrEqualOperator),
+        typeof(INotContainsOperator),
+        typeof(INotEndsWithOperator),
+        typeof(INotEqualsOperator),
+        typeof(IStartsWithOperator),
     });
 
     protected static string GetBuilderNamespace(string typeName)
