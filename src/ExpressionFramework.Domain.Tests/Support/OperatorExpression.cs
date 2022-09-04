@@ -1,11 +1,9 @@
-﻿namespace ExpressionFramework.SpecFlow.Tests.Support;
+﻿namespace ExpressionFramework.Domain.Tests.Support;
 
-[Binding]
-public static partial class OperatorTransformations
+public static class OperatorExpression
 {
-    [StepArgumentTransformation]
-    public static Operator DialogDefinitionIdentifierTransform(string value)
-        => value.ToLowerInvariant() switch
+    public static Operator Evaluate(string @operator)
+        => @operator.ToLowerInvariant() switch
         {
             "contains" => new ContainsOperator(),
             "endswith" => new EndsWithOperator(),
@@ -40,6 +38,6 @@ public static partial class OperatorTransformations
             "notendswith" => new NotEndsWithOperator(),
             "notequals" => new NotEqualsOperator(),
             "startsswith" => new StartsWithOperator(),
-            _ => throw new ArgumentOutOfRangeException($"Unknown operator: [{value}]")
+            _ => throw new ArgumentOutOfRangeException($"Unknown operator: [{@operator}]")
         };
 }
