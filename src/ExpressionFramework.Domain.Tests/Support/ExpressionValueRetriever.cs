@@ -11,5 +11,5 @@ public class ExpressionValueRetriever : IValueRetriever
         => propertyType == typeof(Expression);
 
     public object Retrieve(KeyValuePair<string, string> keyValuePair, Type targetType, Type propertyType)
-        => new ConstantExpression(ValueExpression.Evaluate(keyValuePair.Value));
+        => new ConstantExpression(StringExpression.Evaluate(keyValuePair.Value));
 }
