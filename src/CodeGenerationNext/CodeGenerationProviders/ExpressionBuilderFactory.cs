@@ -19,6 +19,7 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
                 .AddParameter("expression", "ExpressionFramework.Domain.Expression")
                 .AddLiteralCodeStatements("return expression switch {")
                 .AddLiteralCodeStatements(GetOverrideExpressionModels().Select((x, i) => $"{x.Name} x{i}=> new ExpressionFramework.Domain.Tests.Support.Builders.Expressions.{x.Name}Builder(x{i}),"))
+                .AddLiteralCodeStatements("ExpressionFramework.Domain.Tests.Support.UnknownExpression => new ExpressionFramework.Domain.Tests.Support.UnknownExpressionBuilder(),")
                 .AddLiteralCodeStatements("_ => throw new ArgumentOutOfRangeException(\"Unknown expression type: \" + expression.GetType().FullName) };")
             )
             .Build() };

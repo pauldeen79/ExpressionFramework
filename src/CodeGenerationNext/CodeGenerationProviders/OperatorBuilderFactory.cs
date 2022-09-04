@@ -19,6 +19,7 @@ public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
                 .AddParameter("operator", "ExpressionFramework.Domain.Operator")
                 .AddLiteralCodeStatements("return @operator switch {")
                 .AddLiteralCodeStatements(GetOverrideOperatorModels().Select((x, i) => $"{x.Name} x{i}=> new ExpressionFramework.Domain.Tests.Support.Builders.Operators.{x.Name}Builder(x{i}),"))
+                .AddLiteralCodeStatements("ExpressionFramework.Domain.Tests.Support.UnknownOperator => new ExpressionFramework.Domain.Tests.Support.UnknownOperatorBuilder(),")
                 .AddLiteralCodeStatements("_ => throw new ArgumentOutOfRangeException(\"Unknown operator type: \" + @operator.GetType().FullName) };")
             )
             .Build() };

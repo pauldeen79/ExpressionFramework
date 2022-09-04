@@ -9,11 +9,12 @@ public class ConditionModel
     public bool EndGroup { get; set; }
     public Combination Combination { get; set; }
     public Condition ToCondition() =>
-        new(
-            new ConstantExpression(StringExpression.Parse(LeftExpression)),
-            OperatorExpression.Evaluate(Operator),
-            new ConstantExpression(StringExpression.Parse(RightExpression)),
-            StartGroup,
-            EndGroup,
-            Combination); 
+        new ConditionBuilder()
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(LeftExpression)))
+            .WithOperator(OperatorBuilderFactory.Create(OperatorExpression.Evaluate(Operator)))
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(RightExpression)))
+            .WithStartGroup(StartGroup)
+            .WithEndGroup(EndGroup)
+            .WithCombination(Combination)
+            .Build();
 }

@@ -6,6 +6,8 @@ global using ExpressionFramework.Domain.Expressions;
 global using ExpressionFramework.Domain.Extensions;
 global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.Domain.Tests.Support;
+global using ExpressionFramework.Domain.Tests.Support.Builders;
+global using ExpressionFramework.Domain.Tests.Support.Builders.Expressions;
 global using ExpressionFramework.SpecFlow.Tests.Support;
 global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;

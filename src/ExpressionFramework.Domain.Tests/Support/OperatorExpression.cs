@@ -1,6 +1,4 @@
-﻿using OperatorFramework.Domain.Tests.Support;
-
-namespace ExpressionFramework.Domain.Tests.Support;
+﻿namespace ExpressionFramework.Domain.Tests.Support;
 
 public static class OperatorExpression
 {
