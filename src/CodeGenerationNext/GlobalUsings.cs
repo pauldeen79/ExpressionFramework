@@ -4,8 +4,6 @@ global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
 global using CodeGenerationNext.CodeGenerationProviders;
 global using CodeGenerationNext.Models;
-global using CodeGenerationNext.Models.Expressions;
-global using CodeGenerationNext.Models.Operators;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Extensions;
 global using ModelFramework.CodeGeneration.CodeGenerationProviders;

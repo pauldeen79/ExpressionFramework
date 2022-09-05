@@ -95,11 +95,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
     }
 
-    protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(new[]
-    {
-        typeof(ICondition),
-        typeof(ICase),
-    });
+    protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models" && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
+            .ToArray());
 
     protected static ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]
     {
@@ -111,39 +110,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         typeof(IOperator),
     });
 
-    protected static ITypeBase[] GetOverrideExpressionModels() => MapCodeGenerationModelsToDomain(new[]
-    {
-        typeof(IAccumulatorExpression),
-        typeof(IAggregateExpression),
-        typeof(IConditionalExpression),
-        typeof(IConstantExpression),
-        typeof(IContextExpression),
-        typeof(IChainedExpression),
-        typeof(IEmptyExpression),
-        typeof(IFieldExpression),
-        typeof(ISwitchExpression),
-    });
+    protected static ITypeBase[] GetOverrideExpressionModels() => MapCodeGenerationModelsToDomain(
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Expressions")
+            .ToArray());
 
-    protected static ITypeBase[] GetOverrideOperatorModels() => MapCodeGenerationModelsToDomain(new[]
-    {
-        typeof(IContainsOperator),
-        typeof(IEndsWithOperator),
-        typeof(IEqualsOperator),
-        typeof(IIsGreaterOperator),
-        typeof(IIsGreaterOrEqualOperator),
-        typeof(IIsNotNullOperator),
-        typeof(IIsNotNullOrEmptyOperator),
-        typeof(IIsNotNullOrWhiteSpaceOperator),
-        typeof(IIsNullOperator),
-        typeof(IIsNullOrEmptyOperator),
-        typeof(IIsNullOrWhiteSpaceOperator),
-        typeof(IIsSmallerOperator),
-        typeof(IIsSmallerOrEqualOperator),
-        typeof(INotContainsOperator),
-        typeof(INotEndsWithOperator),
-        typeof(INotEqualsOperator),
-        typeof(IStartsWithOperator),
-    });
+    protected static ITypeBase[] GetOverrideOperatorModels() => MapCodeGenerationModelsToDomain(
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Operators")
+            .ToArray());
 
     protected static string GetBuilderNamespace(string typeName)
         => BuilderNamespaceMappings
