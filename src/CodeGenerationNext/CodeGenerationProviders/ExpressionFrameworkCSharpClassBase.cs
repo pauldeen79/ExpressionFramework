@@ -34,8 +34,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "CodeGenerationNext.Models.I", "ExpressionFramework.Domain." },
         { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "CodeGenerationNext.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
-        { "CodeGenerationNext.Models.Requests.", "ExpressionFramework.Domain.Requests." },
+        { "CodeGenerationNext.Models.Requests.I", "ExpressionFramework.Domain.Requests." },
         { "CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains." },
+        { "CodeGenerationNext.I", "ExpressionFramework.Domain.I" },
     };
 
     protected override void FixImmutableClassProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
@@ -46,7 +47,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         foreach (var property in typeBaseBuilder.Properties)
         {
             var typeName = property.TypeName.FixTypeName();
-            if (!property.IsValueType && typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{x}.")))
+            if (!property.IsValueType
+                && typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{x}."))
+                && property.Name != "Evaluator") //TODO: Make exlucsions more generic
             {
                 property.ConvertSinglePropertyToBuilderOnBuilder
                 (
@@ -98,7 +101,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace.In("CodeGenerationNext.Models", "CodeGenerationNext.Requests") && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models" && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
+            .ToArray());
+
+    protected static ITypeBase[] GetRequestModels() => MapCodeGenerationModelsToDomain(
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Requests")
             .ToArray());
 
     protected static ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]

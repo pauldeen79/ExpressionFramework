@@ -18,6 +18,8 @@ internal static class Program
         // Generate code
         GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
+        GenerateCode.For<RequestBuilders>(settings, multipleContentBuilder);
+        GenerateCode.For<RequestEntities>(settings, multipleContentBuilder);
 
         GenerateCode.For<AbstractExpressionBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<AbstractNonGenericExpressionBuilders>(settings, multipleContentBuilder);
