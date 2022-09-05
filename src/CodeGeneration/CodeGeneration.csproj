@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.5" />
+    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.6" />
   </ItemGroup>
 
 </Project>

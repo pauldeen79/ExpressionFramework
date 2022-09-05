@@ -34,6 +34,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "CodeGenerationNext.Models.I", "ExpressionFramework.Domain." },
         { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "CodeGenerationNext.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
+        { "CodeGenerationNext.Models.Requests.", "ExpressionFramework.Domain.Requests." },
         { "CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains." },
     };
 
@@ -97,7 +98,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models" && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
+            .Where(x => x.IsInterface && x.Namespace.In("CodeGenerationNext.Models", "CodeGenerationNext.Requests") && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
             .ToArray());
 
     protected static ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]
@@ -106,7 +107,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     });
 
     protected static ITypeBase[] GetAbstractOperatorModels() => MapCodeGenerationModelsToDomain(new[]
-{
+    {
         typeof(IOperator),
     });
 

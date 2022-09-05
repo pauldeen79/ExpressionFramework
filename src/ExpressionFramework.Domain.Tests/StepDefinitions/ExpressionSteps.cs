@@ -17,6 +17,10 @@ public sealed class ExpressionSteps
     public void GivenIHaveTheConstantExpression(string expression)
         => _expression = new ConstantExpression(StringExpression.Parse(expression));
 
+    [Given(@"I have the delegate expression '([^']*)'")]
+    public void GivenIHaveTheDelegateExpression(string expression)
+        => _expression = new DelegateExpression(_ => StringExpression.Parse(expression));
+
     [Given(@"I have an empty expression")]
     public void GivenIHaveAnEmptyExpression()
         => _expression = new EmptyExpression();

@@ -10,6 +10,14 @@ Scenario: Constant expression
         | Status | Ok          |
         | Value  | Hello world |
 
+Scenario: Delegate expression
+    Given I have the delegate expression 'Hello world'
+    When I evaluate the expression
+    Then the expression evaluation result should contain the content
+        | Field  | Value       |
+        | Status | Ok          |
+        | Value  | Hello world |
+
 Scenario: Context expression
     Given I set the context to 'Hello world'
     And I have a context expression
