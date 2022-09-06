@@ -9,5 +9,3 @@ public interface ICondition
     bool EndGroup { get; }
     Combination Combination { get; }
 }
-
-public enum Combination { }

@@ -10,11 +10,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override string FileNameSuffix => ".template.generated";
 
-    protected static readonly string[] CustomBuilderTypes = new[]
-    {
-        "Expression",
-        "Operator",
-    };
+    protected static readonly string[] CustomBuilderTypes =
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.GetInterfaces().Length == 1)
+            .Select(x => x.GetInterfaces()[0].GetEntityClassName())
+            .Distinct()
+        .ToArray();
 
     protected static readonly Dictionary<string, string> CustomDefaultValueForBuilderClassConstructorValues = new()
     {
@@ -22,12 +23,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Tests.Support.Builders.Operators.EqualsOperatorBuilder()" },
     };
 
-    protected static readonly Dictionary<string, string> BuilderNamespaceMappings = new()
-    {
-        { "ExpressionFramework.Domain.Expressions", "ExpressionFramework.Domain.Tests.Support.Builders.Expressions" },
-        { "ExpressionFramework.Domain.Operators", "ExpressionFramework.Domain.Tests.Support.Builders.Operators" },
-        { "ExpressionFramework.Domain", "ExpressionFramework.Domain.Tests.Support.Builders" },
-    };
+    protected static readonly Dictionary<string, string> BuilderNamespaceMappings = new(
+        CustomBuilderTypes
+            .Select(x => new KeyValuePair<string, string>($"ExpressionFramework.Domain.{x}s", $"ExpressionFramework.Domain.Tests.Support.Builders.{x}s"))
+            .Concat(new[] { new KeyValuePair<string, string>("ExpressionFramework.Domain", "ExpressionFramework.Domain.Tests.Support.Builders"), }));
 
     protected static readonly Dictionary<string, string> ModelMappings = new()
     {
@@ -35,9 +34,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "CodeGenerationNext.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
         { "CodeGenerationNext.Models.Requests.I", "ExpressionFramework.Domain.Requests." },
-        { "CodeGenerationNext.Models.", "ExpressionFramework.Domain.Domains." },
+        { "CodeGenerationNext.Models.Domains.", "ExpressionFramework.Domain.Domains." },
         { "CodeGenerationNext.I", "ExpressionFramework.Domain.I" },
     };
+
+    protected static readonly string[] NonDomainTypes =
+        typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext")
+            .Select(x => $"ExpressionFramework.Domain.{x.Name}")
+            .ToArray();
 
     protected override void FixImmutableClassProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
         => FixImmutableBuilderProperties(typeBaseBuilder);
@@ -49,16 +54,13 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             var typeName = property.TypeName.FixTypeName();
             if (!property.IsValueType
                 && typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{x}."))
-                && property.Name != "Evaluator") //TODO: Make exlucsions more generic
+                && !NonDomainTypes.Contains(property.TypeName))
             {
                 property.ConvertSinglePropertyToBuilderOnBuilder
                 (
                     GetBuilderTypeName(typeName),
                     GetCustomBuilderConstructorInitializeExpression(property, typeName),
-                    //TODO: See if we can move this to ModelFramework... But how do we know that we need the casting? Or can we call BuildTyped?
-                    string.IsNullOrEmpty(GetEntityClassName(typeName))
-                        ? string.Empty
-                        : "({3}){0}{2}.Build()"
+                    GetCustomBuilderMethodParameterExpression(typeName)
                 );
 
                 property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
@@ -71,9 +73,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     (
                         false,
                         typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
-                        ReplaceWithBuilderNamespaces(typeName)
-                            .ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture),
-                        "{0} = source.{0}.Select(x => ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName.GetGenericArguments()) + "BuilderFactory.Create(x)).ToList()"
+                        GetCustomCollectionArgumentType(typeName),
+                        GetCustomBuilderConstructorInitializeExpression(typeName)
                     );
                 }
                 else
@@ -82,8 +83,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     (
                         false,
                         typeof(ReadOnlyValueCollection<>).WithoutGenerics(),
-                        ReplaceWithBuilderNamespaces(typeName)
-                            .ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
+                        GetCustomSingleArgumentType(typeName)
                     );
                 }
             }
@@ -98,6 +98,20 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             }
         }
     }
+
+    private static string GetCustomSingleArgumentType(string typeName)
+        => ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture);
+
+    private static string GetCustomCollectionArgumentType(string typeName)
+        => ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture);
+
+    private static string GetCustomBuilderConstructorInitializeExpression(string typeName)
+        => "{0} = source.{0}.Select(x => ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName.GetGenericArguments()) + "BuilderFactory.Create(x)).ToList()";
+
+    private static string? GetCustomBuilderMethodParameterExpression(string typeName)
+        => string.IsNullOrEmpty(GetEntityClassName(typeName))
+                            ? string.Empty
+                            : "({3}){0}{2}.Build()";
 
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
