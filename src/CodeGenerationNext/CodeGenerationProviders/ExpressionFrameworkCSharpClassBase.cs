@@ -109,9 +109,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => "{0} = source.{0}.Select(x => ExpressionFramework.Domain.Tests.Support.Builders." + GetEntityClassName(typeName.GetGenericArguments()) + "BuilderFactory.Create(x)).ToList()";
 
     private static string? GetCustomBuilderMethodParameterExpression(string typeName)
-        => string.IsNullOrEmpty(GetEntityClassName(typeName))
+        => string.IsNullOrEmpty(GetEntityClassName(typeName)) || CustomBuilderTypes.Contains(typeName.GetClassName())
                             ? string.Empty
-                            : "({3}){0}{2}.Build()";
+                            : "{0}{2}.BuildTyped()";
 
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
