@@ -1,6 +1,6 @@
 ﻿namespace CodeGenerationNext.Models.Requests
 {
-    public interface IExpressionEvaluatorRequest
+    public interface IDelegateExpressionRequest
     {
         object? Context { get; }
         [Required]
