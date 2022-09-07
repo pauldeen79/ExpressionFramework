@@ -41,3 +41,13 @@ Scenario: Unknown expression
     Then the expression evaluation result should contain the content
         | Field  | Value   |
         | Status | Invalid |
+
+Scenario: Chained expression
+    Given I have a chained expression
+    And I chain a constant expression 'Hello world' to it
+    And I chain a to upper case expression to it
+    When I evaluate the expression
+    Then the expression evaluation result should contain the content
+        | Field  | Value       |
+        | Status | Ok          |
+        | Value  | HELLO WORLD |
