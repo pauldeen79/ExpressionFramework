@@ -6,6 +6,5 @@ public interface IConditionalExpression : IExpression
     IReadOnlyCollection<ICondition> Conditions { get; }
     [Required]
     IExpression ResultExpression { get; }
-    [Required]
-    IExpression DefaultExpression { get; }
+    IExpression? DefaultExpression { get; }
 }
