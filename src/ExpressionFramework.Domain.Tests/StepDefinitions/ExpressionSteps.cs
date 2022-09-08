@@ -67,6 +67,14 @@ public sealed class ExpressionSteps
     public void GivenIChainAToUpperCaseExpressionToIt()
         => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder());
 
+    [Given(@"I chain a to lower case expression to it")]
+    public void GivenIChainAToLowerCaseExpressionToIt()
+    => ChainedExpressionBuilder.AddExpressions(new ToLowerCaseExpressionBuilder());
+
+    [Given(@"I chain a to pascal case expression to it")]
+    public void GivenIChainAToPascalCaseExpressionToIt()
+    => ChainedExpressionBuilder.AddExpressions(new ToPascalCaseExpressionBuilder());
+
     [Given(@"I use a constant expression '([^']*)' as result expression")]
     public void GivenIUseAConstantExpressionAsResultExpression(string expression)
         => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(expression);

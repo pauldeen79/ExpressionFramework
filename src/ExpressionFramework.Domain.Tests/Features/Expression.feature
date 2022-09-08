@@ -42,7 +42,7 @@ Scenario: Unknown expression
         | Field  | Value   |
         | Status | Invalid |
 
-Scenario: Chained expression
+Scenario: Chained expression with upper case
     Given I have a chained expression
     And I chain a constant expression 'Hello world' to it
     And I chain a to upper case expression to it
@@ -51,6 +51,26 @@ Scenario: Chained expression
         | Field  | Value       |
         | Status | Ok          |
         | Value  | HELLO WORLD |
+
+Scenario: Chained expression with lower case
+    Given I have a chained expression
+    And I chain a constant expression 'Hello world' to it
+    And I chain a to lower case expression to it
+    When I evaluate the expression
+    Then the expression evaluation result should contain the content
+        | Field  | Value       |
+        | Status | Ok          |
+        | Value  | hello world |
+
+Scenario: Chained expression with pascal case
+    Given I have a chained expression
+    And I chain a constant expression 'Hello world' to it
+    And I chain a to pascal case expression to it
+    When I evaluate the expression
+    Then the expression evaluation result should contain the content
+        | Field  | Value       |
+        | Status | Ok          |
+        | Value  | hello world |
 
 Scenario: Conditional expression
     Given I have the following condition

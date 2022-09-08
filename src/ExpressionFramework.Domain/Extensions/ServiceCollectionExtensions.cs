@@ -13,6 +13,8 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IExpressionHandler, ContextExpressionHandler>()
             .AddSingleton<IExpressionHandler, DelegateExpressionHandler>()
             .AddSingleton<IExpressionHandler, EmptyExpressionHandler>()
+            .AddSingleton<IExpressionHandler, ToLowerCaseExpressionHandler>()
+            .AddSingleton<IExpressionHandler, ToPascalCaseExpressionHandler>()
             .AddSingleton<IExpressionHandler, ToUpperCaseExpressionHandler>()
             .AddSingleton<IOperatorHandler, EqualsOperatorHandler>();
 }
