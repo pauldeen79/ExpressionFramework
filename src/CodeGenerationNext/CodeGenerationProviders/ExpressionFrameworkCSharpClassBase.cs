@@ -63,7 +63,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     GetCustomBuilderMethodParameterExpression(typeName)
                 );
 
-                property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
+                if (!property.IsNullable)
+                {
+                    property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
+                }
             }
             else if (typeName.StartsWithAny(StringComparison.InvariantCulture, BuilderNamespaceMappings.Keys.Select(x => $"{RecordCollectionType.WithoutGenerics()}<{x}.")))
             {
@@ -90,11 +93,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             else if (typeName.IsBooleanTypeName() || typeName.IsNullableBooleanTypeName())
             {
                 property.SetDefaultArgumentValueForWithMethod(true);
-            }
-            else if (CustomDefaultValueForBuilderClassConstructorValues.ContainsKey(typeName))
-            {
-                // Allow default values for other types as well (not just domain model ones)
-                property.SetDefaultValueForBuilderClassConstructor(GetDefaultValueForBuilderClassConstructor(typeName));
             }
         }
     }
