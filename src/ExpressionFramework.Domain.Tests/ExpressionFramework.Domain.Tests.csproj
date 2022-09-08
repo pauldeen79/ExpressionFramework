@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Drivers\" />
+    <Folder Include="Features\Expressions\" />
   </ItemGroup>
 
   <ItemGroup>
