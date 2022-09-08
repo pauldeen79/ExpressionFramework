@@ -9,6 +9,7 @@ public sealed class ExpressionSteps
     private Result<object?>? _result;
 
     private ChainedExpressionBuilder ChainedExpressionBuilder => _expressionBuilder as ChainedExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a chained expression?");
+    private ConditionalExpressionBuilder ConditionalExpressionBuilder => _expressionBuilder as ConditionalExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a conditional expression?");
     private Expression Expression => (_expressionBuilder ?? throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'")).Build();
     private Result<object?> Result => _result ?? throw new InvalidOperationException("First evaluate the expression using 'When I evaluate the expression'");
 
@@ -38,6 +39,10 @@ public sealed class ExpressionSteps
     public void GivenIHaveAChainedExpression()
         => _expressionBuilder = new ChainedExpressionBuilder();
 
+    [Given(@"I have a conditional expression")]
+    public void GivenIHaveAConditionalExpression()
+        => _expressionBuilder = new ConditionalExpressionBuilder();
+
     [When(@"I evaluate the expression")]
     public async Task WhenIEvaluateTheExpression()
         => _result = await ApplicationEntrypoint.ExpressionEvaluator.Evaluate(_contextSteps.Context, Expression);
@@ -61,4 +66,12 @@ public sealed class ExpressionSteps
     [Given(@"I chain a to upper case expression to it")]
     public void GivenIChainAToUpperCaseExpressionToIt()
         => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder());
+
+    [Given(@"I use a constant expression '([^']*)' as result expression")]
+    public void GivenIUseAConstantExpressionAsResultExpression(string expression)
+        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(expression);
+
+    [Given(@"I use a constant expression '([^']*)' as default expression")]
+    public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
+        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(expression);
 }

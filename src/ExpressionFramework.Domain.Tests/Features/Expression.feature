@@ -51,3 +51,18 @@ Scenario: Chained expression
         | Field  | Value       |
         | Status | Ok          |
         | Value  | HELLO WORLD |
+
+Scenario: Conditional expression
+    Given I have the following condition
+        | Field           | Value       |
+        | LeftExpression  | Hello world |
+        | Operator        | Equals      |
+        | RightExpression | Hello world |
+    And I have a conditional expression
+    And I use a constant expression 'Yes' as result expression
+    And I use a constant expression 'No' as default expression
+    When I evaluate the expression
+    Then the expression evaluation result should contain the content
+        | Field  | Value |
+        | Status | Ok    |
+        | Value  | Yes   |

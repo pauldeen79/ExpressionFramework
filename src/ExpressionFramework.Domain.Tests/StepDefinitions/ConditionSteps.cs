@@ -17,6 +17,10 @@ public sealed class ConditionSteps
     public void GivenIHaveTheFollowingCondition(Condition condition)
         => _conditions = new[] { condition };
 
+    [Given(@"I have the following conditions")]
+    public void GivenIHaveTheFollowingCondition(Condition[] conditions)
+        => _conditions = conditions;
+
     [When(@"I evaluate the condition")]
     public async Task WhenIEvaluateTheCondition()
         => _result = await ApplicationEntrypoint.ConditionEvaluator.Evaluate(_contextSteps.Context, Conditions);
