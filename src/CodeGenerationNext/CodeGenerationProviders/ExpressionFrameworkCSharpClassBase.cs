@@ -15,7 +15,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             .Where(x => x.IsInterface && x.GetInterfaces().Length == 1)
             .Select(x => x.GetInterfaces()[0].GetEntityClassName())
             .Distinct()
-        .ToArray();
+            .ToArray();
 
     protected static readonly Dictionary<string, string> CustomDefaultValueForBuilderClassConstructorValues = new()
     {
@@ -212,7 +212,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => types
             .Select(x => x.ToClassBuilder(new ClassSettings())
                 .WithNamespace("ExpressionFramework.Domain")
-                .WithName(x.Name.Substring(1))
+                .WithName(x.GetEntityClassName())
                 .With(y => y.Properties.ForEach(z => ModelMappings.ToList().ForEach(m => z.TypeName = z.TypeName.Replace(m.Key, m.Value))))
                 .Build())
             .ToArray();
