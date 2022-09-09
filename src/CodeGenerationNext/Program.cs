@@ -37,6 +37,7 @@ internal static class Program
 
         var scaffoldingSettings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
         GenerateCode.For<ExpressionHandlers>(scaffoldingSettings, multipleContentBuilder);
+        GenerateCode.For<OperatorHandlers>(scaffoldingSettings, multipleContentBuilder);
 
         // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
