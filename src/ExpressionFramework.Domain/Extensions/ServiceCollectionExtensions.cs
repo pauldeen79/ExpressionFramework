@@ -18,5 +18,21 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IExpressionHandler, ToLowerCaseExpressionHandler>()
             .AddSingleton<IExpressionHandler, ToPascalCaseExpressionHandler>()
             .AddSingleton<IExpressionHandler, ToUpperCaseExpressionHandler>()
-            .AddSingleton<IOperatorHandler, EqualsOperatorHandler>();
+            .AddSingleton<IOperatorHandler, ContainsOperatorHandler>()
+            .AddSingleton<IOperatorHandler, EndsWithOperatorHandler>()
+            .AddSingleton<IOperatorHandler, EqualsOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsGreaterOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsGreaterOrEqualOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNotNullOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNotNullOrEmptyOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNotNullOrWhiteSpaceOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNullOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNullOrEmptyOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsNullOrWhiteSpaceOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsSmallerOperatorHandler>()
+            .AddSingleton<IOperatorHandler, IsSmallerOrEqualOperatorHandler>()
+            .AddSingleton<IOperatorHandler, NotContainsOperatorHandler>()
+            .AddSingleton<IOperatorHandler, NotEndsWithOperatorHandler>()
+            .AddSingleton<IOperatorHandler, NotEqualsOperatorHandler>()
+            .AddSingleton<IOperatorHandler, StartsWithOperatorHandler>();
 }
