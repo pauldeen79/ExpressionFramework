@@ -34,5 +34,6 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IOperatorHandler, NotContainsOperatorHandler>()
             .AddSingleton<IOperatorHandler, NotEndsWithOperatorHandler>()
             .AddSingleton<IOperatorHandler, NotEqualsOperatorHandler>()
+            .AddSingleton<IOperatorHandler, NotStartsWithOperatorHandler>()
             .AddSingleton<IOperatorHandler, StartsWithOperatorHandler>();
 }

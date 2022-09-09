@@ -16,7 +16,7 @@ public class EqualsOperatorHandler : OperatorHandlerBase<EqualsOperator>
 
         if (leftValue is string leftString
             && rightValue is string rightString
-            && leftString.Equals(rightString, StringComparison.OrdinalIgnoreCase))
+            && leftString.Equals(rightString, StringComparison.CurrentCultureIgnoreCase))
         {
             return true;
         }

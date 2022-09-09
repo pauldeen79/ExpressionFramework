@@ -37,6 +37,7 @@ public static class OperatorExpression
             "notcontains" => new NotContainsOperator(),
             "notendswith" => new NotEndsWithOperator(),
             "notequals" => new NotEqualsOperator(),
+            "notstartswith" => new NotStartsWithOperator(),
             "startsswith" => new StartsWithOperator(),
             "unknown" => new UnknownOperator(),
             _ => throw new ArgumentOutOfRangeException($"Unknown operator: [{@operator}]")

@@ -1,20 +1,19 @@
 ﻿namespace ExpressionFramework.Domain.OperatorHandlers;
 
-public class EndsWithOperatorHandler : OperatorHandlerBase<EndsWithOperator>
+public class NotStartsWithOperatorHandler : OperatorHandlerBase<NotStartsWithOperator>
 {
     protected override bool Handle(object? leftValue, object? rightValue)
     {
         if (leftValue == null)
         {
-            return false;
+            return true;
         }
 
         if (rightValue is not string rightValueString || string.IsNullOrEmpty(rightValueString))
         {
-            return false;
+            return true;
         }
 
-        return leftValue.ToString().EndsWith(rightValueString, StringComparison.CurrentCultureIgnoreCase);
+        return !leftValue.ToString().StartsWith(rightValueString, StringComparison.CurrentCultureIgnoreCase);
     }
 }
-
