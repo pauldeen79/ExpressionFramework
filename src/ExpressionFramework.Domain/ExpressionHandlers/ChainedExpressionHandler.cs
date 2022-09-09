@@ -2,7 +2,7 @@
 
 public class ChainedExpressionHandler : ExpressionHandlerBase<ChainedExpression>
 {
-    protected override async Task<Result<object?>> Evaluate(object? context, ChainedExpression typedExpression, IExpressionEvaluator evaluator)
+    protected override async Task<Result<object?>> Handle(object? context, ChainedExpression typedExpression, IExpressionEvaluator evaluator)
     {
         Result<object?>? result = null;
         var first = true;

@@ -16,7 +16,7 @@ public class ExpressionHandlers : ExpressionFrameworkCSharpClassBase
             .WithName($"{x.Name}Handler")
             .WithBaseClass($"ExpressionHandlerBase<{x.Name}>")
             .AddMethods(new ClassMethodBuilder()
-                .WithName("Evaluate")
+                .WithName("Handle")
                 .WithProtected()
                 .WithOverride()
                 .AddParameter("context", "System.Object?")

@@ -2,7 +2,7 @@
 
 public class EqualsOperatorHandler : OperatorHandlerBase<EqualsOperator>
 {
-    protected override bool Evaluate(object? leftValue, object? rightValue)
+    protected override bool Handle(object? leftValue, object? rightValue)
     {
         if (leftValue == null && rightValue == null)
         {

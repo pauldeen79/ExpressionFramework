@@ -10,8 +10,8 @@ public abstract class OperatorHandlerBase<T> : IOperatorHandler
             return Result<bool>.NotSupported();
         }
 
-        return Result<bool>.Success(Evaluate(leftValue, rightValue));
+        return Result<bool>.Success(Handle(leftValue, rightValue));
     }
 
-    protected abstract bool Evaluate(object? leftValue, object? rightValue);
+    protected abstract bool Handle(object? leftValue, object? rightValue);
 }

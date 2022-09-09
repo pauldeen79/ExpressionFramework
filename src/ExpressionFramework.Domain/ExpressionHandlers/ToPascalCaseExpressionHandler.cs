@@ -2,7 +2,7 @@
 
 public class ToPascalCaseExpressionHandler : ExpressionHandlerBase<ToPascalCaseExpression>
 {
-    protected override Task<Result<object?>> Evaluate(object? context, ToPascalCaseExpression typedExpression, IExpressionEvaluator evaluator)
+    protected override Task<Result<object?>> Handle(object? context, ToPascalCaseExpression typedExpression, IExpressionEvaluator evaluator)
         => Task.FromResult(Result<object?>.Success(ToPascalCase(context?.ToString())));
 
     private string? ToPascalCase(string? value)

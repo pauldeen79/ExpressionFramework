@@ -7,6 +7,6 @@ public class FieldExpressionHandler : ExpressionHandlerBase<FieldExpression>
     public FieldExpressionHandler(IValueProvider valueProvider)
         => _valueProvider = valueProvider;
 
-    protected override Task<Result<object?>> Evaluate(object? context, FieldExpression typedExpression, IExpressionEvaluator evaluator)
+    protected override Task<Result<object?>> Handle(object? context, FieldExpression typedExpression, IExpressionEvaluator evaluator)
         => Task.FromResult(_valueProvider.GetValue(context, typedExpression.FieldName));
 }

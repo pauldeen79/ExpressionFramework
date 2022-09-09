@@ -10,8 +10,8 @@ public abstract class ExpressionHandlerBase<T> : IExpressionHandler
             return Task.FromResult(Result<object?>.NotSupported());
         }
 
-        return Evaluate(context, typedExpression, evaluator);
+        return Handle(context, typedExpression, evaluator);
     }
 
-    protected abstract Task<Result<object?>> Evaluate(object? context, T typedExpression, IExpressionEvaluator evaluator);
+    protected abstract Task<Result<object?>> Handle(object? context, T typedExpression, IExpressionEvaluator evaluator);
 }

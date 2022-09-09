@@ -7,7 +7,7 @@ public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExp
     public ConditionalExpressionHandler(IConditionEvaluatorProvider provider)
         => _provider = provider;
 
-    protected override async Task<Result<object?>> Evaluate(object? context, ConditionalExpression typedExpression, IExpressionEvaluator evaluator)
+    protected override async Task<Result<object?>> Handle(object? context, ConditionalExpression typedExpression, IExpressionEvaluator evaluator)
     {
         var evaluationResult = await _provider.Get(evaluator).Evaluate(context, typedExpression.Conditions);
 

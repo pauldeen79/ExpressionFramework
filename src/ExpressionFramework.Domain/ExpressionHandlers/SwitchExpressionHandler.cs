@@ -7,7 +7,7 @@ public class SwitchExpressionHandler : ExpressionHandlerBase<SwitchExpression>
     public SwitchExpressionHandler(IConditionEvaluatorProvider provider)
         => _provider = provider;
 
-    protected override async Task<Result<object?>> Evaluate(object? context, SwitchExpression typedExpression, IExpressionEvaluator evaluator)
+    protected override async Task<Result<object?>> Handle(object? context, SwitchExpression typedExpression, IExpressionEvaluator evaluator)
     {
         var conditionEvaluator = _provider.Get(evaluator);
         foreach (var @case in typedExpression.Cases)
