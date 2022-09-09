@@ -20,7 +20,7 @@ public class ExpressionHandlers : ExpressionFrameworkCSharpClassBase
                 .WithProtected()
                 .WithOverride()
                 .AddParameter("context", "System.Object?")
-                .AddParameter("typedExpression", "ChainedExpression")
+                .AddParameter("typedExpression", x.Name)
                 .AddParameter("evaluator", "IExpressionEvaluator")
                 .WithTypeName("Task<Result<object?>>") //this is a quirk, really...
                 .AddLiteralCodeStatements("throw new NotImplementedException();")

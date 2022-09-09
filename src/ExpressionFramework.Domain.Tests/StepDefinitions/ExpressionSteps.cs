@@ -73,6 +73,12 @@ public sealed class ExpressionSteps
     public void GivenIHaveASwitchExpression()
         => _expressionBuilder = new SwitchExpressionBuilder();
 
+    [Given(@"I have the equals expression with first value '([^']*)' and second value '([^']*)'")]
+    public void GivenIHaveTheEqualsExpressionWithFirstValueAndSecondValue(string firstValue, string secondValue)
+        => _expressionBuilder = new EqualsExpressionBuilder()
+        .WithFirstExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(firstValue)))
+        .WithSecondExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(secondValue)));
+
     [Given(@"I chain a constant expression '([^']*)' to it")]
     public void GivenIChainAConstantExpressionToIt(string expression)
         => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression)));
