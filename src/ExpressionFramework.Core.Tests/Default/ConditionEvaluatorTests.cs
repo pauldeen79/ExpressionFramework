@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Abstractions.DomainModel.Domains;
-
-namespace ExpressionFramework.Core.Tests.Default;
+﻿namespace ExpressionFramework.Core.Tests.Default;
 
 public class ConditionEvaluatorTests
 {

@@ -2,7 +2,7 @@
 
 public static class OperatorExpression
 {
-    public static Operator Evaluate(string @operator)
+    public static Operator Parse(string @operator)
         => @operator.ToLowerInvariant() switch
         {
             "contains" => new ContainsOperator(),
@@ -38,7 +38,7 @@ public static class OperatorExpression
             "notendswith" => new NotEndsWithOperator(),
             "notequals" => new NotEqualsOperator(),
             "notstartswith" => new NotStartsWithOperator(),
-            "startsswith" => new StartsWithOperator(),
+            "startswith" => new StartsWithOperator(),
             "unknown" => new UnknownOperator(),
             _ => throw new ArgumentOutOfRangeException($"Unknown operator: [{@operator}]")
         };
