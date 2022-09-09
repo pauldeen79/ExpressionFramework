@@ -66,7 +66,7 @@ internal static class Program
 
         foreach (var file in Directory.GetFiles(Path.Combine(basePath, gen.Path), "*.generated.cs"))
         {
-            File.Move(file, file.Replace("generated.cs", ".cs"));
+            File.Move(file, file.Replace("generated.cs", "cs"));
         }
     }
 }
