@@ -3,25 +3,6 @@
 public class NotEqualsOperatorHandler : OperatorHandlerBase<NotEqualsOperator>
 {
     protected override bool Handle(object? leftValue, object? rightValue)
-    {
-        if (leftValue == null && rightValue == null)
-        {
-            return false;
-        }
-
-        if (leftValue == null || rightValue == null)
-        {
-            return true;
-        }
-
-        if (leftValue is string leftString
-            && rightValue is string rightString
-            && !leftString.Equals(rightString, StringComparison.CurrentCultureIgnoreCase))
-        {
-            return true;
-        }
-
-        return !leftValue.Equals(rightValue);
-    }
+        => !EqualsOperatorHandler.IsValid(leftValue, rightValue);
 }
 

@@ -3,6 +3,9 @@
 public class EqualsOperatorHandler : OperatorHandlerBase<EqualsOperator>
 {
     protected override bool Handle(object? leftValue, object? rightValue)
+        => IsValid(leftValue, rightValue);
+
+    internal static bool IsValid(object? leftValue, object? rightValue)
     {
         if (leftValue == null && rightValue == null)
         {
