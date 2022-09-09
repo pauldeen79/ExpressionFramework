@@ -43,6 +43,30 @@ public sealed class ExpressionSteps
     public void GivenIHaveAConditionalExpression()
         => _expressionBuilder = new ConditionalExpressionBuilder();
 
+    [Given(@"I chain a constant expression '([^']*)' to it")]
+    public void GivenIChainAConstantExpressionToIt(string expression)
+        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(expression));
+
+    [Given(@"I chain a to upper case expression to it")]
+    public void GivenIChainAToUpperCaseExpressionToIt()
+        => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder());
+
+    [Given(@"I chain a to lower case expression to it")]
+    public void GivenIChainAToLowerCaseExpressionToIt()
+        => ChainedExpressionBuilder.AddExpressions(new ToLowerCaseExpressionBuilder());
+
+    [Given(@"I chain a to pascal case expression to it")]
+    public void GivenIChainAToPascalCaseExpressionToIt()
+        => ChainedExpressionBuilder.AddExpressions(new ToPascalCaseExpressionBuilder());
+
+    [Given(@"I use a constant expression '([^']*)' as result expression")]
+    public void GivenIUseAConstantExpressionAsResultExpression(string expression)
+        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(expression);
+
+    [Given(@"I use a constant expression '([^']*)' as default expression")]
+    public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
+        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(expression);
+
     [When(@"I evaluate the expression")]
     public async Task WhenIEvaluateTheExpression()
         => _result = await ApplicationEntrypoint.ExpressionEvaluator.Evaluate(_contextSteps.Context, Expression);
@@ -58,28 +82,4 @@ public sealed class ExpressionSteps
     [Then(@"the expression evaluation result value should be '([^']*)'")]
     public void ThenTheExpressionEvaluationResultValueShouldBe(string value)
         => Result.Value.Should().BeEquivalentTo(StringExpression.Parse(value));
-
-    [Given(@"I chain a constant expression '([^']*)' to it")]
-    public void GivenIChainAConstantExpressionToIt(string expression)
-        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(expression));
-
-    [Given(@"I chain a to upper case expression to it")]
-    public void GivenIChainAToUpperCaseExpressionToIt()
-        => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder());
-
-    [Given(@"I chain a to lower case expression to it")]
-    public void GivenIChainAToLowerCaseExpressionToIt()
-    => ChainedExpressionBuilder.AddExpressions(new ToLowerCaseExpressionBuilder());
-
-    [Given(@"I chain a to pascal case expression to it")]
-    public void GivenIChainAToPascalCaseExpressionToIt()
-    => ChainedExpressionBuilder.AddExpressions(new ToPascalCaseExpressionBuilder());
-
-    [Given(@"I use a constant expression '([^']*)' as result expression")]
-    public void GivenIUseAConstantExpressionAsResultExpression(string expression)
-        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(expression);
-
-    [Given(@"I use a constant expression '([^']*)' as default expression")]
-    public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
-        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(expression);
 }
