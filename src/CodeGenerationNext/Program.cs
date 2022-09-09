@@ -38,6 +38,8 @@ internal static class Program
         var scaffoldingSettings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
         GenerateCode.For<ExpressionHandlers>(scaffoldingSettings, multipleContentBuilder);
         GenerateCode.For<OperatorHandlers>(scaffoldingSettings, multipleContentBuilder);
+        FixGeneratedFilesFor<ExpressionHandlers>(basePath);
+        FixGeneratedFilesFor<OperatorHandlers>(basePath);
 
         // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous
@@ -55,5 +57,16 @@ internal static class Program
             }
         }
 #pragma warning restore S2589 // Boolean expressions should not be gratuitous
+    }
+
+    private static void FixGeneratedFilesFor<T>(string basePath)
+        where T : ICodeGenerationProvider, new()
+    {
+        var gen = new T();
+
+        foreach (var file in Directory.GetFiles(Path.Combine(basePath, gen.Path), "*.generated.cs"))
+        {
+            File.Move(file, file.Replace("generated.cs", ".cs"));
+        }
     }
 }
