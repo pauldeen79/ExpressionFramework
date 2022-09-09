@@ -2,9 +2,9 @@
 
 public class ConditionModel 
 {
-    public string LeftExpression { get; set; } = "a";
+    public string LeftExpression { get; set; } = "";
     public string Operator { get; set; } = "Equals";
-    public string RightExpression { get; set; } = "b";
+    public string RightExpression { get; set; } = "";
     public bool StartGroup { get; set; }
     public bool EndGroup { get; set; }
     public Combination Combination { get; set; }

@@ -1,6 +1,6 @@
 ﻿Feature: ConstantExpression
 
-A constant expression is a value that is provided by the creator, and doesn't change.
+A constant expression is a value that is provided by the creator, and doesn't change
 
 Scenario: Constant expression
     Given I have the constant expression 'Hello world'

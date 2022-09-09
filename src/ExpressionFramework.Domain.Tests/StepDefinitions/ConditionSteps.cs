@@ -9,7 +9,7 @@ public sealed class ConditionSteps
     private Condition[]? _conditions;
 
     private Result<bool> Result => _result ?? throw new InvalidOperationException("First evaluate the condition using 'When I evaluate the condition'");
-    private Condition[] Conditions => _conditions ?? throw new InvalidOperationException("First initialize the condition using 'Given I have the condition'");
+    public Condition[] Conditions => _conditions ?? Array.Empty<Condition>();
 
     public ConditionSteps(ContextSteps contextSteps) => _contextSteps = contextSteps;
 

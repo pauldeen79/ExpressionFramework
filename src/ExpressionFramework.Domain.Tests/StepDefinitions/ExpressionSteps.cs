@@ -4,16 +4,42 @@
 public sealed class ExpressionSteps
 {
     private readonly ContextSteps _contextSteps;
+    private readonly ConditionSteps _conditionSteps;
 
     private ExpressionBuilder? _expressionBuilder;
     private Result<object?>? _result;
 
     private ChainedExpressionBuilder ChainedExpressionBuilder => _expressionBuilder as ChainedExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a chained expression?");
     private ConditionalExpressionBuilder ConditionalExpressionBuilder => _expressionBuilder as ConditionalExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a conditional expression?");
-    private Expression Expression => (_expressionBuilder ?? throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'")).Build();
+    private SwitchExpressionBuilder SwitchExpressionBuilder => _expressionBuilder as SwitchExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a switch expression?");
+    private Expression Expression
+    {
+        get
+        {
+            if (_expressionBuilder == null)
+            {
+                throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'");
+            }
+
+            // Note that currently, we have to add the conditions ourselves, because collection properties on builders are not lazy...
+            // To change that, we have to improve ModelFramework.
+            var conditionalExpressionBuilder = _expressionBuilder as ConditionalExpressionBuilder;
+            if (conditionalExpressionBuilder != null)
+            {
+                conditionalExpressionBuilder.AddConditions(_conditionSteps.Conditions.Select(x => new ConditionBuilder(x)));
+            }
+
+            return _expressionBuilder.Build();
+        }
+    }
+
     private Result<object?> Result => _result ?? throw new InvalidOperationException("First evaluate the expression using 'When I evaluate the expression'");
 
-    public ExpressionSteps(ContextSteps contextSteps) => _contextSteps = contextSteps;
+    public ExpressionSteps(ContextSteps contextSteps, ConditionSteps conditionSteps)
+    {
+        _contextSteps = contextSteps;
+        _conditionSteps = conditionSteps;
+    }
 
     [Given(@"I have the constant expression '([^']*)'")]
     public void GivenIHaveTheConstantExpression(string expression)
@@ -43,9 +69,13 @@ public sealed class ExpressionSteps
     public void GivenIHaveAConditionalExpression()
         => _expressionBuilder = new ConditionalExpressionBuilder();
 
+    [Given(@"I have a switch expression")]
+    public void GivenIHaveASwitchExpression()
+        => _expressionBuilder = new SwitchExpressionBuilder();
+
     [Given(@"I chain a constant expression '([^']*)' to it")]
     public void GivenIChainAConstantExpressionToIt(string expression)
-        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(expression));
+        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression)));
 
     [Given(@"I chain a to upper case expression to it")]
     public void GivenIChainAToUpperCaseExpressionToIt()
@@ -61,11 +91,19 @@ public sealed class ExpressionSteps
 
     [Given(@"I use a constant expression '([^']*)' as result expression")]
     public void GivenIUseAConstantExpressionAsResultExpression(string expression)
-        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(expression);
+        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
 
     [Given(@"I use a constant expression '([^']*)' as default expression")]
     public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
-        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(expression);
+        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
+
+    [Given(@"I add the following case")]
+    public void GivenIAddTheFollowingCase(Case @case)
+        => SwitchExpressionBuilder.AddCases(new CaseBuilder(@case));
+
+    [Given(@"I set the default expression to '([^']*)'")]
+    public void GivenISetTheDefaultExpressionTo(string expression)
+        => SwitchExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
 
     [When(@"I evaluate the expression")]
     public async Task WhenIEvaluateTheExpression()

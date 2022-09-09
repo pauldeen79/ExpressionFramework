@@ -1,6 +1,7 @@
 ﻿Feature: DelegateExpression
 
-A delegate expression is an expression that is dynamically evaluated. In programming languages, this is often referred as a delegate.
+A delegate expression is an expression that is dynamically evaluated.
+In programming languages, this is often referred as a delegate or lazy evaluation.
 
 Scenario: Delegate expression
     Given I have the delegate expression 'Hello world'
