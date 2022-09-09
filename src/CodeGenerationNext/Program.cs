@@ -13,7 +13,7 @@ internal static class Program
         var generateMultipleFiles = true;
         var dryRun = false;
         var multipleContentBuilder = new MultipleContentBuilder { BasePath = basePath };
-        var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
+        var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, false, dryRun);
 
         // Generate code
         GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
@@ -34,6 +34,9 @@ internal static class Program
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<ExpressionBuilderFactory>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
+
+        var scaffoldingSettings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
+        GenerateCode.For<ExpressionHandlers>(scaffoldingSettings, multipleContentBuilder);
 
         // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous

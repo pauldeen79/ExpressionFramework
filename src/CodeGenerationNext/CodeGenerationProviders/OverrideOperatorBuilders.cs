@@ -5,7 +5,6 @@ public class OverrideOperatorBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain.Tests/Support/Builders/Operators";
     public override string DefaultFileName => "Builders.generated.cs";
-    public override bool RecurseOnDeleteGeneratedFiles => false;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;

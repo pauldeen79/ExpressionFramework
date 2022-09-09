@@ -5,7 +5,6 @@ public class AbstractNonGenericOperatorBuilders : ExpressionFrameworkCSharpClass
 {
     public override string Path => "ExpressionFramework.Domain.Tests/Support/Builders";
     public override string DefaultFileName => "Builders.generated.cs";
-    public override bool RecurseOnDeleteGeneratedFiles => false;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
