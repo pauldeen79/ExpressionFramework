@@ -22,6 +22,14 @@ public static class StringExpression
                     return false;
                 case "[today]":
                     return DateTime.Today;
+                case "[space]":
+                    return " ";
+                case "[1]":
+                    return 1;
+                case "[2]":
+                    return 2;
+                case "[3]":
+                    return 3;
             }
         }
 
