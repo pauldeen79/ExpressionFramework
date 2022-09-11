@@ -26,14 +26,16 @@ internal static class Program
         GenerateCode.For<AbstractExpressionEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideExpressionBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideExpressionEntities>(settings, multipleContentBuilder);
+        GenerateCode.For<ExpressionBuilderFactory>(settings, multipleContentBuilder);
+        GenerateCode.For<ExpressionServiceCollectionConfiguration>(settings, multipleContentBuilder);
 
         GenerateCode.For<AbstractOperatorBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<AbstractNonGenericOperatorBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<AbstractOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideOperatorBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
-        GenerateCode.For<ExpressionBuilderFactory>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
+        GenerateCode.For<OperatorServiceCollectionConfiguration>(settings, multipleContentBuilder);
 
         var scaffoldingSettings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
         GenerateCode.For<ExpressionHandlers>(scaffoldingSettings, multipleContentBuilder);

@@ -8,6 +8,7 @@ global using CodeGenerationNext.Models.Domains;
 global using CodeGenerationNext.Models.Requests;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Extensions;
+global using Microsoft.Extensions.DependencyInjection;
 global using ModelFramework.CodeGeneration.CodeGenerationProviders;
 global using ModelFramework.Common;
 global using ModelFramework.Common.Extensions;
