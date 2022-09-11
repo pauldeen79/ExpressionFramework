@@ -30,17 +30,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static readonly Dictionary<string, string> ModelMappings = new()
     {
-        { "CodeGenerationNext.Models.I", "ExpressionFramework.Domain." },
-        { "CodeGenerationNext.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
-        { "CodeGenerationNext.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
-        { "CodeGenerationNext.Models.Requests.I", "ExpressionFramework.Domain.Requests." },
-        { "CodeGenerationNext.Models.Domains.", "ExpressionFramework.Domain.Domains." },
-        { "CodeGenerationNext.I", "ExpressionFramework.Domain.I" },
+        { "ExpressionFramework.CodeGeneration.Models.I", "ExpressionFramework.Domain." },
+        { "ExpressionFramework.CodeGeneration.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
+        { "ExpressionFramework.CodeGeneration.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
+        { "ExpressionFramework.CodeGeneration.Models.Requests.I", "ExpressionFramework.Domain.Requests." },
+        { "ExpressionFramework.CodeGeneration.Models.Domains.", "ExpressionFramework.Domain.Domains." },
+        { "ExpressionFramework.CodeGeneration.I", "ExpressionFramework.Domain.I" },
     };
 
     protected static readonly string[] NonDomainTypes =
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext")
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration")
             .Select(x => $"ExpressionFramework.Domain.{x.Name}")
             .ToArray();
 
@@ -143,12 +143,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models" && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models" && !CustomBuilderTypes.Contains(x.GetEntityClassName()))
             .ToArray());
 
     protected static ITypeBase[] GetRequestModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Requests")
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Requests")
             .ToArray());
 
     protected static ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]
@@ -163,12 +163,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected static ITypeBase[] GetOverrideExpressionModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Expressions")
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Expressions")
             .ToArray());
 
     protected static ITypeBase[] GetOverrideOperatorModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "CodeGenerationNext.Models.Operators")
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Operators")
             .ToArray());
 
     protected static string GetBuilderNamespace(string typeName)

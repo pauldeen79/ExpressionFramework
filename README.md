@@ -34,5 +34,11 @@ See unit tests for more examples.
 I am currently not storing generated files in the code repository.
 To generate, simply run the console project from either Visual Studio (hit F5) or a command prompt.
 This will replace almost all generated code.
+
 There are some files (operator handlers and expression handlers) being generated for the first time only.
 This is known as code scaffolding, which happens when you add a new expression or operator type.
+
+Command to run code generation:
+```bash
+dotnet run --project ./src/ExpressionFramework.CodeGeneration/
+```
