@@ -30,9 +30,9 @@ jobs:
       - name: Restore
         run: dotnet restore
       - name: Build code generator
-        run: dotnet build src/CodeGenerationNext/CodeGenerationNext.csproj -c Release --no-restore
+        run: dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj -c Release --no-restore
       - name: Run code generator
-        run: dotnet src/CodeGenerationNext/bin/Release/net6.0/CodeGenerationNext.dll
+        run: dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net6.0/ExpressionFramework.CodeGeneration.dll
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test
@@ -81,8 +81,8 @@ jobs:
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
           dotnet restore
-          dotnet build src/CodeGenerationNext/CodeGenerationNext.csproj -c Release --no-restore
-          dotnet src/CodeGenerationNext/bin/Release/net6.0/CodeGenerationNext.dll
+          dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj -c Release --no-restore
+          dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net6.0/ExpressionFramework.CodeGeneration.dll
           dotnet build -c Release --no-restore
           dotnet pack -v normal -c Release --include-symbols --include-source --no-restore -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed

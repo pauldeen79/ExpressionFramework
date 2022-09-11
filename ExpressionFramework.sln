@@ -10,7 +10,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TODO.md = TODO.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGenerationNext", "src\CodeGenerationNext\CodeGenerationNext.csproj", "{03E1DAE0-DCCA-4548-99B9-5306FFD502EE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.CodeGeneration", "src\ExpressionFramework.CodeGeneration\ExpressionFramework.CodeGeneration.csproj", "{03E1DAE0-DCCA-4548-99B9-5306FFD502EE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain", "src\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj", "{112E6E00-1C2D-4AC5-8499-DB4F08B4C6D7}"
 EndProject
