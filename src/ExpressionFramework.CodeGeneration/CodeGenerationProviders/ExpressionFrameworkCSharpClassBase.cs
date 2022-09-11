@@ -10,6 +10,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override string FileNameSuffix => ".template.generated";
 
+    protected bool IsNotScaffolded(ITypeBase x, string classNameSuffix)
+        => !File.Exists(System.IO.Path.Combine(FullBasePath, Path, $"{x.Name}{classNameSuffix}.cs"));
+
     protected static readonly string[] CustomBuilderTypes =
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
             .Where(x => x.IsInterface && x.GetInterfaces().Length == 1)
@@ -292,4 +295,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         builder.AppendLine("}");
         return new Literal(builder.ToString());
     }
+
+
+    private static string FullBasePath => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
+        ? System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"src/")
+        : System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"../../../../");
+
 }

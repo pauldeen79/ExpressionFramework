@@ -10,7 +10,7 @@ public class OperatorHandlers : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideOperatorModels()
-        .Where(x => !File.Exists(System.IO.Path.Combine(FullBasePath, Path, $"{x.Name}Handler.cs"))) //this is a quirk, really...
+        .Where(x => IsNotScaffolded(x, "Handler"))
         .Select(x => new ClassBuilder()
             .WithNamespace("ExpressionFramework.Domain.OperatorHandlers")
             .WithName($"{x.Name}Handler")
@@ -19,15 +19,11 @@ public class OperatorHandlers : ExpressionFrameworkCSharpClassBase
                 .WithName("Handle")
                 .WithProtected()
                 .WithOverride()
-                .AddParameter("leftValue", "System.Object?")
-                .AddParameter("rightValue", "System.Object?")
+                .AddParameters(
+                    new ParameterBuilder().WithName("leftValue").WithType(typeof(object)).WithIsNullable(),
+                    new ParameterBuilder().WithName("rightValue").WithType(typeof(object)).WithIsNullable())
                 .WithType(typeof(bool))
                 .AddLiteralCodeStatements("throw new NotImplementedException();")
             )
             .Build());
-
-    private static string FullBasePath => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
-        ? System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"src/")
-        : System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"../../../../");
-
 }

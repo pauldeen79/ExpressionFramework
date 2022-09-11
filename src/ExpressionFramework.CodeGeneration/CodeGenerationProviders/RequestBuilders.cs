@@ -7,10 +7,8 @@ public class RequestBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerati
     public override string DefaultFileName => "Builders.template.generated.cs";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses
-        (
+        => GetImmutableBuilderClasses(
             GetRequestModels(),
             "ExpressionFramework.Domain.Requests",
-            "ExpressionFramework.Domain.Tests.Support.Builders.Requests"
-        );
+            "ExpressionFramework.Domain.Tests.Support.Builders.Requests");
 }

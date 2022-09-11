@@ -7,14 +7,11 @@ public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override string DefaultFileName => "Builders.template.generated.cs";
 
     public override object CreateModel()
-        => CreateBuilderFactoryModels
-        (
+        => CreateBuilderFactoryModels(
             GetOverrideOperatorModels(),
             "ExpressionFramework.Domain.Tests.Support.Builders",
             "OperatorBuilderFactory",
             "ExpressionFramework.Domain.Operator",
             "ExpressionFramework.Domain.Tests.Support.Builders.Operators",
-            "OperatorBuilder"
-        );
-
+            "OperatorBuilder");
 }

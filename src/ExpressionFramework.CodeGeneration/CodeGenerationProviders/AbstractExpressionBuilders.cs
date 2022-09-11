@@ -10,7 +10,8 @@ public class AbstractExpressionBuilders : ExpressionFrameworkCSharpClassBase
     protected override bool EnableBuilderInhericance => true;
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(GetAbstractExpressionModels(),
-                                      "ExpressionFramework.Domain",
-                                      "ExpressionFramework.Domain.Tests.Support.Builders");
+        => GetImmutableBuilderClasses(
+            GetAbstractExpressionModels(),
+            "ExpressionFramework.Domain",
+            "ExpressionFramework.Domain.Tests.Support.Builders");
 }

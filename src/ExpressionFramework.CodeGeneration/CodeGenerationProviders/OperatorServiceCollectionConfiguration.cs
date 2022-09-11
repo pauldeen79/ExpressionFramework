@@ -8,12 +8,10 @@ public class OperatorServiceCollectionConfiguration : ExpressionFrameworkCSharpC
     protected override string FileNameSuffix => ".OperatorHandlers.template.generated";
 
     public override object CreateModel()
-        => CreateServiceCollectionExtensions
-        (
+        => CreateServiceCollectionExtensions(
             "ExpressionFramework.Domain.Extensions",
             "ServiceCollectionExtensions",
             "AddOperatorHandlers",
             GetOverrideOperatorModels(),
-            x => $".AddSingleton<IOperatorHandler, {x.Name}Handler>()"
-        );
+            x => $".AddSingleton<IOperatorHandler, {x.Name}Handler>()");
 }

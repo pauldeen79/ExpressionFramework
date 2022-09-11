@@ -7,9 +7,5 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
     public override string DefaultFileName => "Entities.template.generated.cs";
 
     public override object CreateModel()
-        => GetImmutableClasses
-        (
-            GetCoreModels(),
-            "ExpressionFramework.Domain"
-        );
+        => GetImmutableClasses(GetCoreModels(), "ExpressionFramework.Domain");
 }

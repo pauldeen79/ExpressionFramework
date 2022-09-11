@@ -7,9 +7,5 @@ public class RequestEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerati
     public override string DefaultFileName => "Entities.template.generated.cs";
 
     public override object CreateModel()
-        => GetImmutableClasses
-        (
-            GetRequestModels(),
-            "ExpressionFramework.Domain.Requests"
-        );
+        => GetImmutableClasses(GetRequestModels(), "ExpressionFramework.Domain.Requests");
 }

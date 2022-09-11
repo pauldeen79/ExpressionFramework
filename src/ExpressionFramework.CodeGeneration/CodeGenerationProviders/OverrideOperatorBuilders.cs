@@ -12,7 +12,8 @@ public class OverrideOperatorBuilders : ExpressionFrameworkCSharpClassBase
     protected override string BaseClassBuilderNameSpace => "ExpressionFramework.Domain.Tests.Support.Builders";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(GetOverrideOperatorModels(),
-                                      "ExpressionFramework.Domain.Operators",
-                                      "ExpressionFramework.Domain.Tests.Support.Builders.Operators");
+        => GetImmutableBuilderClasses(
+            GetOverrideOperatorModels(),
+            "ExpressionFramework.Domain.Operators",
+            "ExpressionFramework.Domain.Tests.Support.Builders.Operators");
 }

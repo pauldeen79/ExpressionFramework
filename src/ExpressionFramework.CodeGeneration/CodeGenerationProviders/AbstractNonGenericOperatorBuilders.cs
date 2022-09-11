@@ -11,7 +11,8 @@ public class AbstractNonGenericOperatorBuilders : ExpressionFrameworkCSharpClass
     protected override string FileNameSuffix => ".nongeneric.template.generated";
 
     public override object CreateModel()
-        => GetImmutableNonGenericBuilderClasses(GetAbstractOperatorModels(),
-                                                "ExpressionFramework.Domain",
-                                                "ExpressionFramework.Domain.Tests.Support.Builders");
+        => GetImmutableNonGenericBuilderClasses(
+            GetAbstractOperatorModels(),
+            "ExpressionFramework.Domain",
+            "ExpressionFramework.Domain.Tests.Support.Builders");
 }

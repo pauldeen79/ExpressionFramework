@@ -12,7 +12,8 @@ public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
     protected override string BaseClassBuilderNameSpace => "ExpressionFramework.Domain.Tests.Support.Builders";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(GetOverrideExpressionModels(),
-                                      "ExpressionFramework.Domain.Expressions",
-                                      "ExpressionFramework.Domain.Tests.Support.Builders.Expressions");
+        => GetImmutableBuilderClasses(
+            GetOverrideExpressionModels(),
+            "ExpressionFramework.Domain.Expressions",
+            "ExpressionFramework.Domain.Tests.Support.Builders.Expressions");
 }

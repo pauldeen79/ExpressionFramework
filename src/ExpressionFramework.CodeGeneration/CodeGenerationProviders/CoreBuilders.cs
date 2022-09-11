@@ -7,10 +7,8 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationP
     public override string DefaultFileName => "Builders.template.generated.cs";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses
-        (
+        => GetImmutableBuilderClasses(
             GetCoreModels(),
             "ExpressionFramework.Domain",
-            "ExpressionFramework.Domain.Tests.Support.Builders"
-        );
+            "ExpressionFramework.Domain.Tests.Support.Builders");
 }

@@ -8,12 +8,10 @@ public class ExpressionServiceCollectionConfiguration : ExpressionFrameworkCShar
     protected override string FileNameSuffix => ".ExpressionHandlers.template.generated";
 
     public override object CreateModel()
-        => CreateServiceCollectionExtensions
-        (
+        => CreateServiceCollectionExtensions(
             "ExpressionFramework.Domain.Extensions",
             "ServiceCollectionExtensions",
             "AddExpressionHandlers",
             GetOverrideExpressionModels(),
-            x => $".AddSingleton<IExpressionHandler, {x.Name}Handler>()"
-        );
+            x => $".AddSingleton<IExpressionHandler, {x.Name}Handler>()");
 }
