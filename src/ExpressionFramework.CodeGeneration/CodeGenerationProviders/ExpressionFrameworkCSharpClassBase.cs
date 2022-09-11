@@ -241,4 +241,55 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .AddLiteralCodeStatements(";")
             )
             .Build() };
+
+    protected static ITypeBase[] CreateBuilderFactoryModels(
+        ITypeBase[] models,
+        string classNamespace,
+        string className,
+        string classTypeName,
+        string builderNamespace,
+        string builderTypeName)
+    {
+        return new[] { new ClassBuilder()
+            .WithName(className)
+            .WithNamespace(classNamespace)
+            .WithStatic()
+            .AddFields(new ClassFieldBuilder()
+                .WithName("registeredTypes")
+                .WithStatic()
+                .WithTypeName($"Dictionary<Type,Func<{classTypeName},{builderTypeName}>>")
+                .WithDefaultValue(GetDefaultValue(models, builderNamespace,classTypeName, builderTypeName))
+            )
+            .AddMethods(new ClassMethodBuilder()
+                .WithName("Create")
+                .WithTypeName($"{classNamespace}.{builderTypeName}")
+                .WithStatic()
+                .AddParameter("instance", classTypeName)
+                .AddLiteralCodeStatements("return registeredTypes.ContainsKey(instance.GetType()) ? registeredTypes[instance.GetType()].Invoke(instance) : throw new ArgumentOutOfRangeException(\"Unknown instance type: \" + instance.GetType().FullName);"),
+                new ClassMethodBuilder()
+                .WithStatic()
+                .WithName("Register")
+                .AddParameter("type", typeof(Type))
+                .AddParameter("createDelegate", $"Func<{classTypeName},{builderTypeName}>")
+                .AddLiteralCodeStatements("registeredTypes.Add(type, createDelegate);")
+            )
+            .Build() };
+    }
+
+    private static object GetDefaultValue(
+        ITypeBase[] models,
+        string builderNamespace,
+        string classTypeName,
+        string builderTypeName)
+    {
+        var builder = new StringBuilder();
+        builder.AppendLine($"new Dictionary<Type, Func<{classTypeName}, {builderTypeName}>>")
+               .AppendLine("{");
+        foreach (var typeBase in models)
+        {
+            builder.AppendLine("    {typeof(" + typeBase.Name + "),x => new " + builderNamespace + "." + typeBase.Name + "Builder((" + typeBase.Name + ")x)},");
+        }
+        builder.AppendLine("}");
+        return new Literal(builder.ToString());
+    }
 }

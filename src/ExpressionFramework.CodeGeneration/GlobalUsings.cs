@@ -2,6 +2,7 @@
 global using System.ComponentModel.DataAnnotations;
 global using System.Diagnostics.CodeAnalysis;
 global using System.Linq;
+global using System.Text;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Extensions;
 global using ExpressionFramework.CodeGeneration.CodeGenerationProviders;
