@@ -1,6 +1,4 @@
-﻿using CrossCutting.Common;
-
-namespace ExpressionFramework.Domain.Tests.Unit;
+﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
 public sealed class ConditionEvaluatorTests : IDisposable
 {
@@ -42,6 +40,120 @@ public sealed class ConditionEvaluatorTests : IDisposable
         // Act
         var actual = await CreateSut().Evaluate(null, new[] { condition });
 
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Can_Evaluate_Multiple_Conditions_With_And_Combination()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var condition1 = new ConditionBuilder()
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .Build();
+        var condition2 = new ConditionBuilder()
+            .WithCombination(Combination.And)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .Build();
+
+        // Act
+        var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Can_Evaluate_Multiple_Conditions_With_Or_Combination()
+    {
+        // Arrange
+        var sut = CreateSut();
+        var condition1 = new ConditionBuilder()
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .Build();
+        var condition2 = new ConditionBuilder()
+            .WithCombination(Combination.Or)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
+            .Build();
+
+        // Act
+        var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_1()
+    {
+        // Arrange
+        var sut = CreateSut();
+        //This translates to: True&(False|True) -> True
+        var condition1 = new ConditionBuilder()
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .Build();
+        var condition2 = new ConditionBuilder()
+            .WithStartGroup()
+            .WithCombination(Combination.And)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
+            .Build();
+        var condition3 = new ConditionBuilder()
+            .WithEndGroup()
+            .WithCombination(Combination.Or)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .Build();
+
+        // Act
+        var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeTrue();
+    }
+
+    [Fact]
+    public async Task Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_2()
+    {
+        // Arrange
+        var sut = CreateSut();
+        //This translates to: False|(True&True) -> True
+        var condition1 = new ConditionBuilder()
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
+            .Build();
+        var condition2 = new ConditionBuilder()
+            .WithStartGroup()
+            .WithCombination(Combination.Or)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .Build();
+        var condition3 = new ConditionBuilder()
+            .WithEndGroup()
+            .WithCombination(Combination.And)
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .WithOperator(new EqualsOperatorBuilder())
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
+            .Build();
+
+        // Act
+        var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
