@@ -1,6 +1,6 @@
-﻿Feature: Expression
+﻿Feature: UnknownExpression
 
-An Expression is something that can be evaluated to a value
+This feature describes how unknown expressions should be handled.
 
 Scenario: Unknown expression
     Given I have an unknown expression
