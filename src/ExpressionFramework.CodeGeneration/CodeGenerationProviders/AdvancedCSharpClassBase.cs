@@ -1,5 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
+[ExcludeFromCodeCoverage]
 public abstract class AdvancedCSharpClassBase : CSharpClassBase
 {
     protected virtual string[] GetCustomBuilderTypes() => Array.Empty<string>();
