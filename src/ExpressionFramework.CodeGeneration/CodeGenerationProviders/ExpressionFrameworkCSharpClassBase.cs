@@ -217,4 +217,28 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     private static bool TypeNameNeedsSpecialTreatmentForBuilderConstructorInitializeExpression(string typeName)
         => CustomBuilderTypes.Any(x => BuilderNamespaceMappings.Any(y => typeName == $"{y.Key}.{x}"));
+
+    protected static object CreateServiceCollectionExtensions(
+        string @namespace,
+        string className,
+        string methodName,
+        ITypeBase[] types, 
+        Func<ITypeBase, string> formatDelegate)
+        => new[] { new ClassBuilder()
+            .WithNamespace(@namespace)
+            .WithName(className)
+            .WithStatic()
+            .WithPartial()
+            .AddMethods(new ClassMethodBuilder()
+                .WithVisibility(Visibility.Private)
+                .WithStatic()
+                .WithName(methodName)
+                .WithExtensionMethod()
+                .WithType(typeof(IServiceCollection))
+                .AddParameter("serviceCollection", typeof(IServiceCollection))
+                .AddLiteralCodeStatements("return serviceCollection")
+                .AddLiteralCodeStatements(types.Select(x => formatDelegate.Invoke(x)))
+                .AddLiteralCodeStatements(";")
+            )
+            .Build() };
 }
