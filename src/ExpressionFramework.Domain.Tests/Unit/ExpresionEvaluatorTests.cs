@@ -1,6 +1,4 @@
-﻿using CrossCutting.Common.Extensions;
-
-namespace ExpressionFramework.Domain.Tests.Unit;
+﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
 public sealed class ExpresionEvaluatorTests : IDisposable
 {
@@ -17,7 +15,7 @@ public sealed class ExpresionEvaluatorTests : IDisposable
     {
         // Arrange
         var expressionEvaluator = CreateSut();
-        var expression = new FieldExpressionBuilder().WithFieldName("Name").Build();
+        var expression = new FieldExpression("Name");
         var context = new { Name = "Hello world!" };
 
         // Act
@@ -32,7 +30,7 @@ public sealed class ExpresionEvaluatorTests : IDisposable
     public async Task Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
     {
         // Arrange
-        var expression = new FieldExpressionBuilder().WithFieldName("InnerProperty.Name").Build();
+        var expression = new FieldExpression("InnerProperty.Name");
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
@@ -47,13 +45,11 @@ public sealed class ExpresionEvaluatorTests : IDisposable
     public async Task Can_Evaluate_Nested_FieldExpression_Using_ChainedExpression()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder()
-            .AddExpressions
-            (
-                new FieldExpressionBuilder().WithFieldName("InnerProperty"),
-                new FieldExpressionBuilder().WithFieldName("Name")
-            )
-            .Build();
+        var expression = new ChainedExpression(new[]
+        {
+            new FieldExpression("InnerProperty"),
+            new FieldExpression("Name")
+        });
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act

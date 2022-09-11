@@ -10,18 +10,19 @@ var serviceProvider = serviceCollection.AddExpressionFramework().BuildServicePro
 
 // Expression evaluation:
 var expressionEvaluator = serviceProvider.GetRequiredService<IExpressionEvaluator>();
-var expression = new FieldExpressionBuilder.WithFieldName("Name").Build();
+var expression = new FieldExpression("Name");
 var context = new { Name = "Hello world!" };
 var result = await expressionEvaluator.Evaluate(context, expression).Value;
 // generates: Hello world!
 
 // Condition evaluation:
 var conditionEvaluator = serviceProvider.GetRequiredService<IConditionEvaluator>();
-var condition = new ConditionBuilder()
-    .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
-    .WithOperator(Operator.Equal)
-    .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
-    .Build();
+var condition = new Condition
+(
+    new ConstantExpression("12345"),
+    Operator.Equal,
+    new ConstantExpression("12345")
+);
 var result = await conditionEvaluator.Evaluate(null, new[] { condition });
 // generates: true
 ```

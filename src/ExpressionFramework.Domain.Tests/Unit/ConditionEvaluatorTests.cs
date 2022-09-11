@@ -14,11 +14,12 @@ public sealed class ConditionEvaluatorTests : IDisposable
     public async Task Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
-        var condition = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })))
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })))
-            .WithOperator(OperatorBuilderFactory.Create(new EqualsOperator()))
-            .Build();
+        var condition = new Condition
+        (
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
+            new EqualsOperator(),
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }))
+        );
 
         // Act
         var actual = await CreateSut().Evaluate(null, new[] { condition });
@@ -31,11 +32,12 @@ public sealed class ConditionEvaluatorTests : IDisposable
     public async Task Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
-        var condition = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue(new[] { "1", "2", "3" }))
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("2" ))
-            .WithOperator(OperatorBuilderFactory.Create(new ContainsOperator()))
-            .Build();
+        var condition = new Condition
+        (
+            new ConstantExpression(new[] { "1", "2", "3" }),
+            new ContainsOperator(),
+            new ConstantExpression("2")
+        );
 
         // Act
         var actual = await CreateSut().Evaluate(null, new[] { condition });
@@ -50,17 +52,19 @@ public sealed class ConditionEvaluatorTests : IDisposable
     {
         // Arrange
         var sut = CreateSut();
-        var condition1 = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .Build();
-        var condition2 = new ConditionBuilder()
-            .WithCombination(Combination.And)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .Build();
+        var condition1 = new Condition
+        (
+            new ConstantExpression("12345"),
+            new EqualsOperator(),
+            new ConstantExpression("12345")
+        );
+        var condition2 = new Condition
+        (
+            Combination.And,
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321")
+        );
 
         // Act
         var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
@@ -74,17 +78,19 @@ public sealed class ConditionEvaluatorTests : IDisposable
     {
         // Arrange
         var sut = CreateSut();
-        var condition1 = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .Build();
-        var condition2 = new ConditionBuilder()
-            .WithCombination(Combination.Or)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
-            .Build();
+        var condition1 = new Condition
+        (
+            new ConstantExpression("12345"),
+            new EqualsOperator(),
+            new ConstantExpression("12345")
+        );
+        var condition2 = new Condition
+        (
+            Combination.Or,
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("wrong")
+        );
 
         // Act
         var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
@@ -99,25 +105,30 @@ public sealed class ConditionEvaluatorTests : IDisposable
         // Arrange
         var sut = CreateSut();
         //This translates to: True&(False|True) -> True
-        var condition1 = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .Build();
-        var condition2 = new ConditionBuilder()
-            .WithStartGroup()
-            .WithCombination(Combination.And)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
-            .Build();
-        var condition3 = new ConditionBuilder()
-            .WithEndGroup()
-            .WithCombination(Combination.Or)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .Build();
+        var condition1 = new Condition
+        (
+            new ConstantExpression("12345"),
+            new EqualsOperator(),
+            new ConstantExpression("12345")
+        );
+        var condition2 = new Condition
+        (
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("wrong"),
+            startGroup: true,
+            endGroup: false,
+            Combination.And
+        );
+        var condition3 = new Condition
+        (
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321"),
+            startGroup: false,
+            endGroup: true,
+            Combination.Or
+        );
 
         // Act
         var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
@@ -132,25 +143,30 @@ public sealed class ConditionEvaluatorTests : IDisposable
         // Arrange
         var sut = CreateSut();
         //This translates to: False|(True&True) -> True
-        var condition1 = new ConditionBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("12345"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("wrong"))
-            .Build();
-        var condition2 = new ConditionBuilder()
-            .WithStartGroup()
-            .WithCombination(Combination.Or)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .Build();
-        var condition3 = new ConditionBuilder()
-            .WithEndGroup()
-            .WithCombination(Combination.And)
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .WithOperator(new EqualsOperatorBuilder())
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue("54321"))
-            .Build();
+        var condition1 = new Condition
+        (
+            new ConstantExpression("12345"),
+            new EqualsOperator(),
+            new ConstantExpression("wrong")
+        );
+        var condition2 = new Condition
+        (
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321"),
+            startGroup: true,
+            endGroup: false,
+            Combination.Or
+        );
+        var condition3 = new Condition
+        (
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321"),
+            startGroup: false,
+            endGroup: true,
+            Combination.And
+        );
 
         // Act
         var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
