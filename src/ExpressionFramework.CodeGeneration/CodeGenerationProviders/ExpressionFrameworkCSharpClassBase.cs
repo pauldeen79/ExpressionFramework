@@ -9,6 +9,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : AdvancedCShar
     protected override bool EnableNullableContext => true;
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override string FileNameSuffix => ".template.generated";
+    protected override string RootNamespace => "ExpressionFramework.Domain";
 
     protected override string[] GetCustomBuilderTypes() =>
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
@@ -46,13 +47,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : AdvancedCShar
 
     protected ITypeBase[] GetCoreModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models" && !GetCustomBuilderTypes().Contains(x.GetEntityClassName()))
-            .ToArray());
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models" && !GetCustomBuilderTypes().Contains(x.GetEntityClassName())));
 
     protected ITypeBase[] GetRequestModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Requests")
-            .ToArray());
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Requests"));
 
     protected ITypeBase[] GetAbstractExpressionModels() => MapCodeGenerationModelsToDomain(new[]
     {
@@ -66,22 +65,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : AdvancedCShar
 
     protected ITypeBase[] GetOverrideExpressionModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Expressions")
-            .ToArray());
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Expressions"));
 
     protected ITypeBase[] GetOverrideOperatorModels() => MapCodeGenerationModelsToDomain(
         typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Operators")
-            .ToArray());
-
-    protected ITypeBase[] MapCodeGenerationModelsToDomain(Type[] types)
-        => types
-            .Select(x => x.ToClassBuilder(new ClassSettings())
-                .WithNamespace("ExpressionFramework.Domain")
-                .WithName(x.GetEntityClassName())
-                .With(y => y.Properties.ForEach(z => GetModelMappings().ToList().ForEach(m => z.TypeName = z.TypeName.Replace(m.Key, m.Value))))
-                .Build())
-            .ToArray();
+            .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Operators"));
 
     protected override string GetFullBasePath() => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
         ? System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"src/")

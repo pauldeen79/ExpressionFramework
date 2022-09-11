@@ -9,6 +9,7 @@ public abstract class AdvancedCSharpClassBase : CSharpClassBase
     protected virtual Dictionary<string, string> GetModelMappings() => new();
 
     protected abstract string GetFullBasePath();
+    protected abstract string RootNamespace { get; }
 
     protected virtual bool IsNotScaffolded(ITypeBase x, string classNameSuffix)
         => !File.Exists(System.IO.Path.Combine(GetFullBasePath(), Path, $"{x.Name}{classNameSuffix}.cs"));
@@ -65,6 +66,15 @@ public abstract class AdvancedCSharpClassBase : CSharpClassBase
             }
         }
     }
+
+    protected ITypeBase[] MapCodeGenerationModelsToDomain(IEnumerable<Type> types)
+        => types
+            .Select(x => x.ToClassBuilder(new ClassSettings())
+                .WithNamespace(RootNamespace)
+                .WithName(x.GetEntityClassName())
+                .With(y => y.Properties.ForEach(z => GetModelMappings().ToList().ForEach(m => z.TypeName = z.TypeName.Replace(m.Key, m.Value))))
+                .Build())
+            .ToArray();
 
     protected string GetBuilderNamespace(string typeName)
         => GetBuilderNamespaceMappings()
