@@ -1,4 +1,5 @@
 ﻿global using System.ComponentModel.DataAnnotations;
+global using System.Globalization;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain;
 global using ExpressionFramework.Domain.Domains;
