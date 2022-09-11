@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class RequestEntities : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
+public class RequestEntities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain/Requests";
     public override string DefaultFileName => "Entities.template.generated.cs";

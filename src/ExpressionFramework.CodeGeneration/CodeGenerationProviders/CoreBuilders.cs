@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class CoreBuilders : ExpressionFrameworkCSharpClassBase, ICodeGenerationProvider
+public class CoreBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain.Tests/Support/Builders";
     public override string DefaultFileName => "Builders.template.generated.cs";
