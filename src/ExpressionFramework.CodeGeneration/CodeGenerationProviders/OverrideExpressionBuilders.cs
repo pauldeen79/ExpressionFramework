@@ -9,7 +9,7 @@ public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), "ExpressionFramework.Domain");
-    protected override string BaseClassBuilderNameSpace => "ExpressionFramework.Domain.Tests.Support.Builders";
+    protected override string BaseClassBuilderNamespace => "ExpressionFramework.Domain.Tests.Support.Builders";
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
