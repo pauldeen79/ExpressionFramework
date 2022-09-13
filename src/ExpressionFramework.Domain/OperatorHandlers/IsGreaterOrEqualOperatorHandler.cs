@@ -2,7 +2,7 @@
 
 public class IsGreaterOrEqualOperatorHandler : OperatorHandlerBase<IsGreaterOrEqualOperator>
 {
-    protected override bool Handle(System.Object? leftValue, System.Object? rightValue)
+    protected override bool Handle(object? leftValue, object? rightValue)
         => leftValue != null
         && rightValue != null
         && leftValue is IComparable c
