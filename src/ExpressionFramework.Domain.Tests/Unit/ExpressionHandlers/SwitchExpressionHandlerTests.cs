@@ -6,8 +6,7 @@ public class SwitchExpressionHandlerTests
     public async Task Evaluate_Returns_NotSupported_When_Expression_Is_Not_A_SwitchExpression()
     {
         // Arrange
-        var evaluationProviderMock = new Mock<IConditionEvaluatorProvider>();
-        var sut = new SwitchExpressionHandler(evaluationProviderMock.Object);
+        var sut = new SwitchExpressionHandler();
         var expression = new EmptyExpressionBuilder().Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
 
@@ -20,40 +19,10 @@ public class SwitchExpressionHandlerTests
     }
 
     [Fact]
-    public async Task Evaluate_Returns_Error_When_ConditionEvaluation_Fails()
-    {
-        // Arrange
-        var evaluationProviderMock = new Mock<IConditionEvaluatorProvider>();
-        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
-        evaluationProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>()))
-                              .Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<Condition>>()))
-                              .ReturnsAsync(Result<bool>.Error("Kaboom"));
-        var sut = new SwitchExpressionHandler(evaluationProviderMock.Object);
-        var expression = new SwitchExpressionBuilder()
-            .AddCases(new CaseBuilder())
-            .Build();
-        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-
-        // Act
-        var actual = await sut.Handle(default, expression, expressionEvaluatorMock.Object);
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
     public async Task Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()
     {
         // Arrange
-        var evaluationProviderMock = new Mock<IConditionEvaluatorProvider>();
-        var conditionEvaluatorMock = new Mock<IConditionEvaluator>();
-        evaluationProviderMock.Setup(x => x.Get(It.IsAny<IExpressionEvaluator>()))
-                              .Returns(conditionEvaluatorMock.Object);
-        conditionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<IEnumerable<Condition>>()))
-                              .ReturnsAsync(Result<bool>.Success(true));
-        var sut = new SwitchExpressionHandler(evaluationProviderMock.Object);
+        var sut = new SwitchExpressionHandler();
         var expression = new SwitchExpressionBuilder()
             .AddCases(new CaseBuilder())
             .Build();
@@ -73,8 +42,7 @@ public class SwitchExpressionHandlerTests
     public async Task Evaluate_Returns_Default_When_No_Cases_Are_Present()
     {
         // Arrange
-        var evaluationProviderMock = new Mock<IConditionEvaluatorProvider>();
-        var sut = new SwitchExpressionHandler(evaluationProviderMock.Object);
+        var sut = new SwitchExpressionHandler();
         var expression = new SwitchExpressionBuilder().Build();
         var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
         expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<EmptyExpression>()))

@@ -2,24 +2,19 @@
 
 public class SwitchExpressionHandler : ExpressionHandlerBase<SwitchExpression>
 {
-    private readonly IConditionEvaluatorProvider _provider;
-
-    public SwitchExpressionHandler(IConditionEvaluatorProvider provider)
-        => _provider = provider;
-
     protected override async Task<Result<object?>> Handle(object? context, SwitchExpression typedExpression, IExpressionEvaluator evaluator)
     {
-        var conditionEvaluator = _provider.Get(evaluator);
         foreach (var @case in typedExpression.Cases)
         {
-            var caseResult = await conditionEvaluator.Evaluate(context, @case.Conditions);
+            var conditionalExpression = new ConditionalExpression(@case.Conditions, @case.Expression, null);
+            var caseResult = await evaluator.Evaluate(context, conditionalExpression);
             if (!caseResult.IsSuccessful())
             {
                 return Result<object?>.FromExistingResult(caseResult);
             }
-            if (caseResult.Value)
+            if (caseResult.HasValue)
             {
-                return await evaluator.Evaluate(context, @case.Expression);
+                return caseResult;
             }
         }
 
