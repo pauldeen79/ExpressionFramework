@@ -35,10 +35,8 @@ internal static class Program
         GenerateCode.For<OverrideOperatorBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
-        GenerateCode.For<OperatorServiceCollectionConfiguration>(settings, multipleContentBuilder);
 
         GenerateCode.For<ExpressionHandlers>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<ExpressionHandlers>(basePath));
-        GenerateCode.For<OperatorHandlers>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<OperatorHandlers>(basePath));
 
         // Log output to console
 #pragma warning disable S2589 // Boolean expressions should not be gratuitous

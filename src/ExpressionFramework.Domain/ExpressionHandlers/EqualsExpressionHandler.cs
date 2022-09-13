@@ -16,6 +16,6 @@ public class EqualsExpressionHandler : ExpressionHandlerBase<EqualsExpression>
             return secondValue;
         }
 
-        return Result<object?>.Success(EqualsOperatorHandler.IsValid(firstValue, secondValue));
+        return Result<object?>.Success(EqualsOperator.IsValid(firstValue, secondValue));
     }
 }

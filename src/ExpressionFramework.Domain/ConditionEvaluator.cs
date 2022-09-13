@@ -3,12 +3,10 @@
 public class ConditionEvaluator : IConditionEvaluator
 {
     private readonly IExpressionEvaluator _expressionEvaluator;
-    private readonly IEnumerable<IOperatorHandler> _handlers;
 
-    public ConditionEvaluator(IExpressionEvaluator expressionEvaluator, IEnumerable<IOperatorHandler> handlers)
+    public ConditionEvaluator(IExpressionEvaluator expressionEvaluator)
     {
         _expressionEvaluator = expressionEvaluator;
-        _handlers = handlers;
     }
 
     public Task<Result<bool>> Evaluate(object? context, IEnumerable<Condition> conditions)
@@ -82,18 +80,7 @@ public class ConditionEvaluator : IConditionEvaluator
             return Result<bool>.FromExistingResult(rightResult);
         }
 
-        foreach (var handler in _handlers)
-        {
-            var handlerResult = handler.Handle(condition.Operator, leftResult.Value, rightResult.Value);
-            if (handlerResult.Status == ResultStatus.NotSupported)
-            {
-                continue;
-            }
-
-            return handlerResult;
-        }
-
-        return Result<bool>.Invalid($"Unsupported operator: {condition.Operator}");
+        return condition.Operator.Evaluate(leftResult.Value, rightResult.Value);
     }
 
     private static bool EvaluateBooleanExpression(string expression)

@@ -1,9 +1,9 @@
-﻿namespace ExpressionFramework.Domain.OperatorHandlers;
+﻿namespace ExpressionFramework.Domain.Operators;
 
-public class EqualsOperatorHandler : OperatorHandlerBase<EqualsOperator>
+public partial record EqualsOperator
 {
-    protected override bool Handle(object? leftValue, object? rightValue)
-        => IsValid(leftValue, rightValue);
+    public override Result<bool> Evaluate(object? leftValue, object? rightValue)
+        => Result<bool>.Success(IsValid(leftValue, rightValue));
 
     internal static bool IsValid(object? leftValue, object? rightValue)
     {

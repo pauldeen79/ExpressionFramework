@@ -8,6 +8,5 @@ public static partial class ServiceCollectionExtensions
             .AddSingleton<IConditionEvaluatorProvider, ConditionEvaluatorProvider>()
             .AddSingleton<IExpressionEvaluator, ExpressionEvaluator>()
             .AddSingleton<IValueProvider, ValueProvider>()
-            .AddExpressionHandlers()
-            .AddOperatorHandlers();
+            .AddExpressionHandlers();
 }

@@ -7,6 +7,5 @@ public static class BuilderFactoryInitializationHook
     public static void SetupUnknownTypes()
     {
         ExpressionBuilderFactory.Register(typeof(UnknownExpression), _ => new UnknownExpressionBuilder());
-        OperatorBuilderFactory.Register(typeof(UnknownOperator), _ => new UnknownOperatorBuilder());
     }
 }

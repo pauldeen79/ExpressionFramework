@@ -26,17 +26,6 @@ Scenario: Different expressions with Equals operator should result in false
         | Status | Ok    |
         | Value  | false |
 
-Scenario: Unknown operator should result in error
-    Given I have the following condition
-        | Field           | Value       |
-        | LeftExpression  | Hello world |
-        | Operator        | Unknown     |
-        | RightExpression | Hello world |
-    When I evaluate the condition
-    Then the condition evaluation result should contain the content
-        | Field  | Value   |
-        | Status | Invalid |
-
 Scenario Outline: Condition evaluation
     Given I have the following condition
         | Field           | Value      |
