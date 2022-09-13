@@ -13,7 +13,7 @@ public class EqualsExpressionHandler : ExpressionHandlerBase<EqualsExpression>
         var secondValue = await evaluator.Evaluate(context, typedExpression.SecondExpression);
         if (!secondValue.IsSuccessful())
         {
-            return firstValue;
+            return secondValue;
         }
 
         return Result<object?>.Success(EqualsOperatorHandler.IsValid(firstValue, secondValue));
