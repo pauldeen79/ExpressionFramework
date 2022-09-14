@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration;
+﻿using ModelFramework.Common.Extensions;
+
+namespace ExpressionFramework.CodeGeneration;
 
 [ExcludeFromCodeCoverage]
 internal static class Program
@@ -33,8 +35,8 @@ internal static class Program
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
 
-        GenerateCode.For<Expressions>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Expressions>(basePath));
-        GenerateCode.For<Operators>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Operators>(basePath));
+        GenerateCode.For<Expressions>(settings, multipleContentBuilder);
+        GenerateCode.For<Operators>(settings, multipleContentBuilder);
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
@@ -50,6 +52,9 @@ internal static class Program
                 Console.WriteLine(content.FileName);
             }
         }
+
+        FixScaffoldedFileNamesFor<Expressions>(basePath);
+        FixScaffoldedFileNamesFor<Operators>(basePath);
     }
 
     private static void FixScaffoldedFileNamesFor<T>(string basePath)
@@ -59,7 +64,7 @@ internal static class Program
 
         foreach (var file in Directory.GetFiles(Path.Combine(basePath, gen.Path), "*.generated.cs").Where(x => !x.EndsWith(".template.generated.cs", StringComparison.InvariantCulture)))
         {
-            File.Move(file, file.Replace("generated.cs", "cs"));
+            File.Move(file, file.ReplaceSuffix(".generated.cs", ".cs", StringComparison.InvariantCulture));
         }
     }
 }
