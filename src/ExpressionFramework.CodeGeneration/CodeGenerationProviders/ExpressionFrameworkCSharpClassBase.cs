@@ -35,7 +35,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.CodeGeneration.Models.I", "ExpressionFramework.Domain." },
         { "ExpressionFramework.CodeGeneration.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "ExpressionFramework.CodeGeneration.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
-        { "ExpressionFramework.CodeGeneration.Models.Requests.I", "ExpressionFramework.Domain.Requests." },
         { "ExpressionFramework.CodeGeneration.Models.Domains.", "ExpressionFramework.Domain.Domains." },
         { "ExpressionFramework.CodeGeneration.I", "ExpressionFramework.Domain.I" },
     };
@@ -50,11 +49,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
                 .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models" && !GetCustomBuilderTypes().Contains(x.GetEntityClassName())));
-
-    protected ITypeBase[] GetRequestModels()
-        => MapCodeGenerationModelsToDomain(
-            typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-                .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Requests"));
 
     protected ITypeBase[] GetAbstractExpressionModels()
         => MapCodeGenerationModelsToDomain(new[]

@@ -1,8 +1,11 @@
-﻿namespace ExpressionFramework.Domain;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-public class ValueProvider : IValueProvider
+public partial record FieldExpression
 {
-    public Result<object?> GetValue(object? context, string fieldName)
+    public override Result<object?> Evaluate(object? context)
+        => GetValue(context, FieldName);
+
+    private Result<object?> GetValue(object? context, string fieldName)
     {
         if (context == null)
         {

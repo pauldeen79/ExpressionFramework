@@ -6,8 +6,4 @@ global using System.Text;
 global using System.Threading.Tasks;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain.Domains;
-global using ExpressionFramework.Domain.ExpressionHandlers;
-global using ExpressionFramework.Domain.Expressions;
 global using ExpressionFramework.Domain.Operators;
-global using ExpressionFramework.Domain.Requests;
-global using Microsoft.Extensions.DependencyInjection;

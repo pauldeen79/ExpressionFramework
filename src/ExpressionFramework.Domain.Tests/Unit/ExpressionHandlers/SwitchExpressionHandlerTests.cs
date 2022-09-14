@@ -3,35 +3,15 @@
 public class SwitchExpressionHandlerTests
 {
     [Fact]
-    public async Task Evaluate_Returns_NotSupported_When_Expression_Is_Not_A_SwitchExpression()
+    public void Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()
     {
         // Arrange
-        var sut = new SwitchExpressionHandler();
-        var expression = new EmptyExpressionBuilder().Build();
-        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-
-        // Act
-        var actual = await sut.Handle(default, expression, expressionEvaluatorMock.Object);
-
-        // Assert
-        actual.IsSuccessful().Should().BeFalse();
-        actual.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public async Task Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()
-    {
-        // Arrange
-        var sut = new SwitchExpressionHandler();
         var expression = new SwitchExpressionBuilder()
-            .AddCases(new CaseBuilder())
+            .AddCases(new CaseBuilder().WithExpression(new ErrorExpressionBuilder().WithErrorMessage("Kaboom")))
             .Build();
-        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<Expression>()))
-                               .ReturnsAsync(Result<object?>.Error("Kaboom"));
 
         // Act
-        var actual = await sut.Handle(default, expression, expressionEvaluatorMock.Object);
+        var actual = expression.Evaluate(default);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -39,17 +19,13 @@ public class SwitchExpressionHandlerTests
     }
 
     [Fact]
-    public async Task Evaluate_Returns_Default_When_No_Cases_Are_Present()
+    public void Evaluate_Returns_Default_When_No_Cases_Are_Present()
     {
         // Arrange
-        var sut = new SwitchExpressionHandler();
         var expression = new SwitchExpressionBuilder().Build();
-        var expressionEvaluatorMock = new Mock<IExpressionEvaluator>();
-        expressionEvaluatorMock.Setup(x => x.Evaluate(It.IsAny<object?>(), It.IsAny<EmptyExpression>()))
-                               .ReturnsAsync(Result<object?>.Success(null));
 
         // Act
-        var actual = await sut.Handle(default, expression, expressionEvaluatorMock.Object);
+        var actual = expression.Evaluate(default);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);

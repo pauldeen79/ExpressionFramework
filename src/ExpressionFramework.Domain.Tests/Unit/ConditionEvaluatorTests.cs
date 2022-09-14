@@ -1,17 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
-public sealed class ConditionEvaluatorTests : IDisposable
+public class ConditionEvaluatorTests
 {
-    private IConditionEvaluator CreateSut() => _provider.GetRequiredService<IConditionEvaluator>();
-    private readonly ServiceProvider _provider;
-
-    public ConditionEvaluatorTests()
-    {
-        _provider = new ServiceCollection().AddExpressionFramework().BuildServiceProvider();
-    }
-
     [Fact]
-    public async Task Evaluate_Works_Correctly_On_Equals_With_Sequences()
+    public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
         var condition = new Condition
@@ -22,14 +14,14 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await CreateSut().Evaluate(null, new[] { condition });
+        var actual = Evaluate(null, new[] { condition });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
-    public async Task Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
+    public void Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
         var condition = new Condition
@@ -40,7 +32,7 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await CreateSut().Evaluate(null, new[] { condition });
+        var actual = Evaluate(null, new[] { condition });
 
 
         // Assert
@@ -48,10 +40,9 @@ public sealed class ConditionEvaluatorTests : IDisposable
     }
 
     [Fact]
-    public async Task Can_Evaluate_Multiple_Conditions_With_And_Combination()
+    public void Can_Evaluate_Multiple_Conditions_With_And_Combination()
     {
         // Arrange
-        var sut = CreateSut();
         var condition1 = new Condition
         (
             new ConstantExpression("12345"),
@@ -67,17 +58,16 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
+        var actual = Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
-    public async Task Can_Evaluate_Multiple_Conditions_With_Or_Combination()
+    public void Can_Evaluate_Multiple_Conditions_With_Or_Combination()
     {
         // Arrange
-        var sut = CreateSut();
         var condition1 = new Condition
         (
             new ConstantExpression("12345"),
@@ -93,17 +83,16 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await sut.Evaluate(null, new[] { condition1, condition2 });
+        var actual = Evaluate(null, new[] { condition1, condition2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
-    public async Task Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_1()
+    public void Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_1()
     {
         // Arrange
-        var sut = CreateSut();
         //This translates to: True&(False|True) -> True
         var condition1 = new Condition
         (
@@ -131,17 +120,16 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
     [Fact]
-    public async Task Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_2()
+    public void Can_Evaluate_Multiple_Conditions_With_Group_And_Different_Combinations_2()
     {
         // Arrange
-        var sut = CreateSut();
         //This translates to: False|(True&True) -> True
         var condition1 = new Condition
         (
@@ -169,12 +157,14 @@ public sealed class ConditionEvaluatorTests : IDisposable
         );
 
         // Act
-        var actual = await sut.Evaluate(null, new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(null, new[] { condition1, condition2, condition3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
-    public void Dispose()
-        => _provider.Dispose();
+    private static Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
+#pragma warning disable CS8605 // Unboxing a possibly null value.
+        => Result<bool>.Success((bool)new ConditionalExpression(conditions, new ConstantExpression(true), new ConstantExpression(false)).Evaluate(context).Value);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
 }

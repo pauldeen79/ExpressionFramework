@@ -57,10 +57,6 @@ public sealed class ExpressionSteps
     public void GivenIHaveAContextExpression()
         => _expressionBuilder = new ContextExpressionBuilder();
 
-    [Given(@"I have an unknown expression")]
-    public void GivenIHaveAnUnknownExpression()
-        => _expressionBuilder = new UnknownExpressionBuilder();
-
     [Given(@"I have a chained expression")]
     public void GivenIHaveAChainedExpression()
         => _expressionBuilder = new ChainedExpressionBuilder();
@@ -112,8 +108,8 @@ public sealed class ExpressionSteps
         => SwitchExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
 
     [When(@"I evaluate the expression")]
-    public async Task WhenIEvaluateTheExpression()
-        => _result = await ApplicationEntrypoint.ExpressionEvaluator.Evaluate(_contextSteps.Context, Expression);
+    public void WhenIEvaluateTheExpression()
+        => _result = Expression.Evaluate(_contextSteps.Context);
 
     [Then(@"the expression evaluation result should contain the content")]
     public void ValidateResponseContent(Table table)

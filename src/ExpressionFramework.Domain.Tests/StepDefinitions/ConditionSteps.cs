@@ -22,10 +22,15 @@ public sealed class ConditionSteps
         => _conditions = conditions;
 
     [When(@"I evaluate the condition")]
-    public async Task WhenIEvaluateTheCondition()
-        => _result = await ApplicationEntrypoint.ConditionEvaluator.Evaluate(_contextSteps.Context, Conditions);
+    public void WhenIEvaluateTheCondition()
+        => _result = Evaluate(_contextSteps.Context, Conditions);
 
     [Then(@"the condition evaluation result should contain the content")]
     public void ValidateResponseContent(Table table)
         => table.CompareToInstance(Result);
+
+    private static Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
+#pragma warning disable CS8605 // Unboxing a possibly null value.
+    => Result<bool>.Success((bool)new ConditionalExpression(conditions, new ConstantExpression(true), new ConstantExpression(false)).Evaluate(context).Value);
+#pragma warning restore CS8605 // Unboxing a possibly null value.
 }

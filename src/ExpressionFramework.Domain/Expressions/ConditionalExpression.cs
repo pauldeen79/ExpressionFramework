@@ -1,10 +1,10 @@
-﻿namespace ExpressionFramework.Domain.ExpressionHandlers;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExpression>
+public partial record ConditionalExpression
 {
-    protected override async Task<Result<object?>> Handle(object? context, ConditionalExpression typedExpression, IExpressionEvaluator evaluator)
+    public override Result<object?> Evaluate(object? context)
     {
-        var evaluationResult = await Evaluate(context, typedExpression.Conditions, evaluator);
+        var evaluationResult = EvaluateConditions(context, Conditions);
 
         if (!evaluationResult.IsSuccessful())
         {
@@ -13,35 +13,35 @@ public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExp
 
         if (evaluationResult.Value)
         {
-            return await evaluator.Evaluate(context, typedExpression.ResultExpression);
+            return ResultExpression.Evaluate(context);
         }
 
-        if (typedExpression.DefaultExpression != null)
+        if (DefaultExpression != null)
         {
-            return await evaluator.Evaluate(context, typedExpression.DefaultExpression);
+            return DefaultExpression.Evaluate(context);
         }
 
         return Result<object?>.Success(null);
     }
 
-    private Task<Result<bool>> Evaluate(object? context, IEnumerable<Condition> conditions, IExpressionEvaluator evaluator)
+    private Result<bool> EvaluateConditions(object? context, IEnumerable<Condition> conditions)
     {
         if (CanEvaluateSimpleConditions(conditions))
         {
-            return EvaluateSimpleConditions(context, conditions, evaluator);
+            return EvaluateSimpleConditions(context, conditions);
         }
 
-        return EvaluateComplexConditions(context, conditions, evaluator);
+        return EvaluateComplexConditions(context, conditions);
     }
 
     private bool CanEvaluateSimpleConditions(IEnumerable<Condition> conditions)
         => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
 
-    private async Task<Result<bool>> EvaluateSimpleConditions(object? context, IEnumerable<Condition> conditions, IExpressionEvaluator evaluator)
+    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<Condition> conditions)
     {
         foreach (var condition in conditions)
         {
-            var itemResult = await IsItemValid(context, condition, evaluator);
+            var itemResult = IsItemValid(context, condition);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -56,7 +56,7 @@ public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExp
         return Result<bool>.Success(true);
     }
 
-    private async Task<Result<bool>> EvaluateComplexConditions(object? context, IEnumerable<Condition> conditions, IExpressionEvaluator evaluator)
+    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<Condition> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -68,7 +68,7 @@ public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExp
 
             var prefix = condition.StartGroup ? "(" : string.Empty;
             var suffix = condition.EndGroup ? ")" : string.Empty;
-            var itemResult = await IsItemValid(context, condition, evaluator);
+            var itemResult = IsItemValid(context, condition);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -81,15 +81,15 @@ public class ConditionalExpressionHandler : ExpressionHandlerBase<ConditionalExp
         return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private async Task<Result<bool>> IsItemValid(object? context, Condition condition, IExpressionEvaluator evaluator)
+    private Result<bool> IsItemValid(object? context, Condition condition)
     {
-        var leftResult = await evaluator.Evaluate(context, condition.LeftExpression);
+        var leftResult = condition.LeftExpression.Evaluate(context);
         if (!leftResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(leftResult);
         }
 
-        var rightResult = await evaluator.Evaluate(context, condition.RightExpression);
+        var rightResult = condition.RightExpression.Evaluate(context);
         if (!rightResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(rightResult);
