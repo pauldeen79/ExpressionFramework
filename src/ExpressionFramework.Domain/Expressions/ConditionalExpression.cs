@@ -100,22 +100,8 @@ public partial record ConditionalExpression
     }
 
     private Result<bool> IsItemValid(object? context, Condition condition)
-    {
-        //var leftResult = condition.LeftExpression.Evaluate(context);
-        //if (!leftResult.IsSuccessful())
-        //{
-        //    return Result<bool>.FromExistingResult(leftResult);
-        //}
-
-        //var rightResult = condition.RightExpression.Evaluate(context);
-        //if (!rightResult.IsSuccessful())
-        //{
-        //    return Result<bool>.FromExistingResult(rightResult);
-        //}
-
-        //return condition.Operator.EvaluateAsBoolean(leftResult.Value, rightResult.Value);
-        return new OperatorExpression(condition.LeftExpression, condition.Operator, condition.RightExpression).EvaluateAsBoolean(context);
-    }
+        => new OperatorExpression(condition.LeftExpression, condition.Operator, condition.RightExpression)
+            .EvaluateAsBoolean(context);
 
     private static bool EvaluateBooleanExpression(string expression)
     {
