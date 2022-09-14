@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit;
+﻿using CrossCutting.Common.Extensions;
+
+namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class ConditionTests
 {

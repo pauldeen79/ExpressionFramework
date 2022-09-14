@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Support;
 
-public static class OperatorExpression
+public static class OperatorExpressionParser
 {
     public static Operator Parse(string @operator)
         => @operator.ToLowerInvariant() switch

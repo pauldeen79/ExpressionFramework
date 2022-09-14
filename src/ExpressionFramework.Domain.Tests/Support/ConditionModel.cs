@@ -11,7 +11,7 @@ public class ConditionModel
     public Condition ToCondition() =>
         new ConditionBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(LeftExpression)))
-            .WithOperator(OperatorBuilderFactory.Create(OperatorExpression.Parse(Operator)))
+            .WithOperator(OperatorBuilderFactory.Create(OperatorExpressionParser.Parse(Operator)))
             .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(RightExpression)))
             .WithStartGroup(StartGroup)
             .WithEndGroup(EndGroup)

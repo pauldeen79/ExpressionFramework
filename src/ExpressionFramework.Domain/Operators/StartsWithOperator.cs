@@ -2,7 +2,7 @@
 
 public partial record StartsWithOperator
 {
-    public override Result<bool> Evaluate(object? leftValue, object? rightValue)
+    protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => Result<bool>.Success(IsValid(leftValue, rightValue));
 
     internal static bool IsValid(object? leftValue, object? rightValue)

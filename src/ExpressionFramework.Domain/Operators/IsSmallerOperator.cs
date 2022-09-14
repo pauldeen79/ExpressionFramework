@@ -2,7 +2,7 @@
 
 public partial record IsSmallerOperator
 {
-    public override Result<bool> Evaluate(object? leftValue, object? rightValue)
+    protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => Result<bool>.Success(leftValue != null
         && rightValue != null
         && leftValue is IComparable c
