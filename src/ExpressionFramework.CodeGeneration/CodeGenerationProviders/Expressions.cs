@@ -20,7 +20,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     .WithName("Evaluate")
                     .WithOverride()
                     .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<object>")
+                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .AddLiteralCodeStatements("throw new NotImplementedException();")
                 )
                 .Build());

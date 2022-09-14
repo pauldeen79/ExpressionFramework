@@ -34,7 +34,7 @@ internal static class Program
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
 
         GenerateCode.For<Expressions>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Expressions>(basePath));
-        //GenerateCode.For<Operators>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Operators>(basePath));
+        GenerateCode.For<Operators>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Operators>(basePath));
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
