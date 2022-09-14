@@ -33,9 +33,11 @@ internal static class Program
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
 
+        GenerateCode.For<Expressions>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Expressions>(basePath));
+        //GenerateCode.For<Operators>(settings, multipleContentBuilder).Chain(() => FixScaffoldedFileNamesFor<Operators>(basePath));
+
         // Log output to console
-#pragma warning disable S2589 // Boolean expressions should not be gratuitous
-        if (dryRun || string.IsNullOrEmpty(basePath))
+        if (string.IsNullOrEmpty(basePath))
         {
             Console.WriteLine(multipleContentBuilder.ToString());
         }
@@ -48,6 +50,16 @@ internal static class Program
                 Console.WriteLine(content.FileName);
             }
         }
-#pragma warning restore S2589 // Boolean expressions should not be gratuitous
+    }
+
+    private static void FixScaffoldedFileNamesFor<T>(string basePath)
+    where T : ICodeGenerationProvider, new()
+    {
+        var gen = new T();
+
+        foreach (var file in Directory.GetFiles(Path.Combine(basePath, gen.Path), "*.generated.cs").Where(x => !x.EndsWith(".template.generated.cs", StringComparison.InvariantCulture)))
+        {
+            File.Move(file, file.Replace("generated.cs", "cs"));
+        }
     }
 }
