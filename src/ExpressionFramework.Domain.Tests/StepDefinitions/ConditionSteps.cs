@@ -23,7 +23,7 @@ public sealed class ConditionSteps
 
     [When(@"I evaluate the condition")]
     public void WhenIEvaluateTheCondition()
-        => _result = new ConditionalExpression(Conditions).EvaluateAsBoolean(_contextSteps.Context);
+        => _result = new TernaryExpression(Conditions).EvaluateAsBoolean(_contextSteps.Context);
 
     [Then(@"the condition evaluation result should contain the content")]
     public void ValidateResponseContent(Table table)

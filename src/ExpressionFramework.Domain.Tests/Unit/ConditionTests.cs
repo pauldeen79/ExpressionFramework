@@ -1,6 +1,4 @@
-﻿using CrossCutting.Common.Extensions;
-
-namespace ExpressionFramework.Domain.Tests.Unit;
+﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class ConditionTests
 {
@@ -166,5 +164,5 @@ public class ConditionTests
     }
 
     private static Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
-        => new ConditionalExpression(conditions).EvaluateAsBoolean(context);
+        => new TernaryExpression(conditions).EvaluateAsBoolean(context);
 }
