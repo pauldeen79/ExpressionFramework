@@ -12,7 +12,13 @@ public partial record EndsWithOperator
             return false;
         }
 
-        if (rightValue is not string rightValueString || string.IsNullOrEmpty(rightValueString))
+        if (rightValue == null)
+        {
+            return false;
+        }
+
+        var rightValueString = rightValue.ToString();
+        if (string.IsNullOrEmpty(rightValueString))
         {
             return false;
         }
