@@ -2,6 +2,10 @@
 
 public partial record ConditionalExpression
 {
+    public ConditionalExpression(IEnumerable<Condition> conditions) : this(conditions, new ConstantExpression(true), new ConstantExpression(false))
+    {
+    }
+
     public override Result<object?> Evaluate(object? context)
     {
         var evaluationResult = EvaluateConditions(context, Conditions);
@@ -22,6 +26,20 @@ public partial record ConditionalExpression
         }
 
         return Result<object?>.Success(null);
+    }
+
+    public Result<bool> EvaluateAsBoolean(object? context)
+    {
+        var result = Evaluate(context);
+        if (!result.IsSuccessful())
+        {
+            return Result<bool>.FromExistingResult(result);
+        }
+        if (result.Value is not bool b)
+        {
+            return Result<bool>.Error($"The result could not be determined, because it is not of type boolean. Actual type: {result.Value?.GetType()?.FullName ?? "NULL"}");
+        }
+        return Result<bool>.Success(b);
     }
 
     private Result<bool> EvaluateConditions(object? context, IEnumerable<Condition> conditions)

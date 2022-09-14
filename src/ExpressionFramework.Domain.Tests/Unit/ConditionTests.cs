@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
-public class ConditionEvaluatorTests
+public class ConditionTests
 {
     [Fact]
     public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
@@ -164,7 +164,5 @@ public class ConditionEvaluatorTests
     }
 
     private static Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
-#pragma warning disable CS8605 // Unboxing a possibly null value.
-        => Result<bool>.Success((bool)new ConditionalExpression(conditions, new ConstantExpression(true), new ConstantExpression(false)).Evaluate(context).Value);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
+        => new ConditionalExpression(conditions).EvaluateAsBoolean(context);
 }

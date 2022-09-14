@@ -23,14 +23,9 @@ public sealed class ConditionSteps
 
     [When(@"I evaluate the condition")]
     public void WhenIEvaluateTheCondition()
-        => _result = Evaluate(_contextSteps.Context, Conditions);
+        => _result = new ConditionalExpression(Conditions).EvaluateAsBoolean(_contextSteps.Context);
 
     [Then(@"the condition evaluation result should contain the content")]
     public void ValidateResponseContent(Table table)
         => table.CompareToInstance(Result);
-
-    private static Result<bool> Evaluate(object? context, IEnumerable<Condition> conditions)
-#pragma warning disable CS8605 // Unboxing a possibly null value.
-    => Result<bool>.Success((bool)new ConditionalExpression(conditions, new ConstantExpression(true), new ConstantExpression(false)).Evaluate(context).Value);
-#pragma warning restore CS8605 // Unboxing a possibly null value.
 }

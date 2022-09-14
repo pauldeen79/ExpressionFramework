@@ -1,6 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.ExpressionHandlers;
+﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class EqualsExpressionHandlerTests
+public class EqualsExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()

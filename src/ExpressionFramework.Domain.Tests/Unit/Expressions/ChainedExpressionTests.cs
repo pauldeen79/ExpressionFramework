@@ -1,6 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.ExpressionHandlers;
+﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class ChainedExpressionHandlerTests
+public class ChainedExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()

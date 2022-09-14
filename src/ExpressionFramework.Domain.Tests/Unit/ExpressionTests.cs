@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
-public class ExpresionTests
+public class ExpressionTests
 {
     [Fact]
     public void Evaluate_Happy_Flow()

@@ -1,6 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.ExpressionHandlers;
+﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class SwitchExpressionHandlerTests
+public class SwitchExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()
