@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Evaluatables;
 
-public partial record ComposedEvaluatable
+public partial record ComposedEvaluatable : IValidatableObject
 {
     public override Result<bool> Evaluate(object? context)
     {
@@ -10,6 +10,39 @@ public partial record ComposedEvaluatable
         }
 
         return EvaluateComplexConditions(context, Conditions);
+    }
+
+    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+    {
+        var groupCounter = 0;
+        var index = 0;
+        foreach (var condition in Conditions)
+        {
+            if (condition.StartGroup)
+            {
+                groupCounter++;
+            }
+            if (condition.EndGroup)
+            {
+                groupCounter--;
+            }
+            if (groupCounter < 0)
+            {
+                yield return new ValidationResult($"EndGroup not valid at index {index}, because there is no corresponding StartGroup", new[] { nameof(Conditions) });
+                break;
+            }
+
+            index++;
+        }
+
+        if (groupCounter == 1)
+        {
+            yield return new ValidationResult("Missing EndGroup", new[] { nameof(Conditions) });
+        }
+        else if (groupCounter > 1)
+        {
+            yield return new ValidationResult($"{groupCounter} missing EndGroups", new[] { nameof(Conditions) });
+        }
     }
 
     private bool CanEvaluateSimpleConditions(IEnumerable<SingleEvaluatable> conditions)
