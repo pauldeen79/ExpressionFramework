@@ -11,11 +11,11 @@ public class CaseModel
 
     public CaseBuilder ToCaseBuilder() =>
         new CaseBuilder()
-            .AddConditions(new ConditionBuilder(new ConditionModel
+            .WithCondition(new SingleEvaluatableBuilder(new SingleEvaluatableModel
             {
                 LeftExpression = ConditionLeftExpression,
                 Operator = ConditionOperator,
                 RightExpression = ConditionRightExpression
-            }.ToCondition()))
+            }.ToEvaluatable()))
             .WithExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(Expression)));
 }

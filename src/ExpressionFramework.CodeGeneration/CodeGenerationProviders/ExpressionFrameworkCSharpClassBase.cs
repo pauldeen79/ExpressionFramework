@@ -23,6 +23,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Tests.Support.Builders.Expressions.EmptyExpressionBuilder()" },
         { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Tests.Support.Builders.Operators.EqualsOperatorBuilder()" },
+        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Tests.Support.Builders.Evaluatables.SingleEvaluatableBuilder()" },
     };
 
     protected override Dictionary<string, string> GetBuilderNamespaceMappings() => new(
@@ -35,6 +36,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.CodeGeneration.Models.I", "ExpressionFramework.Domain." },
         { "ExpressionFramework.CodeGeneration.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "ExpressionFramework.CodeGeneration.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
+        { "ExpressionFramework.CodeGeneration.Models.Evaluatables.I", "ExpressionFramework.Domain.Evaluatables." },
         { "ExpressionFramework.CodeGeneration.Models.Domains.", "ExpressionFramework.Domain.Domains." },
         { "ExpressionFramework.CodeGeneration.I", "ExpressionFramework.Domain.I" },
     };
@@ -62,6 +64,12 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             typeof(IOperator),
         });
 
+    protected ITypeBase[] GetAbstractEvaluatableModels()
+        => MapCodeGenerationModelsToDomain(new[]
+        {
+            typeof(IEvaluatable),
+        });
+
     protected ITypeBase[] GetOverrideExpressionModels()
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
@@ -71,6 +79,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
                 .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Operators"));
+
+    protected ITypeBase[] GetOverrideEvaluatableModels()
+        => MapCodeGenerationModelsToDomain(
+            typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+                .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Evaluatables"));
 
     protected override string GetFullBasePath()
         => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")

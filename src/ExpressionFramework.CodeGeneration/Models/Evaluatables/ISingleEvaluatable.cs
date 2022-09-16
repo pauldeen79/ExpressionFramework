@@ -1,6 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration.Models;
+﻿namespace ExpressionFramework.CodeGeneration.Models.Evaluatables;
 
-public interface ICondition
+public interface ISingleEvaluatable : IEvaluatable
 {
     [Required]
     IExpression LeftExpression { get; }

@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class OperatorExpressionTests
+public class EvaluatableExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_When_Operator_Evaluation_Fails()
     {
         // Arrange
-        var sut = new OperatorExpression(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression());
+        var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class OperatorExpressionTests
     public void Evaluate_Returns_Result_When_Operator_Evaluation_Succeeds()
     {
         // Arrange
-        var sut = new OperatorExpression(new ConstantExpression("1"), new NotEqualsOperator(), new ConstantExpression("2"));
+        var sut = new EvaluatableExpression(new SingleEvaluatable(new ConstantExpression("1"), new NotEqualsOperator(), new ConstantExpression("2")));
 
         // Act
         var actual = sut.Evaluate(null);

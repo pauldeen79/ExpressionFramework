@@ -4,7 +4,7 @@ public partial record ConditionalExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var result = new TernaryExpression(Conditions).EvaluateAsBoolean(context);
+        var result = new EvaluatableExpression(Condition).EvaluateAsBoolean(context);
         if (!result.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(result);

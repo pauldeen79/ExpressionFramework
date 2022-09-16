@@ -3,7 +3,7 @@
 public interface ICase
 {
     [Required]
-    IReadOnlyCollection<ICondition> Conditions { get; }
+    IEvaluatable Condition { get; }
     [Required]
     IExpression Expression { get; }
 }

@@ -1,31 +1,21 @@
-﻿namespace ExpressionFramework.Domain.Expressions;
+﻿namespace ExpressionFramework.Domain.Evaluatables;
 
-public partial record TernaryExpression
+public partial record ComposedEvaluatable
 {
-    public override Result<object?> Evaluate(object? context)
-    {
-        var result = EvaluateAsBoolean(context);
-        if (!result.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(result);
-        }
-        return Result<object?>.Success(result.Value);
-    }
-
-    public Result<bool> EvaluateAsBoolean(object? context)
+    public override Result<bool> Evaluate(object? context)
     {
         if (CanEvaluateSimpleConditions(Conditions))
         {
             return EvaluateSimpleConditions(context, Conditions);
         }
 
-        return EvaluateComplexConditions(context, Conditions);        
+        return EvaluateComplexConditions(context, Conditions);
     }
 
-    private bool CanEvaluateSimpleConditions(IEnumerable<Condition> conditions)
+    private bool CanEvaluateSimpleConditions(IEnumerable<SingleEvaluatable> conditions)
         => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
 
-    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<Condition> conditions)
+    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<SingleEvaluatable> conditions)
     {
         foreach (var condition in conditions)
         {
@@ -44,7 +34,7 @@ public partial record TernaryExpression
         return Result<bool>.Success(true);
     }
 
-    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<Condition> conditions)
+    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<SingleEvaluatable> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -69,9 +59,8 @@ public partial record TernaryExpression
         return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private Result<bool> IsItemValid(object? context, Condition condition)
-        => new OperatorExpression(condition.LeftExpression, condition.Operator, condition.RightExpression)
-            .EvaluateAsBoolean(context);
+    private Result<bool> IsItemValid(object? context, SingleEvaluatable condition)
+        => condition.Evaluate(context);
 
     private static bool EvaluateBooleanExpression(string expression)
     {
@@ -140,4 +129,3 @@ public partial record TernaryExpression
             ? string.Empty
             : expression.Substring(closeIndex + 1);
 }
-

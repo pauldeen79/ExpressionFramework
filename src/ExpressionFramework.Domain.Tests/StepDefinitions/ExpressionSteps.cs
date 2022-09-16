@@ -26,7 +26,7 @@ public sealed class ExpressionSteps
             var conditionalExpressionBuilder = _expressionBuilder as ConditionalExpressionBuilder;
             if (conditionalExpressionBuilder != null)
             {
-                conditionalExpressionBuilder.AddConditions(_conditionSteps.Conditions.Select(x => new ConditionBuilder(x)));
+                conditionalExpressionBuilder.WithCondition(new ComposedEvaluatableBuilder().AddConditions(_conditionSteps.Conditions.Select(x => new SingleEvaluatableBuilder(x))));
             }
 
             return _expressionBuilder.Build();
