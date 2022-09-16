@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj" />
     <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
   </ItemGroup>
 

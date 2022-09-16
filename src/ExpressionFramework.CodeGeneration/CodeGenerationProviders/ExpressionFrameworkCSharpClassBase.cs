@@ -21,15 +21,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override Dictionary<string, string> GetCustomDefaultValueForBuilderClassConstructorValues() => new()
     {
-        { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Tests.Support.Builders.Expressions.EmptyExpressionBuilder()" },
-        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Tests.Support.Builders.Operators.EqualsOperatorBuilder()" },
-        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Tests.Support.Builders.Evaluatables.SingleEvaluatableBuilder()" },
+        { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder()" },
+        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Builders.Operators.EqualsOperatorBuilder()" },
+        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Builders.Evaluatables.SingleEvaluatableBuilder()" },
     };
 
     protected override Dictionary<string, string> GetBuilderNamespaceMappings() => new(
         GetCustomBuilderTypes()
-            .Select(x => new KeyValuePair<string, string>($"ExpressionFramework.Domain.{x}s", $"ExpressionFramework.Domain.Tests.Support.Builders.{x}s"))
-            .Concat(new[] { new KeyValuePair<string, string>("ExpressionFramework.Domain", "ExpressionFramework.Domain.Tests.Support.Builders"), }));
+            .Select(x => new KeyValuePair<string, string>($"ExpressionFramework.Domain.{x}s", $"ExpressionFramework.Domain.Builders.{x}s"))
+            .Concat(new[] { new KeyValuePair<string, string>("ExpressionFramework.Domain", "ExpressionFramework.Domain.Builders"), }));
 
     protected override Dictionary<string, string> GetModelMappings() => new()
     {

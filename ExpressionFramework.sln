@@ -16,6 +16,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Tests", "src\ExpressionFramework.Domain.Tests\ExpressionFramework.Domain.Tests.csproj", "{2649118A-C218-4CC6-9A3D-A00A2730BE24}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Domain.Builders", "src\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj", "{7537166A-6351-4CFC-A20B-C94AA127248D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,6 +36,10 @@ Global
 		{2649118A-C218-4CC6-9A3D-A00A2730BE24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2649118A-C218-4CC6-9A3D-A00A2730BE24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2649118A-C218-4CC6-9A3D-A00A2730BE24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7537166A-6351-4CFC-A20B-C94AA127248D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7537166A-6351-4CFC-A20B-C94AA127248D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class AbstractNonGenericExpressionBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Tests/Support/Builders";
+    public override string Path => "ExpressionFramework.Domain.Builders";
     public override string DefaultFileName => "Builders.generated.cs";
 
     protected override bool EnableEntityInheritance => true;
@@ -14,5 +14,5 @@ public class AbstractNonGenericExpressionBuilders : ExpressionFrameworkCSharpCla
         => GetImmutableNonGenericBuilderClasses(
             GetAbstractExpressionModels(),
             "ExpressionFramework.Domain",
-            "ExpressionFramework.Domain.Tests.Support.Builders");
+            "ExpressionFramework.Domain.Builders");
 }
