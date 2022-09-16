@@ -13,5 +13,6 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
             "ExpressionBuilderFactory",
             "ExpressionFramework.Domain.Expression",
             "ExpressionFramework.Domain.Builders.Expressions",
-            "ExpressionBuilder");
+            "ExpressionBuilder",
+            "ExpressionFramework.Domain.Expressions");
 }

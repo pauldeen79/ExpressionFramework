@@ -13,5 +13,6 @@ public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
             "OperatorBuilderFactory",
             "ExpressionFramework.Domain.Operator",
             "ExpressionFramework.Domain.Builders.Operators",
-            "OperatorBuilder");
+            "OperatorBuilder",
+            "ExpressionFramework.Domain.Operators");
 }

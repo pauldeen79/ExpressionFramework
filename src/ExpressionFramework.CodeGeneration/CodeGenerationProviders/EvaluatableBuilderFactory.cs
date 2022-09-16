@@ -13,5 +13,6 @@ public class EvaluatableBuilderFactory : ExpressionFrameworkCSharpClassBase
             "EvaluatableBuilderFactory",
             "ExpressionFramework.Domain.Evaluatable",
             "ExpressionFramework.Domain.Builders.Evaluatables",
-            "EvaluatableBuilder");
+            "EvaluatableBuilder",
+            "ExpressionFramework.Domain.Evaluatables");
 }
