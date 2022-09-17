@@ -2,8 +2,6 @@
 
 public abstract partial record Operator
 {
-    protected abstract Result<bool> Evaluate(object? leftValue, object? rightValue);
-
     public Result<bool> Evaluate(object? context, Expression leftExpression, Expression rightExpression)
     {
         var leftValueResult = leftExpression.Evaluate(context);
@@ -20,4 +18,6 @@ public abstract partial record Operator
 
         return Evaluate(leftValueResult.Value, rightValueResult.Value);
     }
+
+    protected abstract Result<bool> Evaluate(object? leftValue, object? rightValue);
 }
