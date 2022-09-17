@@ -42,6 +42,7 @@ internal static class Program
         GenerateCode.For<OverrideEvaluatableEntities>(settings, multipleContentBuilder);
         GenerateCode.For<EvaluatableBuilderFactory>(settings, multipleContentBuilder);
 
+        GenerateCode.For<Evaluatables>(settings, multipleContentBuilder);
         GenerateCode.For<Expressions>(settings, multipleContentBuilder);
         GenerateCode.For<Operators>(settings, multipleContentBuilder);
 
