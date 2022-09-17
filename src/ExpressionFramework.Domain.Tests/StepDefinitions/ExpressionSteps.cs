@@ -4,7 +4,7 @@
 public sealed class ExpressionSteps
 {
     private readonly ContextSteps _contextSteps;
-    private readonly ConditionSteps _conditionSteps;
+    private readonly EvaluatableSteps _evaluatableSteps;
 
     private ExpressionBuilder? _expressionBuilder;
     private Result<object?>? _result;
@@ -12,33 +12,16 @@ public sealed class ExpressionSteps
     private ChainedExpressionBuilder ChainedExpressionBuilder => _expressionBuilder as ChainedExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a chained expression?");
     private ConditionalExpressionBuilder ConditionalExpressionBuilder => _expressionBuilder as ConditionalExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a conditional expression?");
     private SwitchExpressionBuilder SwitchExpressionBuilder => _expressionBuilder as SwitchExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a switch expression?");
-    private Expression Expression
-    {
-        get
-        {
-            if (_expressionBuilder == null)
-            {
-                throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'");
-            }
-
-            // Note that currently, we have to add the conditions ourselves, because collection properties on builders are not lazy...
-            // To change that, we have to improve ModelFramework.
-            var conditionalExpressionBuilder = _expressionBuilder as ConditionalExpressionBuilder;
-            if (conditionalExpressionBuilder != null)
-            {
-                conditionalExpressionBuilder.WithCondition(new ComposedEvaluatableBuilder().AddConditions(_conditionSteps.Conditions.Select(x => new SingleEvaluatableBuilder(x))));
-            }
-
-            return _expressionBuilder.Build();
-        }
-    }
+    private Expression Expression => _expressionBuilder != null
+        ? _expressionBuilder.Build()
+        : throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'");
 
     private Result<object?> Result => _result ?? throw new InvalidOperationException("First evaluate the expression using 'When I evaluate the expression'");
 
-    public ExpressionSteps(ContextSteps contextSteps, ConditionSteps conditionSteps)
+    public ExpressionSteps(ContextSteps contextSteps, EvaluatableSteps conditionSteps)
     {
         _contextSteps = contextSteps;
-        _conditionSteps = conditionSteps;
+        _evaluatableSteps = conditionSteps;
     }
 
     [Given(@"I have the constant expression '([^']*)'")]
@@ -63,7 +46,7 @@ public sealed class ExpressionSteps
 
     [Given(@"I have a conditional expression")]
     public void GivenIHaveAConditionalExpression()
-        => _expressionBuilder = new ConditionalExpressionBuilder();
+        => _expressionBuilder = new ConditionalExpressionBuilder().WithCondition(_evaluatableSteps.EvaluatableBuilder);
 
     [Given(@"I have a switch expression")]
     public void GivenIHaveASwitchExpression()
