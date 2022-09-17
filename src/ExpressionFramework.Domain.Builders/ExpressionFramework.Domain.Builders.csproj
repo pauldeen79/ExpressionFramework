@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>10.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <PackageId>pauldeen79.ExpressionFramework.Domain.Builders</PackageId>
+    <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
+    <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\pauldeen79_expressionframework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
