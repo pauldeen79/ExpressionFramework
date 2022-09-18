@@ -11,6 +11,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override Type RecordConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
     protected override string FileNameSuffix => ".template.generated";
     protected override string RootNamespace => "ExpressionFramework.Domain";
+    protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
 
     protected override string[] GetCustomBuilderTypes()
         => typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
