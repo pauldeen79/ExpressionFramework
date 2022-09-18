@@ -13,6 +13,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override string RootNamespace => "ExpressionFramework.Domain";
     protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
 
+    protected override string GetFullBasePath()
+        => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
+            ? System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"src/")
+            : System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"../../../../");
+
     protected override string[] GetCustomBuilderTypes()
         => typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
             .Where(x => x.IsInterface && x.GetInterfaces().Length == 1)
@@ -85,9 +90,4 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
                 .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Evaluatables"));
-
-    protected override string GetFullBasePath()
-        => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
-            ? System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"src/")
-            : System.IO.Path.Combine(Directory.GetCurrentDirectory(), @"../../../../");
 }
