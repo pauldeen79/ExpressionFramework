@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿using ModelFramework.Objects;
+
+namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
@@ -12,6 +14,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override string FileNameSuffix => ".template.generated";
     protected override string RootNamespace => "ExpressionFramework.Domain";
     protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
+    protected override bool CopyPropertyCode => false;
+    protected override bool CopyFields => false;
 
     protected override string GetFullBasePath()
         => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
@@ -53,6 +57,18 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             .Select(x => $"ExpressionFramework.Domain.{x.Name}")
             .ToArray();
 
+    protected override void FixImmutableBuilderProperties<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+    {
+        base.FixImmutableBuilderProperties(typeBaseBuilder);
+
+        foreach (var property in typeBaseBuilder.Properties)
+        {
+            if (property.TypeName.ToString().StartsWith($"{RecordCollectionType.WithoutGenerics()}<", StringComparison.InvariantCulture))
+            {
+                property.AddCollectionBackingFieldOnImmutableClass(typeof(ValueCollection<>));
+            }
+        }
+    }
     protected ITypeBase[] GetCoreModels()
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
