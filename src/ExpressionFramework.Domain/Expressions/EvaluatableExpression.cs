@@ -3,14 +3,7 @@
 public partial record EvaluatableExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var result = Condition.Evaluate(context);
-        if (!result.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(result);
-        }
-        return Result<object?>.Success(result.Value);
-    }
+        => Result<object?>.FromExistingResult(Condition.Evaluate(context), value => value);
 
     public Result<bool> EvaluateAsBoolean(object? context)
         => Condition.Evaluate(context);
