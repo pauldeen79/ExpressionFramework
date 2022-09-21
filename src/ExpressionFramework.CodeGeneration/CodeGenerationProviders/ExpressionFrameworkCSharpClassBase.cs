@@ -12,6 +12,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override string FileNameSuffix => ".template.generated";
     protected override string RootNamespace => "ExpressionFramework.Domain";
     protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
+    protected override bool AddBackingFieldsForCollectionProperties => true;
+    protected override bool AddPrivateSetters => true;
 
     protected override string GetFullBasePath()
         => Directory.GetCurrentDirectory().EndsWith("ExpressionFramework")
