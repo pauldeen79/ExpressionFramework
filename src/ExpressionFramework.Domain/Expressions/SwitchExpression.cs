@@ -7,14 +7,14 @@ public partial record SwitchExpression
         foreach (var @case in Cases)
         {
             var conditionalExpression = new ConditionalExpression(@case.Condition, @case.Expression, null);
-            var caseResult = conditionalExpression.Evaluate(context);
+            var caseResult = conditionalExpression.EvaluateWithConditionResult(context);
             if (!caseResult.IsSuccessful())
             {
                 return Result<object?>.FromExistingResult(caseResult);
             }
-            if (caseResult.HasValue)
+            if (caseResult.Value.ConditionResult)
             {
-                return caseResult;
+                return caseResult.Value.ExpressionResult;
             }
         }
 
