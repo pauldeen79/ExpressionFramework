@@ -19,7 +19,7 @@ public class ChainedExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_No_Expressions_Are_Provided()
+    public void Evaluate_Returns_Sucess_With_Context_As_Value_When_No_Expressions_Are_Provided()
     {
         // Arrange
         var expression = new ChainedExpressionBuilder().Build();
@@ -28,7 +28,7 @@ public class ChainedExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("No expressions found");
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().BeNull();
     }
 }
