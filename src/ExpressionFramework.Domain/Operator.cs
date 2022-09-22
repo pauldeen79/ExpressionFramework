@@ -4,19 +4,23 @@ public abstract partial record Operator
 {
     public Result<bool> Evaluate(object? context, Expression leftExpression, Expression rightExpression)
     {
-        var leftValueResult = leftExpression.Evaluate(context);
-        if (!leftValueResult.IsSuccessful())
+        var expressions = new[]
         {
-            return Result<bool>.FromExistingResult(leftValueResult);
+            leftExpression,
+            rightExpression
+        };
+        var results = expressions
+            .Select(x => x.Evaluate(context))
+            .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
+            .ToArray();
+
+        var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
+        if (nonSuccessfulResult != null)
+        {
+            return Result<bool>.FromExistingResult(nonSuccessfulResult);
         }
 
-        var rightValueResult = rightExpression.Evaluate(context);
-        if (!rightValueResult.IsSuccessful())
-        {
-            return Result<bool>.FromExistingResult(rightValueResult);
-        }
-
-        return Evaluate(leftValueResult.Value, rightValueResult.Value);
+        return Evaluate(results[0].Value, results[1].Value);
     }
 
     protected abstract Result<bool> Evaluate(object? leftValue, object? rightValue);

@@ -4,6 +4,7 @@ global using System.Collections.Generic;
 global using System.ComponentModel.DataAnnotations;
 global using System.Linq;
 global using System.Text;
+global using CrossCutting.Common.Extensions;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain.Domains;
 global using ExpressionFramework.Domain.Operators;
