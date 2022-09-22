@@ -4,15 +4,7 @@ public abstract partial record Operator
 {
     public Result<bool> Evaluate(object? context, Expression leftExpression, Expression rightExpression)
     {
-        var expressions = new[]
-        {
-            leftExpression,
-            rightExpression
-        };
-        var results = expressions
-            .Select(x => x.Evaluate(context))
-            .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
-            .ToArray();
+        var results = new[] { leftExpression, rightExpression }.EvaluateUntilFirstError(context);
 
         var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
         if (nonSuccessfulResult != null)

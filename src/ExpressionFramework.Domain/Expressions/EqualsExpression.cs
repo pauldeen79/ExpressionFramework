@@ -4,18 +4,14 @@ public partial record EqualsExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var firstValue = FirstExpression.Evaluate(context);
-        if (!firstValue.IsSuccessful())
+        var results = new[] { FirstExpression, SecondExpression }.EvaluateUntilFirstError(context);
+
+        var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
+        if (nonSuccessfulResult != null)
         {
-            return firstValue;
+            return nonSuccessfulResult;
         }
 
-        var secondValue = SecondExpression.Evaluate(context);
-        if (!secondValue.IsSuccessful())
-        {
-            return secondValue;
-        }
-
-        return Result<object?>.Success(EqualsOperator.IsValid(firstValue, secondValue));
+        return Result<object?>.Success(EqualsOperator.IsValid(results[0], results[1]));
     }
 }
