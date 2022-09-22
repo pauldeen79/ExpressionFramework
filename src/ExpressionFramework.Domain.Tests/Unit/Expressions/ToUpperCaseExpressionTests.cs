@@ -29,7 +29,7 @@ public class ToUpperCaseExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Null_Wnen_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_Wnen_Context_Is_Null()
     {
         // Arrange
         var sut = new ToUpperCaseExpression();
@@ -38,6 +38,21 @@ public class ToUpperCaseExpressionTests
         var actual = sut.Evaluate(null);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeNull();
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Context must be of type string");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
+    {
+        // Arrange
+        var sut = new ToUpperCaseExpression();
+
+        // Act
+        var actual = sut.ValidateContext(null);
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Context must be of type string");
     }
 }

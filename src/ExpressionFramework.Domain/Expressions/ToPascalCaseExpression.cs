@@ -3,11 +3,21 @@
 public partial record ToPascalCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.Success(ToPascalCase(context?.ToString()));
+        => context is string s
+            ? Result<object?>.Success(ToPascalCase(s))
+            : Result<object?>.Invalid("Context must be of type string");
 
-    private string? ToPascalCase(string? value)
+    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
-        if (value != null && !string.IsNullOrEmpty(value))
+        if (context is not string)
+        {
+            yield return new ValidationResult("Context must be of type string");
+        }
+    }
+
+    private string? ToPascalCase(string value)
+    {
+        if (!string.IsNullOrEmpty(value))
         {
             return value.Substring(0, 1).ToLowerInvariant() + value.Substring(1);
         }

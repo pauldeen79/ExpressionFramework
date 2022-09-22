@@ -9,7 +9,7 @@ public class EmptyExpressionTests
         var sut = new EmptyExpression();
 
         // Act
-        var actual = sut.ValidateWithContext(null, new ValidationContext(sut));
+        var actual = sut.ValidateContext(null, new ValidationContext(sut));
 
         // Assert
         actual.Should().BeEmpty();

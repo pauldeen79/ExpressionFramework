@@ -28,7 +28,7 @@ public class FieldExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Success_Error_Result_From_ValueProvider()
+    public void Evaluate_Returns_Invalid_Result_From_ValueProvider()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
@@ -44,7 +44,7 @@ public class FieldExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Success_With_DefaultValue_When_Context_Is_Null()
+    public void Evaluate_Returns_Ivalid_When_Context_Is_Null()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
@@ -55,8 +55,8 @@ public class FieldExpressionTests
         var actual = expression.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeNull();
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Context cannot be empty");
     }
 
     [Fact]
@@ -73,6 +73,20 @@ public class FieldExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
         actual.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_Context_Is_Null()
+    {
+        // Arrange
+        var sut = new FieldExpression("SomeField");
+
+        // Act
+        var actual = sut.ValidateContext(null);
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Context cannot be empty");
     }
 
     public class MyClass

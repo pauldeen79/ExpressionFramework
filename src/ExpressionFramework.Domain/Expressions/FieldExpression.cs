@@ -9,7 +9,7 @@ public partial record FieldExpression
     {
         if (context == null)
         {
-            return Result<object?>.Success(default);
+            return Result<object?>.Invalid("Context cannot be empty");
         }
 
         var type = context.GetType();
@@ -33,5 +33,13 @@ public partial record FieldExpression
         }
 
         return Result<object?>.Success(returnValue);
+    }
+
+    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
+    {
+        if (context == null)
+        {
+            yield return new ValidationResult("Context cannot be empty");
+        }
     }
 }
