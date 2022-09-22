@@ -7,12 +7,9 @@ public abstract partial record Operator
         var results = new[] { leftExpression, rightExpression }.EvaluateUntilFirstError(context);
 
         var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
-        if (nonSuccessfulResult != null)
-        {
-            return Result<bool>.FromExistingResult(nonSuccessfulResult);
-        }
-
-        return Evaluate(results[0].Value, results[1].Value);
+        return nonSuccessfulResult != null
+            ? Result<bool>.FromExistingResult(nonSuccessfulResult)
+            : Evaluate(results[0].Value, results[1].Value);
     }
 
     protected abstract Result<bool> Evaluate(object? leftValue, object? rightValue);
