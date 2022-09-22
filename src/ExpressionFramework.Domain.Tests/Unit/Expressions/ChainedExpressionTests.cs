@@ -7,7 +7,11 @@ public class ChainedExpressionTests
     {
         // Arrange
         var expression = new ChainedExpressionBuilder()
-            .AddExpressions(new ErrorExpressionBuilder().WithErrorMessage("Kaboom"))
+            .AddExpressions
+            (
+                new ErrorExpressionBuilder().WithErrorMessage("Kaboom"),
+                new EmptyExpressionBuilder()
+            )
             .Build();
 
         // Act
