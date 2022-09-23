@@ -31,7 +31,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder()" },
         { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Builders.Operators.EqualsOperatorBuilder()" },
-        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Builders.Evaluatables.SingleEvaluatableBuilder()" },
+        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Builders.Evaluatables.ConstantEvaluatableBuilder()" },
     };
 
     protected override Dictionary<string, string> GetBuilderNamespaceMappings() => new(
