@@ -1,6 +1,6 @@
 # //TODO
 general:
-- Fill context validation where appropriate
+- Add expression description providers, and an expression description provider factory
 
 expressions:
 - Add aggregate expressions: Min, Max, First, Last, ElementAt, Count, Sum
