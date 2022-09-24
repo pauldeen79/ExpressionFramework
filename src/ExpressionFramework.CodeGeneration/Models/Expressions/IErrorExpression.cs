@@ -2,5 +2,5 @@
 
 public interface IErrorExpression : IExpression
 {
-    string ErrorMessage { get; }
+    string? ErrorMessage { get; }
 }
