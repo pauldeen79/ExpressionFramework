@@ -61,6 +61,7 @@ internal static class Program
             }
         }
 
+        FixScaffoldedFileNamesFor<Evaluatables>(basePath);
         FixScaffoldedFileNamesFor<Expressions>(basePath);
         FixScaffoldedFileNamesFor<Operators>(basePath);
     }
