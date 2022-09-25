@@ -5,12 +5,13 @@ public class Evaluatables : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain/Evaluatables";
     public override string DefaultFileName => "Evaluatables.cs";
+    public override string LastGeneratedFilesFileName => string.Empty;
 
-    protected override string FileNameSuffix => ".generated";
-
+    protected override string FileNameSuffix => string.Empty;
+    protected override bool CreateCodeGenerationHeader => false;
+    
     public override object CreateModel()
         => GetOverrideEvaluatableModels()
-            .Where(x => IsNotScaffolded(x, string.Empty))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Evaluatables")
                 .WithName(x.Name)

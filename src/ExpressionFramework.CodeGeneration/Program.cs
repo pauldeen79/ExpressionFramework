@@ -1,6 +1,4 @@
-﻿using ModelFramework.Common.Extensions;
-
-namespace ExpressionFramework.CodeGeneration;
+﻿namespace ExpressionFramework.CodeGeneration;
 
 [ExcludeFromCodeCoverage]
 internal static class Program
@@ -42,6 +40,7 @@ internal static class Program
         GenerateCode.For<OverrideEvaluatableEntities>(settings, multipleContentBuilder);
         GenerateCode.For<EvaluatableBuilderFactory>(settings, multipleContentBuilder);
 
+        settings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
         GenerateCode.For<Evaluatables>(settings, multipleContentBuilder);
         GenerateCode.For<Expressions>(settings, multipleContentBuilder);
         GenerateCode.For<Operators>(settings, multipleContentBuilder);
@@ -59,21 +58,6 @@ internal static class Program
             {
                 Console.WriteLine(content.FileName);
             }
-        }
-
-        FixScaffoldedFileNamesFor<Evaluatables>(basePath);
-        FixScaffoldedFileNamesFor<Expressions>(basePath);
-        FixScaffoldedFileNamesFor<Operators>(basePath);
-    }
-
-    private static void FixScaffoldedFileNamesFor<T>(string basePath)
-    where T : ICodeGenerationProvider, new()
-    {
-        var gen = new T();
-
-        foreach (var file in Directory.GetFiles(Path.Combine(basePath, gen.Path), "*.generated.cs").Where(x => !x.EndsWith(".template.generated.cs", StringComparison.InvariantCulture)))
-        {
-            File.Move(file, file.ReplaceSuffix(".generated.cs", ".cs", StringComparison.InvariantCulture));
         }
     }
 }

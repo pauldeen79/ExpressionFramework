@@ -5,12 +5,13 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain/Expressions";
     public override string DefaultFileName => "Expressions.cs";
+    public override string LastGeneratedFilesFileName => string.Empty;
 
-    protected override string FileNameSuffix => ".generated";
+    protected override string FileNameSuffix => string.Empty;
+    protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
         => GetOverrideExpressionModels()
-            .Where(x => IsNotScaffolded(x, string.Empty))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Expressions")
                 .WithName(x.Name)
