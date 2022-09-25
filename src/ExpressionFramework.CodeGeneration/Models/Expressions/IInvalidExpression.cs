@@ -2,7 +2,8 @@
 
 public interface IInvalidExpression : IExpression
 {
-    string? ErrorMessage { get; }
+    [Required]
+    string ErrorMessage { get; }
     [Required]
     IReadOnlyCollection<ValidationError> ValidationErrors { get; }
 }
