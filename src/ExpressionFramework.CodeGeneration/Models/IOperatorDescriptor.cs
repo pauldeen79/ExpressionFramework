@@ -6,7 +6,6 @@ public interface IOperatorDescriptor
     string Name { get; }
     [Required]
     string TypeName { get; }
-    [Required]
     string Description { get; }
     bool UsesLeftValue { get; }
     bool UsesRightValue { get; }

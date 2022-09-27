@@ -1,5 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Evaluatables;
 
+[EvaluatableDescription("Evaluates multiple conditions")]
+[EvaluatableParameterDescription(nameof(Conditions), "Conditions to evaluate")]
+[EvaluatableParameterRequired(nameof(Conditions), true)]
+[EvaluatableReturnValue(ResultStatus.Ok, "true when the conditions evaluate to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record ComposedEvaluatable : IValidatableObject
 {
     public override Result<bool> Evaluate(object? context)
@@ -45,10 +49,10 @@ public partial record ComposedEvaluatable : IValidatableObject
         }
     }
 
-    private bool CanEvaluateSimpleConditions(IEnumerable<SingleEvaluatable> conditions)
+    private bool CanEvaluateSimpleConditions(IEnumerable<ComposableEvaluatable> conditions)
         => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
 
-    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<SingleEvaluatable> conditions)
+    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
         foreach (var condition in conditions)
         {
@@ -67,7 +71,7 @@ public partial record ComposedEvaluatable : IValidatableObject
         return Result<bool>.Success(true);
     }
 
-    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<SingleEvaluatable> conditions)
+    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
         var builder = new StringBuilder();
         foreach (var condition in conditions)
@@ -92,7 +96,7 @@ public partial record ComposedEvaluatable : IValidatableObject
         return Result<bool>.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private Result<bool> IsItemValid(object? context, SingleEvaluatable condition)
+    private Result<bool> IsItemValid(object? context, ComposableEvaluatable condition)
         => condition.Evaluate(context);
 
     private static bool EvaluateBooleanExpression(string expression)

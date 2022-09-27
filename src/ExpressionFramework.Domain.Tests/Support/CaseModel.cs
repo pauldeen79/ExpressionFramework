@@ -11,7 +11,7 @@ public class CaseModel
 
     public CaseBuilder ToCaseBuilder() =>
         new CaseBuilder()
-            .WithCondition(new SingleEvaluatableBuilder(new SingleEvaluatableModel
+            .WithCondition(new ComposableEvaluatableBuilder(new ComposableEvaluatableModel
             {
                 LeftExpression = ConditionLeftExpression,
                 Operator = ConditionOperator,

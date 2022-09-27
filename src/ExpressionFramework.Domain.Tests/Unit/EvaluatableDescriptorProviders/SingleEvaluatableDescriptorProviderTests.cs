@@ -6,7 +6,7 @@ public class SingleEvaluatableDescriptorProviderTests
     public void Get_Returns_Descriptor_Provider()
     {
         // Arrange
-        var sut = new SingleEvaluatableDescriptorProvider();
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(SingleEvaluatable));
 
         // Act
         var result = sut.Get();

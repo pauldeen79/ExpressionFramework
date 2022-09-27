@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Evaluatables;
 
-public class SingleEvaluatableTests
+public class ComposableEvaluatableTests
 {
     [Fact]
     public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
-        var condition = new SingleEvaluatable
+        var condition = new ComposableEvaluatable
         (
             new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
             new EqualsOperator(),
@@ -24,7 +24,7 @@ public class SingleEvaluatableTests
     public void Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
-        var condition = new SingleEvaluatable
+        var condition = new ComposableEvaluatable
         (
             new ConstantExpression(new[] { "1", "2", "3" }),
             new ContainsOperator(),
@@ -43,13 +43,13 @@ public class SingleEvaluatableTests
     public void Can_Evaluate_Multiple_Conditions_With_And_Combination()
     {
         // Arrange
-        var condition1 = new SingleEvaluatable
+        var condition1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new SingleEvaluatable
+        var condition2 = new ComposableEvaluatable
         (
             Combination.And,
             new ConstantExpression("54321"),
@@ -68,13 +68,13 @@ public class SingleEvaluatableTests
     public void Can_Evaluate_Multiple_Conditions_With_Or_Combination()
     {
         // Arrange
-        var condition1 = new SingleEvaluatable
+        var condition1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new SingleEvaluatable
+        var condition2 = new ComposableEvaluatable
         (
             Combination.Or,
             new ConstantExpression("54321"),
@@ -94,29 +94,29 @@ public class SingleEvaluatableTests
     {
         // Arrange
         //This translates to: True&(False|True) -> True
-        var condition1 = new SingleEvaluatable
+        var condition1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new SingleEvaluatable
+        var condition2 = new ComposableEvaluatable
         (
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("wrong"),
             startGroup: true,
             endGroup: false,
-            Combination.And
-        );
-        var condition3 = new SingleEvaluatable
-        (
+            Combination.And,
             new ConstantExpression("54321"),
             new EqualsOperator(),
-            new ConstantExpression("54321"),
+            new ConstantExpression("wrong")
+        );
+        var condition3 = new ComposableEvaluatable
+        (
             startGroup: false,
             endGroup: true,
-            Combination.Or
+            Combination.Or,
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321")
         );
 
         // Act
@@ -131,29 +131,29 @@ public class SingleEvaluatableTests
     {
         // Arrange
         //This translates to: False|(True&True) -> True
-        var condition1 = new SingleEvaluatable
+        var condition1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("wrong")
         );
-        var condition2 = new SingleEvaluatable
+        var condition2 = new ComposableEvaluatable
         (
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("54321"),
             startGroup: true,
             endGroup: false,
-            Combination.Or
-        );
-        var condition3 = new SingleEvaluatable
-        (
+            Combination.Or,
             new ConstantExpression("54321"),
             new EqualsOperator(),
-            new ConstantExpression("54321"),
+            new ConstantExpression("54321")
+        );
+        var condition3 = new ComposableEvaluatable
+        (
             startGroup: false,
             endGroup: true,
-            Combination.And
+            Combination.And,
+            new ConstantExpression("54321"),
+            new EqualsOperator(),
+            new ConstantExpression("54321")
         );
 
         // Act
@@ -163,6 +163,6 @@ public class SingleEvaluatableTests
         actual.GetValueOrThrow().Should().BeTrue();
     }
 
-    private static Result<bool> Evaluate(object? context, IEnumerable<SingleEvaluatable> conditions)
+    private static Result<bool> Evaluate(object? context, IEnumerable<ComposableEvaluatable> conditions)
         => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateAsBoolean(context);
 }

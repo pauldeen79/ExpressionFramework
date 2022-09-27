@@ -6,7 +6,6 @@ public interface IParameterDescriptor
     string Name { get; }
     [Required]
     string TypeName { get; }
-    [Required]
     string Description { get; }
     bool Required { get; }
 }

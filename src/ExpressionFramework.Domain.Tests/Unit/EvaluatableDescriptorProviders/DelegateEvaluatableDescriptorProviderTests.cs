@@ -6,7 +6,7 @@ public class DelegateEvaluatableDescriptorProviderTests
     public void Get_Returns_Descriptor_Provider()
     {
         // Arrange
-        var sut = new DelegateEvaluatableDescriptorProvider();
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(DelegateEvaluatable));
 
         // Act
         var result = sut.Get();

@@ -14,12 +14,12 @@ public sealed class EvaluatableSteps
     public EvaluatableSteps(ContextSteps contextSteps) => _contextSteps = contextSteps;
 
     [Given(@"I have the following condition")]
-    public void GivenIHaveTheFollowingCondition(SingleEvaluatable condition)
-        => _composedEvaluatableBuilder.AddConditions(new SingleEvaluatableBuilder(condition));
+    public void GivenIHaveTheFollowingCondition(ComposableEvaluatable condition)
+        => _composedEvaluatableBuilder.AddConditions(new ComposableEvaluatableBuilder(condition));
 
     [Given(@"I have the following conditions")]
-    public void GivenIHaveTheFollowingCondition(SingleEvaluatable[] conditions)
-        => _composedEvaluatableBuilder.AddConditions(conditions.Select(x => new SingleEvaluatableBuilder(x)));
+    public void GivenIHaveTheFollowingCondition(ComposableEvaluatable[] conditions)
+        => _composedEvaluatableBuilder.AddConditions(conditions.Select(x => new ComposableEvaluatableBuilder(x)));
 
     [When(@"I evaluate the condition")]
     public void WhenIEvaluateTheCondition()

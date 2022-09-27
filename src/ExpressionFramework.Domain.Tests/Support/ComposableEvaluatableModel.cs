@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Support;
 
-public class SingleEvaluatableModel 
+public class ComposableEvaluatableModel 
 {
     public string LeftExpression { get; set; } = "";
     public string Operator { get; set; } = "Equals";
@@ -8,8 +8,8 @@ public class SingleEvaluatableModel
     public bool StartGroup { get; set; }
     public bool EndGroup { get; set; }
     public Combination Combination { get; set; }
-    public SingleEvaluatable ToEvaluatable() =>
-        new SingleEvaluatableBuilder()
+    public ComposableEvaluatable ToEvaluatable() =>
+        new ComposableEvaluatableBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(LeftExpression)))
             .WithOperator(OperatorBuilderFactory.Create(OperatorExpressionParser.Parse(Operator)))
             .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(RightExpression)))

@@ -7,7 +7,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithEndGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert
@@ -19,7 +19,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -31,8 +31,8 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -44,8 +44,8 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new SingleEvaluatableBuilder().WithEndGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert

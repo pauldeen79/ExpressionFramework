@@ -6,7 +6,7 @@ public class ComposedEvaluatableDescriptorProviderTests
     public void Get_Returns_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ComposedEvaluatableDescriptorProvider();
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(ComposedEvaluatable));
 
         // Act
         var result = sut.Get();

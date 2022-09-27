@@ -6,7 +6,6 @@ public interface IEvaluatableDescriptor
     string Name { get; }
     [Required]
     string TypeName { get; }
-    [Required]
     string Description { get; }
     [Required]
     IReadOnlyCollection<IParameterDescriptor> Parameters { get; }

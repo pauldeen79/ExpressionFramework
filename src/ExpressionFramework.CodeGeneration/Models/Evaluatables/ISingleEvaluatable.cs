@@ -8,7 +8,4 @@ public interface ISingleEvaluatable : IEvaluatable
     IOperator Operator { get; }
     [Required]
     IExpression RightExpression { get; }
-    bool StartGroup { get; }
-    bool EndGroup { get; }
-    Combination Combination { get; }
 }
