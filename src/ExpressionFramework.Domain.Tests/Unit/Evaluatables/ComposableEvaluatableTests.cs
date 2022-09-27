@@ -176,7 +176,7 @@ public class ComposableEvaluatableTests
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ComposableEvaluatable));
         result.Parameters.Should().HaveCount(6);
-        result.ReturnValues.Should().HaveCount(1);
+        result.ReturnValues.Should().ContainSingle();
     }
 
     private static Result<bool> Evaluate(object? context, IEnumerable<ComposableEvaluatable> conditions)

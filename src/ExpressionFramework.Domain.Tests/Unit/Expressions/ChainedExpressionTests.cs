@@ -48,7 +48,7 @@ public class ChainedExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ChainedExpression));
-        result.Parameters.Should().HaveCount(1);
+        result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

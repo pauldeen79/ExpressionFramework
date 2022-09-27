@@ -15,6 +15,6 @@ public class SingleEvaluatableTests
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(SingleEvaluatable));
         result.Parameters.Should().HaveCount(3);
-        result.ReturnValues.Should().HaveCount(1);
+        result.ReturnValues.Should().ContainSingle();
     }
 }

@@ -30,7 +30,7 @@ public class ConstantEvaluatableTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ConstantEvaluatable));
-        result.Parameters.Should().HaveCount(1);
-        result.ReturnValues.Should().HaveCount(1);
+        result.Parameters.Should().ContainSingle();
+        result.ReturnValues.Should().ContainSingle();
     }
 }
