@@ -10,5 +10,7 @@ public interface IOperatorDescriptor
     bool UsesLeftValue { get; }
     bool UsesRightValue { get; }
     [Required]
+    IReadOnlyCollection<IParameterDescriptor> Parameters { get; }
+    [Required]
     IReadOnlyCollection<IReturnValueDescriptor> ReturnValues { get; }
 }
