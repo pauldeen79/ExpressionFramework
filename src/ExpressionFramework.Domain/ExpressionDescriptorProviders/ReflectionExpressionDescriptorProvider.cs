@@ -1,12 +1,14 @@
-﻿namespace ExpressionFramework.Domain.EvaluatableDescriptorProviders;
+﻿namespace ExpressionFramework.Domain.ExpressionDescriptorProviders;
 
-public class ReflectionEvaluatableDescriptorProvider : IEvaluatableDescriptorProvider
+public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvider
 {
-    private readonly EvaluatableDescriptor _descriptor;
+    private readonly ExpressionDescriptor _descriptor;
 
-    public ReflectionEvaluatableDescriptorProvider(Type type)
+    public ReflectionExpressionDescriptorProvider(Type type)
     {
-        var description = type.GetCustomAttribute<EvaluatableDescriptionAttribute>()?.Description ?? string.Empty;
+        var description = type.GetCustomAttribute<ExpressionDescriptionAttribute>()?.Description ?? string.Empty;
+        var contextTypeName = type.GetCustomAttribute<ExpressionContextTypeAttribute>()?.Type?.FullName;
+        var contextIsRequired = type.GetCustomAttribute<ExpressionContextRequiredAttribute>()?.Required ?? false;
         var parameterDescriptions = type.GetCustomAttributes<ParameterDescriptionAttribute>().ToArray();
         var parameterRequiredIndicators = type.GetCustomAttributes<ParameterRequiredAttribute>().ToArray();
         var parameters = type.GetProperties()
@@ -17,13 +19,15 @@ public class ReflectionEvaluatableDescriptorProvider : IEvaluatableDescriptorPro
                 parameterRequiredIndicators.FirstOrDefault(y => y.Name == x.Name)?.Required ?? false));
         var returnValues = type.GetCustomAttributes<ReturnValueAttribute>().Select(x =>
             new ReturnValueDescriptor(x.Status, x.Value, x.Description));
-        _descriptor = new EvaluatableDescriptor(
+        _descriptor = new ExpressionDescriptor(
             name: type.Name,
             typeName: type.FullName,
             description,
+            contextTypeName,
+            contextIsRequired,
             parameters,
             returnValues);
     }
 
-    public EvaluatableDescriptor Get() => _descriptor;
+    public ExpressionDescriptor Get() => _descriptor;
 }

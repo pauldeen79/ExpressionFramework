@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.EvaluatableDescriptorProviders.Attributes;
+﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
 public class EvaluatableDescriptionAttribute : Attribute

@@ -6,7 +6,7 @@ public class ChainedExpressionDescriptorProviderTests
     public void Get_Returns_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ChainedExpressionDescriptorProvider();
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(ChainedExpression));
 
         // Act
         var result = sut.Get();

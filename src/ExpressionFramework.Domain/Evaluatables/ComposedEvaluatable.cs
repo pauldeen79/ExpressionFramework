@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Evaluatables;
 
 [EvaluatableDescription("Evaluates multiple conditions")]
-[EvaluatableParameterDescription(nameof(Conditions), "Conditions to evaluate")]
-[EvaluatableParameterRequired(nameof(Conditions), true)]
-[EvaluatableReturnValue(ResultStatus.Ok, "true when the conditions evaluate to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
+[ParameterDescription(nameof(Conditions), "Conditions to evaluate")]
+[ParameterRequired(nameof(Conditions), true)]
+[ReturnValue(ResultStatus.Ok, "true when the conditions evaluate to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record ComposedEvaluatable : IValidatableObject
 {
     public override Result<bool> Evaluate(object? context)
