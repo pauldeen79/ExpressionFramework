@@ -15,4 +15,23 @@ public class ConditionalExpressionTests
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Kaboom");
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(ConditionalExpression));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(ConditionalExpression));
+        result.Parameters.Should().HaveCount(3);
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextIsRequired.Should().BeFalse();
+    }
 }

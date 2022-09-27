@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Chains the result of an expression onto the next one, and so on")]
+[ExpressionContextDescription("Value to use as seed (initiation) for the first expression")]
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(false)]
 [ParameterDescription(nameof(Expressions), "Expressions to use on chaining. The context is chained to the first expression.")]

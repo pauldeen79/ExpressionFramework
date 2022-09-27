@@ -8,6 +8,7 @@ public interface IExpressionDescriptor
     string TypeName { get; }
     string Description { get; }
     string? ContextTypeName { get; }
+    string? ContextDescription { get; }
     bool ContextIsRequired { get; }
     [Required]
     IReadOnlyCollection<IParameterDescriptor> Parameters { get; }

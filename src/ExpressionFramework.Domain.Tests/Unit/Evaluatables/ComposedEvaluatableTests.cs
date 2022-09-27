@@ -51,4 +51,20 @@ public class ComposedEvaluatableTests
         // Act & Assert
         act.Should().NotThrow();
     }
+
+    [Fact]
+    public void Get_Returns_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(ComposedEvaluatable));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(ComposedEvaluatable));
+        result.Parameters.Should().HaveCount(1);
+        result.ReturnValues.Should().HaveCount(1);
+    }
 }
