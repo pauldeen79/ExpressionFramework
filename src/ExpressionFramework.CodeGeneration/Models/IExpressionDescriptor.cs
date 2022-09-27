@@ -9,7 +9,7 @@ public interface IExpressionDescriptor
     string Description { get; }
     string? ContextTypeName { get; }
     string? ContextDescription { get; }
-    bool ContextIsRequired { get; }
+    bool? ContextIsRequired { get; }
     [Required]
     IReadOnlyCollection<IParameterDescriptor> Parameters { get; }
     [Required]

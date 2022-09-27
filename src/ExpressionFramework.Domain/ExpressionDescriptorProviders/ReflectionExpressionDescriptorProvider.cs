@@ -9,7 +9,7 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
         var description = type.GetCustomAttribute<ExpressionDescriptionAttribute>()?.Description ?? string.Empty;
         var contextTypeName = type.GetCustomAttribute<ExpressionContextTypeAttribute>()?.Type?.FullName;
         var contextDescription = type.GetCustomAttribute<ExpressionContextDescriptionAttribute>()?.Description;
-        var contextIsRequired = type.GetCustomAttribute<ExpressionContextRequiredAttribute>()?.Required ?? false;
+        var contextIsRequired = type.GetCustomAttribute<ExpressionContextRequiredAttribute>()?.Required;
         var parameterDescriptions = type.GetCustomAttributes<ParameterDescriptionAttribute>().ToArray();
         var parameterRequiredIndicators = type.GetCustomAttributes<ParameterRequiredAttribute>().ToArray();
         var parameters = type.GetProperties()
