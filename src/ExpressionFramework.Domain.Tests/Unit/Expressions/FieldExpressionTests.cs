@@ -89,6 +89,39 @@ public class FieldExpressionTests
         actual.Single().ErrorMessage.Should().Be("Context cannot be empty");
     }
 
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_FieldName_Could_Not_Be_Found()
+    {
+        // Arrange
+        var sut = new FieldExpression("WrongPropertyName");
+
+        // Act
+        var actual = sut.ValidateContext(new MyClass());
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Fieldname [WrongPropertyName] is not found on type [ExpressionFramework.Domain.Tests.Unit.Expressions.FieldExpressionTests+MyClass]");
+    }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(FieldExpression));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(FieldExpression));
+        result.Parameters.Should().ContainSingle();
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextIsRequired.Should().BeTrue();
+    }
+
     public class MyClass
     {
         public string? MyProperty { get; set; }
