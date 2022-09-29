@@ -2,7 +2,6 @@
 
 public class EnumerableContainsOperatorTests
 {
-
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
