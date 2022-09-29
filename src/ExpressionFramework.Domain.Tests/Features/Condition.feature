@@ -46,7 +46,6 @@ Examples:
     | Pizza   | a      | EndsWith              | True   |
     | Pizza   | x      | EndsWith              | False  |
     | Pizza   | A      | EndsWith              | True   |
-    | [null]  | x      | EndsWith              | False  |
     | [null]  | [null] | Equals                | True   |
     | True    |        | Equals                | False  |
     | A       | A      | Equals                | True   |
@@ -105,7 +104,6 @@ Examples:
     | Pizza   | a      | NotContains           | False  |
     | Pizza   | A      | NotContains           | False  |
     | Pizza   | x      | NotContains           | True   |
-    | [null]  | A      | NotEndsWith           | False  |
     | Pizza   | x      | NotEndsWith           | True   |
     | Pizza   | A      | NotEndsWith           | False  |
     | Pizza   | a      | NotEndsWith           | False  |
@@ -116,9 +114,7 @@ Examples:
     | A       | b      | NotEquals             | True   |
     | Pizza   | P      | NotStartsWith         | False  |
     | Pizza   | x      | NotStartsWith         | True   |
-    | [null]  | P      | NotStartsWith         | False  |
     | Pizza   | p      | NotStartsWith         | False  |
     | Pizza   | p      | StartsWith            | True   |
     | Pizza   | x      | StartsWith            | False  |
-    | [null]  | x      | StartsWith            | False  |
     | Pizza   | P      | StartsWith            | True   |

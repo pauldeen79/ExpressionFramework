@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Operators;
 
-public class EndsWithOperatorTests
+public class NotEndsWithOperatorTests
 {
     [Fact]
     public void Evaluate_Returns_Invalid_When_LeftValue_Is_Null()
     {
         // Act
-        var result = new EndsWithOperator().Evaluate(null, new EmptyExpression(), new ConstantExpression("B"));
+        var result = new NotEndsWithOperator().Evaluate(null, new EmptyExpression(), new ConstantExpression("B"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -16,20 +16,20 @@ public class EndsWithOperatorTests
     public void Evaluate_Returns_Invalid_When_RightValue_Is_Null()
     {
         // Act
-        var result = new EndsWithOperator().Evaluate(null, new ConstantExpression("A"), new EmptyExpression());
+        var result = new NotEndsWithOperator().Evaluate(null, new ConstantExpression("A"), new EmptyExpression());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
-    public void Evaluate_Returns_True_When_RightValue_Is_StringEmpty()
+    public void Evaluate_Returns_False_When_RightValue_Is_StringEmpty()
     {
         // Act
-        var result = new EndsWithOperator().Evaluate(null, new ConstantExpression("A"), new ConstantExpression(string.Empty));
+        var result = new NotEndsWithOperator().Evaluate(null, new ConstantExpression("A"), new ConstantExpression(string.Empty));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeTrue();
+        result.Value.Should().BeFalse();
     }
 }
