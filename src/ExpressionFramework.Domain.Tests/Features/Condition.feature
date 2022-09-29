@@ -40,7 +40,6 @@ Scenario Outline: Condition evaluation
 
 Examples:
     | left    | right  | operator              | result |
-    | [null]  | x      | Contains              | False  |
     | Pizza   | x      | Contains              | False  |
     | Pizza   | a      | Contains              | True   |
     | Pizza   | A      | Contains              | True   |
@@ -104,7 +103,6 @@ Examples:
     | [2]     | [1]    | IsSmallerOrEqual      | False  |
     | [2]     | [2]    | IsSmallerOrEqual      | True   |
     | Pizza   | a      | NotContains           | False  |
-    | [null]  | A      | NotContains           | False  |
     | Pizza   | A      | NotContains           | False  |
     | Pizza   | x      | NotContains           | True   |
     | [null]  | A      | NotEndsWith           | False  |

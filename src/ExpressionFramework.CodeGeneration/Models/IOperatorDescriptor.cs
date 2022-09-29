@@ -8,7 +8,9 @@ public interface IOperatorDescriptor
     string TypeName { get; }
     string Description { get; }
     bool UsesLeftValue { get; }
+    string? LeftValueTypeName { get; }
     bool UsesRightValue { get; }
+    string? RightValueTypeName { get; }
     [Required]
     IReadOnlyCollection<IParameterDescriptor> Parameters { get; }
     [Required]

@@ -27,7 +27,7 @@ public class ComposableEvaluatableTests
         var condition = new ComposableEvaluatable
         (
             new ConstantExpression(new[] { "1", "2", "3" }),
-            new ContainsOperator(),
+            new EnumerableContainsOperator(),
             new ConstantExpression("2")
         );
 

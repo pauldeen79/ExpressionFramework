@@ -18,8 +18,8 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
                 x.PropertyType.FullName,
                 parameterDescriptions.FirstOrDefault(y => y.Name == x.Name)?.Description ?? string.Empty,
                 parameterRequiredIndicators.FirstOrDefault(y => y.Name == x.Name)?.Required ?? false));
-        var returnValues = type.GetCustomAttributes<ReturnValueAttribute>().Select(x =>
-            new ReturnValueDescriptor(x.Status, x.Value, x.Description));
+        var returnValues = type.GetCustomAttributes<ReturnValueAttribute>()
+            .Select(x => new ReturnValueDescriptor(x.Status, x.Value, x.Description));
         _descriptor = new ExpressionDescriptor(
             name: type.Name,
             typeName: type.FullName,
