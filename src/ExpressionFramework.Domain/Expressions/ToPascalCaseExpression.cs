@@ -1,5 +1,11 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
+[ExpressionDescription("Converts the context to pascal case")]
+[ExpressionContextDescription("String to convert to pascal case")]
+[ExpressionContextRequired(true)]
+[ExpressionContextType(typeof(string))]
+[ReturnValue(ResultStatus.Ok, "The value of the context converted to pascal case", "This result will be returned when the context is of type string")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "This result will be returned when the context is not of type string")]
 public partial record ToPascalCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
