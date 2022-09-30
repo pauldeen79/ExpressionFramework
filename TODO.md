@@ -1,7 +1,4 @@
 # //TODO
-general:
-- Add expression description providers, and an expression description provider factory
-
 expressions:
 - Add aggregate expressions: Min, Max, First, Last, ElementAt, Count, Sum
 - Add SequenceExpression, which evaluates all expressions, and returns them as a sequence.
