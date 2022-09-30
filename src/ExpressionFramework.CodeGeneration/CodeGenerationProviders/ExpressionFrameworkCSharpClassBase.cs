@@ -32,6 +32,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder()" },
         { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Builders.Operators.EqualsOperatorBuilder()" },
         { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Builders.Evaluatables.ConstantEvaluatableBuilder()" },
+        { "ExpressionFramework.Domain.Aggregator", "null" },
     };
 
     protected override Dictionary<string, string> GetBuilderNamespaceMappings() => new(
@@ -45,6 +46,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         { "ExpressionFramework.CodeGeneration.Models.Expressions.I", "ExpressionFramework.Domain.Expressions." },
         { "ExpressionFramework.CodeGeneration.Models.Operators.I", "ExpressionFramework.Domain.Operators." },
         { "ExpressionFramework.CodeGeneration.Models.Evaluatables.I", "ExpressionFramework.Domain.Evaluatables." },
+        { "ExpressionFramework.CodeGeneration.Models.Aggregators.I", "ExpressionFramework.Domain.Aggregators." },
         { "ExpressionFramework.CodeGeneration.Models.Domains.", "ExpressionFramework.Domain.Domains." },
         { "ExpressionFramework.CodeGeneration.I", "ExpressionFramework.Domain.I" },
     };
@@ -60,22 +62,13 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
                 .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models" && !GetCustomBuilderTypes().Contains(x.GetEntityClassName())));
 
-    protected ITypeBase[] GetAbstractExpressionModels()
+    protected ITypeBase[] GetAbstractModels()
         => MapCodeGenerationModelsToDomain(new[]
         {
-            typeof(IExpression),
-        });
-
-    protected ITypeBase[] GetAbstractOperatorModels()
-        => MapCodeGenerationModelsToDomain(new[]
-        {
-            typeof(IOperator),
-        });
-
-    protected ITypeBase[] GetAbstractEvaluatableModels()
-        => MapCodeGenerationModelsToDomain(new[]
-        {
+            typeof(IAggregator),
             typeof(IEvaluatable),
+            typeof(IExpression),
+            typeof(IOperator),
         });
 
     protected ITypeBase[] GetOverrideExpressionModels()
@@ -92,4 +85,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
                 .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Evaluatables"));
+
+    protected ITypeBase[] GetOverrideAggregatorModels()
+        => MapCodeGenerationModelsToDomain(
+            typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
+                .Where(x => x.IsInterface && x.Namespace == "ExpressionFramework.CodeGeneration.Models.Aggregators"));
 }

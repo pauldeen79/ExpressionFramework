@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class AbstractOperatorEntities : ExpressionFrameworkCSharpClassBase
+public class AbstractEntities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain";
     public override string DefaultFileName => "Entities.generated.cs";
@@ -10,5 +10,5 @@ public class AbstractOperatorEntities : ExpressionFrameworkCSharpClassBase
     protected override bool EnableBuilderInhericance => true;
 
     public override object CreateModel()
-        => GetImmutableClasses(GetAbstractOperatorModels(), "ExpressionFramework.Domain");
+        => GetImmutableClasses(GetAbstractModels(), "ExpressionFramework.Domain");
 }

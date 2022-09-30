@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class AbstractNonGenericOperatorBuilders : ExpressionFrameworkCSharpClassBase
+public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => "ExpressionFramework.Domain.Builders";
     public override string DefaultFileName => "Builders.generated.cs";
@@ -12,7 +12,7 @@ public class AbstractNonGenericOperatorBuilders : ExpressionFrameworkCSharpClass
 
     public override object CreateModel()
         => GetImmutableNonGenericBuilderClasses(
-            GetAbstractOperatorModels(),
+            GetAbstractModels(),
             "ExpressionFramework.Domain",
             "ExpressionFramework.Domain.Builders");
 }

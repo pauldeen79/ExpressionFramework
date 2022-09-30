@@ -19,28 +19,28 @@ internal static class Program
         GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
 
-        GenerateCode.For<AbstractExpressionBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractNonGenericExpressionBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractExpressionEntities>(settings, multipleContentBuilder);
+        GenerateCode.For<AbstractBuilders>(settings, multipleContentBuilder);
+        GenerateCode.For<AbstractNonGenericBuilders>(settings, multipleContentBuilder);
+        GenerateCode.For<AbstractEntities>(settings, multipleContentBuilder);
+
         GenerateCode.For<OverrideExpressionBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideExpressionEntities>(settings, multipleContentBuilder);
         GenerateCode.For<ExpressionBuilderFactory>(settings, multipleContentBuilder);
 
-        GenerateCode.For<AbstractOperatorBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractNonGenericOperatorBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideOperatorBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
 
-        GenerateCode.For<AbstractEvaluatableBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractNonGenericEvaluatableBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractEvaluatableEntities>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideEvaluatableBuilders>(settings, multipleContentBuilder);
         GenerateCode.For<OverrideEvaluatableEntities>(settings, multipleContentBuilder);
         GenerateCode.For<EvaluatableBuilderFactory>(settings, multipleContentBuilder);
 
+        GenerateCode.For<OverrideAggregatorBuilders>(settings, multipleContentBuilder);
+        GenerateCode.For<OverrideAggregatorEntities>(settings, multipleContentBuilder);
+        GenerateCode.For<AggregatorBuilderFactory>(settings, multipleContentBuilder);
+
         settings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
+        GenerateCode.For<Aggregators>(settings, multipleContentBuilder);
         GenerateCode.For<Evaluatables>(settings, multipleContentBuilder);
         GenerateCode.For<Expressions>(settings, multipleContentBuilder);
         GenerateCode.For<Operators>(settings, multipleContentBuilder);
