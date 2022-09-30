@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Evaluates a set of cases, and returns the result of the first valid case")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("Context that will be used as context on the condition of each case")]
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(false)]

@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Converts the context to lower case")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("String to convert to lower case")]
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]

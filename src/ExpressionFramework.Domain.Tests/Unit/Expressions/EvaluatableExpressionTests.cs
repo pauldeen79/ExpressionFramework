@@ -72,6 +72,6 @@ public class EvaluatableExpressionTests
         result.Name.Should().Be(nameof(EvaluatableExpression));
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ContextIsRequired.Should().BeFalse();
     }
 }

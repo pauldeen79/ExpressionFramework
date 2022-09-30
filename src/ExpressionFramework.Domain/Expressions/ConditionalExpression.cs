@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Evaluates a condition")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("Context that will be used as context on the condition")]
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(false)]

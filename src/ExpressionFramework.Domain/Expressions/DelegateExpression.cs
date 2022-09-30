@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns a value from a delegate")]
+[ExpressionUsesContext(false)]
 [ParameterDescription(nameof(Value), "Delegate to use")]
 [ParameterRequired(nameof(Value), true)]
 [ReturnValue(ResultStatus.Ok, "The return value from the delegate that is supplied with the Value parameter", "This result will always be returned")]

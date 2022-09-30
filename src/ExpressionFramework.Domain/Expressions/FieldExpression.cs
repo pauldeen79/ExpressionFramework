@@ -3,6 +3,7 @@
 [ExpressionDescription("Returns the value of a field (property) of the context")]
 [ParameterDescription(nameof(FieldName), "Name of the property (can also be nested, like Address.Street)")]
 [ParameterRequired(nameof(FieldName), true)]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("Object to get the value from")]
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(true)]

@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Converts the context to upper case")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("String to convert to upper case")]
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]

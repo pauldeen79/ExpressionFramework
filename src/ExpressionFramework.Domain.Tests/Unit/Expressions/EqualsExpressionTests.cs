@@ -48,6 +48,6 @@ public class EqualsExpressionTests
         result.Name.Should().Be(nameof(EqualsExpression));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ContextIsRequired.Should().BeFalse();
     }
 }

@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Converts the context to pascal case")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("String to convert to pascal case")]
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]

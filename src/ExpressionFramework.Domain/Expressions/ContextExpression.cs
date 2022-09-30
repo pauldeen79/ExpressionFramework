@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns the value of the context")]
+[ExpressionUsesContext(true)]
 [ExpressionContextDescription("Context value to use")]
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(true)]

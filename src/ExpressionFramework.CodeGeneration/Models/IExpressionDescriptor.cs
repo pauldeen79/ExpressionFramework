@@ -7,6 +7,7 @@ public interface IExpressionDescriptor
     [Required]
     string TypeName { get; }
     string Description { get; }
+    bool UsesContext { get; }
     string? ContextTypeName { get; }
     string? ContextDescription { get; }
     bool? ContextIsRequired { get; }
