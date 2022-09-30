@@ -13,7 +13,7 @@ public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
-            GetOverrideExpressionModels(),
+            GetOverrideModels(typeof(IExpression)),
             "ExpressionFramework.Domain.Expressions",
             "ExpressionFramework.Domain.Builders.Expressions");
 }

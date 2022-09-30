@@ -11,7 +11,7 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
     protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
-        => GetOverrideAggregatorModels()
+        => GetOverrideModels(typeof(IAggregator))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Aggregators")
                 .WithName(x.Name)

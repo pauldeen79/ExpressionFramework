@@ -12,5 +12,5 @@ public class OverrideAggregatorEntities : ExpressionFrameworkCSharpClassBase
     protected override bool ValidateArgumentsInConstructor => false; // there are no properties in aggregators, so this is not necessary
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideAggregatorModels(), "ExpressionFramework.Domain.Aggregators");
+        => GetImmutableClasses(GetOverrideModels(typeof(IAggregator)), "ExpressionFramework.Domain.Aggregators");
 }

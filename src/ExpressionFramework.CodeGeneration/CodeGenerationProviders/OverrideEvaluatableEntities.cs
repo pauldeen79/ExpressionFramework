@@ -11,5 +11,5 @@ public class OverrideEvaluatableEntities : ExpressionFrameworkCSharpClassBase
     protected override IClass? BaseClass => CreateBaseclass(typeof(IEvaluatable), "ExpressionFramework.Domain");
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideEvaluatableModels(), "ExpressionFramework.Domain.Evaluatables");
+        => GetImmutableClasses(GetOverrideModels(typeof(IEvaluatable)), "ExpressionFramework.Domain.Evaluatables");
 }

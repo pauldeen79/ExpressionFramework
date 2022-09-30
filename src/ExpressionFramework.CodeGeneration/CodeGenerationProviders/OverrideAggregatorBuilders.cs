@@ -13,7 +13,7 @@ public class OverrideAggregatorBuilders : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
-            GetOverrideAggregatorModels(),
+            GetOverrideModels(typeof(IAggregator)),
             "ExpressionFramework.Domain.Aggregators",
             "ExpressionFramework.Domain.Builders.Aggregators");
 }

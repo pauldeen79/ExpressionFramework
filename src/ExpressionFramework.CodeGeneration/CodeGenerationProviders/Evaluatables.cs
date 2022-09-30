@@ -11,7 +11,7 @@ public class Evaluatables : ExpressionFrameworkCSharpClassBase
     protected override bool CreateCodeGenerationHeader => false;
     
     public override object CreateModel()
-        => GetOverrideEvaluatableModels()
+        => GetOverrideModels(typeof(IEvaluatable))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Evaluatables")
                 .WithName(x.Name)

@@ -13,7 +13,7 @@ public class OverrideOperatorBuilders : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
-            GetOverrideOperatorModels(),
+            GetOverrideModels(typeof(IOperator)),
             "ExpressionFramework.Domain.Operators",
             "ExpressionFramework.Domain.Builders.Operators");
 }
