@@ -50,4 +50,22 @@ public class ExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("Hello world");
     }
+
+    [Fact]
+    public void Can_Add_Multiple_Numbers_Using_ChainedExpression()
+    {
+        // Arrange
+        var expression = new ChainedExpression(new Expression[]
+        {
+            new CompoundExpression(new ConstantExpression(2), new AddAggregator()),
+            new CompoundExpression(new ConstantExpression(3), new AddAggregator())
+        });
+
+        // Act
+        var result = expression.Evaluate(1);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(1 + 2 + 3);
+    }
 }
