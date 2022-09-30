@@ -8,9 +8,9 @@ public class ReflectionOperatorDescriptorProvider : IOperatorDescriptorProvider
     {
         var description = DescriptorProvider.GetDescription<OperatorDescriptionAttribute>(type);
         var usesLeftValue = type.GetCustomAttribute<OperatorUsesLeftValueAttribute>()?.UsesLeftValue ?? false;
-        var leftValueTypeName = type.GetCustomAttribute<OperatorLeftValueTypeAttribute>()?.Type?.FullName;
+        var leftValueTypeName = type.GetCustomAttribute<OperatorLeftValueTypeAttribute>()?.Type.FullName;
         var usesRightValue = type.GetCustomAttribute<OperatorUsesRightValueAttribute>()?.UsesRightValue ?? false;
-        var rightValueTypeName = type.GetCustomAttribute<OperatorRightValueTypeAttribute>()?.Type?.FullName;
+        var rightValueTypeName = type.GetCustomAttribute<OperatorRightValueTypeAttribute>()?.Type.FullName;
         var parameters = DescriptorProvider.GetParameters(type);
         var returnValues = DescriptorProvider.GetReturnValues(type);
         _descriptor = new OperatorDescriptor(
