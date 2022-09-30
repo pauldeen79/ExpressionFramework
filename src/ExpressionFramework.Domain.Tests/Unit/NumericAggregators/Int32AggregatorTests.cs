@@ -47,4 +47,19 @@ public class Int32AggregatorTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(value + 2L);
     }
+
+    [Fact]
+    public void Aggregate_Returns_NonSuccess_When_SecondExpression_Evaluation_Fails()
+    {
+        // Arrange
+        var sut = new Int32Aggregator();
+        int value = 1;
+
+        // Act
+        var result = sut.Aggregate(value, new ErrorExpression("Kaboom"), (b1, b2) => b1 + b2);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
 }
