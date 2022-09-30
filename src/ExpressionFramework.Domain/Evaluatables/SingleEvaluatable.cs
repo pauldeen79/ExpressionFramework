@@ -1,17 +1,15 @@
 ﻿namespace ExpressionFramework.Domain.Evaluatables;
 
+[EvaluatableDescription("Evaluates one condition")]
+[ParameterDescription(nameof(LeftExpression), "Left expression")]
+[ParameterRequired(nameof(LeftExpression), true)]
+[ParameterDescription(nameof(Operator), "Operator to use")]
+[ParameterRequired(nameof(Operator), true)]
+[ParameterDescription(nameof(RightExpression), "Right expression")]
+[ParameterRequired(nameof(RightExpression), true)]
+[ReturnValue(ResultStatus.Ok, "true when the condition evaluates to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record SingleEvaluatable
 {
-    public SingleEvaluatable(Expression leftExpression, Operator @operator, Expression rightExpression)
-        : this(leftExpression, @operator, rightExpression, false, false, Combination.And)
-    {
-    }
-
-    public SingleEvaluatable(Combination combination, Expression leftExpression, Operator @operator, Expression rightExpression)
-        : this(leftExpression, @operator, rightExpression, false, false, combination)
-    {
-    }
-
     public override Result<bool> Evaluate(object? context)
         => Operator.Evaluate(context, LeftExpression, RightExpression);
 }

@@ -5,7 +5,7 @@ public static class OperatorExpressionParser
     public static Operator Parse(string @operator)
         => @operator.ToLowerInvariant() switch
         {
-            "contains" => new ContainsOperator(),
+            "contains" => new StringContainsOperator(),
             "endswith" => new EndsWithOperator(),
             "equals" => new EqualsOperator(),
             "=" => new EqualsOperator(),
@@ -34,7 +34,7 @@ public static class OperatorExpressionParser
             "smallerorequal" => new IsSmallerOrEqualOperator(),
             "issmallerorequal" => new IsSmallerOrEqualOperator(),
             "<=" => new IsSmallerOrEqualOperator(),
-            "notcontains" => new NotContainsOperator(),
+            "notcontains" => new StringNotContainsOperator(),
             "notendswith" => new NotEndsWithOperator(),
             "notequals" => new NotEqualsOperator(),
             "notstartswith" => new NotStartsWithOperator(),

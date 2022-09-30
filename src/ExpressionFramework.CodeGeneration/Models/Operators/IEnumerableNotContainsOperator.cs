@@ -1,5 +1,5 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Operators;
 
-public interface INotContainsOperator : IOperator
+public interface IEnumerableNotContainsOperator : IOperator
 {
 }

@@ -40,14 +40,12 @@ Scenario Outline: Condition evaluation
 
 Examples:
     | left    | right  | operator              | result |
-    | [null]  | x      | Contains              | False  |
     | Pizza   | x      | Contains              | False  |
     | Pizza   | a      | Contains              | True   |
     | Pizza   | A      | Contains              | True   |
     | Pizza   | a      | EndsWith              | True   |
     | Pizza   | x      | EndsWith              | False  |
     | Pizza   | A      | EndsWith              | True   |
-    | [null]  | x      | EndsWith              | False  |
     | [null]  | [null] | Equals                | True   |
     | True    |        | Equals                | False  |
     | A       | A      | Equals                | True   |
@@ -104,10 +102,8 @@ Examples:
     | [2]     | [1]    | IsSmallerOrEqual      | False  |
     | [2]     | [2]    | IsSmallerOrEqual      | True   |
     | Pizza   | a      | NotContains           | False  |
-    | [null]  | A      | NotContains           | False  |
     | Pizza   | A      | NotContains           | False  |
     | Pizza   | x      | NotContains           | True   |
-    | [null]  | A      | NotEndsWith           | False  |
     | Pizza   | x      | NotEndsWith           | True   |
     | Pizza   | A      | NotEndsWith           | False  |
     | Pizza   | a      | NotEndsWith           | False  |
@@ -118,9 +114,7 @@ Examples:
     | A       | b      | NotEquals             | True   |
     | Pizza   | P      | NotStartsWith         | False  |
     | Pizza   | x      | NotStartsWith         | True   |
-    | [null]  | P      | NotStartsWith         | False  |
     | Pizza   | p      | NotStartsWith         | False  |
     | Pizza   | p      | StartsWith            | True   |
     | Pizza   | x      | StartsWith            | False  |
-    | [null]  | x      | StartsWith            | False  |
     | Pizza   | P      | StartsWith            | True   |

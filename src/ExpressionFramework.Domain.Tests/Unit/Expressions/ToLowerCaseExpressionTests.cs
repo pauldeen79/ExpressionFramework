@@ -55,4 +55,23 @@ public class ToLowerCaseExpressionTests
         actual.Should().ContainSingle();
         actual.Single().ErrorMessage.Should().Be("Context must be of type string");
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(ToLowerCaseExpression));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(ToLowerCaseExpression));
+        result.Parameters.Should().BeEmpty();
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextIsRequired.Should().BeTrue();
+    }
 }

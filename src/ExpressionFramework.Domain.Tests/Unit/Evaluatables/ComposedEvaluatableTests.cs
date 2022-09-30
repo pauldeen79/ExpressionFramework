@@ -7,7 +7,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithEndGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert
@@ -19,7 +19,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -31,8 +31,8 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -44,11 +44,27 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new SingleEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new SingleEvaluatableBuilder().WithEndGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert
         act.Should().NotThrow();
+    }
+
+    [Fact]
+    public void Get_Returns_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(ComposedEvaluatable));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(ComposedEvaluatable));
+        result.Parameters.Should().ContainSingle();
+        result.ReturnValues.Should().ContainSingle();
     }
 }

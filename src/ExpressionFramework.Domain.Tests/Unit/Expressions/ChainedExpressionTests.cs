@@ -35,4 +35,23 @@ public class ChainedExpressionTests
         actual.Status.Should().Be(ResultStatus.Ok);
         actual.Value.Should().BeNull();
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(ChainedExpression));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(ChainedExpression));
+        result.Parameters.Should().ContainSingle();
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextIsRequired.Should().BeFalse();
+    }
 }

@@ -33,4 +33,21 @@ public class EqualsExpressionTests
         actual.Status.Should().Be(ResultStatus.Error);
         actual.ErrorMessage.Should().Be("Kaboom");
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(EqualsExpression));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(EqualsExpression));
+        result.Parameters.Should().HaveCount(2);
+        result.ReturnValues.Should().ContainSingle();
+        result.ContextIsRequired.Should().BeFalse();
+    }
 }
