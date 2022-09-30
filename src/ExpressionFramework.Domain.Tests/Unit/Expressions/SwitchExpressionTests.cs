@@ -21,6 +21,20 @@ public class SwitchExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails()
+    {
+        // Arrange
+        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, null);
+
+        // Act
+        var actual = expression.Evaluate(default);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Default_When_No_Cases_Are_Present()
     {
         // Arrange
@@ -51,5 +65,15 @@ public class SwitchExpressionTests
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
         result.ContextIsRequired.Should().BeFalse();
+    }
+
+    private record ErrorEvaluatable : Evaluatable
+    {
+        public ErrorEvaluatable(string errorMessage) => ErrorMessage = errorMessage;
+
+        public string ErrorMessage { get; }
+        
+        public override Result<bool> Evaluate(object? context)
+            => Result<bool>.Error(ErrorMessage);
     }
 }

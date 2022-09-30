@@ -17,6 +17,20 @@ public class ConditionalExpressionTests
     }
 
     [Fact]
+    public void EvaluateWithConditionResult_Returns_Error_From_Expression_Evaluation()
+    {
+        // Arrange
+        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+
+        // Act
+        var result = sut.EvaluateWithConditionResult(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

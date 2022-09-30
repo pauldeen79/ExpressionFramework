@@ -40,6 +40,49 @@ public class ComposableEvaluatableTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_Condition_Evaluation_Fails_On_Non_Grouped_Conditions()
+    {
+        // Arrange
+        var condition = new ComposableEvaluatable
+        (
+            new ConstantExpression(new[] { "1", "2", "3" }),
+            new EnumerableContainsOperator(),
+            new ErrorExpression("Kaboom")
+        );
+
+        // Act
+        var actual = Evaluate(null, new[] { condition });
+
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_Condition_Evaluation_Fails_On_Grouped_Conditions()
+    {
+        // Arrange
+        var condition = new ComposableEvaluatable
+        (
+            true,
+            true,
+            Combination.And,
+            new ConstantExpression(new[] { "1", "2", "3" }),
+            new EnumerableContainsOperator(),
+            new ErrorExpression("Kaboom")
+        );
+
+        // Act
+        var actual = Evaluate(null, new[] { condition });
+
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Can_Evaluate_Multiple_Conditions_With_And_Combination()
     {
         // Arrange
