@@ -2,8 +2,8 @@
 
 internal static class DescriptorProvider
 {
-    internal static string GetDescription(Type type)
-        => type.GetCustomAttribute<EvaluatableDescriptionAttribute>()?.Description ?? string.Empty;
+    internal static string GetDescription<TDescriptionAttribute>(Type type) where TDescriptionAttribute : DescriptionBaseAttribute
+        => type.GetCustomAttribute<TDescriptionAttribute>()?.Description ?? string.Empty;
 
     internal static IEnumerable<ReturnValueDescriptor> GetReturnValues(Type type)
         => type.GetCustomAttributes<ReturnValueAttribute>()

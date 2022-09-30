@@ -76,6 +76,19 @@ public class FieldExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_EmptyResult_When_All_Is_Well()
+    {
+        // Arrange
+        var sut = new FieldExpression(nameof(MyClass.MyProperty));
+
+        // Act
+        var actual = sut.ValidateContext(new MyClass());
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
     public void ValidateContext_Returns_ValidationError_When_Context_Is_Null()
     {
         // Arrange
@@ -104,6 +117,32 @@ public class FieldExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_No_ValidationError_On_Nested_Null_Property()
+    {
+        // Arrange
+        var sut = new FieldExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}");
+
+        // Act
+        var actual = sut.ValidateContext(new MyNestedClass());
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_On_Nested_NonNull_Property()
+    {
+        // Arrange
+        var sut = new FieldExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}");
+
+        // Act
+        var actual = sut.ValidateContext(new MyNestedClass { MyNestedProperty = new MyNestedClass { MyProperty = "Test" } });
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
@@ -124,6 +163,12 @@ public class FieldExpressionTests
 
     public class MyClass
     {
+        public string? MyProperty { get; set; }
+    }
+
+    public class MyNestedClass
+    {
+        public MyNestedClass? MyNestedProperty { get; set; }
         public string? MyProperty { get; set; }
     }
 }

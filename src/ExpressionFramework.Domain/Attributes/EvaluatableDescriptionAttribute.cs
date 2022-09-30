@@ -1,10 +1,8 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class EvaluatableDescriptionAttribute : Attribute
+public class EvaluatableDescriptionAttribute : DescriptionBaseAttribute
 {
-    public string Description { get; }
-
-    public EvaluatableDescriptionAttribute(string description)
-        => Description = description;
+    public EvaluatableDescriptionAttribute(string description) : base(description)
+    {
+    }
 }

@@ -6,7 +6,7 @@ public class ReflectionEvaluatableDescriptorProvider : IEvaluatableDescriptorPro
 
     public ReflectionEvaluatableDescriptorProvider(Type type)
     {
-        var description = DescriptorProvider.GetDescription(type);
+        var description = DescriptorProvider.GetDescription<EvaluatableDescriptionAttribute>(type);
         var parameters = DescriptorProvider.GetParameters(type);
         var returnValues = DescriptorProvider.GetReturnValues(type);
         _descriptor = new EvaluatableDescriptor(

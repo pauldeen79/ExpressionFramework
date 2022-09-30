@@ -1,10 +1,8 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
-[AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class OperatorDescriptionAttribute : Attribute
+public class OperatorDescriptionAttribute : DescriptionBaseAttribute
 {
-    public string Description { get; }
-
-    public OperatorDescriptionAttribute(string description)
-        => Description = description;
+    public OperatorDescriptionAttribute(string description) : base(description)
+    {
+    }
 }
