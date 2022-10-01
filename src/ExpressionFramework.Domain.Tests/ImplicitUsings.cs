@@ -6,6 +6,7 @@ global using ExpressionFramework.Domain.Aggregators;
 global using ExpressionFramework.Domain.Builders;
 global using ExpressionFramework.Domain.Builders.Evaluatables;
 global using ExpressionFramework.Domain.Builders.Expressions;
+global using ExpressionFramework.Domain.Builders.Operators;
 global using ExpressionFramework.Domain.Domains;
 global using ExpressionFramework.Domain.EvaluatableDescriptorProviders;
 global using ExpressionFramework.Domain.Evaluatables;

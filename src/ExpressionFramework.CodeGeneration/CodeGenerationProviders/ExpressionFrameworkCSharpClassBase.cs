@@ -23,13 +23,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override string[] GetCustomBuilderTypes()
         => GetCustomDefaultValueForBuilderClassConstructorValues().Select(x => x.Key.Split('.').Last()).ToArray();
 
-    protected override Dictionary<string, string> GetCustomDefaultValueForBuilderClassConstructorValues() => new()
-    {
-        { "ExpressionFramework.Domain.Expression", "new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder()" },
-        { "ExpressionFramework.Domain.Operator", "new ExpressionFramework.Domain.Builders.Operators.EqualsOperatorBuilder()" },
-        { "ExpressionFramework.Domain.Evaluatable", "new ExpressionFramework.Domain.Builders.Evaluatables.ConstantEvaluatableBuilder()" },
-        { "ExpressionFramework.Domain.Aggregator", "null" },
-    };
+    protected override Dictionary<string, string> GetCustomDefaultValueForBuilderClassConstructorValues()
+        => new(GetAbstractModels().Select(x => new KeyValuePair<string, string>($"ExpressionFramework.Domain.{x.GetEntityClassName()}", "null")));
 
     protected override Dictionary<string, string> GetBuilderNamespaceMappings() => new(
         GetCustomBuilderTypes()
