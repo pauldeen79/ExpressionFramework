@@ -8,7 +8,7 @@ public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => CreateBuilderFactoryModels(
-            GetOverrideOperatorModels(),
+            GetOverrideModels(typeof(IOperator)),
             "ExpressionFramework.Domain.Builders",
             "OperatorBuilderFactory",
             "ExpressionFramework.Domain.Operator",

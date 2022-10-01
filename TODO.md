@@ -6,4 +6,3 @@ expressions:
 - Add OrderByExpression/SortExpression, which orders expressions.
 - Add expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ToString, Coalesce/FirstNotNull
 - Add expressions: true, false, null (same as empty expression), not, trim
-- Add mathematic expressions: Add, Subtract, Divide, Multiply, Modulus

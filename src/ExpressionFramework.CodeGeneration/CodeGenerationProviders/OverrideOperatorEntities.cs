@@ -12,5 +12,5 @@ public class OverrideOperatorEntities : ExpressionFrameworkCSharpClassBase
     protected override bool ValidateArgumentsInConstructor => false; // there are no properties in operators, so this is not necessary
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideOperatorModels(), "ExpressionFramework.Domain.Operators");
+        => GetImmutableClasses(GetOverrideModels(typeof(IOperator)), "ExpressionFramework.Domain.Operators");
 }

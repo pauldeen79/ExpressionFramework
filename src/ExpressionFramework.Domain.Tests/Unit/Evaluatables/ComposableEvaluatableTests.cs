@@ -223,5 +223,5 @@ public class ComposableEvaluatableTests
     }
 
     private static Result<bool> Evaluate(object? context, IEnumerable<ComposableEvaluatable> conditions)
-        => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateAsBoolean(context);
+        => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateTyped(context);
 }

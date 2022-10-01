@@ -11,5 +11,5 @@ public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
     protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), "ExpressionFramework.Domain");
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideExpressionModels(), "ExpressionFramework.Domain.Expressions");
+        => GetImmutableClasses(GetOverrideModels(typeof(IExpression)), "ExpressionFramework.Domain.Expressions");
 }

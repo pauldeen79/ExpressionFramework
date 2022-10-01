@@ -31,13 +31,13 @@ public class EvaluatableExpressionTests
     }
 
     [Fact]
-    public void EvaluateAsBoolean_Returns_Error_When_Operator_Evaluation_Fails()
+    public void EvaluateTyped_Returns_Error_When_Operator_Evaluation_Fails()
     {
         // Arrange
         var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()));
 
         // Act
-        var actual = sut.EvaluateAsBoolean(null);
+        var actual = sut.EvaluateTyped(null);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -45,13 +45,13 @@ public class EvaluatableExpressionTests
     }
 
     [Fact]
-    public void EvaluateAsBoolean_Returns_Result_When_Operator_Evaluation_Succeeds()
+    public void EvaluateTyped_Returns_Result_When_Operator_Evaluation_Succeeds()
     {
         // Arrange
         var sut = new EvaluatableExpression(new SingleEvaluatable(new ConstantExpression("1"), new NotEqualsOperator(), new ConstantExpression("1")));
 
         // Act
-        var actual = sut.EvaluateAsBoolean(null);
+        var actual = sut.EvaluateTyped(null);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);

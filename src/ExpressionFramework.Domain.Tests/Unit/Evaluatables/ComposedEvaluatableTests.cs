@@ -7,7 +7,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert
@@ -19,7 +19,7 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -31,8 +31,8 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
             .Build());
 
         // Act & Assert
@@ -44,8 +44,8 @@ public class ComposedEvaluatableTests
     {
         // Arrange
         var act = new Action(() => new ComposedEvaluatableBuilder()
-            .AddConditions(new ComposableEvaluatableBuilder().WithStartGroup())
-            .AddConditions(new ComposableEvaluatableBuilder().WithEndGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
+            .AddConditions(CreateEvaluatableBuilder().WithEndGroup())
             .Build());
 
         // Act & Assert
@@ -67,4 +67,10 @@ public class ComposedEvaluatableTests
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().ContainSingle();
     }
+
+    private static ComposableEvaluatableBuilder CreateEvaluatableBuilder()
+        => new ComposableEvaluatableBuilder()
+            .WithLeftExpression(new EmptyExpressionBuilder())
+            .WithRightExpression(new EmptyExpressionBuilder())
+            .WithOperator(new EqualsOperatorBuilder());
 }

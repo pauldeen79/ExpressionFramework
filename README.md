@@ -17,8 +17,8 @@ I am currently not storing generated files in the code repository.
 To generate, simply run the console project from either Visual Studio (hit F5) or a command prompt.
 This will replace almost all generated code.
 
-There are some files (evaluatables, expressions and operators) being generated for the first time only.
-This is known as code scaffolding, which happens when you add a new evaluatable, expression or operator type.
+There are some files (evaluatables, expressions, operators and aggregators) being generated for the first time only.
+This is known as code scaffolding, which happens when you add a new evaluatable, expression, operator or aggregator type.
 
 Command to run code generation:
 ```bash

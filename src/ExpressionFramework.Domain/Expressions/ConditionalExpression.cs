@@ -17,7 +17,7 @@ public partial record ConditionalExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var result = new EvaluatableExpression(Condition).EvaluateAsBoolean(context);
+        var result = new EvaluatableExpression(Condition).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(result);
@@ -38,7 +38,7 @@ public partial record ConditionalExpression
 
     public Result<(bool ConditionResult, Result<object?> ExpressionResult)> EvaluateWithConditionResult(object? context)
     {
-        var result = new EvaluatableExpression(Condition).EvaluateAsBoolean(context);
+        var result = new EvaluatableExpression(Condition).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
             return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.FromExistingResult(result);

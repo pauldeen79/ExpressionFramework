@@ -11,7 +11,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
     protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
-        => GetOverrideExpressionModels()
+        => GetOverrideModels(typeof(IExpression))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Expressions")
                 .WithName(x.Name)

@@ -11,7 +11,7 @@ public class Operators : ExpressionFrameworkCSharpClassBase
     protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
-        => GetOverrideOperatorModels()
+        => GetOverrideModels(typeof(IOperator))
             .Select(x => new ClassBuilder()
                 .WithNamespace("ExpressionFramework.Domain.Operators")
                 .WithName(x.Name)

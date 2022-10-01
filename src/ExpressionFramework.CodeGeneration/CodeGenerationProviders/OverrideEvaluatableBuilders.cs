@@ -13,7 +13,7 @@ public class OverrideEvaluatableBuilders : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
-            GetOverrideEvaluatableModels(),
+            GetOverrideModels(typeof(IEvaluatable)),
             "ExpressionFramework.Domain.Evaluatables",
             "ExpressionFramework.Domain.Builders.Evaluatables");
 }
