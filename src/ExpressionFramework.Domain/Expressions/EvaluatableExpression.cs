@@ -11,9 +11,9 @@
 public partial record EvaluatableExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateAsBoolean(context), value => value);
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public Result<bool> EvaluateAsBoolean(object? context)
+    public Result<bool> EvaluateTyped(object? context)
         => Condition.Evaluate(context);
 }
 

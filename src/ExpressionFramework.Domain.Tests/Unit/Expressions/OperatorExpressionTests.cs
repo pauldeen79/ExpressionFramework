@@ -29,7 +29,7 @@ public class OperatorExpressionTests
         var sut = new OperatorExpression(leftExpression, rightExpression, @operator);
 
         // Act
-        var result = sut.EvaluateAsBoolean(null);
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
