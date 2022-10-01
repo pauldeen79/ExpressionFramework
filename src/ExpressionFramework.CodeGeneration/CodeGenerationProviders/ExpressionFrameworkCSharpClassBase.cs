@@ -63,8 +63,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .Distinct());
 
     protected ITypeBase[] GetOverrideModels(Type abstractType)
-        // Note that you might think we could use x.GetInterfaces().FirstOrDefault() == abstractType, but that would give problems when inheriting like we do on ISingleEvaluatable for example
         => MapCodeGenerationModelsToDomain(
             typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes()
-                .Where(x => x.IsInterface && x.Namespace == $"{CodeGenerationRootNamespace}.Models.{abstractType.GetEntityClassName()}s"));
+                .Where(x => x.IsInterface && x.GetInterfaces().FirstOrDefault() == abstractType));
 }
