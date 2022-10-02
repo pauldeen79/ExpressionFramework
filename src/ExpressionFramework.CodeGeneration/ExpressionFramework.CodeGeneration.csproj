@@ -14,7 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.21" />
-      <PackageReference Include="pauldeen79.TextTemplateTransformationFramework.Runtime" Version="0.1.26" />
+      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.24" />
     </ItemGroup>
 </Project>
