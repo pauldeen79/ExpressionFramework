@@ -16,34 +16,12 @@ internal static class Program
         var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, false, dryRun);
 
         // Generate code
-        GenerateCode.For<CoreBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<CoreEntities>(settings, multipleContentBuilder);
-
-        GenerateCode.For<AbstractBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractNonGenericBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<AbstractEntities>(settings, multipleContentBuilder);
-
-        GenerateCode.For<OverrideExpressionBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<OverrideExpressionEntities>(settings, multipleContentBuilder);
-        GenerateCode.For<ExpressionBuilderFactory>(settings, multipleContentBuilder);
-
-        GenerateCode.For<OverrideOperatorBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<OverrideOperatorEntities>(settings, multipleContentBuilder);
-        GenerateCode.For<OperatorBuilderFactory>(settings, multipleContentBuilder);
-
-        GenerateCode.For<OverrideEvaluatableBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<OverrideEvaluatableEntities>(settings, multipleContentBuilder);
-        GenerateCode.For<EvaluatableBuilderFactory>(settings, multipleContentBuilder);
-
-        GenerateCode.For<OverrideAggregatorBuilders>(settings, multipleContentBuilder);
-        GenerateCode.For<OverrideAggregatorEntities>(settings, multipleContentBuilder);
-        GenerateCode.For<AggregatorBuilderFactory>(settings, multipleContentBuilder);
-
-        settings = new CodeGenerationSettings(basePath, generateMultipleFiles, true, dryRun);
-        GenerateCode.For<Aggregators>(settings, multipleContentBuilder);
-        GenerateCode.For<Evaluatables>(settings, multipleContentBuilder);
-        GenerateCode.For<Expressions>(settings, multipleContentBuilder);
-        GenerateCode.For<Operators>(settings, multipleContentBuilder);
+        var generationTypeNames = new[] { "Entities", "Builders", "BuilderFactory" };
+        var generators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase)).ToArray();
+        var generationTypes = generators.Where(x => x.Name.EndsWithAny(generationTypeNames));
+        var scaffoldingTypes = generators.Where(x => !x.Name.EndsWithAny(generationTypeNames));
+        _ = generationTypes.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings.ForGeneration(), multipleContentBuilder, x)).ToArray();
+        _ = scaffoldingTypes.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings.ForScaffolding(), multipleContentBuilder, x)).ToArray();
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
@@ -53,7 +31,7 @@ internal static class Program
         else
         {
             Console.WriteLine($"Code generation completed, check the output in {basePath}");
-            Console.WriteLine("Generated files:");
+            Console.WriteLine($"Generated files: {multipleContentBuilder.Contents.Count()}");
             foreach (var content in multipleContentBuilder.Contents)
             {
                 Console.WriteLine(content.FileName);
