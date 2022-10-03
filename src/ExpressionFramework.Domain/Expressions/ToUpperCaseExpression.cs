@@ -6,7 +6,7 @@
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]
 [ReturnValue(ResultStatus.Ok, "The value of the context converted to upper case", "This result will be returned when the context is of type string")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "This result will be returned when the context is not of type string")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string")]
 public partial record ToUpperCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
