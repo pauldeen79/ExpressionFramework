@@ -3,7 +3,7 @@
 public class TrimEndExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_UpperCase_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_Trimmed_Expression_When_Context_Is_NonEmptyString()
     {
         // Arrange
         var sut = new TrimEndExpression();
@@ -15,6 +15,18 @@ public class TrimEndExpressionTests
         actual.GetValueOrThrow().Should().BeEquivalentTo(" trim");
     }
 
+    [Fact]
+    public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Context_Is_NonEmptyString()
+    {
+        // Arrange
+        var sut = new TrimEndExpression(new[] { '0' });
+
+        // Act
+        var actual = sut.Evaluate("0trim0");
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeEquivalentTo("0trim");
+    }
     [Fact]
     public void Evaluate_Returns_EmptyString_Wnen_Context_Is_EmptyString()
     {
