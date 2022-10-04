@@ -13,9 +13,8 @@ public partial record OfTypeExpression
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => new { Item = x, Result = Result<object?>.Success(x != null && Type.IsInstanceOfType(x)) })
-                .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
-                .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result))
+                .Where(x => x != null && Type.IsInstanceOfType(x))
+                .Select(x => Result<object?>.Success(x)))
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
