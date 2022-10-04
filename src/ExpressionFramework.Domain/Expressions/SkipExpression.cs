@@ -18,17 +18,5 @@ public partial record SkipExpression
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (context == null)
-        {
-            yield return new ValidationResult("Context cannot be empty");
-            yield break;
-        }
-
-        if (context is not IEnumerable e)
-        {
-            yield return new ValidationResult("Context must be of type IEnumerable");
-            yield break;
-        }
-    }
+        => EnumerableExpressionBase.ValidateContext(context);
 }
