@@ -9,10 +9,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.Evaluate(null);
+        var result = sut.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -22,10 +22,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.Evaluate(1);
+        var result = sut.Evaluate(1);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -35,10 +35,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(_ => "not a boolean value"));
 
         // Act
-        var actual = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -48,11 +48,11 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new ErrorExpression("Kaboom"));
 
         // Act
-        var actual = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
@@ -62,11 +62,11 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeEquivalentTo(new[] {"A", "B", "C" });
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] {"A", "B", "C" });
     }
 
     [Fact]
@@ -76,10 +76,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.ValidateContext(null);
+        var result = sut.ValidateContext(null);
 
         // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
     }
 
     [Fact]
@@ -89,10 +89,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.ValidateContext(44);
+        var resul = sut.ValidateContext(44);
 
         // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        resul.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
     }
 
     [Fact]
@@ -102,10 +102,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(_ => "not a boolean value"));
 
         // Act
-        var actual = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
+        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[]
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[]
         {
             "Predicate dit not return a boolean value on item 0",
             "Predicate dit not return a boolean value on item 1",
@@ -121,10 +121,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateResultExpression(x => x is string s && s == "C" ? Result<object?>.Invalid("Value C is not supported") : Result<object?>.Success(true)));
 
         // Act
-        var actual = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
+        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Predicate returned an invalid result on item 3. Error message: Value C is not supported" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Predicate returned an invalid result on item 3. Error message: Value C is not supported" });
     }
 
     [Fact]
@@ -134,10 +134,10 @@ public class WhereExpressionTests
         var sut = new WhereExpression(new DelegateExpression(x => x is string));
 
         // Act
-        var actual = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
+        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        actual.Should().BeEmpty();
+        result.Should().BeEmpty();
     }
 
     [Fact]

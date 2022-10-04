@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class OfTypeExpressionTests
+public class SkipExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(null);
@@ -19,7 +19,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(1);
@@ -32,21 +32,21 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] {"A", "B", "C" });
+        result.Value.Should().BeEquivalentTo(new object[] { "B", 1, "C" });
     }
 
     [Fact]
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(null);
@@ -59,7 +59,7 @@ public class OfTypeExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(44);
@@ -72,7 +72,7 @@ public class OfTypeExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
@@ -85,14 +85,14 @@ public class OfTypeExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(OfTypeExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(SkipExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(OfTypeExpression));
+        result.Name.Should().Be(nameof(SkipExpression));
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
         result.ContextIsRequired.Should().BeTrue();
