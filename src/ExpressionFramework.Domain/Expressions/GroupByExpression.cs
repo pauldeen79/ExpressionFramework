@@ -17,14 +17,13 @@ public partial record GroupByExpression
             return Result<object?>.Invalid("Context must be of type IEnumerable");
         }
 
-        var keysResult = EnumerableExpression.GetResultFromEnumerable(e, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
+        var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(e, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
         if (!keysResult.IsSuccessful())
         {
-            return keysResult;
+            return Result<object?>.FromExistingResult(keysResult);
         }
 
-        return Result<object?>.Success(((IEnumerable<object?>)keysResult.Value!)
-            .Select(x => new Grouping<object?, object?>(x, e.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
+        return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, e.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
@@ -59,6 +58,7 @@ public partial record GroupByExpression
         return (val == null && key == null) || (val != null && val.Equals(key));
     }
 
+    [ExcludeFromCodeCoverage]
     private sealed class Grouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
     {
         public Grouping(TKey key, IEnumerable<TElement> collection)
