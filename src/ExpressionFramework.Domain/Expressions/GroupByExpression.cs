@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Groups items from an enumerable context value using an expression")]
+[ExpressionDescription("Groups items from an enumerable context value using a key selector expression")]
 [ExpressionContextType(typeof(IEnumerable))]
 [ExpressionContextDescription("The enumerable value to group elements for")]
 [ExpressionContextRequired(true)]
-[ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to determine the key")]
+[ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]
 [ParameterRequired(nameof(KeySelectorExpression), true)]
-[ReturnValue(ResultStatus.Ok, "Enumerable with grouped items", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record GroupByExpression
 {
@@ -66,8 +66,6 @@ public partial record GroupByExpression
 
     private sealed class Grouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
     {
-        //public Grouping(TKey key) : base() => Key = key;
-        //public Grouping(TKey key, int capacity) : base(capacity) => Key = key;
         public Grouping(TKey key, IEnumerable<TElement> collection)
             : base(collection) => Key = key;
         public TKey Key { get; }
