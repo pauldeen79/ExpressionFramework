@@ -23,13 +23,8 @@ public partial record GroupByExpression
             return keysResult;
         }
 
-        var dictionary = new Dictionary<object?, List<object?>>();
-        foreach (var item in (IEnumerable<object?>)keysResult.Value!)
-        {
-            dictionary.Add(item, new List<object?>(e.OfType<object?>().Where(x => ItemSatisfiesKey(x, item))));
-        }
-
-        return Result<object?>.Success(dictionary.Select(x => new Grouping<object?, object?>(x.Key, x.Value) as IGrouping<object?, object?>));
+        return Result<object?>.Success(((IEnumerable<object?>)keysResult.Value!)
+            .Select(x => new Grouping<object?, object?>(x, e.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
