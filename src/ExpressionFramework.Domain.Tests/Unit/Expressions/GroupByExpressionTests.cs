@@ -29,6 +29,20 @@ public class GroupByExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
+    {
+        // Arrange
+        var sut = new GroupByExpression(new ErrorExpression("Kaboom"));
+
+        // Act
+        var result = sut.Evaluate(new[] { "a", "b", "c" });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well()
     {
         // Arrange
@@ -66,6 +80,19 @@ public class GroupByExpressionTests
 
         // Assert
         result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_SelectExpression_Returns_Status_Invalid()
+    {
+        // Arrange
+        var sut = new GroupByExpression(new ToUpperCaseExpression());
+
+        // Act
+        var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "KeySelectorExpression returned an invalid result on item 2. Error message: Context must be of type string" });
     }
 
     [Fact]
