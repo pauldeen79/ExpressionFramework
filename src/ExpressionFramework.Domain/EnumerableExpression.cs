@@ -23,4 +23,19 @@ public static class EnumerableExpression
 
         return Result<IEnumerable<object?>>.Success(results.Select(x => x.Value));
     }
+
+    public static IEnumerable<ValidationResult> ValidateContext(object? context)
+    {
+        if (context == null)
+        {
+            yield return new ValidationResult("Context cannot be empty");
+            yield break;
+        }
+
+        if (context is not IEnumerable e)
+        {
+            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield break;
+        }
+    }
 }

@@ -10,9 +10,9 @@ public class ComposableEvaluatableModel
     public Combination Combination { get; set; }
     public ComposableEvaluatable ToEvaluatable() =>
         new ComposableEvaluatableBuilder()
-            .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(LeftExpression)))
+            .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(LeftExpression)))
             .WithOperator(OperatorBuilderFactory.Create(OperatorExpressionParser.Parse(Operator)))
-            .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(RightExpression)))
+            .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(RightExpression)))
             .WithStartGroup(StartGroup)
             .WithEndGroup(EndGroup)
             .WithCombination(Combination)

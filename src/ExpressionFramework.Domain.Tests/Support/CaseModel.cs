@@ -17,5 +17,5 @@ public class CaseModel
                 Operator = ConditionOperator,
                 RightExpression = ConditionRightExpression
             }.ToEvaluatable()))
-            .WithExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(Expression)));
+            .WithExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(Expression)));
 }

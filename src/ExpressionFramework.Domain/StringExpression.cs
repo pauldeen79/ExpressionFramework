@@ -1,6 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Expressions;
+﻿namespace ExpressionFramework.Domain;
 
-public static class StringExpressionBase
+public static class StringExpression
 {
     public static IEnumerable<ValidationResult> ValidateContext(object? context)
     {

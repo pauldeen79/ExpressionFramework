@@ -17,7 +17,7 @@ public partial record TrimExpression
             : Result<object?>.Invalid("Context must be of type string");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpressionBase.ValidateContext(context);
+        => StringExpression.ValidateContext(context);
 
     public TrimExpression() : this(default(IEnumerable<char>)) { }
 

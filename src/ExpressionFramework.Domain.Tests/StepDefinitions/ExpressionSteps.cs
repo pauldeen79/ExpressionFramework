@@ -26,11 +26,11 @@ public sealed class ExpressionSteps
 
     [Given(@"I have the constant expression '([^']*)'")]
     public void GivenIHaveTheConstantExpression(string expression)
-        => _expressionBuilder = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
+        => _expressionBuilder = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [Given(@"I have the delegate expression '([^']*)'")]
     public void GivenIHaveTheDelegateExpression(string expression)
-        => _expressionBuilder = new DelegateExpressionBuilder().WithValue(_ => StringExpression.Parse(expression));
+        => _expressionBuilder = new DelegateExpressionBuilder().WithValue(_ => StringExpressionParser.Parse(expression));
 
     [Given(@"I have an empty expression")]
     public void GivenIHaveAnEmptyExpression()
@@ -55,12 +55,12 @@ public sealed class ExpressionSteps
     [Given(@"I have the equals expression with first value '([^']*)' and second value '([^']*)'")]
     public void GivenIHaveTheEqualsExpressionWithFirstValueAndSecondValue(string firstValue, string secondValue)
         => _expressionBuilder = new EqualsExpressionBuilder()
-        .WithFirstExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(firstValue)))
-        .WithSecondExpression(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(secondValue)));
+        .WithFirstExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(firstValue)))
+        .WithSecondExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(secondValue)));
 
     [Given(@"I chain a constant expression '([^']*)' to it")]
     public void GivenIChainAConstantExpressionToIt(string expression)
-        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression)));
+        => ChainedExpressionBuilder.AddExpressions(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression)));
 
     [Given(@"I chain a to upper case expression to it")]
     public void GivenIChainAToUpperCaseExpressionToIt()
@@ -76,11 +76,11 @@ public sealed class ExpressionSteps
 
     [Given(@"I use a constant expression '([^']*)' as result expression")]
     public void GivenIUseAConstantExpressionAsResultExpression(string expression)
-        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
+        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [Given(@"I use a constant expression '([^']*)' as default expression")]
     public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
-        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
+        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [Given(@"I add the following case")]
     public void GivenIAddTheFollowingCase(Case @case)
@@ -88,7 +88,7 @@ public sealed class ExpressionSteps
 
     [Given(@"I set the default expression to '([^']*)'")]
     public void GivenISetTheDefaultExpressionTo(string expression)
-        => SwitchExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpression.Parse(expression));
+        => SwitchExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [When(@"I evaluate the expression")]
     public void WhenIEvaluateTheExpression()
@@ -104,5 +104,5 @@ public sealed class ExpressionSteps
 
     [Then(@"the expression evaluation result value should be '([^']*)'")]
     public void ThenTheExpressionEvaluationResultValueShouldBe(string value)
-        => Result.Value.Should().BeEquivalentTo(StringExpression.Parse(value));
+        => Result.Value.Should().BeEquivalentTo(StringExpressionParser.Parse(value));
 }

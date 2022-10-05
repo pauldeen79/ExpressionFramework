@@ -18,6 +18,6 @@ public partial record TakeExpression
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpressionBase.ValidateContext(context);
+        => EnumerableExpression.ValidateContext(context);
 }
 

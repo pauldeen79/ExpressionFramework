@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.SpecFlow.Tests.Support;
 
-public static class StringExpression
+public static class StringExpressionParser
 {
     /// <summary>
     /// Replaces values specified from a table that need conversion, for example because the target type is object.
