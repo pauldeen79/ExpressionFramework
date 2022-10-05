@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class SelectExpressionTests
+public class GroupByExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.Evaluate(null);
@@ -19,7 +19,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.Evaluate(1);
@@ -29,38 +29,24 @@ public class SelectExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
+    public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ErrorExpression("Kaboom"));
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
-        var result = sut.Evaluate(new[] { "a", "b", "c" });
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.Evaluate(new[] { "a", "b", "c" });
+        var result = sut.Evaluate(new[] { "a", "b", "cc" });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
     }
 
     [Fact]
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.ValidateContext(null);
@@ -73,7 +59,7 @@ public class SelectExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.ValidateContext(44);
@@ -83,26 +69,13 @@ public class SelectExpressionTests
     }
 
     [Fact]
-    public void ValidateContext_Returns_Item_When_SelectExpression_Returns_Status_Invalid()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SelectorExpression returned an invalid result on item 2. Error message: Context must be of type string" });
-    }
-
-    [Fact]
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
-        var result = sut.ValidateContext(new[] { "a", "b", "c" });
+        var result = sut.ValidateContext(new[] { "a", "b", "cc" });
 
         // Assert
         result.Should().BeEmpty();
@@ -112,14 +85,14 @@ public class SelectExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(SelectExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(GroupByExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(SelectExpression));
+        result.Name.Should().Be(nameof(GroupByExpression));
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
         result.ContextIsRequired.Should().BeTrue();

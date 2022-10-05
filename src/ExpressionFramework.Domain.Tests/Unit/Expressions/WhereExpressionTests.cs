@@ -107,10 +107,10 @@ public class WhereExpressionTests
         // Assert
         result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[]
         {
-            "Predicate dit not return a boolean value on item 0",
-            "Predicate dit not return a boolean value on item 1",
-            "Predicate dit not return a boolean value on item 2",
-            "Predicate dit not return a boolean value on item 3"
+            "PredicateExpression did not return a boolean value on item 0",
+            "PredicateExpression did not return a boolean value on item 1",
+            "PredicateExpression did not return a boolean value on item 2",
+            "PredicateExpression did not return a boolean value on item 3"
         });
     }
 
@@ -124,7 +124,7 @@ public class WhereExpressionTests
         var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Predicate returned an invalid result on item 3. Error message: Value C is not supported" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "PredicateExpression returned an invalid result on item 3. Error message: Value C is not supported" });
     }
 
     [Fact]

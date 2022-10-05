@@ -4,8 +4,8 @@
 [ExpressionContextType(typeof(IEnumerable))]
 [ExpressionContextDescription("The enumerable value to transform elements for")]
 [ExpressionContextRequired(true)]
-[ParameterDescription(nameof(Selector), "Expression to use on each item")]
-[ParameterRequired(nameof(Selector), true)]
+[ParameterDescription(nameof(SelectorExpression), "Expression to use on each item")]
+[ParameterRequired(nameof(SelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, "Enumerable with transformed items", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record SelectExpression
@@ -13,7 +13,7 @@ public partial record SelectExpression
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => Selector.Evaluate(x)))
+                .Select(x => SelectorExpression.Evaluate(x)))
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
@@ -31,11 +31,11 @@ public partial record SelectExpression
         }
 
         var index = 0;
-        foreach (var itemResult in e.OfType<object>().Select(x => Selector.Evaluate(x)))
+        foreach (var itemResult in e.OfType<object>().Select(x => SelectorExpression.Evaluate(x)))
         {
             if (itemResult.Status == ResultStatus.Invalid)
             {
-                yield return new ValidationResult($"SelectExpression returned an invalid result on item {index}. Error message: {itemResult.ErrorMessage}");
+                yield return new ValidationResult($"SelectorExpression returned an invalid result on item {index}. Error message: {itemResult.ErrorMessage}");
             }
 
             index++;

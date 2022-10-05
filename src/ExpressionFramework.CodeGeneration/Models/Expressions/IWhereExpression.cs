@@ -2,5 +2,5 @@
 
 public interface IWhereExpression : IExpression
 {
-    IExpression Predicate { get; }
+    IExpression PredicateExpression { get; }
 }

@@ -2,5 +2,5 @@
 
 public interface ISelectExpression : IExpression
 {
-    IExpression Selector { get; }
+    IExpression SelectorExpression { get; }
 }
