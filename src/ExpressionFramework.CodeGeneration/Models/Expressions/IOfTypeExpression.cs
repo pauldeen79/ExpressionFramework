@@ -2,5 +2,6 @@
 
 public interface IOfTypeExpression : IExpression
 {
+    [Required]
     Type Type { get; }
 }

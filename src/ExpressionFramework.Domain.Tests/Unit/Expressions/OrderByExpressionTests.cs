@@ -44,7 +44,7 @@ public class OrderByExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_NonSuccesful_Result_From_SortOrderExpression()
+    public void Evaluate_Returns_NonSuccesfull_Result_From_SortOrder_Expression()
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
@@ -173,7 +173,7 @@ public class OrderByExpressionTests
     }
 
     [Fact]
-    public void ValidateContext_Returns_Item_When_SelectExpression_Returns_Status_Invalid()
+    public void ValidateContext_Returns_Item_When_SortOrder_Expression_Returns_Status_Invalid()
     {
         // Arrange
         var sut = new OrderByExpression(new[] { new SortOrder(new DelegateResultExpression(x => x is string s && s == "a" ? Result<object?>.Invalid("It's wrong", Enumerable.Empty<ValidationError>()) : Result<object?>.Success(x)), SortOrderDirection.Descending) });
@@ -183,6 +183,20 @@ public class OrderByExpressionTests
 
         // Assert
         result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortExpression returned an invalid result on item 0. Error message: It's wrong" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_SortOrders_Is_Empty()
+    {
+        // Arrange
+        var data = new[] { "B", "C", "A" };
+        var sut = new OrderByExpression(Enumerable.Empty<SortOrder>());
+
+        // Act
+        var result = sut.ValidateContext(data);
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrders should have at least one item" });
     }
 
     [Fact]

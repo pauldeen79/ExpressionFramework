@@ -70,6 +70,12 @@ public partial record OrderByExpression
             yield break;
         }
 
+        if (!SortOrders.Any())
+        {
+            yield return new ValidationResult("SortOrders should have at least one item");
+            yield break;
+        }
+
         var index = 0;
         foreach (var sortOrder in SortOrders)
         {

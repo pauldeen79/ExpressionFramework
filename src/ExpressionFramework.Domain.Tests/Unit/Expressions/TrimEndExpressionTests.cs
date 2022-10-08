@@ -28,7 +28,7 @@ public class TrimEndExpressionTests
         actual.GetValueOrThrow().Should().BeEquivalentTo("0trim");
     }
     [Fact]
-    public void Evaluate_Returns_EmptyString_Wnen_Context_Is_EmptyString()
+    public void Evaluate_Returns_EmptyString_When_Context_Is_EmptyString()
     {
         // Arrange
         var sut = new TrimEndExpression();
@@ -41,7 +41,7 @@ public class TrimEndExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_Wnen_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
         var sut = new TrimEndExpression();
