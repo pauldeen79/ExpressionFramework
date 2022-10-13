@@ -31,25 +31,7 @@ public partial record TakeExpression
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpression.ValidateContext(context, () => PerformAdditionalValidation(context));
-
-    private IEnumerable<ValidationResult> PerformAdditionalValidation(object? context)
-    {
-        if (context is not IEnumerable e)
-        {
-            yield break;
-        }
-
-        var countResult = CountExpression.Evaluate(context);
-        if (countResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"CountExpression returned an invalid result. Error message: {countResult.ErrorMessage}");
-        }
-        else if (countResult.Status == ResultStatus.Ok && countResult.Value is not int)
-        {
-            yield return new ValidationResult($"CountExpression did not return an integer");
-        }
-    }
+        => EnumerableExpression.ValidateContext(context, () => EnumerableExpression.IntExpressionValidation(context, CountExpression, nameof(CountExpression)));
 
     public TakeExpression(int count) : this(new ConstantExpression(count)) { }
 }
