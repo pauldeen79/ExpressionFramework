@@ -15,12 +15,14 @@ public partial record ErrorExpression
         {
             return errorMessageResult;
         }
-        
+
         if (errorMessageResult.Value is not string errorMessage)
         {
             return Result<object?>.Invalid("ErrorMessageExpression did not return a string");
         }
-        
+
         return Result<object?>.Error(errorMessage);
     }
+
+    public ErrorExpression(string errorMessage) : this(new ConstantExpression(errorMessage)) { }
 }

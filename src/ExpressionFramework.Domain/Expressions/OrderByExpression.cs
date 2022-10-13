@@ -132,5 +132,7 @@ public partial record OrderByExpression
             }
         }
     }
+
+    public OrderByExpression(IEnumerable<SortOrder> sortOrders) : this(sortOrders.Select(x => new ConstantExpression(x))) { }
 }
 

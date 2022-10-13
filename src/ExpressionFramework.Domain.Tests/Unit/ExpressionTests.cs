@@ -6,7 +6,7 @@ public class ExpressionTests
     public void Evaluate_Happy_Flow()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression("Name"));
+        var expression = new FieldExpression("Name");
         var context = new { Name = "Hello world!" };
 
         // Act
@@ -21,7 +21,7 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression("InnerProperty.Name"));
+        var expression = new FieldExpression("InnerProperty.Name");
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
@@ -38,8 +38,8 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new[]
         {
-            new FieldExpression(new ConstantExpression("InnerProperty")),
-            new FieldExpression(new ConstantExpression("Name"))
+            new FieldExpression("InnerProperty"),
+            new FieldExpression("Name")
         });
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
@@ -57,8 +57,8 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(new ConstantExpression(2), new AddAggregator()),
-            new CompoundExpression(new ConstantExpression(3), new AddAggregator())
+            new CompoundExpression(2, new AddAggregator()),
+            new CompoundExpression(3, new AddAggregator())
         });
 
         // Act

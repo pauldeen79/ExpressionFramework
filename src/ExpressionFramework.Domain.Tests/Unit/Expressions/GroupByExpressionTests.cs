@@ -32,7 +32,7 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new GroupByExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new GroupByExpression(new ErrorExpression("Kaboom"));
 
         // Act
         var result = sut.Evaluate(new[] { "a", "b", "c" });

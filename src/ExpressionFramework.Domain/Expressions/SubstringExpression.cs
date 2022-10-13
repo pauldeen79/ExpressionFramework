@@ -99,5 +99,7 @@ public partial record SubstringExpression
             yield return new ValidationResult("Index and length must refer to a location within the string");
         }
     }
+
+    public SubstringExpression(int index, int length) : this(new ConstantExpression(index), new ConstantExpression(length)) { }
 }
 

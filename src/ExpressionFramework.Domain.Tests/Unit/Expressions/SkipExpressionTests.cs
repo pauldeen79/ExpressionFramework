@@ -6,7 +6,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(null);
@@ -19,7 +19,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(1);
@@ -32,7 +32,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
@@ -46,7 +46,7 @@ public class SkipExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(null);
@@ -59,7 +59,7 @@ public class SkipExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(44);
@@ -72,7 +72,7 @@ public class SkipExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1));
+        var sut = new SkipExpression(1);
 
         // Act
         var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });

@@ -50,5 +50,7 @@ public partial record TakeExpression
             yield return new ValidationResult($"CountExpression did not return an integer");
         }
     }
+
+    public TakeExpression(int count) : this(new ConstantExpression(count)) { }
 }
 

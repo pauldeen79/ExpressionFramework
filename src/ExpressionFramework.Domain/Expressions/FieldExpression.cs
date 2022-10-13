@@ -103,4 +103,6 @@ public partial record FieldExpression
             type = returnValue.GetType();
         }
     }
+
+    public FieldExpression(string fieldName) : this(new ConstantExpression(fieldName)) { }
 }

@@ -69,5 +69,7 @@ public partial record LeftExpression
             yield return new ValidationResult("Index and length must refer to a location within the string");
         }
     }
+
+    public LeftExpression(int length) : this(new ConstantExpression(length)) { }
 }
 

@@ -25,8 +25,13 @@ public partial record InvalidExpression
         return Result<object?>.Invalid(errorMessage, ValidationErrors);
     }
 
-    public InvalidExpression(Expression errorMessageExpression) : this(errorMessageExpression, Enumerable.Empty<ValidationError>())
-    {
-    }
+    public InvalidExpression(Expression errorMessageExpression)
+        : this(errorMessageExpression, Enumerable.Empty<ValidationError>()) { }
+
+    public InvalidExpression(string errorMessage)
+        : this(new ConstantExpression(errorMessage), Enumerable.Empty<ValidationError>()) { }
+
+    public InvalidExpression(string errorMessage, IEnumerable<ValidationError> validationErrors)
+        : this(new ConstantExpression(errorMessage), validationErrors) { }
 }
 

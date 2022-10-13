@@ -56,7 +56,7 @@ public class SingleAggregatorTests
         float value = 1;
 
         // Act
-        var result = sut.Aggregate(value, new ErrorExpression(new ConstantExpression("Kaboom")), (b1, b2) => b1 + b2);
+        var result = sut.Aggregate(value, new ErrorExpression("Kaboom"), (b1, b2) => b1 + b2);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

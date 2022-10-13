@@ -50,4 +50,6 @@ public partial record SkipExpression
             yield return new ValidationResult($"CountExpression did not return an integer");
         }
     }
+
+    public SkipExpression(int count) : this(new ConstantExpression(count)) { }
 }

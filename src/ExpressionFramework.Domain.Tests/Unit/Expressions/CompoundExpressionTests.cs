@@ -6,7 +6,7 @@ public class CompoundExpressionTests
     public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
     {
         // Arrange
-        var sut = new CompoundExpression(new ConstantExpression(2), new AddAggregator());
+        var sut = new CompoundExpression(2, new AddAggregator());
 
         // Act
         var result = sut.Evaluate(1);

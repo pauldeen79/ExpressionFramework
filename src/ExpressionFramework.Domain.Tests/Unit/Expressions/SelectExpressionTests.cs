@@ -32,7 +32,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new SelectExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new SelectExpression(new ErrorExpression("Kaboom"));
 
         // Act
         var result = sut.Evaluate(new[] { "a", "b", "c" });
