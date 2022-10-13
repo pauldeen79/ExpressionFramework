@@ -25,7 +25,7 @@ public partial record OrderByExpression
 
         if (!sortOrdersResult.Value!.Any())
         {
-            return Result<object?>.Invalid("SortOrders should have at least one item");
+            return Result<object?>.Invalid("SortOrderExpressions should have at least one item");
         }
 
         if (!e.Any())
@@ -64,23 +64,17 @@ public partial record OrderByExpression
 
     private Result<IEnumerable<SortOrder>> GetSortOrdersResult(object? context)
     {
-        var results = SortOrderExpressions.EvaluateUntilFirstError(context);
-        return CastToSortOrders(results);
-    }
-
-    private Result<IEnumerable<SortOrder>> CastToSortOrders(IEnumerable<Result<object?>> results)
-    {
         var items = new List<SortOrder>();
 
         var index = 0;
-        foreach (var result in results)
+        foreach (var sortOrderResult in SortOrderExpressions.Select(x => x.Evaluate(context)))
         {
-            if (!result.IsSuccessful())
+            if (!sortOrderResult.IsSuccessful())
             {
-                return Result<IEnumerable<SortOrder>>.FromExistingResult(result);
+                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
             }
 
-            if (result.Value is not SortOrder sortOrder)
+            if (sortOrderResult.Value is not SortOrder sortOrder)
             {
                 return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions item with index {index} is not of type SortOrder");
             }
@@ -114,7 +108,7 @@ public partial record OrderByExpression
         }
         if (!sortOrdersResult.Value!.Any())
         {
-            yield return new ValidationResult("SortOrders should have at least one item");
+            yield return new ValidationResult("SortOrderExpressions should have at least one item");
             yield break;
         }
 
