@@ -65,13 +65,8 @@ public partial record FieldExpression
             yield break;
         }
 
-        if (context is not string s)
-        {
-            yield break;
-        }
-
         var localFieldName = string.Empty;
-        var fieldNameResult = FieldNameExpression.Evaluate(s);
+        var fieldNameResult = FieldNameExpression.Evaluate(context);
         if (fieldNameResult.Status == ResultStatus.Invalid)
         {
             yield return new ValidationResult($"FieldNameExpression returned an invalid result. Error message: {fieldNameResult.ErrorMessage}");

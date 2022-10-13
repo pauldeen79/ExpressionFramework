@@ -124,27 +124,63 @@ public class SubstringExpressionTests
 
         // Assert
         actual.Should().ContainSingle();
-        actual.Single().ErrorMessage.Should().Be("Kaboom");
+        actual.Single().ErrorMessage.Should().Be("IndexExpression returned an invalid result. Error message: Kaboom");
     }
 
     [Fact]
     public void ValidateContext_Returns_ValidationError_When_IndexExpression_Result_Value_Is_Not_An_Integer()
     {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression("no integer"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("IndexExpression did not return an integer");
     }
 
     [Fact]
     public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Is_Invalid()
     {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Kaboom")));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("LengthExpression returned an invalid result. Error message: Kaboom");
     }
 
     [Fact]
     public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Value_Is_Not_An_Integer()
     {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression("no integer"));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("LengthExpression did not return an integer");
     }
 
     [Fact]
     public void ValidateContext_Returns_ValidationError_When_Context_Is_Too_Short()
     {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Index and length must refer to a location within the string");
     }
 
     [Fact]

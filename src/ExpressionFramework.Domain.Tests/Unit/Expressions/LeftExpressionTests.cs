@@ -6,7 +6,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new LeftExpression(2);
+        var sut = new LeftExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -19,7 +19,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Too_Short()
     {
         // Arrange
-        var sut = new LeftExpression(2);
+        var sut = new LeftExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate(string.Empty);
@@ -33,7 +33,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new LeftExpression(2);
+        var sut = new LeftExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -47,7 +47,7 @@ public class LeftExpressionTests
     public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
     {
         // Arrange
-        var sut = new LeftExpression(2);
+        var sut = new LeftExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.ValidateContext(null);

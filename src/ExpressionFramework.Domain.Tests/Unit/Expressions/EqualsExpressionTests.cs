@@ -6,7 +6,7 @@ public class EqualsExpressionTests
     public void Evaluate_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
-        var firstExpression = new ErrorExpression("Kaboom");
+        var firstExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
         var secondExpression = new ConstantExpression("2");
         var sut = new EqualsExpression(firstExpression, secondExpression);
 
@@ -23,7 +23,7 @@ public class EqualsExpressionTests
     {
         // Arrange
         var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ErrorExpression("Kaboom");
+        var secondExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
         var expression = new EqualsExpression(firstExpression, secondExpression);
 
         // Act

@@ -6,7 +6,7 @@ public class EvaluatableExpressionTests
     public void Evaluate_Returns_Error_When_Operator_Evaluation_Fails()
     {
         // Arrange
-        var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()));
+        var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -34,7 +34,7 @@ public class EvaluatableExpressionTests
     public void EvaluateTyped_Returns_Error_When_Operator_Evaluation_Fails()
     {
         // Arrange
-        var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()));
+        var sut = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()));
 
         // Act
         var actual = sut.EvaluateTyped(null);

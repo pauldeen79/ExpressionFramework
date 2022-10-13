@@ -3,20 +3,11 @@
 public class FieldExpressionTests
 {
     [Fact]
-    public void Should_Throw_On_Construction_With_Empty_FieldName()
-    {
-        // Act
-        this.Invoking(_ => new FieldExpression(string.Empty))
-            .Should().Throw<ValidationException>()
-            .WithMessage("The FieldName field is required.");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Success_Result_From_ValueProvider()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -32,7 +23,7 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName("WrongPropertyName")
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue("WrongPropertyName"))
             .Build();
 
         // Act
@@ -48,7 +39,7 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -64,7 +55,7 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -79,7 +70,7 @@ public class FieldExpressionTests
     public void ValidateContext_Returns_EmptyResult_When_All_Is_Well()
     {
         // Arrange
-        var sut = new FieldExpression(nameof(MyClass.MyProperty));
+        var sut = new FieldExpression(new ConstantExpression(nameof(MyClass.MyProperty)));
 
         // Act
         var actual = sut.ValidateContext(new MyClass());
@@ -92,7 +83,7 @@ public class FieldExpressionTests
     public void ValidateContext_Returns_ValidationError_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new FieldExpression("SomeField");
+        var sut = new FieldExpression(new ConstantExpression("SomeField"));
 
         // Act
         var actual = sut.ValidateContext(null);
@@ -106,7 +97,7 @@ public class FieldExpressionTests
     public void ValidateContext_Returns_ValidationError_When_FieldName_Could_Not_Be_Found()
     {
         // Arrange
-        var sut = new FieldExpression("WrongPropertyName");
+        var sut = new FieldExpression(new ConstantExpression("WrongPropertyName"));
 
         // Act
         var actual = sut.ValidateContext(new MyClass());
@@ -120,7 +111,7 @@ public class FieldExpressionTests
     public void ValidateContext_Returns_No_ValidationError_On_Nested_Null_Property()
     {
         // Arrange
-        var sut = new FieldExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}");
+        var sut = new FieldExpression(new ConstantExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}"));
 
         // Act
         var actual = sut.ValidateContext(new MyNestedClass());
@@ -133,7 +124,7 @@ public class FieldExpressionTests
     public void ValidateContext_Returns_No_ValidationError_On_Nested_NonNull_Property()
     {
         // Arrange
-        var sut = new FieldExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}");
+        var sut = new FieldExpression(new ConstantExpression($"{nameof(MyNestedClass.MyNestedProperty)}.{nameof(MyNestedClass.MyProperty)}"));
 
         // Act
         var actual = sut.ValidateContext(new MyNestedClass { MyNestedProperty = new MyNestedClass { MyProperty = "Test" } });

@@ -9,7 +9,7 @@ public class SwitchExpressionTests
         var expression = new SwitchExpressionBuilder()
             .AddCases(new CaseBuilder()
                 .WithCondition(new ConstantEvaluatableBuilder().WithValue(true))
-                .WithExpression(new ErrorExpressionBuilder().WithErrorMessage("Kaboom")))
+                .WithExpression(new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom"))))
             .Build();
 
         // Act

@@ -6,7 +6,7 @@ public class ConditionalExpressionTests
     public void Evaluate_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class ConditionalExpressionTests
     public void EvaluateWithConditionResult_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);

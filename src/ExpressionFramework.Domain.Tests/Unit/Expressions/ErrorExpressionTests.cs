@@ -15,7 +15,7 @@ public class ErrorExpressionTests
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ErrorExpression));
         result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
+        result.ReturnValues.Should().HaveCount(2);
         result.ContextIsRequired.Should().BeNull();
     }
 }
