@@ -2,6 +2,8 @@
 
 public interface ISubstringExpression : IExpression
 {
-    int Index { get; }
-    int Length { get; }
+    [Required]
+    IExpression IndexExpression { get; }
+    [Required]
+    IExpression LengthExpression { get; }
 }

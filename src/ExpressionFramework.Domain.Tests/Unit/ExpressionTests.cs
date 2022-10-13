@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit;
+﻿using ExpressionFramework.Domain.Builders.Aggregators;
+
+namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class ExpressionTests
 {
@@ -67,5 +69,31 @@ public class ExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(1 + 2 + 3);
+    }
+
+    [Fact]
+    public void Can_Get_Right_Position_From_String_Using_Substring_And_StringLength()
+    {
+        //var input = "some string";
+        //var test = input.Substring(input.Length - 6, 6);
+
+        // Arrange
+        var input = "some string";
+        var expression = new ChainedExpressionBuilder().AddExpressions(
+            new ContextExpressionBuilder(),
+            new SubstringExpressionBuilder()
+                .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
+                    new StringLengthExpressionBuilder(),
+                    new CompoundExpressionBuilder().WithAggregator(new SubtractAggregatorBuilder()).WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
+                )
+                .WithLengthExpression(new ConstantExpressionBuilder().WithValue(6))
+        ).Build();
+
+        // Act
+        var result = expression.Evaluate(input);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("string");
     }
 }
