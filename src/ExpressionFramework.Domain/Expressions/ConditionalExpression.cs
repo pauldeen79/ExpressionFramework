@@ -57,6 +57,6 @@ public partial record ConditionalExpression
         return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((false, Result<object?>.Success(null)));
     }
 
-    public ConditionalExpression(Evaluatable condition, object result, object? defaultValue = null)
-        : this(condition, new ConstantExpression(result), defaultValue == null ? null : new ConstantExpression(defaultValue)) { }
+    public ConditionalExpression(Evaluatable condition, object? result, object? defaultValue = null)
+        : this(condition, new ConstantExpression(result), new ConstantExpression(defaultValue)) { }
 }

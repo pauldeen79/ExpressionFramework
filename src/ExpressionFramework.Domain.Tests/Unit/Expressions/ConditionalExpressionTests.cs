@@ -34,7 +34,7 @@ public class ConditionalExpressionTests
     public void EvaluateWithConditionResult_Returns_DefaultExpression_Result_When_Available_And_ConditionEvalution_Returns_False()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable("Something", new EqualsOperator(), "Something else"), null,"Default value");
+        var sut = new ConditionalExpression(new SingleEvaluatable("Something", new EqualsOperator(), "Something else"), null, "Default value");
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);
