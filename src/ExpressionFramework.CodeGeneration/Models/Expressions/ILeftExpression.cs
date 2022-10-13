@@ -2,5 +2,6 @@
 
 public interface ILeftExpression : IExpression
 {
-    int Length { get; }
+    [Required]
+    IExpression LengthExpression { get; }
 }

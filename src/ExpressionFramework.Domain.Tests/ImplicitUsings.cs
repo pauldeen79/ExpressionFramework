@@ -4,6 +4,7 @@ global using CrossCutting.Common;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain.Aggregators;
 global using ExpressionFramework.Domain.Builders;
+global using ExpressionFramework.Domain.Builders.Aggregators;
 global using ExpressionFramework.Domain.Builders.Evaluatables;
 global using ExpressionFramework.Domain.Builders.Expressions;
 global using ExpressionFramework.Domain.Builders.Operators;

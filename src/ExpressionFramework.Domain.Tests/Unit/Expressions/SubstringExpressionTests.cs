@@ -47,7 +47,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new InvalidExpression("Kaboom", Enumerable.Empty<ValidationError>()), new ConstantExpression(1));
+        var sut = new SubstringExpression(new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -75,7 +75,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom", Enumerable.Empty<ValidationError>()));
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -111,6 +111,40 @@ public class SubstringExpressionTests
         // Assert
         actual.Should().ContainSingle();
         actual.Single().ErrorMessage.Should().Be("Context must be of type string");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_Result_Value_Is_Not_An_Integer()
+    {
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Is_Invalid()
+    {
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Value_Is_Not_An_Integer()
+    {
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_Context_Is_Too_Short()
+    {
     }
 
     [Fact]

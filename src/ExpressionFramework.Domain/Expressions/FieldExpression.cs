@@ -1,8 +1,8 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns the value of a field (property) of the context")]
-[ParameterDescription(nameof(FieldName), "Name of the property (can also be nested, like Address.Street)")]
-[ParameterRequired(nameof(FieldName), true)]
+[ParameterDescription(nameof(FieldNameExpression), "Name of the property (can also be nested, like Address.Street)")]
+[ParameterRequired(nameof(FieldNameExpression), true)]
 [ExpressionUsesContext(true)]
 [ExpressionContextDescription("Object to get the value from")]
 [ExpressionContextType(typeof(object))]
@@ -12,7 +12,20 @@
 public partial record FieldExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => GetValue(context, FieldName);
+    {
+        var fieldNameResult = FieldNameExpression.Evaluate(context);
+        if (!fieldNameResult.IsSuccessful())
+        {
+            return fieldNameResult;
+        }
+
+        if (fieldNameResult.Value is not string fieldName)
+        {
+            return Result<object?>.Invalid("FieldNameExpression did not return a string");
+        }
+
+        return GetValue(context, fieldName);
+    }
 
     private Result<object?> GetValue(object? context, string fieldName)
     {
@@ -52,19 +65,41 @@ public partial record FieldExpression
             yield break;
         }
 
+        if (context is not string s)
+        {
+            yield break;
+        }
+
+        var localFieldName = string.Empty;
+        var fieldNameResult = FieldNameExpression.Evaluate(s);
+        if (fieldNameResult.Status == ResultStatus.Invalid)
+        {
+            yield return new ValidationResult($"FieldNameExpression returned an invalid result. Error message: {fieldNameResult.ErrorMessage}");
+        }
+        else if (fieldNameResult.Status == ResultStatus.Ok)
+        {
+            if (fieldNameResult.Value is not string fieldName)
+            {
+                yield return new ValidationResult($"FieldNameExpression did not return a string");
+            }
+            else
+            {
+                localFieldName = fieldName;
+            }
+        }
+
         var type = context.GetType();
-        object? returnValue = null;
-        foreach (var part in FieldName.Split('.'))
+        foreach (var part in localFieldName.Split('.'))
         {
             var property = type.GetProperty(part);
 
             if (property == null)
             {
-                yield return new ValidationResult($"Fieldname [{FieldName}] is not found on type [{type.FullName}]");
+                yield return new ValidationResult($"Fieldname [{localFieldName}] is not found on type [{type.FullName}]");
                 continue;
             }
 
-            returnValue = property.GetValue(context);
+            var returnValue = property.GetValue(context);
             if (returnValue == null)
             {
                 break;

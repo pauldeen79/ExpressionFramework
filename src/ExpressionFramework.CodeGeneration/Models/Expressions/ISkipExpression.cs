@@ -2,5 +2,6 @@
 
 public interface ISkipExpression : IExpression
 {
-    int Count { get; }
+    [Required]
+    IExpression CountExpression { get; }
 }

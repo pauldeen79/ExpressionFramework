@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Domain.Builders.Aggregators;
-
-namespace ExpressionFramework.Domain.Tests.Unit;
+﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class ExpressionTests
 {
@@ -8,7 +6,7 @@ public class ExpressionTests
     public void Evaluate_Happy_Flow()
     {
         // Arrange
-        var expression = new FieldExpression("Name");
+        var expression = new FieldExpression(new ConstantExpression("Name"));
         var context = new { Name = "Hello world!" };
 
         // Act
@@ -23,7 +21,7 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
     {
         // Arrange
-        var expression = new FieldExpression("InnerProperty.Name");
+        var expression = new FieldExpression(new ConstantExpression("InnerProperty.Name"));
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
@@ -40,8 +38,8 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new[]
         {
-            new FieldExpression("InnerProperty"),
-            new FieldExpression("Name")
+            new FieldExpression(new ConstantExpression("InnerProperty")),
+            new FieldExpression(new ConstantExpression("Name"))
         });
         var context = new { InnerProperty = new { Name = "Hello world" } };
 
@@ -74,9 +72,6 @@ public class ExpressionTests
     [Fact]
     public void Can_Get_Right_Position_From_String_Using_Substring_And_StringLength()
     {
-        //var input = "some string";
-        //var test = input.Substring(input.Length - 6, 6);
-
         // Arrange
         var input = "some string";
         var expression = new ChainedExpressionBuilder().AddExpressions(

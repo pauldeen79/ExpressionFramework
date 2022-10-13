@@ -2,5 +2,6 @@
 
 public interface IGroupByExpression : IExpression
 {
+    [Required]
     IExpression KeySelectorExpression { get; }
 }

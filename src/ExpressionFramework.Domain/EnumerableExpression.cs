@@ -24,7 +24,7 @@ public static class EnumerableExpression
         return Result<IEnumerable<object?>>.Success(results.Select(x => x.Value));
     }
 
-    public static IEnumerable<ValidationResult> ValidateContext(object? context)
+    public static IEnumerable<ValidationResult> ValidateContext(object? context, Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
     {
         if (context == null)
         {
@@ -36,6 +36,14 @@ public static class EnumerableExpression
         {
             yield return new ValidationResult("Context must be of type IEnumerable");
             yield break;
+        }
+
+        if (additionalValidationErrorsDelegate != null)
+        {
+            foreach (var error in additionalValidationErrorsDelegate.Invoke())
+            {
+                yield return error;
+            }
         }
     }
 }
