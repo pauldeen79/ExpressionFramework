@@ -14,9 +14,11 @@ public partial record WhereExpression
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
-                .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
-                .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result))
+                .Select(x => new { Item = x, Result = PredicateExpression.Evaluate(x).TryCast<bool>("PredicateExpression did not return a boolean value") })
+                .Where(x => !x.Result.IsSuccessful() || x.Result.Value)
+                .Select(x => x.Result.IsSuccessful()
+                    ? Result<object?>.Success(x.Item)
+                    : Result<object?>.FromExistingResult(x.Result)))
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
@@ -48,21 +50,6 @@ public partial record WhereExpression
 
             index++;
         }
-    }
-
-    private Result<object?> GetResult(Result<object?> itemResult)
-    {
-        if (!itemResult.IsSuccessful())
-        {
-            return itemResult;
-        }
-
-        if (itemResult.Value is not bool)
-        {
-            return Result<object?>.Invalid("PredicateExpression did not return a boolean value");
-        }
-
-        return itemResult;
     }
 }
 

@@ -12,20 +12,15 @@ public partial record SkipExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var countResult = CountExpression.Evaluate(context);
+        var countResult = CountExpression.Evaluate(context).TryCast<int>("CountExpression did not return an integer");
         if (!countResult.IsSuccessful())
         {
-            return countResult;
-        }
-
-        if (countResult.Value is not int count)
-        {
-            return Result<object?>.Invalid("CountExpression did not return an integer");
+            return Result<object?>.FromExistingResult(countResult);
         }
 
         return context is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Skip(count)
+                .Skip(countResult.Value)
                 .Select(x => Result<object?>.Success(x)))
             : Result<object?>.Invalid("Context must be of type IEnumerable");
     }

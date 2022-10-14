@@ -18,19 +18,14 @@ public partial record LeftExpression
 
     private Result<object?> GetLeftValueFromString(string s)
     {
-        var lengthResult = LengthExpression.Evaluate(s);
+        var lengthResult = LengthExpression.Evaluate(s).TryCast<int>("LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
-            return lengthResult;
+            return Result<object?>.FromExistingResult(lengthResult);
         }
 
-        if (lengthResult.Value is not int length)
-        {
-            return Result<object?>.Invalid("LengthExpression did not return an integer");
-        }
-
-        return s.Length >= length
-            ? Result<object?>.Success(s.Substring(0, length))
+        return s.Length >= lengthResult.Value
+            ? Result<object?>.Success(s.Substring(0, lengthResult.Value))
             : Result<object?>.Invalid("Length must refer to a location within the string");
     }
 

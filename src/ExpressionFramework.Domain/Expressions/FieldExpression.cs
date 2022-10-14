@@ -18,27 +18,21 @@ public partial record FieldExpression
             return Result<object?>.Invalid("Context cannot be empty");
         }
 
-        var fieldNameResult = FieldNameExpression.Evaluate(context);
-        if (!fieldNameResult.IsSuccessful())
-        {
-            return fieldNameResult;
-        }
+        return FieldNameExpression
+            .Evaluate(context)
+            .TryCast<string>("FieldNameExpression did not return a string")
+            .Transform(fieldNameResult => fieldNameResult.IsSuccessful()
+                ? GetValue(context, fieldNameResult.Value)
+                : Result<object?>.FromExistingResult(fieldNameResult));
+    }
 
-        if (fieldNameResult.Value is not string fieldName)
-        {
-            return Result<object?>.Invalid("FieldNameExpression did not return a string");
-        }
-
-        if (string.IsNullOrEmpty(fieldName))
+    private Result<object?> GetValue(object context, string? fieldName)
+    {
+        if (fieldName == null || fieldName.Length == 0)
         {
             return Result<object?>.Invalid("FieldNameExpression returned an empty string");
         }
 
-        return GetValue(context, fieldName);
-    }
-
-    private Result<object?> GetValue(object context, string fieldName)
-    {
         var type = context.GetType();
         object? returnValue = null;
         foreach (var part in fieldName.Split('.'))

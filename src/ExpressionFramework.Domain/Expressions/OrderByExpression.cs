@@ -71,7 +71,7 @@ public partial record OrderByExpression
         {
             if (!sortOrderResult.IsSuccessful())
             {
-                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
+                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned a result with status {sortOrderResult.Status} on item {index}. Error message: {sortOrderResult.ErrorMessage}");
             }
 
             if (sortOrderResult.Value is not SortOrder sortOrder)
