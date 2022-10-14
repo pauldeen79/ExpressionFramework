@@ -136,6 +136,19 @@ public class TakeExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_Empty_Sequence_When_CountExpression_Returns_Error_Result()
+    {
+        // Arrange
+        var sut = new TakeExpression(new ErrorExpression("Kaboom"));
+
+        // Act
+        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
