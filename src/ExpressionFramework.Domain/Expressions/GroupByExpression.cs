@@ -6,7 +6,7 @@
 [ExpressionContextRequired(true)]
 [ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]
 [ParameterRequired(nameof(KeySelectorExpression), true)]
-[ReturnValue(ResultStatus.Ok, "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record GroupByExpression
 {

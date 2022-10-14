@@ -57,8 +57,8 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(new ConstantExpression(2), new AddAggregator()),
-            new CompoundExpression(new ConstantExpression(3), new AddAggregator())
+            new CompoundExpression(2, new AddAggregator()),
+            new CompoundExpression(3, new AddAggregator())
         });
 
         // Act
@@ -67,5 +67,28 @@ public class ExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(1 + 2 + 3);
+    }
+
+    [Fact]
+    public void Can_Get_Right_Position_From_String_Using_Substring_And_StringLength()
+    {
+        // Arrange
+        var input = "some string";
+        var expression = new ChainedExpressionBuilder().AddExpressions(
+            new ContextExpressionBuilder(),
+            new SubstringExpressionBuilder()
+                .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
+                    new StringLengthExpressionBuilder(),
+                    new CompoundExpressionBuilder().WithAggregator(new SubtractAggregatorBuilder()).WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
+                )
+                .WithLengthExpression(new ConstantExpressionBuilder().WithValue(6))
+        ).Build();
+
+        // Act
+        var result = expression.Evaluate(input);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("string");
     }
 }

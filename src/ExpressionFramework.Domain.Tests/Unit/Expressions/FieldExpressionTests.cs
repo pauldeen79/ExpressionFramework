@@ -3,20 +3,11 @@
 public class FieldExpressionTests
 {
     [Fact]
-    public void Should_Throw_On_Construction_With_Empty_FieldName()
-    {
-        // Act
-        this.Invoking(_ => new FieldExpression(string.Empty))
-            .Should().Throw<ValidationException>()
-            .WithMessage("The FieldName field is required.");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Success_Result_From_ValueProvider()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -32,7 +23,7 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName("WrongPropertyName")
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue("WrongPropertyName"))
             .Build();
 
         // Act
@@ -44,11 +35,11 @@ public class FieldExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Ivalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -60,11 +51,53 @@ public class FieldExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_When_FieldNameExpression_Returns_Empty_String()
+    {
+        // Arrange
+        var expression = new FieldExpression(new ConstantExpression(string.Empty));
+
+        // Act
+        var actual = expression.Evaluate(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("FieldNameExpression returned an empty string");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_FieldNameExpression_Returns_Error()
+    {
+        // Arrange
+        var expression = new FieldExpression(new ErrorExpression("Kaboom"));
+
+        // Act
+        var actual = expression.Evaluate(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_FieldNameExpression_Returns_Non_String_Value()
+    {
+        // Arrange
+        var expression = new FieldExpression(new ConstantExpression(1));
+
+        // Act
+        var actual = expression.Evaluate(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("FieldNameExpression did not return a string");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Success_With_DefaultValue_When_Property_Value_Is_Null()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldName(nameof(MyClass.MyProperty))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -114,6 +147,45 @@ public class FieldExpressionTests
         // Assert
         actual.Should().ContainSingle();
         actual.Single().ErrorMessage.Should().Be("Fieldname [WrongPropertyName] is not found on type [ExpressionFramework.Domain.Tests.Unit.Expressions.FieldExpressionTests+MyClass]");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_FieldNameExpression_Returns_Invalid()
+    {
+        // Arrange
+        var expression = new FieldExpression(new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = expression.ValidateContext(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "FieldNameExpression returned an invalid result. Error message: Kaboom" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_FieldNameExpression_Returns_Non_String_Value()
+    {
+        // Arrange
+        var expression = new FieldExpression(new ConstantExpression(1));
+
+        // Act
+        var actual = expression.ValidateContext(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "FieldNameExpression did not return a string" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_FieldNameExpression_Returns_Empty_String()
+    {
+        // Arrange
+        var expression = new FieldExpression(new ConstantExpression(string.Empty));
+
+        // Act
+        var actual = expression.ValidateContext(new MyClass { MyProperty = "Test" });
+
+        // Assert
+        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "FieldNameExpression returned an empty string" });
     }
 
     [Fact]

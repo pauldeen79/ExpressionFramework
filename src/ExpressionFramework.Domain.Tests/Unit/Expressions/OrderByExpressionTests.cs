@@ -33,14 +33,29 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(Enumerable.Empty<SortOrder>());
+        var sut = new OrderByExpression(Enumerable.Empty<Expression>());
 
         // Act
         var result = sut.Evaluate(data);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SortOrders should have at least one item");
+        result.ErrorMessage.Should().Be("SortOrderExpressions should have at least one item");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_SortOrders_Is_Of_Wrong_Type()
+    {
+        // Arrange
+        var data = new[] { "B", "C", "A" };
+        var sut = new OrderByExpression(new[] { new ConstantExpression("no sort order") });
+
+        // Act
+        var result = sut.Evaluate(data);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("SortOrderExpressions item with index 0 is not of type SortOrder");
     }
 
     [Fact]
@@ -56,6 +71,21 @@ public class OrderByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_NonSuccesfull_Result_From_ErrorExpression()
+    {
+        // Arrange
+        var data = new[] { "B", "C", "A" };
+        var sut = new OrderByExpression(new[] { new InvalidExpression("Kaboom") });
+
+        // Act
+        var result = sut.Evaluate(data);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("SortOrderExpressions returned an invalid result on item 0. Error message: Kaboom");
     }
 
     [Fact]
@@ -113,8 +143,8 @@ public class OrderByExpressionTests
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
         var sut = new OrderByExpression(new[]
         {
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending)
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending))
         });
 
         // Act
@@ -133,8 +163,8 @@ public class OrderByExpressionTests
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
         var sut = new OrderByExpression(new[]
         {
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Descending)
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Descending))
         });
 
         // Act
@@ -176,7 +206,7 @@ public class OrderByExpressionTests
     public void ValidateContext_Returns_Item_When_SortOrder_Expression_Returns_Status_Invalid()
     {
         // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new DelegateResultExpression(x => x is string s && s == "a" ? Result<object?>.Invalid("It's wrong", Enumerable.Empty<ValidationError>()) : Result<object?>.Success(x)), SortOrderDirection.Descending) });
+        var sut = new OrderByExpression(new[] { new SortOrder(new DelegateResultExpression(x => x is string s && s == "a" ? Result<object?>.Invalid("It's wrong") : Result<object?>.Success(x)), SortOrderDirection.Descending) });
 
         // Act
         var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
@@ -190,13 +220,27 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(Enumerable.Empty<SortOrder>());
+        var sut = new OrderByExpression(Enumerable.Empty<Expression>());
 
         // Act
         var result = sut.ValidateContext(data);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrders should have at least one item" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrderExpressions should have at least one item" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_SortOrders_Is_Of_Wrong_Rype()
+    {
+        // Arrange
+        var data = new[] { "B", "C", "A" };
+        var sut = new OrderByExpression(new[] { new ConstantExpression("no sort order") });
+
+        // Act
+        var result = sut.ValidateContext(data);
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrderExpressions returned an invalid result. Error message: SortOrderExpressions item with index 0 is not of type SortOrder" });
     }
 
     [Fact]

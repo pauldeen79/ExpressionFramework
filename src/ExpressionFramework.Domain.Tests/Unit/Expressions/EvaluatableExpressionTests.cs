@@ -20,7 +20,7 @@ public class EvaluatableExpressionTests
     public void Evaluate_Returns_Result_When_Operator_Evaluation_Succeeds()
     {
         // Arrange
-        var sut = new EvaluatableExpression(new SingleEvaluatable(new ConstantExpression("1"), new NotEqualsOperator(), new ConstantExpression("2")));
+        var sut = new EvaluatableExpression(new SingleEvaluatable("1", new NotEqualsOperator(), "2"));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -48,7 +48,7 @@ public class EvaluatableExpressionTests
     public void EvaluateTyped_Returns_Result_When_Operator_Evaluation_Succeeds()
     {
         // Arrange
-        var sut = new EvaluatableExpression(new SingleEvaluatable(new ConstantExpression("1"), new NotEqualsOperator(), new ConstantExpression("1")));
+        var sut = new EvaluatableExpression(new SingleEvaluatable("1", new NotEqualsOperator(), "1"));
 
         // Act
         var actual = sut.EvaluateTyped(null);

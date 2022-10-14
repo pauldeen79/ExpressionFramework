@@ -3,7 +3,7 @@
 public class SubstringExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_Substring_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
         var sut = new SubstringExpression(1, 1);
@@ -44,6 +44,62 @@ public class SubstringExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.Evaluate("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression("not an integer"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.Evaluate("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("IndexExpression did not return an integer");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = sut.Evaluate("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression("not an integer"));
+
+        // Act
+        var actual = sut.Evaluate("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
+    }
+
+    [Fact]
     public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
     {
         // Arrange
@@ -55,6 +111,145 @@ public class SubstringExpressionTests
         // Assert
         actual.Should().ContainSingle();
         actual.Single().ErrorMessage.Should().Be("Context must be of type string");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("IndexExpression returned an invalid result. Error message: Kaboom");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression("no integer"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("IndexExpression did not return an integer");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("LengthExpression returned an invalid result. Error message: Kaboom");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression("no integer"));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("LengthExpression did not return an integer");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_And_LengthExpression_Results_Are_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[]
+        {
+            "IndexExpression returned an invalid result. Error message: Kaboom",
+            "LengthExpression returned an invalid result. Error message: Kaboom"
+        });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_ValidationError_When_Context_Is_Too_Short()
+    {
+        // Arrange
+        var sut = new SubstringExpression(1, 1);
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().ContainSingle();
+        actual.Single().ErrorMessage.Should().Be("Index and length must refer to a location within the string");
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_LengthExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ErrorExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+    
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_IndexExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ErrorExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_LengthExpression_And_IndexExpression_Return_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ErrorExpression("Kaboom"), new ErrorExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_All_Is_Well()
+    {
+        // Arrange
+        var sut = new SubstringExpression(0, 1);
+
+        // Act
+        var actual = sut.ValidateContext(" ");
+
+        // Assert
+        actual.Should().BeEmpty();
     }
 
     [Fact]

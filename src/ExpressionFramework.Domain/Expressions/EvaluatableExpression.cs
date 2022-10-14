@@ -7,7 +7,7 @@
 [ExpressionContextType(typeof(object))]
 [ParameterDescription(nameof(Condition), "Condition to evaluate")]
 [ParameterRequired(nameof(Condition), true)]
-[ReturnValue(ResultStatus.Ok, "true or false", "The result of the condition evaluation")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true or false", "The result of the condition evaluation")]
 public partial record EvaluatableExpression
 {
     public override Result<object?> Evaluate(object? context)

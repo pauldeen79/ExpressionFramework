@@ -3,5 +3,5 @@
 public interface IOrderByExpression : IExpression
 {
     [Required]
-    IReadOnlyCollection<ISortOrder> SortOrders { get; }
+    IReadOnlyCollection<IExpression> SortOrderExpressions { get; }
 }

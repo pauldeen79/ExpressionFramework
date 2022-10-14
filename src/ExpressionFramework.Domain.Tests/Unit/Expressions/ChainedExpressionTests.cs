@@ -9,7 +9,7 @@ public class ChainedExpressionTests
         var expression = new ChainedExpressionBuilder()
             .AddExpressions
             (
-                new ErrorExpressionBuilder().WithErrorMessage("Kaboom"),
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")),
                 new EmptyExpressionBuilder()
             )
             .Build();

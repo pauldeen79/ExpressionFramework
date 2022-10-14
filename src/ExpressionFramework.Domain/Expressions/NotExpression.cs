@@ -5,7 +5,7 @@
 [ExpressionContextDescription("Boolean value to invert")]
 [ExpressionContextType(typeof(bool))]
 [ExpressionContextRequired(true)]
-[ReturnValue(ResultStatus.Ok, "Inverted value of the boolean context value", "This result will be returned when the context is a boolean value")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "Inverted value of the boolean context value", "This result will be returned when the context is a boolean value")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type boolean")]
 public partial record NotExpression
 {

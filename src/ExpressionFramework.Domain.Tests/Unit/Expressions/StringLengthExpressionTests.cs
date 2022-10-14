@@ -1,51 +1,38 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class TrimEndExpressionTests
+public class StringLengthExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Trimmed_Expression_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_Length_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression();
+        var sut = new StringLengthExpression();
 
         // Act
-        var actual = sut.Evaluate(" trim ");
+        var actual = sut.Evaluate("some");
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(" trim");
+        actual.GetValueOrThrow().Should().BeEquivalentTo(4);
     }
 
     [Fact]
-    public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_0_When_Context_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(new[] { '0' });
-
-        // Act
-        var actual = sut.Evaluate("0trim0");
-
-        // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("0trim");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_EmptyString_When_Context_Is_EmptyString()
-    {
-        // Arrange
-        var sut = new TrimEndExpression();
+        var sut = new StringLengthExpression();
 
         // Act
         var actual = sut.Evaluate(string.Empty);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(string.Empty);
+        actual.GetValueOrThrow().Should().BeEquivalentTo(0);
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new TrimEndExpression();
+        var sut = new StringLengthExpression();
 
         // Act
         var actual = sut.Evaluate(null);
@@ -59,7 +46,7 @@ public class TrimEndExpressionTests
     public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
     {
         // Arrange
-        var sut = new TrimEndExpression();
+        var sut = new StringLengthExpression();
 
         // Act
         var actual = sut.ValidateContext(null);
@@ -73,15 +60,15 @@ public class TrimEndExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(TrimEndExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(StringLengthExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TrimEndExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Name.Should().Be(nameof(StringLengthExpression));
+        result.Parameters.Should().BeEmpty();
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

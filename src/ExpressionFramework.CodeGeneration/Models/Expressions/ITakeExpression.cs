@@ -2,5 +2,6 @@
 
 public interface ITakeExpression : IExpression
 {
-    int Count { get; }
+    [Required]
+    IExpression CountExpression { get; }
 }

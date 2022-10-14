@@ -6,7 +6,7 @@
 [ExpressionContextRequired(true)]
 [ParameterDescription(nameof(SelectorExpression), "Expression to use on each item")]
 [ParameterRequired(nameof(SelectorExpression), true)]
-[ReturnValue(ResultStatus.Ok, "Enumerable with transformed items", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with transformed items", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record SelectExpression
 {
