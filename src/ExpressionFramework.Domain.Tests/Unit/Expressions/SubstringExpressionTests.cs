@@ -184,6 +184,45 @@ public class SubstringExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_LengthExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ErrorExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+    
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_IndexExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ErrorExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_All_Is_Well()
+    {
+        // Arrange
+        var sut = new SubstringExpression(0, 1);
+
+        // Act
+        var actual = sut.ValidateContext(" ");
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
