@@ -101,6 +101,19 @@ public class InvalidExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_Empty_Sequence_When_ErrorMessageExpression_Returns_Error_Result()
+    {
+        // Assert
+        var sut = new InvalidExpression(new ErrorExpression("Kaboom"));
+
+        // Act
+        var result = sut.ValidateContext(null);
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
