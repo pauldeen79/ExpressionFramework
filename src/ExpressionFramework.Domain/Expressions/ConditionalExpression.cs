@@ -16,25 +16,10 @@
 public partial record ConditionalExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var result = new EvaluatableExpression(Condition).EvaluateTyped(context);
-        if (!result.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(result);
-        }
-        
-        if (result.Value)
-        {
-            return ResultExpression.Evaluate(context);
-        }
-
-        if (DefaultExpression != null)
-        {
-            return DefaultExpression.Evaluate(context);
-        }
-
-        return Result<object?>.Success(null);
-    }
+        => EvaluateWithConditionResult(context).Transform(result =>
+            result.IsSuccessful()
+                ? result.Value.ExpressionResult
+                : Result<object?>.FromExistingResult(result));
 
     public Result<(bool ConditionResult, Result<object?> ExpressionResult)> EvaluateWithConditionResult(object? context)
     {
