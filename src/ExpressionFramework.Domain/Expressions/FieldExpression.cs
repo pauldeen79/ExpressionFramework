@@ -13,6 +13,11 @@ public partial record FieldExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
+        if (context == null)
+        {
+            return Result<object?>.Invalid("Context cannot be empty");
+        }
+
         var fieldNameResult = FieldNameExpression.Evaluate(context);
         if (!fieldNameResult.IsSuccessful())
         {
@@ -24,16 +29,16 @@ public partial record FieldExpression
             return Result<object?>.Invalid("FieldNameExpression did not return a string");
         }
 
+        if (string.IsNullOrEmpty(fieldName))
+        {
+            return Result<object?>.Invalid("FieldNameExpression returned an empty string");
+        }
+
         return GetValue(context, fieldName);
     }
 
-    private Result<object?> GetValue(object? context, string fieldName)
+    private Result<object?> GetValue(object context, string fieldName)
     {
-        if (context == null)
-        {
-            return Result<object?>.Invalid("Context cannot be empty");
-        }
-
         var type = context.GetType();
         object? returnValue = null;
         foreach (var part in fieldName.Split('.'))
@@ -70,17 +75,26 @@ public partial record FieldExpression
         if (fieldNameResult.Status == ResultStatus.Invalid)
         {
             yield return new ValidationResult($"FieldNameExpression returned an invalid result. Error message: {fieldNameResult.ErrorMessage}");
+            yield break;
         }
-        else if (fieldNameResult.Status == ResultStatus.Ok)
+
+        if (fieldNameResult.Status == ResultStatus.Ok)
         {
             if (fieldNameResult.Value is not string fieldName)
             {
                 yield return new ValidationResult($"FieldNameExpression did not return a string");
+                yield break;
             }
             else
             {
                 localFieldName = fieldName;
             }
+        }
+
+        if (string.IsNullOrEmpty(localFieldName))
+        {
+            yield return new ValidationResult("FieldNameExpression returned an empty string");
+            yield break;
         }
 
         var type = context.GetType();
