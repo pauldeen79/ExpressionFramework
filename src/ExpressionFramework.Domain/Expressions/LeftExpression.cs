@@ -44,7 +44,6 @@ public partial record LeftExpression
             yield break;
         }
 
-        int? localIndex = null;
         int? localLength = null;
 
         var lengthResult = LengthExpression.Evaluate(context);
@@ -64,9 +63,9 @@ public partial record LeftExpression
             }
         }
 
-        if (localIndex.HasValue && localLength.HasValue && s.Length < localIndex + localLength)
+        if (localLength.HasValue && s.Length < localLength)
         {
-            yield return new ValidationResult("Index and length must refer to a location within the string");
+            yield return new ValidationResult("Length must refer to a location within the string");
         }
     }
 

@@ -25,6 +25,19 @@ public partial record InvalidExpression
         return Result<object?>.Invalid(errorMessage, ValidationErrors);
     }
 
+    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
+    {
+        var errorMessageResult = ErrorMessageExpression.Evaluate(context);
+        if (errorMessageResult.Status == ResultStatus.Invalid)
+        {
+            yield return new ValidationResult($"ErrorMessageExpression returned an invalid result. Error message: {errorMessageResult.ErrorMessage}");
+        }
+        else if (errorMessageResult.Status == ResultStatus.Ok && errorMessageResult.Value is not string fieldName)
+        {
+            yield return new ValidationResult($"ErrorMessageExpression did not return a string");
+        }
+    }
+
     public InvalidExpression(Expression errorMessageExpression)
         : this(errorMessageExpression, Enumerable.Empty<ValidationError>()) { }
 
