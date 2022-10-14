@@ -31,7 +31,9 @@ public partial record SubstringExpression
             return Result<object?>.Invalid("IndexExpression did not return an integer");
         }
 
-        var lengthResult = LengthExpression.Evaluate(s).TryCast<int>("LengthExpression did not return an integer");
+        var lengthResult = LengthExpression
+            .Evaluate(s)
+            .TryCast<int>("LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(lengthResult);
