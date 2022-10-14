@@ -31,7 +31,7 @@ public partial record SkipExpression
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpression.ValidateContext(context, () => EnumerableExpression.IntExpressionValidation(context, CountExpression, nameof(CountExpression)));
+        => EnumerableExpression.ValidateContext(context, () => IntExpression.ValidateParameter(context, CountExpression, nameof(CountExpression)));
 
     public SkipExpression(int count) : this(new ConstantExpression(count)) { }
 }

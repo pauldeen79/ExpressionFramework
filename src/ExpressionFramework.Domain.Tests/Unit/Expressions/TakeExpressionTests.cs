@@ -29,6 +29,34 @@ public class TakeExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_When_CountExpression_Returns_Non_Integer_Value()
+    {
+        // Arrange
+        var sut = new TakeExpression(new ConstantExpression("non integer value"));
+
+        // Act
+        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("CountExpression did not return an integer");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new TakeExpression(new ErrorExpression("Kaboom"));
+
+        // Act
+        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
@@ -66,6 +94,32 @@ public class TakeExpressionTests
 
         // Assert
         result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_CountExpression_Returns_Invalid_Result()
+    {
+        // Arrange
+        var sut = new TakeExpression(new InvalidExpression("Some error message"));
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "CountExpression returned an invalid result. Error message: Some error message" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_CountExpression_Returns_Non_Integer_Value()
+    {
+        // Arrange
+        var sut = new TakeExpression(new ConstantExpression("non integer value"));
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "CountExpression did not return an integer" });
     }
 
     [Fact]
