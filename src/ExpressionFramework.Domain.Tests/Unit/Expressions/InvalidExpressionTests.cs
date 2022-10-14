@@ -88,6 +88,19 @@ public class InvalidExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
+    {
+        // Assert
+        var sut = new InvalidExpression("Some error message");
+
+        // Act
+        var result = sut.ValidateContext(null);
+
+        // Assert
+        result.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
