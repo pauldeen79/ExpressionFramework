@@ -7,7 +7,7 @@ internal static class DescriptorProvider
 
     internal static IEnumerable<ReturnValueDescriptor> GetReturnValues(Type type)
         => type.GetCustomAttributes<ReturnValueAttribute>()
-            .Select(x => new ReturnValueDescriptor(x.Status, x.Value, x.Description));
+            .Select(x => new ReturnValueDescriptor(x.Status, x.Value, x.ValueType, x.Description));
 
     internal static IEnumerable<ParameterDescriptor> GetParameters(Type type)
     {

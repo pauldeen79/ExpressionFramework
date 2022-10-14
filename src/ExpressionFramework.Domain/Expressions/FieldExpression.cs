@@ -8,7 +8,7 @@
 [ExpressionContextType(typeof(object))]
 [ExpressionContextRequired(true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Fieldname [x] is not found on type [y]")]
-[ReturnValue(ResultStatus.Ok, "Value of the field (property)", "This will be returned if the field (property) is found")]
+[ReturnValue(ResultStatus.Ok, typeof(object), "Value of the field (property)", "This will be returned if the field (property) is found")]
 public partial record FieldExpression
 {
     public override Result<object?> Evaluate(object? context)

@@ -5,7 +5,7 @@
 [ExpressionContextDescription("String to convert to lower case")]
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]
-[ReturnValue(ResultStatus.Ok, "The value of the context converted to lower case", "This result will be returned when the context is of type string")]
+[ReturnValue(ResultStatus.Ok, typeof(string), "The value of the context converted to lower case", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string")]
 public partial record ToLowerCaseExpression
 {

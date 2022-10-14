@@ -5,7 +5,7 @@
 [ExpressionContextDescription("String to get the length from")]
 [ExpressionContextRequired(true)]
 [ExpressionContextType(typeof(string))]
-[ReturnValue(ResultStatus.Ok, "The length of the (string) context", "This result will be returned when the context is of type string")]
+[ReturnValue(ResultStatus.Ok, typeof(int), "The length of the (string) context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string")]
 public partial record StringLengthExpression
 {

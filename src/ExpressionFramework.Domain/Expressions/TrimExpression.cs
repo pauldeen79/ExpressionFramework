@@ -7,7 +7,7 @@
 [ExpressionContextType(typeof(string))]
 [ParameterDescription(nameof(TrimChars), "Optional trim characters to use. When empty, space will be used")]
 [ParameterRequired(nameof(TrimChars), false)]
-[ReturnValue(ResultStatus.Ok, "The trim start and end value of the context", "This result will be returned when the context is of type string")]
+[ReturnValue(ResultStatus.Ok, typeof(string), "The trim start and end value of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string")]
 public partial record TrimExpression
 {

@@ -27,6 +27,7 @@ public class TrimEndExpressionTests
         // Assert
         actual.GetValueOrThrow().Should().BeEquivalentTo("0trim");
     }
+
     [Fact]
     public void Evaluate_Returns_EmptyString_When_Context_Is_EmptyString()
     {

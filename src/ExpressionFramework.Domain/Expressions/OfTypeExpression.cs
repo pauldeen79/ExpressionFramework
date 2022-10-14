@@ -6,7 +6,7 @@
 [ExpressionContextRequired(true)]
 [ParameterDescription(nameof(Type), "Type to filter on")]
 [ParameterRequired(nameof(Type), true)]
-[ReturnValue(ResultStatus.Ok, "Enumerable with items that are of the specified type", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that are of the specified type", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record OfTypeExpression
 {

@@ -6,7 +6,7 @@
 [ExpressionContextRequired(true)]
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]
 [ParameterRequired(nameof(SortOrderExpressions), true)]
-[ReturnValue(ResultStatus.Ok, "Enumerable with sorted items", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable, SortOrders should have at least one sort order")]
 public partial record OrderByExpression
 {
