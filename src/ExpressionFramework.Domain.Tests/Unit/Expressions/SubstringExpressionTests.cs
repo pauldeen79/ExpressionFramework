@@ -170,6 +170,23 @@ public class SubstringExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_ValidationError_When_IndexExpression_And_LengthExpression_Results_Are_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = sut.ValidateContext("test");
+
+        // Assert
+        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[]
+        {
+            "IndexExpression returned an invalid result. Error message: Kaboom",
+            "LengthExpression returned an invalid result. Error message: Kaboom"
+        });
+    }
+
+    [Fact]
     public void ValidateContext_Returns_ValidationError_When_Context_Is_Too_Short()
     {
         // Arrange
@@ -201,6 +218,19 @@ public class SubstringExpressionTests
     {
         // Arrange
         var sut = new SubstringExpression(new ErrorExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.ValidateContext(string.Empty);
+
+        // Assert
+        actual.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_No_ValidationError_When_LengthExpression_And_IndexExpression_Return_Error()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ErrorExpression("Kaboom"), new ErrorExpression("Kaboom"));
 
         // Act
         var actual = sut.ValidateContext(string.Empty);
