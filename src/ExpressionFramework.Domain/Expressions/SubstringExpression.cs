@@ -31,20 +31,15 @@ public partial record SubstringExpression
             return Result<object?>.Invalid("IndexExpression did not return an integer");
         }
 
-        var lengthResult = LengthExpression.Evaluate(s);
+        var lengthResult = LengthExpression.Evaluate(s).TryCast<int>("LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
-            return lengthResult;
+            return Result<object?>.FromExistingResult(lengthResult);
         }
 
-        if (lengthResult.Value is not int length)
-        {
-            return Result<object?>.Invalid("LengthExpression did not return an integer");
-        }
-
-        return s.Length >= index + length
-                ? Result<object?>.Success(s.Substring(index, length))
-                : Result<object?>.Invalid("Index and length must refer to a location within the string");
+        return s.Length >= index + lengthResult.Value
+            ? Result<object?>.Success(s.Substring(index, lengthResult.Value))
+            : Result<object?>.Invalid("Index and length must refer to a location within the string");
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
