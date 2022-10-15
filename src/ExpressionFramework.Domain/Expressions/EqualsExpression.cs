@@ -7,8 +7,10 @@
 [ExpressionContextType(typeof(object))]
 [ParameterDescription(nameof(FirstExpression), "First expression")]
 [ParameterRequired(nameof(FirstExpression), true)]
+[ParameterType(nameof(FirstExpression), typeof(object))]
 [ParameterDescription(nameof(SecondExpression), "Second expression")]
 [ParameterRequired(nameof(SecondExpression), true)]
+[ParameterType(nameof(SecondExpression), typeof(object))]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "true of false", "This result will always be returned")]
 public partial record EqualsExpression
 {

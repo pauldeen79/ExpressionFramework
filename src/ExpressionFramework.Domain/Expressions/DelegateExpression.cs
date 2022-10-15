@@ -4,6 +4,7 @@
 [ExpressionUsesContext(false)]
 [ParameterDescription(nameof(Value), "Delegate to use")]
 [ParameterRequired(nameof(Value), true)]
+[ParameterType(nameof(Value), typeof(object))]
 [ReturnValue(ResultStatus.Ok, typeof(object), "The return value from the delegate that is supplied with the Value parameter", "This result will always be returned")]
 public partial record DelegateExpression
 {

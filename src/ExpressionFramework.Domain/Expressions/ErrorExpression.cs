@@ -4,6 +4,7 @@
 [ExpressionUsesContext(false)]
 [ParameterDescription(nameof(ErrorMessageExpression), "Error message to use")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
+[ParameterType(nameof(ErrorMessageExpression), typeof(string))]
 [ReturnValue(ResultStatus.Error, "Empty", "This result will be returned when error message expression evaluation succeeds")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "This result will be returned when error message expression evaluation fails, or its result value is not a string")]
 public partial record ErrorExpression

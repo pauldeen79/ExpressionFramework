@@ -7,6 +7,7 @@
 [ExpressionContextType(typeof(string))]
 [ParameterDescription(nameof(LengthExpression), "Number of characters to use")]
 [ParameterRequired(nameof(LengthExpression), true)]
+[ParameterType(nameof(LengthExpression), typeof(int))]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The first characters of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string, LengthExpression did not return an integer, Length must refer to a location within the string")]
 public partial record LeftExpression

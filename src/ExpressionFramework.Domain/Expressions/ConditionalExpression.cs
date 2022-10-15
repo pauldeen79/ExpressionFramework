@@ -9,8 +9,10 @@
 [ParameterRequired(nameof(Condition), true)]
 [ParameterDescription(nameof(ResultExpression), "Expression to use when the condition evaluates to true")]
 [ParameterRequired(nameof(ResultExpression), true)]
+[ParameterType(nameof(ResultExpression), typeof(object))]
 [ParameterDescription(nameof(DefaultExpression), "Optional expression to use when the condition evaluates to false. When left empty, and empty expression will be used.")]
 [ParameterRequired(nameof(DefaultExpression), false)]
+[ParameterType(nameof(DefaultExpression), typeof(object))]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the ResultExpression, value of the DefaultExpression or empty value", "Value of the ResultExpression when condition evaluates to true, value of the DefaultExpression (when available and condition evaluates to false), or empty value (when DefaultExpression is not provided and condition evaluates to false")]
 [ReturnValue(ResultStatus.Error, "Empty", "Any unsuccessful result from either the condition evaluation, result expression evaluation or default expression evaluation")]
 public partial record ConditionalExpression

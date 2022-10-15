@@ -7,8 +7,10 @@
 [ExpressionContextType(typeof(string))]
 [ParameterDescription(nameof(IndexExpression), "Zero-based start position of the characters to return")]
 [ParameterRequired(nameof(IndexExpression), true)]
+[ParameterType(nameof(IndexExpression), typeof(int))]
 [ParameterDescription(nameof(LengthExpression), "Number of characters to use")]
 [ParameterRequired(nameof(LengthExpression), true)]
+[ParameterType(nameof(LengthExpression), typeof(int))]
 [ReturnValue(ResultStatus.Ok, typeof(string), "A set of characters of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string, IndexExpression did not return an integer, LengthExpression did not return an integer, Index and length must refer to a location within the string")]
 public partial record SubstringExpression

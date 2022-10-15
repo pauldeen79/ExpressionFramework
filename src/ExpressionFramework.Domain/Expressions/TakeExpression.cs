@@ -6,6 +6,7 @@
 [ExpressionContextRequired(true)]
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]
 [ParameterRequired(nameof(CountExpression), true)]
+[ParameterType(nameof(CountExpression), typeof(int))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record TakeExpression

@@ -4,6 +4,7 @@
 [ExpressionUsesContext(false)]
 [ParameterDescription(nameof(ErrorMessageExpression), "Error message to use")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
+[ParameterType(nameof(ErrorMessageExpression), typeof(string))]
 [ParameterDescription(nameof(ValidationErrors), "Validation errors to use")]
 [ParameterRequired(nameof(ValidationErrors), true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "This result will always be returned")]
