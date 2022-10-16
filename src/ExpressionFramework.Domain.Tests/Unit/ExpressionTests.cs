@@ -91,4 +91,18 @@ public class ExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("string");
     }
+
+    [Fact]
+    public void Can_Concatenate_Multiple_Strings_Using_CompoundExpression()
+    {
+        // Arrange
+        var aggregator = new CompoundExpression(new ConstantExpression("b"), new StringConcatenateAggregator());
+
+        // Act
+        var result = aggregator.Evaluate("a");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("ab");
+    }
 }
