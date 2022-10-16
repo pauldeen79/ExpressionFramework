@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ICompoundExpression : IExpression
+public interface IAggregateExpression : IExpression
 {
     [Required]
-    IExpression SecondExpression { get; }
+    IReadOnlyCollection<IExpression> SubsequentExpressions { get; }
     [Required]
     IAggregator Aggregator { get; }
 }

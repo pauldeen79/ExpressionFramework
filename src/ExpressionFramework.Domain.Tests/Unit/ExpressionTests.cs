@@ -105,4 +105,18 @@ public class ExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("ab");
     }
+
+    [Fact]
+    public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
+    {
+        // Arrange
+        var aggregator = new AggregateExpression(new[] { new ConstantExpression("b"), new ConstantExpression("c") }, new StringConcatenateAggregator());
+
+        // Act
+        var result = aggregator.Evaluate("a");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("abc");
+    }
 }
