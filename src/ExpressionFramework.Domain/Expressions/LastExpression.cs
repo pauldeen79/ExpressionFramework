@@ -8,8 +8,8 @@ public partial record LastExpression
         (
             context,
             PredicateExpression,
-            results => results.Last(),
-            results => results.Last(x => x.Result.Value).Item
+            results => Result<object?>.Success(results.Last()),
+            results => Result<object?>.Success(results.Last(x => x.Result.Value).Item)
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

@@ -8,8 +8,8 @@ public partial record FirstExpression
         (
             context,
             PredicateExpression,
-            results => results.First(),
-            results => results.First(x => x.Result.Value).Item
+            results => Result<object?>.Success(results.First()),
+            results => Result<object?>.Success(results.First(x => x.Result.Value).Item)
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
