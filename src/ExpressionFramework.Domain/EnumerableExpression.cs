@@ -26,12 +26,6 @@ public static class EnumerableExpression
 
     public static IEnumerable<ValidationResult> ValidateContext(object? context, Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
     {
-        if (context == null)
-        {
-            yield return new ValidationResult("Context cannot be empty");
-            yield break;
-        }
-
         if (context is not IEnumerable e)
         {
             yield return new ValidationResult("Context must be of type IEnumerable");
@@ -44,6 +38,14 @@ public static class EnumerableExpression
             {
                 yield return error;
             }
+        }
+    }
+
+    public static IEnumerable<ValidationResult> ValidateEmptyEnumerable(object? context)
+    {
+        if (context is IEnumerable e && !e.OfType<object?>().Any())
+        {
+            yield return new ValidationResult("Enumerable is empty");
         }
     }
 }
