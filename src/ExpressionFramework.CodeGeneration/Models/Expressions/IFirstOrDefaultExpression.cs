@@ -2,6 +2,6 @@
 
 public interface IFirstOrDefaultExpression : IExpression
 {
-    IExpression? Predicate { get; }
+    IExpression? PredicateExpression { get; }
     IExpression? DefaultExpression { get; }
 }

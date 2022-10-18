@@ -2,5 +2,5 @@
 
 public interface IFirstExpression : IExpression
 {
-    IExpression? Predicate { get; }
+    IExpression? PredicateExpression { get; }
 }

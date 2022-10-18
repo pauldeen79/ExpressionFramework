@@ -2,5 +2,5 @@
 
 public interface ILastExpression : IExpression
 {
-    IExpression? Predicate { get; }
+    IExpression? PredicateExpression { get; }
 }

@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ILastOrDefaultExpression : IExpression
+public interface ISingleOrDefaultExpression : IExpression
 {
     IExpression? PredicateExpression { get; }
     IExpression? DefaultExpression { get; }

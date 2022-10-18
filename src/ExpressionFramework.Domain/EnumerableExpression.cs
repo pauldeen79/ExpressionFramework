@@ -27,7 +27,8 @@ public static class EnumerableExpression
     public static Result<object?> GetScalarValueWithoutDefault(object? context,
                                                                Expression? predicate,
                                                                Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
-                                                               Func<IEnumerable<ItemResult>, object?> delegateWithPredicate)
+                                                               Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
+                                                               Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
         => GetScalarValue
         (
             context,
@@ -35,14 +36,16 @@ public static class EnumerableExpression
             delegateWithoutPredicate,
             delegateWithPredicate,
             _ => Result<object?>.Invalid("Enumerable is empty"),
-            _ => Result<object?>.Invalid("None of the items conform to the supplied predicate")
+            _ => Result<object?>.Invalid("None of the items conform to the supplied predicate"),
+            selectorDelegate
         );
 
     public static Result<object?> GetScalarValueWithDefault(object? context,
                                                             Expression? predicate,
                                                             Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
                                                             Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
-                                                            Func<object?, Result<object?>> defaultValueDelegate)
+                                                            Func<object?, Result<object?>> defaultValueDelegate,
+                                                            Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
         => GetScalarValue
         (
             context,
@@ -50,34 +53,45 @@ public static class EnumerableExpression
             delegateWithoutPredicate,
             delegateWithPredicate,
             defaultValueDelegate,
-            defaultValueDelegate
+            defaultValueDelegate,
+            selectorDelegate
         );
 
     private static Result<object?> GetScalarValue(object? context,
-                                                   Expression? predicate,
-                                                   Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
-                                                   Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
-                                                   Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
-                                                   Func<object?, Result<object?>>? defaultValueDelegateWithPredicate)
+                                                  Expression? predicate,
+                                                  Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
+                                                  Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
+                                                  Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
+                                                  Func<object?, Result<object?>>? defaultValueDelegateWithPredicate,
+                                                  Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
     {
         if (context is not IEnumerable e)
         {
             return Result<object?>.Invalid("Context is not of type enumerable");
         }
 
-        var items = e.OfType<object?>();
+        if (selectorDelegate == null)
+        {
+            selectorDelegate = new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
+        }
+
+        var itemsResult = selectorDelegate.Invoke(e.OfType<object?>());
+        if (!itemsResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(itemsResult);
+        }
 
         if (predicate == null)
         {
-            if (!items.Any() && defaultValueDelegateWithoutPredicate != null)
+            if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate != null)
             {
                 return defaultValueDelegateWithoutPredicate.Invoke(context);
             }
 
-            return Result<object?>.Success(delegateWithoutPredicate.Invoke(items));
+            return Result<object?>.Success(delegateWithoutPredicate.Invoke(itemsResult.Value!));
         }
 
-        var results = items.Select(x => new ItemResult
+        var results = itemsResult.Value.Select(x => new ItemResult
         (
             x,
             predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
@@ -96,8 +110,6 @@ public static class EnumerableExpression
 
         return Result<object?>.Success(delegateWithPredicate.Invoke(results));
     }
-
-
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression == null
