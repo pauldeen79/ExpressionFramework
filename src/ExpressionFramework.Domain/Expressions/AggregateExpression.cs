@@ -4,7 +4,7 @@
 [UsesContext(true)]
 [ContextDescription("Value to use as context in the aggregator")]
 [ContextType(typeof(object))]
-[ContextRequired(false)]
+[ContextRequired(true)]
 [ParameterDescription(nameof(Aggregator), "Aggregator to evaluate")]
 [ParameterRequired(nameof(Aggregator), true)]
 [ParameterDescription(nameof(SubsequentExpressions), "Expressions to use as subsequent expression in aggregator")]

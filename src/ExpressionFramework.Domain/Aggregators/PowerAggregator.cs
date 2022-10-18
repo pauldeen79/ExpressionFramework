@@ -1,5 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Aggregators;
 
+[AggregatorDescription("First value to the power of second value")]
+[UsesContext(true)]
+[ContextDescription("Value to use as context in the aggregator")]
+[ContextType(typeof(object))]
+[ContextRequired(true)]
+[ReturnValue(ResultStatus.Ok, typeof(object), "Power of two values", "This will be returned in case the execution returns success (Ok)")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Could not convert SecondExpression to [Type]. Error message: [Error message], Context is not of a supported type")]
 public partial record PowerAggregator
 {
     public override Result<object?> Aggregate(object? context, Expression secondExpression)
