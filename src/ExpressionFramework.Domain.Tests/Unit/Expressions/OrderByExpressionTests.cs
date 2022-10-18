@@ -85,7 +85,7 @@ public class OrderByExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SortOrderExpressions returned a result with status Invalid on item 0. Error message: Kaboom");
+        result.ErrorMessage.Should().Be("SortOrderExpressions returned an invalid result on item 0. Error message: Kaboom");
     }
 
     [Fact]

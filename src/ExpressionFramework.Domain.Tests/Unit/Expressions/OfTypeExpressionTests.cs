@@ -52,7 +52,7 @@ public class OfTypeExpressionTests
         var result = sut.ValidateContext(null);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
     }
 
     [Fact]

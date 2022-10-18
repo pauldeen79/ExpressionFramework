@@ -1,12 +1,11 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Takes a number of items from an enumerable context value")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to take elements from")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to take elements from")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]
 [ParameterRequired(nameof(CountExpression), true)]
-[ParameterType(nameof(CountExpression), typeof(int))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record TakeExpression

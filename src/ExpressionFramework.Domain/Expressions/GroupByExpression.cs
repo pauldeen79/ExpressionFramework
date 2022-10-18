@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Groups items from an enumerable context value using a key selector expression")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to group elements for")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to group elements for")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]
 [ParameterRequired(nameof(KeySelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerble")]

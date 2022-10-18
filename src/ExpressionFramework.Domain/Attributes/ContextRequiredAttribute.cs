@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ExpressionContextRequiredAttribute : Attribute
+public class ContextRequiredAttribute : Attribute
 {
     public bool Required { get; }
 
-    public ExpressionContextRequiredAttribute(bool required) => Required = required;
+    public ContextRequiredAttribute(bool required) => Required = required;
 }

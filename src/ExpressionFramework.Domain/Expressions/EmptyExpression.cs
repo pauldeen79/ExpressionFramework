@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("This expression always returns an empty value")]
-[ExpressionUsesContext(false)]
+[UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, "Empty", "This result will always be returned")]
 public partial record EmptyExpression
 {

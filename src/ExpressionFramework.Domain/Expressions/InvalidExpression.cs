@@ -1,22 +1,29 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns an invalid result")]
-[ExpressionUsesContext(false)]
+[UsesContext(false)]
 [ParameterDescription(nameof(ErrorMessageExpression), "Error message to use")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
-[ParameterType(nameof(ErrorMessageExpression), typeof(string))]
 [ParameterDescription(nameof(ValidationErrors), "Validation errors to use")]
 [ParameterRequired(nameof(ValidationErrors), true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "This result will always be returned")]
 public partial record InvalidExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => ErrorMessageExpression
-            .Evaluate(context)
-            .TryCast<string>("ErrorMessageExpression did not return a string")
-            .Transform(errorMessageResult => errorMessageResult.IsSuccessful()
-                ? Result<object?>.Invalid(errorMessageResult.Value!, ValidationErrors)
-                : Result<object?>.FromExistingResult(errorMessageResult));
+    {
+        var errorMessageResult = ErrorMessageExpression.Evaluate(context);
+        if (!errorMessageResult.IsSuccessful())
+        {
+            return errorMessageResult;
+        }
+        
+        if (errorMessageResult.Value is not string errorMessage)
+        {
+            return Result<object?>.Invalid("ErrorMessageExpression did not return a string");
+        }
+
+        return Result<object?>.Invalid(errorMessage, ValidationErrors);
+    }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
@@ -25,7 +32,7 @@ public partial record InvalidExpression
         {
             yield return new ValidationResult($"ErrorMessageExpression returned an invalid result. Error message: {errorMessageResult.ErrorMessage}");
         }
-        else if (errorMessageResult.Status == ResultStatus.Ok && errorMessageResult.Value is not string)
+        else if (errorMessageResult.Status == ResultStatus.Ok && errorMessageResult.Value is not string fieldName)
         {
             yield return new ValidationResult($"ErrorMessageExpression did not return a string");
         }

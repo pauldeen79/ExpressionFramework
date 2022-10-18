@@ -32,6 +32,6 @@ public class AggregateExpressionTests
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ContextIsRequired.Should().BeTrue();
     }
 }

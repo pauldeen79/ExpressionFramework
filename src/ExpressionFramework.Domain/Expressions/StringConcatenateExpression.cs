@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Concatenates string")]
-[ExpressionUsesContext(false)]
+[UsesContext(false)]
 [ParameterDescription(nameof(Expressions), "Strings to concatenate")]
 [ParameterType(nameof(Expressions), typeof(string))]
 [ParameterRequired(nameof(Expressions), true)]

@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Filters an enumerable context value using a predicate")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to filter")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to filter")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(PredicateExpression), "Predicate to apply to each value. Return value must be a boolean value, so we can filter on it")]
 [ParameterRequired(nameof(PredicateExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that satisfy the predicate", "This result will be returned when the context is enumerble, and the predicate returns a boolean value")]
@@ -14,11 +14,9 @@ public partial record WhereExpression
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => new { Item = x, Result = PredicateExpression.Evaluate(x).TryCast<bool>("PredicateExpression did not return a boolean value") })
-                .Where(x => !x.Result.IsSuccessful() || x.Result.Value)
-                .Select(x => x.Result.IsSuccessful()
-                    ? Result<object?>.Success(x.Item)
-                    : Result<object?>.FromExistingResult(x.Result)))
+                .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
+                .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
+                .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result))
             : Result<object?>.Invalid("Context must be of type IEnumerable");
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
@@ -50,6 +48,21 @@ public partial record WhereExpression
 
             index++;
         }
+    }
+
+    private Result<object?> GetResult(Result<object?> itemResult)
+    {
+        if (!itemResult.IsSuccessful())
+        {
+            return itemResult;
+        }
+
+        if (itemResult.Value is not bool)
+        {
+            return Result<object?>.Invalid("PredicateExpression did not return a boolean value");
+        }
+
+        return itemResult;
     }
 }
 

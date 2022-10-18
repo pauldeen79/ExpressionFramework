@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns false")]
-[ExpressionUsesContext(false)]
+[UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "false", "This result will always be returned")]
 public partial record FalseExpression
 {

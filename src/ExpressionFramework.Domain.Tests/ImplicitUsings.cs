@@ -2,6 +2,7 @@
 global using System.Globalization;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Results;
+global using ExpressionFramework.Domain.AggregatorDescriptors;
 global using ExpressionFramework.Domain.Aggregators;
 global using ExpressionFramework.Domain.Attributes;
 global using ExpressionFramework.Domain.Builders;

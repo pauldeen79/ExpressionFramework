@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Trims the start characters of the context")]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("String to trim start end characters of")]
-[ExpressionContextRequired(true)]
-[ExpressionContextType(typeof(string))]
+[UsesContext(true)]
+[ContextDescription("String to trim start end characters of")]
+[ContextRequired(true)]
+[ContextType(typeof(string))]
 [ParameterDescription(nameof(TrimChars), "Optional trim characters to use. When empty, space will be used")]
 [ParameterRequired(nameof(TrimChars), false)]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The trim start value of the context", "This result will be returned when the context is of type string")]

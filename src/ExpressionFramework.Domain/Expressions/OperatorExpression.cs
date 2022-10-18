@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Evaluates an operator")]
-[ExpressionContextType(typeof(object))]
-[ExpressionContextDescription("The context to use on operator evaluation")]
-[ExpressionContextRequired(false)]
+[ContextType(typeof(object))]
+[ContextDescription("The context to use on operator evaluation")]
+[ContextRequired(false)]
 [ParameterDescription(nameof(LeftExpression), "Left expression to use on operator")]
 [ParameterRequired(nameof(LeftExpression), true)]
 [ParameterDescription(nameof(RightExpression), "Right expression to use on operator")]

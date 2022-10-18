@@ -1,5 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Aggregators;
 
+[AggregatorDescription("Concatenates two enumerable values")]
+[UsesContext(true)]
+[ContextDescription("Value to use as context in the aggregator")]
+[ContextType(typeof(IEnumerable))]
+[ContextRequired(true)]
+[ReturnValue(ResultStatus.Ok, typeof(object), "Concatenation of two enumerable values", "This will be returned in case the execution returns success (Ok)")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context is not of type enumerable, Second expression is not of type enumerable")]
 public partial record EnumerableConcatenateAggregator
 {
     public override Result<object?> Aggregate(object? context, Expression secondExpression)

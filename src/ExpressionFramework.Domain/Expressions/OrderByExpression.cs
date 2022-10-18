@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Sorts items from an enumerable context value using sort expressions")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to transform elements for")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to transform elements for")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]
 [ParameterRequired(nameof(SortOrderExpressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerble")]
@@ -71,7 +71,7 @@ public partial record OrderByExpression
         {
             if (!sortOrderResult.IsSuccessful())
             {
-                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned a result with status {sortOrderResult.Status} on item {index}. Error message: {sortOrderResult.ErrorMessage}");
+                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
             }
 
             if (sortOrderResult.Value is not SortOrder sortOrder)

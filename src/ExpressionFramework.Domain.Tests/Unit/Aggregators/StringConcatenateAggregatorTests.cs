@@ -57,4 +57,22 @@ public class StringConcatenateAggregatorTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("ab");
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionAggregatorDescriptorProvider(typeof(StringConcatenateAggregator));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(StringConcatenateAggregator));
+        result.Parameters.Should().BeEmpty();
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+    }
 }

@@ -57,4 +57,22 @@ public class EnumerableConcatenateAggregatorTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(new[] { "a", "b" });
     }
+
+    [Fact]
+    public void Can_Determine_Descriptor_Provider()
+    {
+        // Arrange
+        var sut = new ReflectionAggregatorDescriptorProvider(typeof(EnumerableConcatenateAggregator));
+
+        // Act
+        var result = sut.Get();
+
+        // Assert
+        result.Should().NotBeNull();
+        result.Name.Should().Be(nameof(EnumerableConcatenateAggregator));
+        result.Parameters.Should().BeEmpty();
+        result.ReturnValues.Should().HaveCount(2);
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+    }
 }
