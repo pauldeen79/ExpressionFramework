@@ -97,6 +97,13 @@ public static class EnumerableExpression
         return Result<object?>.Success(delegateWithPredicate.Invoke(results));
     }
 
+
+
+    public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
+        => defaultExpression == null
+            ? new EmptyExpression().Evaluate(context)
+            : defaultExpression.Evaluate(context);
+
     public static IEnumerable<ValidationResult> ValidateContext(object? context, Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
     {
         if (context is not IEnumerable e)

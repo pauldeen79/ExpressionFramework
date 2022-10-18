@@ -19,16 +19,11 @@ public partial record LastOrDefaultExpression
             Predicate,
             results => results.Last(),
             results => results.Last(x => x.Result.Value).Item,
-            GetDefaultValue
+            context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
         => EnumerableExpression.ValidateContext(context);
-
-    private Result<object?> GetDefaultValue(object? context)
-        => DefaultExpression == null
-            ? new EmptyExpression().Evaluate(context)
-            : DefaultExpression.Evaluate(context);
 }
 
