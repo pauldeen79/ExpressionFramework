@@ -13,43 +13,14 @@
 public partial record FirstOrDefaultExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        if (context is not IEnumerable e)
-        {
-            return Result<object?>.Invalid("Context is not of type enumerable");
-        }
-
-        var items = e.OfType<object?>();
-
-        if (Predicate == null)
-        {
-            if (!items.Any())
-            {
-                return GetDefaultValue(context);
-            }
-
-            return Result<object?>.Success(items.First());
-        }
-
-        var results = items.Select(x => new
-        {
-            Item = x,
-            Result = Predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
-        }).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
-
-        if (results.Any(x => !x.Result.IsSuccessful()))
-        {
-            // Error in predicate evaluation
-            return Result<object?>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
-        }
-
-        if (!results.Any(x => x.Result.Value))
-        {
-            return GetDefaultValue(context);
-        }
-
-        return Result<object?>.Success(results.First(x => x.Result.Value).Item);
-    }
+        => EnumerableExpression.GetScalarValueWithDefault
+        (
+            context,
+            Predicate,
+            results => results.First(),
+            results => results.First(x => x.Result.Value).Item,
+            GetDefaultValue
+        );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
         => EnumerableExpression.ValidateContext(context);

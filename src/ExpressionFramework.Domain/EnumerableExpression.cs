@@ -28,6 +28,37 @@ public static class EnumerableExpression
                                                                Expression? predicate,
                                                                Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
                                                                Func<IEnumerable<ItemResult>, object?> delegateWithPredicate)
+        => GetScalarValue
+        (
+            context,
+            predicate,
+            delegateWithoutPredicate,
+            delegateWithPredicate,
+            _ => Result<object?>.Invalid("Enumerable is empty"),
+            _ => Result<object?>.Invalid("None of the items conform to the supplied predicate")
+        );
+
+    public static Result<object?> GetScalarValueWithDefault(object? context,
+                                                            Expression? predicate,
+                                                            Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
+                                                            Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
+                                                            Func<object?, Result<object?>> defaultValueDelegate)
+        => GetScalarValue
+        (
+            context,
+            predicate,
+            delegateWithoutPredicate,
+            delegateWithPredicate,
+            defaultValueDelegate,
+            defaultValueDelegate
+        );
+
+    private static Result<object?> GetScalarValue(object? context,
+                                                   Expression? predicate,
+                                                   Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
+                                                   Func<IEnumerable<ItemResult>, object?> delegateWithPredicate,
+                                                   Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
+                                                   Func<object?, Result<object?>>? defaultValueDelegateWithPredicate)
     {
         if (context is not IEnumerable e)
         {
@@ -38,9 +69,9 @@ public static class EnumerableExpression
 
         if (predicate == null)
         {
-            if (!items.Any())
+            if (!items.Any() && defaultValueDelegateWithoutPredicate != null)
             {
-                return Result<object?>.Invalid("Enumerable is empty");
+                return defaultValueDelegateWithoutPredicate.Invoke(context);
             }
 
             return Result<object?>.Success(delegateWithoutPredicate.Invoke(items));
@@ -58,9 +89,9 @@ public static class EnumerableExpression
             return Result<object?>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
         }
 
-        if (!results.Any(x => x.Result.Value))
+        if (!results.Any(x => x.Result.Value) && defaultValueDelegateWithPredicate != null)
         {
-            return Result<object?>.Invalid("None of the items conform to the supplied predicate");
+            return defaultValueDelegateWithPredicate.Invoke(context);
         }
 
         return Result<object?>.Success(delegateWithPredicate.Invoke(results));
