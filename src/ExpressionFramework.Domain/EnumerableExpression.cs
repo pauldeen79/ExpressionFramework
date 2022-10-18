@@ -24,6 +24,48 @@ public static class EnumerableExpression
         return Result<IEnumerable<object?>>.Success(results.Select(x => x.Value));
     }
 
+    public static Result<object?> GetScalarValueWithoutDefault(object? context,
+                                                               Expression? predicate,
+                                                               Func<IEnumerable<object?>, object?> delegateWithoutPredicate,
+                                                               Func<IEnumerable<ItemResult>, object?> delegateWithPredicate)
+    {
+        if (context is not IEnumerable e)
+        {
+            return Result<object?>.Invalid("Context is not of type enumerable");
+        }
+
+        var items = e.OfType<object?>();
+
+        if (predicate == null)
+        {
+            if (!items.Any())
+            {
+                return Result<object?>.Invalid("Enumerable is empty");
+            }
+
+            return Result<object?>.Success(delegateWithoutPredicate.Invoke(items));
+        }
+
+        var results = items.Select(x => new ItemResult
+        (
+            x,
+            predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
+        )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
+
+        if (results.Any(x => !x.Result.IsSuccessful()))
+        {
+            // Error in predicate evaluation
+            return Result<object?>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
+        }
+
+        if (!results.Any(x => x.Result.Value))
+        {
+            return Result<object?>.Invalid("None of the items conform to the supplied predicate");
+        }
+
+        return Result<object?>.Success(delegateWithPredicate.Invoke(results));
+    }
+
     public static IEnumerable<ValidationResult> ValidateContext(object? context, Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
     {
         if (context is not IEnumerable e)
