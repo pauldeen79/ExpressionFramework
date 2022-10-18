@@ -112,6 +112,32 @@ public class ElementAtExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_Item_When_IndexExpression_Returns_Invalid_Result()
+    {
+        // Arrange
+        var sut = new ElementAtExpression(new InvalidExpression("Some error message"));
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "IndexExpression returned an invalid result. Error message: Some error message" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_IndexExpression_Returns_Non_Integer_Value()
+    {
+        // Arrange
+        var sut = new ElementAtExpression(new ConstantExpression("non integer value"));
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "IndexExpression did not return an integer" });
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

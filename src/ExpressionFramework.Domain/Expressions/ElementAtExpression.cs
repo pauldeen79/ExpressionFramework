@@ -24,7 +24,7 @@ public partial record ElementAtExpression
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpression.ValidateContext(context);
+        => EnumerableExpression.ValidateContext(context, () => IntExpression.ValidateParameter(context, IndexExpression, nameof(IndexExpression)));
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
