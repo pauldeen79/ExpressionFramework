@@ -87,7 +87,7 @@ public class LastOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
+    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
         // Arrange
         var sut = new LastOrDefaultExpression(new DelegateExpression(x => x is int i && i > 10), null);
@@ -101,7 +101,7 @@ public class LastOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
+    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
     {
         // Arrange
         var sut = new LastOrDefaultExpression(new DelegateExpression(x => x is int i && i > 10), new ConstantExpression("default"));

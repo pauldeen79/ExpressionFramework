@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class FirstOrDefaultExpressionTests
+public class ElementAtOrDefaultExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Context_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -34,7 +34,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Context_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, new ConstantExpression("default value"));
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), new ConstantExpression("default value"));
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -45,10 +45,10 @@ public class FirstOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
+    public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new InvalidExpression("Something bad happened"), null);
+        var sut = new ElementAtOrDefaultExpression(new InvalidExpression("Something bad happened"), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -59,10 +59,10 @@ public class FirstOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
+    public void Evaluate_Returns_Error_When_IndexExpression_Returns_Error()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ErrorExpression("Something bad happened"), null);
+        var sut = new ElementAtOrDefaultExpression(new ErrorExpression("Something bad happened"), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -73,24 +73,24 @@ public class FirstOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
+    public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ConstantExpression("None boolean value"), null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression("No integer value"), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
+        result.ErrorMessage.Should().Be("IndexExpression did not return an integer");
     }
 
     [Fact]
-    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
+    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new DelegateExpression(x => x is int i && i > 10), null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(10), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -101,10 +101,10 @@ public class FirstOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
+    public void Evaluate_Returns_Default_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_DefaultValue()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new DelegateExpression(x => x is int i && i > 10), new ConstantExpression("default"));
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(10), new ConstantExpression("default"));
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -115,24 +115,10 @@ public class FirstOrDefaultExpressionTests
     }
     
     [Fact]
-    public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
+    public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
-
-        // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
-    {
-        // Arrange
-        var sut = new FirstOrDefaultExpression(new DelegateExpression(x => x is int i && i > 1), null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -146,7 +132,7 @@ public class FirstOrDefaultExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.ValidateContext(Enumerable.Empty<int>());
@@ -159,7 +145,7 @@ public class FirstOrDefaultExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.ValidateContext(null);
@@ -172,7 +158,7 @@ public class FirstOrDefaultExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(null, null);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
 
         // Act
         var result = sut.ValidateContext(44);
@@ -182,17 +168,43 @@ public class FirstOrDefaultExpressionTests
     }
 
     [Fact]
+    public void ValidateContext_Returns_Item_When_IndexExpression_Returns_Invalid_Result()
+    {
+        // Arrange
+        var sut = new ElementAtOrDefaultExpression(new InvalidExpression("Some error message"), null);
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "IndexExpression returned an invalid result. Error message: Some error message" });
+    }
+
+    [Fact]
+    public void ValidateContext_Returns_Item_When_IndexExpression_Returns_Non_Integer_Value()
+    {
+        // Arrange
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression("non integer value"), null);
+
+        // Act
+        var result = sut.ValidateContext(new[] { "A", "B", "C" });
+
+        // Assert
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "IndexExpression did not return an integer" });
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(FirstOrDefaultExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(ElementAtOrDefaultExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(FirstOrDefaultExpression));
+        result.Name.Should().Be(nameof(ElementAtOrDefaultExpression));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(3);
         result.ContextDescription.Should().NotBeEmpty();

@@ -8,8 +8,8 @@ public partial record SingleExpression
         (
             context,
             PredicateExpression,
-            results => results.Single(),
-            results => results.Single(x => x.Result.Value).Item,
+            results => Result<object?>.Success(results.Single()),
+            results => Result<object?>.Success(results.Single(x => x.Result.Value).Item),
             items => items.Count(x => PredicateExpression == null || PredicateExpression.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value").Value) > 1
                 ? Result<IEnumerable<object?>>.Invalid("Sequence contains more than one element")
                 : Result<IEnumerable<object?>>.Success(items)
