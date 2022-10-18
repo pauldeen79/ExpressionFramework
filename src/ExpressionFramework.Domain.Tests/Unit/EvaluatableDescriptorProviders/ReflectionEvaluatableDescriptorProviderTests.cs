@@ -16,6 +16,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
         actual.UsesContext.Should().BeFalse();
         actual.ContextDescription.Should().BeNull();
         actual.ContextTypeName.Should().BeNull();
+        actual.ContextIsRequired.Should().BeNull();
         actual.ReturnValues.Should().BeEmpty();
     }
 
@@ -33,6 +34,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
         actual.UsesContext.Should().BeTrue();
         actual.ContextDescription.Should().NotBeEmpty();
         actual.ContextTypeName.Should().NotBeEmpty();
+        actual.ContextIsRequired.Should().BeTrue();
         actual.Parameters.Should().ContainSingle();
         actual.Parameters.Single().TypeName.Should().Be(typeof(string).FullName);
         actual.Parameters.Single().Description.Should().Be("Some other description");
@@ -47,6 +49,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     [UsesContext(true)]
     [ContextDescription("Some description")]
     [ContextType(typeof(string))]
+    [ContextRequired(true)]
     [ParameterType(nameof(Parameter), typeof(string))]
     [ParameterRequired(nameof(Parameter), true)]
     [ParameterDescription(nameof(Parameter), "Some other description")]
