@@ -1,5 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Aggregators;
 
+[AggregatorDescription("Concatenates two string values")]
+[UsesContext(true)]
+[ContextDescription("Value to use as context in the aggregator")]
+[ContextType(typeof(string))]
+[ContextRequired(true)]
+[ReturnValue(ResultStatus.Ok, typeof(object), "Concatenation of two string values", "This will be returned in case the execution returns success (Ok)")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context is not of type string, Second expression is not of type string")]
 public partial record StringConcatenateAggregator
 {
     public override Result<object?> Aggregate(object? context, Expression secondExpression)
