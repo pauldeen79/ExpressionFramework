@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ExpressionContextDescriptionAttribute : Attribute
+public class ContextDescriptionAttribute : Attribute
 {
     public string Description { get; }
 
-    public ExpressionContextDescriptionAttribute(string description)
+    public ContextDescriptionAttribute(string description)
         => Description = description;
 }

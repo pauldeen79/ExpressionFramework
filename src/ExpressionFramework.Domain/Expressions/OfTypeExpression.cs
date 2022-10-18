@@ -1,12 +1,11 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Filters an enumerable context value on type")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to filter")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to filter")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(Type), "Type to filter on")]
 [ParameterRequired(nameof(Type), true)]
-[ParameterType(nameof(Type), typeof(Type))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that are of the specified type", "This result will be returned when the context is enumerble")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record OfTypeExpression

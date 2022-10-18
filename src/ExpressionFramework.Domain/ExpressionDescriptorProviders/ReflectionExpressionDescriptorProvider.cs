@@ -7,10 +7,10 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
     public ReflectionExpressionDescriptorProvider(Type type)
     {
         var description = DescriptorProvider.GetDescription<ExpressionDescriptionAttribute>(type);
-        var usesContext = type.GetCustomAttribute<ExpressionUsesContextAttribute>()?.UsesContext ?? false;
-        var contextTypeName = type.GetCustomAttribute<ExpressionContextTypeAttribute>()?.Type.FullName;
-        var contextDescription = type.GetCustomAttribute<ExpressionContextDescriptionAttribute>()?.Description;
-        var contextIsRequired = type.GetCustomAttribute<ExpressionContextRequiredAttribute>()?.Required;
+        var usesContext = type.GetCustomAttribute<UsesContextAttribute>()?.UsesContext ?? false;
+        var contextTypeName = type.GetCustomAttribute<ContextTypeAttribute>()?.Type.FullName;
+        var contextDescription = type.GetCustomAttribute<ContextDescriptionAttribute>()?.Description;
+        var contextIsRequired = type.GetCustomAttribute<ContextRequiredAttribute>()?.Required;
         var parameters = DescriptorProvider.GetParameters(type);
         var returnValues = DescriptorProvider.GetReturnValues(type);
         _descriptor = new ExpressionDescriptor(

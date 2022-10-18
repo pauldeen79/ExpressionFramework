@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Evaluates a set of cases, and returns the result of the first valid case")]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("Context that will be used as context on the condition of each case")]
-[ExpressionContextType(typeof(object))]
-[ExpressionContextRequired(false)]
+[UsesContext(true)]
+[ContextDescription("Context that will be used as context on the condition of each case")]
+[ContextType(typeof(object))]
+[ContextRequired(false)]
 [ParameterDescription(nameof(Cases), "Set of cases (scenarios)")]
 [ParameterRequired(nameof(Cases), true)]
 [ParameterDescription(nameof(DefaultExpression), "Optional expression to use when none of the cases evaluates to false. When left empty, and empty expression will be used.")]

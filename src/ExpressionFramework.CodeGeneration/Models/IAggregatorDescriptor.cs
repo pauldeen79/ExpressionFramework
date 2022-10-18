@@ -1,16 +1,14 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models;
 
-public interface IEvaluatableDescriptor
+public interface IAggregatorDescriptor
 {
     [Required]
     string Name { get; }
     [Required]
     string TypeName { get; }
     string Description { get; }
-    bool UsesContext { get; }
-    string? ContextTypeName { get; }
-    string? ContextDescription { get; }
-    bool? ContextIsRequired { get; }
+    string ContextTypeName { get; }
+    string ContextDescription { get; }
     [Required]
     IReadOnlyCollection<IParameterDescriptor> Parameters { get; }
     [Required]

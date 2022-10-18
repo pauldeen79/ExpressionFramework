@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Gets a number of characters of the end of a string value of the context")]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("String to get the last characters for")]
-[ExpressionContextRequired(true)]
-[ExpressionContextType(typeof(string))]
+[UsesContext(true)]
+[ContextDescription("String to get the last characters for")]
+[ContextRequired(true)]
+[ContextType(typeof(string))]
 [ParameterDescription(nameof(LengthExpression), "Number of characters to use")]
 [ParameterRequired(nameof(LengthExpression), true)]
 [ParameterType(nameof(LengthExpression), typeof(int))]

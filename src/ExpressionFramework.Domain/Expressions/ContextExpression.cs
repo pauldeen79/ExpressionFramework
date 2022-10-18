@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns the value of the context")]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("Context value to use")]
-[ExpressionContextType(typeof(object))]
-[ExpressionContextRequired(true)]
+[UsesContext(true)]
+[ContextDescription("Context value to use")]
+[ContextType(typeof(object))]
+[ContextRequired(true)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the context", "This result will always be returned")]
 public partial record ContextExpression
 {

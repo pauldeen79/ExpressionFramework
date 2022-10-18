@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ExpressionContextTypeAttribute : Attribute
+public class ContextTypeAttribute : Attribute
 {
     public Type Type { get; }
 
-    public ExpressionContextTypeAttribute(Type type)
+    public ContextTypeAttribute(Type type)
         => Type = type;
 }

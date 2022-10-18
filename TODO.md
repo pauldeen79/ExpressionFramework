@@ -5,6 +5,3 @@ expressions:
 - Add expressions: StringJoin
 - Add CreateObject expression, that creates an object (expando object) with multiple properties
 - Add expressions: IsOfType, IsNotOfType, IsNotEmpty, IsEmpty, ConvertToInt, ConvertToDouble, ConvertToBoolean, ParseDateTime, ConvertToString, Coalesce/FirstNotNull
-
-other stuff:
-- Add descriptors for agreggators as well

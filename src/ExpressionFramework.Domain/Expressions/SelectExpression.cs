@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Transforms items from an enumerable context value using an expression")]
-[ExpressionContextType(typeof(IEnumerable))]
-[ExpressionContextDescription("The enumerable value to transform elements for")]
-[ExpressionContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to transform elements for")]
+[ContextRequired(true)]
 [ParameterDescription(nameof(SelectorExpression), "Expression to use on each item")]
 [ParameterRequired(nameof(SelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with transformed items", "This result will be returned when the context is enumerble")]

@@ -1,10 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Aggregates context with other expressions")]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("Value to use as context in the aggregator")]
-[ExpressionContextType(typeof(object))]
-[ExpressionContextRequired(false)]
+[UsesContext(true)]
+[ContextDescription("Value to use as context in the aggregator")]
+[ContextType(typeof(object))]
+[ContextRequired(false)]
 [ParameterDescription(nameof(Aggregator), "Aggregator to evaluate")]
 [ParameterRequired(nameof(Aggregator), true)]
 [ParameterDescription(nameof(SubsequentExpressions), "Expressions to use as subsequent expression in aggregator")]

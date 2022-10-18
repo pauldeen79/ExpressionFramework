@@ -3,11 +3,10 @@
 [ExpressionDescription("Returns the value of a field (property) of the context")]
 [ParameterDescription(nameof(FieldNameExpression), "Name of the property (can also be nested, like Address.Street)")]
 [ParameterRequired(nameof(FieldNameExpression), true)]
-[ParameterType(nameof(FieldNameExpression), typeof(string))]
-[ExpressionUsesContext(true)]
-[ExpressionContextDescription("Object to get the value from")]
-[ExpressionContextType(typeof(object))]
-[ExpressionContextRequired(true)]
+[UsesContext(true)]
+[ContextDescription("Object to get the value from")]
+[ContextType(typeof(object))]
+[ContextRequired(true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Fieldname [x] is not found on type [y]")]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the field (property)", "This will be returned if the field (property) is found")]
 public partial record FieldExpression
@@ -19,21 +18,27 @@ public partial record FieldExpression
             return Result<object?>.Invalid("Context cannot be empty");
         }
 
-        return FieldNameExpression
-            .Evaluate(context)
-            .TryCast<string>("FieldNameExpression did not return a string")
-            .Transform(fieldNameResult => fieldNameResult.IsSuccessful()
-                ? GetValue(context, fieldNameResult.Value)
-                : Result<object?>.FromExistingResult(fieldNameResult));
-    }
+        var fieldNameResult = FieldNameExpression.Evaluate(context);
+        if (!fieldNameResult.IsSuccessful())
+        {
+            return fieldNameResult;
+        }
 
-    private Result<object?> GetValue(object context, string? fieldName)
-    {
-        if (fieldName == null || fieldName.Length == 0)
+        if (fieldNameResult.Value is not string fieldName)
+        {
+            return Result<object?>.Invalid("FieldNameExpression did not return a string");
+        }
+
+        if (string.IsNullOrEmpty(fieldName))
         {
             return Result<object?>.Invalid("FieldNameExpression returned an empty string");
         }
 
+        return GetValue(context, fieldName);
+    }
+
+    private Result<object?> GetValue(object context, string fieldName)
+    {
         var type = context.GetType();
         object? returnValue = null;
         foreach (var part in fieldName.Split('.'))
