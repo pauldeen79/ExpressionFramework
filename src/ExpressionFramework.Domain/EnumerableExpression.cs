@@ -140,4 +140,25 @@ public static class EnumerableExpression
             yield return new ValidationResult("Enumerable is empty");
         }
     }
+
+    public static ExpressionDescriptor GetDescriptor(Type type, string description, string okValue, string okDescription, string invalidDescription, string errorDescription, bool hasDefaultExpression)
+        => new(
+            type.Name,
+            type.FullName,
+            description,
+            true,
+            typeof(IEnumerable).FullName,
+            "Enumerable value to use",
+            true,
+            new[]
+            {
+                new ParameterDescriptor("PredicateExpression", typeof(Expression).FullName, "Optional predicate to use", false),
+                new ParameterDescriptor("DefaultExpression", typeof(Expression).FullName, "Optional default value to use", false),
+            }.Where(x => x.Name != "DefaultExpression" || hasDefaultExpression),
+            new[]
+            {
+                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
+                new ReturnValueDescriptor(ResultStatus.Error, "Empty", typeof(object), errorDescription),
+            });
 }
