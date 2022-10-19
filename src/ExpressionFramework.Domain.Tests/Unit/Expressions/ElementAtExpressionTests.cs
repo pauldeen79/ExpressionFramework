@@ -3,13 +3,27 @@
 public class ElementAtExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
         var sut = new ElementAtExpression(new ConstantExpression(1));
 
         // Act
         var result = sut.Evaluate(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Context cannot be empty");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    {
+        // Arrange
+        var sut = new ElementAtExpression(new ConstantExpression(1));
+
+        // Act
+        var result = sut.Evaluate(123);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -95,7 +109,7 @@ public class ElementAtExpressionTests
         var result = sut.ValidateContext(null);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
     }
 
     [Fact]

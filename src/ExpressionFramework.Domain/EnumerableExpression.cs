@@ -3,8 +3,7 @@
 public static class EnumerableExpression
 {
     public static Result<object?> GetResultFromEnumerable(IEnumerable e,
-                                                          Func<IEnumerable<object?>,
-                                                          IEnumerable<Result<object?>>> @delegate)
+                                                          Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
         var results = @delegate(e.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
@@ -16,8 +15,7 @@ public static class EnumerableExpression
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(IEnumerable e,
-                                                                            Func<IEnumerable<object?>,
-                                                                            IEnumerable<Result<object?>>> @delegate)
+                                                                            Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
         var results = @delegate(e.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
@@ -69,6 +67,11 @@ public static class EnumerableExpression
                                                   Func<object?, Result<object?>>? defaultValueDelegateWithPredicate,
                                                   Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
     {
+        if (context == null)
+        {
+            return Result<object?>.Invalid("Context cannot be empty");
+        }
+        
         if (context is not IEnumerable e)
         {
             return Result<object?>.Invalid("Context is not of type enumerable");
@@ -124,7 +127,11 @@ public static class EnumerableExpression
     public static IEnumerable<ValidationResult> ValidateContext(object? context,
                                                                 Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
     {
-        if (context is not IEnumerable e)
+        if (context == null)
+        {
+            yield return new ValidationResult("Context cannot be empty");
+        }
+        else if (context is not IEnumerable)
         {
             yield return new ValidationResult("Context must be of type IEnumerable");
         }

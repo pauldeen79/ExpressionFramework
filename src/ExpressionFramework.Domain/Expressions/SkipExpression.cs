@@ -6,7 +6,7 @@
 [ContextRequired(true)]
 [ParameterDescription(nameof(CountExpression), "Number of items to skip")]
 [ParameterRequired(nameof(CountExpression), true)]
-[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with skipped items", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with skipped items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, CountExpression did not return an integer, Context must be of type IEnumerable")]
 public partial record SkipExpression
 {
