@@ -4,7 +4,7 @@
 public partial record ElementAtExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetScalarValueWithoutDefault
+        => EnumerableExpression.GetRequiredScalarValue
         (
             context,
             null,

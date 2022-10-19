@@ -4,7 +4,7 @@
 public partial record CountExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetScalarValueWithDefault
+        => EnumerableExpression.GetOptionalScalarValue
         (
             context,
             PredicateExpression,

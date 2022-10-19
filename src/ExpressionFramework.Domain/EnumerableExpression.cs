@@ -28,11 +28,11 @@ public static class EnumerableExpression
         return Result<IEnumerable<object?>>.Success(results.Select(x => x.Value));
     }
 
-    public static Result<object?> GetScalarValueWithoutDefault(object? context,
-                                                               Expression? predicate,
-                                                               Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
-                                                               Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
-                                                               Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+    public static Result<object?> GetRequiredScalarValue(object? context,
+                                                         Expression? predicate,
+                                                         Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
+                                                         Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
+                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
         => GetScalarValue
         (
             context,
@@ -44,12 +44,12 @@ public static class EnumerableExpression
             selectorDelegate
         );
 
-    public static Result<object?> GetScalarValueWithDefault(object? context,
-                                                            Expression? predicate,
-                                                            Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
-                                                            Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
-                                                            Func<object?, Result<object?>>? defaultValueDelegate = null,
-                                                            Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+    public static Result<object?> GetOptionalScalarValue(object? context,
+                                                         Expression? predicate,
+                                                         Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
+                                                         Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
+                                                         Func<object?, Result<object?>>? defaultValueDelegate = null,
+                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
         => GetScalarValue
         (
             context,
