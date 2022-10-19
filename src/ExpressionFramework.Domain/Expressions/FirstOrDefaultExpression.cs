@@ -9,8 +9,8 @@ public partial record FirstOrDefaultExpression
             context,
             PredicateExpression,
             results => Result<object?>.Success(results.First()),
-            context => EnumerableExpression.GetDefaultValue(DefaultExpression, context),
-            results => Result<object?>.Success(results.First(x => x.Result.Value).Item)
+            results => Result<object?>.Success(results.First(x => x.Result.Value).Item),
+            context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

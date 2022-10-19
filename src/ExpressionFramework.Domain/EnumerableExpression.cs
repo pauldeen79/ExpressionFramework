@@ -47,8 +47,8 @@ public static class EnumerableExpression
     public static Result<object?> GetScalarValueWithDefault(object? context,
                                                             Expression? predicate,
                                                             Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
-                                                            Func<object?, Result<object?>>? defaultValueDelegate = null,
                                                             Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
+                                                            Func<object?, Result<object?>>? defaultValueDelegate = null,
                                                             Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
         => GetScalarValue
         (
