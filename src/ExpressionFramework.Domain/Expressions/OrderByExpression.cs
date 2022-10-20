@@ -13,9 +13,7 @@ public partial record OrderByExpression
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? GetSortedEnumerable(context, e.OfType<object?>())
-            : context.Transform(x => Result<object?>.Invalid(x == null
-                ? "Context cannot be empty"
-                : "Context is not of type enumerable"));
+            : EnumerableExpression.GetInvalidResult(context);
 
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {

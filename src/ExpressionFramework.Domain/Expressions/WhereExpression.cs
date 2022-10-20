@@ -17,9 +17,7 @@ public partial record WhereExpression
                 .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
                 .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
                 .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result))
-            : context.Transform(x => Result<object?>.Invalid(x == null
-                ? "Context cannot be empty"
-                : "Context is not of type enumerable"));
+            : EnumerableExpression.GetInvalidResult(context);
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {

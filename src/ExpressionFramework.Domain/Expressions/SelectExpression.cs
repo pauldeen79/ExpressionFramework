@@ -11,12 +11,8 @@
 public partial record SelectExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => context is IEnumerable e
-            ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => SelectorExpression.Evaluate(x)))
-            : context.Transform(x => Result<object?>.Invalid(x == null
-                ? "Context cannot be empty"
-                : "Context is not of type enumerable"));
+        => EnumerableExpression.GetAggregateValue(context, e => EnumerableExpression.GetResultFromEnumerable(e, e => e
+                .Select(x => SelectorExpression.Evaluate(x))));
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {

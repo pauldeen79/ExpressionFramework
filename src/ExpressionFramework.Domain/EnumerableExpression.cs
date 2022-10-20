@@ -70,10 +70,13 @@ public static class EnumerableExpression
                 .Transform(result => result.IsSuccessful()
                     ? aggregateDelegate.Invoke(result.Value!)
                     : Result<object?>.FromExistingResult(result))
-            : context.Transform(x => Result<object?>.Invalid(x == null
+            : GetInvalidResult(context);
+
+    public static Result<object?> GetInvalidResult(object? context)
+        => context.Transform(x => Result<object?>.Invalid(x == null
                 ? "Context cannot be empty"
                 : "Context is not of type enumerable"));
-
+    
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression == null
             ? new EmptyExpression().Evaluate(context)
