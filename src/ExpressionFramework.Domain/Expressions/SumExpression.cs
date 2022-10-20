@@ -1,25 +1,20 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Computes the sum from an enumerable context value using an optional selection expression")]
-[ContextType(typeof(IEnumerable))]
-[ContextDescription("The enumerable value to summarize")]
-[ContextRequired(true)]
-[ParameterDescription(nameof(SelectorExpression), "Optional expression to select value from each item")]
-[ParameterRequired(nameof(SelectorExpression), false)]
-[ReturnValue(ResultStatus.Ok, typeof(object), "Sum (could be decimal, double, float, long or int)", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable, Could only compute sum of numeric values")]
+[DynamicDescriptor(typeof(SumExpression))]
 public partial record SumExpression
 {
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
-            ? EnumerableExpression.GetTypedResultFromEnumerable(e, e => e
-                .Select(x => SelectorExpression == null
-                    ? Result<object?>.Success(x)
-                    : SelectorExpression.Evaluate(x)))
+            ? EnumerableExpression.GetTypedResultFromEnumerable(e, x => x
+                .Select(y => SelectorExpression == null
+                    ? Result<object?>.Success(y)
+                    : SelectorExpression.Evaluate(y)))
                 .Transform(result => result.IsSuccessful()
                     ? Sum(result.Value!)
                     : Result<object?>.FromExistingResult(result))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : context.Transform(x =>  Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context must be of type IEnumerable"));
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
@@ -45,31 +40,43 @@ public partial record SumExpression
         }
     }
 
+    public static ExpressionDescriptor GetExpressionDescriptor()
+        => EnumerableExpression.GetDescriptor
+        (
+            typeof(SumExpression),
+            "Gets the sum from the (enumerable) context value, optionally using a selector expression",
+            "Sum (could be decimal, double, float, long or int)",
+            "This will be returned in case no error occurs",
+            "Context cannot be empty, Context must be of type IEnumerable, Could only compute sum of numeric values",
+            "This status (or any other status not equal to Ok) will be returned in case the selector evaluation returns something else than Ok",
+            false
+        );
+
     private static Result<object?> Sum(IEnumerable<object?> value)
     {
         if (value.All(x => x is decimal))
         {
-            return Result<object?>.Success(value.Cast<decimal>().Sum());
+            return Result<object?>.Success(value.Select(x => Convert.ToDecimal(x)).Sum());
         }
 
         if (value.All(x => x is double))
         {
-            return Result<object?>.Success(value.Cast<double>().Sum());
+            return Result<object?>.Success(value.Select(x => Convert.ToDouble(x)).Sum());
         }
 
         if (value.All(x => x is float))
         {
-            return Result<object?>.Success(value.Cast<float>().Sum());
+            return Result<object?>.Success(value.Select(x => Convert.ToSingle(x)).Sum());
         }
 
         if (value.All(x => x is long))
         {
-            return Result<object?>.Success(value.Cast<long>().Sum());
+            return Result<object?>.Success(value.Select(x => Convert.ToInt64(x)).Sum());
         }
 
         if (value.All(x => x is int || x is short || x is byte))
         {
-            return Result<object?>.Success(value.Cast<int>().Sum());
+            return Result<object?>.Success(value.Select(x => Convert.ToInt32(x)).Sum());
         }
 
         return Result<object?>.Invalid("Could only compute sum of numeric values");

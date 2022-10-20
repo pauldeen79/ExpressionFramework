@@ -3,13 +3,27 @@
 public class LastExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
         var sut = new LastExpression(null);
 
         // Act
         var result = sut.Evaluate(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Context cannot be empty");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    {
+        // Arrange
+        var sut = new LastExpression(null);
+
+        // Act
+        var result = sut.Evaluate(12345);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -137,7 +151,7 @@ public class LastExpressionTests
         var result = sut.ValidateContext(null);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
     }
 
     [Fact]
