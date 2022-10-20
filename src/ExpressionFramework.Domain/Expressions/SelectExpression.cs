@@ -6,15 +6,13 @@
 [ContextRequired(true)]
 [ParameterDescription(nameof(SelectorExpression), "Expression to use on each item")]
 [ParameterRequired(nameof(SelectorExpression), true)]
-[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with transformed items", "This result will be returned when the context is enumerble")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with transformed items", "This result will be returned when the context is enumerable")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context is not of type enumerable")]
 public partial record SelectExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => context is IEnumerable e
-            ? EnumerableExpression.GetResultFromEnumerable(e, e => e
-                .Select(x => SelectorExpression.Evaluate(x)))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+        => EnumerableExpression.GetAggregateValue(context, e => EnumerableExpression.GetResultFromEnumerable(e, e => e
+                .Select(x => SelectorExpression.Evaluate(x))));
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
@@ -26,7 +24,7 @@ public partial record SelectExpression
 
         if (context is not IEnumerable e)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
             yield break;
         }
 

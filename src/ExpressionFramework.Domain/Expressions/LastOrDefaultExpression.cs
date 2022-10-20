@@ -4,13 +4,13 @@
 public partial record LastOrDefaultExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetScalarValueWithDefault
+        => EnumerableExpression.GetOptionalScalarValue
         (
             context,
             PredicateExpression,
             results => Result<object?>.Success(results.Last()),
-            context => EnumerableExpression.GetDefaultValue(DefaultExpression, context),
-            results => Result<object?>.Success(results.Last(x => x.Result.Value).Item)
+            results => Result<object?>.Success(results.Last(x => x.Result.Value).Item),
+            context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

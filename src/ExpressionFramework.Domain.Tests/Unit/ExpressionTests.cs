@@ -119,4 +119,34 @@ public class ExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("abc");
     }
+
+    [Fact]
+    public void Can_Get_String_Length_Using_CountExpression()
+    {
+        // Arrange
+        var expression = new CountExpression(null);
+        var context = "Hello world!";
+
+        // Act
+        var result = expression.Evaluate(context);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Hello world!".Length);
+    }
+
+    [Fact]
+    public void Can_Get_String_Length_Using_StringLengthExpression()
+    {
+        // Arrange
+        var expression = new StringLengthExpression();
+        var context = "Hello world!";
+
+        // Act
+        var result = expression.Evaluate(context);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Hello world!".Length);
+    }
 }

@@ -6,7 +6,7 @@
 [ContextRequired(true)]
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]
 [ParameterRequired(nameof(CountExpression), true)]
-[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerble")]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
 public partial record TakeExpression
 {
@@ -27,7 +27,7 @@ public partial record TakeExpression
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
                 .Take(count)
                 .Select(x => Result<object?>.Success(x)))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : EnumerableExpression.GetInvalidResult(context);
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

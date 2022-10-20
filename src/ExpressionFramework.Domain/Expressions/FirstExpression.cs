@@ -4,7 +4,7 @@
 public partial record FirstExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetScalarValueWithoutDefault
+        => EnumerableExpression.GetRequiredScalarValue
         (
             context,
             PredicateExpression,
