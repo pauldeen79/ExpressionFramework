@@ -133,7 +133,7 @@ public static class EnumerableExpression
         }
         else if (context is not IEnumerable)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
         }
 
         if (additionalValidationErrorsDelegate != null)

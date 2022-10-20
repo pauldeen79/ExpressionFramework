@@ -7,13 +7,15 @@
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]
 [ParameterRequired(nameof(SortOrderExpressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable, SortOrders should have at least one sort order")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context is not of type enumerable, SortOrders should have at least one sort order")]
 public partial record OrderByExpression
 {
     public override Result<object?> Evaluate(object? context)
         => context is IEnumerable e
             ? GetSortedEnumerable(context, e.OfType<object?>())
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : context.Transform(x => Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context is not of type enumerable"));
 
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
@@ -96,7 +98,7 @@ public partial record OrderByExpression
 
         if (context is not IEnumerable e)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
             yield break;
         }
 

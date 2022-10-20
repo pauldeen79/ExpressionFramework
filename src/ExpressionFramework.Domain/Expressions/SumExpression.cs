@@ -12,9 +12,9 @@ public partial record SumExpression
                 .Transform(result => result.IsSuccessful()
                     ? Sum(result.Value!)
                     : Result<object?>.FromExistingResult(result))
-            : context.Transform(x =>  Result<object?>.Invalid(x == null
+            : context.Transform(x => Result<object?>.Invalid(x == null
                 ? "Context cannot be empty"
-                : "Context must be of type IEnumerable"));
+                : "Context is not of type enumerable"));
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
@@ -26,7 +26,7 @@ public partial record SumExpression
 
         if (context is not IEnumerable e)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
             yield break;
         }
 

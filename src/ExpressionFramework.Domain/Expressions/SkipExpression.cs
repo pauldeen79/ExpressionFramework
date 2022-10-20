@@ -27,7 +27,9 @@ public partial record SkipExpression
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
                 .Skip(count)
                 .Select(x => Result<object?>.Success(x)))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : context.Transform(x => Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context is not of type enumerable"));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

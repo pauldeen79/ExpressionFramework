@@ -27,7 +27,7 @@ public class SumExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context must be of type IEnumerable");
+        result.ErrorMessage.Should().Be("Context is not of type enumerable");
     }
 
     [Fact]
@@ -193,7 +193,7 @@ public class SumExpressionTests
         var result = sut.ValidateContext(12345);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
     }
 
     [Fact]

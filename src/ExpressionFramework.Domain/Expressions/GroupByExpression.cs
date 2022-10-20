@@ -7,14 +7,14 @@
 [ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]
 [ParameterRequired(nameof(KeySelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context is not of type enumerable")]
 public partial record GroupByExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
         if (context is not IEnumerable e)
         {
-            return Result<object?>.Invalid("Context must be of type IEnumerable");
+            return Result<object?>.Invalid("Context is not of type enumerable");
         }
 
         var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(e, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
@@ -36,7 +36,7 @@ public partial record GroupByExpression
 
         if (context is not IEnumerable e)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
             yield break;
         }
 

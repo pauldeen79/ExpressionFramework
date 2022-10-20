@@ -17,7 +17,9 @@ public partial record WhereExpression
                 .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
                 .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
                 .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : context.Transform(x => Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context is not of type enumerable"));
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
@@ -29,7 +31,7 @@ public partial record WhereExpression
 
         if (context is not IEnumerable e)
         {
-            yield return new ValidationResult("Context must be of type IEnumerable");
+            yield return new ValidationResult("Context is not of type enumerable");
             yield break;
         }
 

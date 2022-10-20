@@ -92,7 +92,7 @@ public class WhereExpressionTests
         var resul = sut.ValidateContext(44);
 
         // Assert
-        resul.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        resul.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
     }
 
     [Fact]

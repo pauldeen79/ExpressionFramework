@@ -27,7 +27,9 @@ public partial record TakeExpression
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
                 .Take(count)
                 .Select(x => Result<object?>.Success(x)))
-            : Result<object?>.Invalid("Context must be of type IEnumerable");
+            : context.Transform(x => Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context is not of type enumerable"));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

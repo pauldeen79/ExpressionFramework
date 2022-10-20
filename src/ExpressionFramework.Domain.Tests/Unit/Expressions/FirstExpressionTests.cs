@@ -164,7 +164,7 @@ public class FirstExpressionTests
         var result = sut.ValidateContext(44);
 
         // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type IEnumerable" });
+        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
     }
 
     [Fact]
