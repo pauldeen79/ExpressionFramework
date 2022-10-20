@@ -59,65 +59,20 @@ public static class EnumerableExpression
             selectorDelegate
         );
 
-    private static Result<object?> GetScalarValue(object? context,
-                                                  Expression? predicate,
-                                                  Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
-                                                  Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate,
-                                                  Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
-                                                  Func<object?, Result<object?>>? defaultValueDelegateWithPredicate,
-                                                  Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
-    {
-        if (context == null)
-        {
-            return Result<object?>.Invalid("Context cannot be empty");
-        }
-        
-        if (context is not IEnumerable e)
-        {
-            return Result<object?>.Invalid("Context is not of type enumerable");
-        }
-
-        if (selectorDelegate == null)
-        {
-            selectorDelegate = new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
-        }
-
-        var itemsResult = selectorDelegate.Invoke(e.OfType<object?>());
-        if (!itemsResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(itemsResult);
-        }
-
-        if (predicate == null)
-        {
-            if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate != null)
-            {
-                return defaultValueDelegateWithoutPredicate.Invoke(context);
-            }
-
-            return delegateWithoutPredicate.Invoke(itemsResult.Value!);
-        }
-
-        var results = itemsResult.Value.Select(x => new ItemResult
-        (
-            x,
-            predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
-        )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
-
-        if (results.Any(x => !x.Result.IsSuccessful()))
-        {
-            // Error in predicate evaluation
-            return Result<object?>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
-        }
-
-        if (!results.Any(x => x.Result.Value) && defaultValueDelegateWithPredicate != null)
-        {
-            return defaultValueDelegateWithPredicate.Invoke(context);
-        }
-
-        return delegateWithPredicate?.Invoke(results)
-            ?? Result<object?>.Invalid("DelegateWithPredicate is required when predicate is filled");
-    }
+    public static Result<object?> GetAggregateValue(object? context,
+                                                    Func<IEnumerable<object?>, Result<object?>> aggregateDelegate,
+                                                    Expression? selectorExpression = null)
+        => context is IEnumerable e
+            ? GetTypedResultFromEnumerable(e, x => x
+                .Select(y => selectorExpression == null
+                    ? Result<object?>.Success(y)
+                    : selectorExpression.Evaluate(y)))
+                .Transform(result => result.IsSuccessful()
+                    ? aggregateDelegate.Invoke(result.Value!)
+                    : Result<object?>.FromExistingResult(result))
+            : context.Transform(x => Result<object?>.Invalid(x == null
+                ? "Context cannot be empty"
+                : "Context is not of type enumerable"));
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression == null
@@ -184,4 +139,64 @@ public static class EnumerableExpression
                 new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
                 new ReturnValueDescriptor(ResultStatus.Error, "Empty", typeof(object), errorDescription),
             });
+
+    private static Result<object?> GetScalarValue(object? context,
+                                                  Expression? predicate,
+                                                  Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
+                                                  Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate,
+                                                  Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
+                                                  Func<object?, Result<object?>>? defaultValueDelegateWithPredicate,
+                                                  Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+    {
+        if (context == null)
+        {
+            return Result<object?>.Invalid("Context cannot be empty");
+        }
+        
+        if (context is not IEnumerable e)
+        {
+            return Result<object?>.Invalid("Context is not of type enumerable");
+        }
+
+        if (selectorDelegate == null)
+        {
+            selectorDelegate = new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
+        }
+
+        var itemsResult = selectorDelegate.Invoke(e.OfType<object?>());
+        if (!itemsResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(itemsResult);
+        }
+
+        if (predicate == null)
+        {
+            if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate != null)
+            {
+                return defaultValueDelegateWithoutPredicate.Invoke(context);
+            }
+
+            return delegateWithoutPredicate.Invoke(itemsResult.Value!);
+        }
+
+        var results = itemsResult.Value.Select(x => new ItemResult
+        (
+            x,
+            predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
+        )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
+
+        if (results.Any(x => !x.Result.IsSuccessful()))
+        {
+            // Error in predicate evaluation
+            return Result<object?>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
+        }
+
+        if (!results.Any(x => x.Result.Value) && defaultValueDelegateWithPredicate != null)
+        {
+            return defaultValueDelegateWithPredicate.Invoke(context);
+        }
+
+        return delegateWithPredicate?.Invoke(results)
+            ?? Result<object?>.Invalid("DelegateWithPredicate is required when predicate is filled");
+    }
 }

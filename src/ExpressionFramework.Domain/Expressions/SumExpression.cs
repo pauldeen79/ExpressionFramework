@@ -4,17 +4,7 @@
 public partial record SumExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => context is IEnumerable e
-            ? EnumerableExpression.GetTypedResultFromEnumerable(e, x => x
-                .Select(y => SelectorExpression == null
-                    ? Result<object?>.Success(y)
-                    : SelectorExpression.Evaluate(y)))
-                .Transform(result => result.IsSuccessful()
-                    ? Sum(result.Value!)
-                    : Result<object?>.FromExistingResult(result))
-            : context.Transform(x => Result<object?>.Invalid(x == null
-                ? "Context cannot be empty"
-                : "Context is not of type enumerable"));
+        => EnumerableExpression.GetAggregateValue(context, Sum, SelectorExpression);
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
