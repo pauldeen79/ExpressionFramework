@@ -100,6 +100,104 @@ public class SubstringExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Substring_From_Context_When_Context_Is_NonEmptyString()
+    {
+        // Arrange
+        var sut = new SubstringExpression(1, 1);
+
+        // Act
+        var actual = sut.EvaluateTyped("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be("e");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Too_Short()
+    {
+        // Arrange
+        var sut = new SubstringExpression(1, 1);
+
+        // Act
+        var actual = sut.EvaluateTyped(string.Empty);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Index and length must refer to a location within the string");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
+    {
+        // Arrange
+        var sut = new SubstringExpression(1, 1);
+
+        // Act
+        var actual = sut.EvaluateTyped(null);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Context must be of type string");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.EvaluateTyped("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression("not an integer"), new ConstantExpression(1));
+
+        // Act
+        var actual = sut.EvaluateTyped("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("IndexExpression did not return an integer");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom"));
+
+        // Act
+        var actual = sut.EvaluateTyped("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
+    {
+        // Arrange
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression("not an integer"));
+
+        // Act
+        var actual = sut.EvaluateTyped("test");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
+    }
+
+    [Fact]
     public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
     {
         // Arrange

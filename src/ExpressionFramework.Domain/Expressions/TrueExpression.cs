@@ -3,9 +3,12 @@
 [ExpressionDescription("Returns true")]
 [UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "true", "This result will always be returned")]
-public partial record TrueExpression
+public partial record TrueExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.Success(true);
+
+    public Result<bool> EvaluateTyped(object? context)
+        => Result<bool>.Success(true);
 }
 

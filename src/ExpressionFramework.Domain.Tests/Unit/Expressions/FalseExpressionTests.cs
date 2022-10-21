@@ -17,6 +17,20 @@ public class FalseExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Success_With_Value_True()
+    {
+        // Arrange
+        var sut = new FalseExpression();
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(false);
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

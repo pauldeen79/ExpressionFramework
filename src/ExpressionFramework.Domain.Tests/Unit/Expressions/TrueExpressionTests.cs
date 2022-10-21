@@ -17,6 +17,20 @@ public class TrueExpressionTests
     }
 
     [Fact]
+    public void EvaluatTyped_Returns_Success_With_Value_True()
+    {
+        // Arrange
+        var sut = new TrueExpression();
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(true);
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

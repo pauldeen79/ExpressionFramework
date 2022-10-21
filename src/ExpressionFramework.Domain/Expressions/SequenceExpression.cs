@@ -18,5 +18,16 @@ public partial record SequenceExpression
 
         return Result<object?>.Success(values.Select(x => x.Value));
     }
+
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context)
+    {
+        var values = Expressions.EvaluateUntilFirstError(context);
+        if (values.Any() && !values.Last().IsSuccessful())
+        {
+            return Result<IEnumerable<object?>>.FromExistingResult(values.Last());
+        }
+
+        return Result<IEnumerable<object?>>.Success(values.Select(x => x.Value));
+    }
 }
 

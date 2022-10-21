@@ -10,7 +10,7 @@
 [ParameterDescription(nameof(SecondExpression), "Second expression")]
 [ParameterRequired(nameof(SecondExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "true of false", "This result will always be returned")]
-public partial record EqualsExpression
+public partial record EqualsExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
     {
@@ -20,5 +20,15 @@ public partial record EqualsExpression
         return nonSuccessfulResult != null
             ? nonSuccessfulResult
             : Result<object?>.Success(EqualsOperator.IsValid(results[0], results[1]));
+    }
+
+    public Result<bool> EvaluateTyped(object? context)
+    {
+        var results = new[] { FirstExpression, SecondExpression }.EvaluateUntilFirstError(context);
+
+        var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
+        return nonSuccessfulResult != null
+            ? Result<bool>.FromExistingResult(nonSuccessfulResult)
+            : Result<bool>.Success(EqualsOperator.IsValid(results[0], results[1]));
     }
 }

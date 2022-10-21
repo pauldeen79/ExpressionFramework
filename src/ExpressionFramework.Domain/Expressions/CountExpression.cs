@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(CountExpression))]
-public partial record CountExpression
+public partial record CountExpression : ITypedExpression<int>
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetOptionalScalarValue
@@ -10,6 +10,15 @@ public partial record CountExpression
             PredicateExpression,
             results => Result<object?>.Success(results.Count()),
             results => Result<object?>.Success(results.Count(x => x.Result.Value))
+        );
+
+    public Result<int> EvaluateTyped(object? context)
+        => EnumerableExpression.GetOptionalScalarValue
+        (
+            context,
+            PredicateExpression,
+            results => Result<int>.Success(results.Count()),
+            results => Result<int>.Success(results.Count(x => x.Result.Value))
         );
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
