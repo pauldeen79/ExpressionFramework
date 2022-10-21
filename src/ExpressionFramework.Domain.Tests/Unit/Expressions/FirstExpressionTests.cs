@@ -129,6 +129,20 @@ public class FirstExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Typed_Predicate()
+    {
+        // Arrange
+        var sut = new FirstExpression(new BooleanConstantExpression(true));
+
+        // Act
+        var result = sut.Evaluate(new[] { 1, 2, 3 });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(1);
+    }
+
+    [Fact]
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
