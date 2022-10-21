@@ -17,6 +17,20 @@ public class NotExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
+    {
+        // Arrange
+        var sut = new NotExpression();
+
+        // Act
+        var result = sut.Evaluate(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Context must be of type boolean");
+    }
+
+    [Fact]
     public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
@@ -31,13 +45,13 @@ public class NotExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
+    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
     {
         // Arrange
         var sut = new NotExpression();
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
