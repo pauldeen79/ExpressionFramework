@@ -9,13 +9,11 @@ public partial record ElementAtExpression
             context,
             null,
             results => IndexExpression
-                .Evaluate(context)
-                .TryCast<int>("IndexExpression did not return an integer")
+                .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
                 .Transform(indexResult => Result<object?>.Success(results.ElementAt(indexResult.Value))),
             selectorDelegate: items =>
                 IndexExpression
-                    .Evaluate(context)
-                    .TryCast<int>("IndexExpression did not return an integer")
+                    .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
                     .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => items.Count() >= index
                             ? Result<IEnumerable<object?>>.Success(items)

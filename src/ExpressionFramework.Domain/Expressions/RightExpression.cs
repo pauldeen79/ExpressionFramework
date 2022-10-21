@@ -10,24 +10,27 @@
 [ParameterType(nameof(LengthExpression), typeof(int))]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The last characters of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string, LengthExpression did not return an integer, Length must refer to a location within the string")]
-public partial record RightExpression
+public partial record RightExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
+
+    public Result<string> EvaluateTyped(object? context)
         => context is string s
             ? GetRightValueFromString(s)
-            : Result<object?>.Invalid("Context must be of type string");
+            : Result<string>.Invalid("Context must be of type string");
 
-    private Result<object?> GetRightValueFromString(string s)
+    private Result<string> GetRightValueFromString(string s)
     {
-        var lengthResult = LengthExpression.Evaluate(s).TryCast<int>("LengthExpression did not return an integer");
+        var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(lengthResult);
+            return Result<string>.FromExistingResult(lengthResult);
         }
 
         return s.Length >= lengthResult.Value
-            ? Result<object?>.Success(s.Substring(s.Length - lengthResult.Value, lengthResult.Value))
-            : Result<object?>.Invalid("Length must refer to a location within the string");
+            ? Result<string>.Success(s.Substring(s.Length - lengthResult.Value, lengthResult.Value))
+            : Result<string>.Invalid("Length must refer to a location within the string");
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

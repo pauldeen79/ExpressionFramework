@@ -9,18 +9,26 @@
 [ParameterRequired(nameof(TrimChars), false)]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The trim start and end value of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string")]
-public partial record TrimExpression
+public partial record TrimExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
         => context is string s
             ? Result<object?>.Success(Trim(s))
             : Result<object?>.Invalid("Context must be of type string");
 
+    public Result<string> EvaluateTyped(object? context)
+        => context is string s
+            ? Result<string>.Success(Trim(s))
+            : Result<string>.Invalid("Context must be of type string");
+
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
         => StringExpression.ValidateContext(context);
 
     public TrimExpression() : this(default(IEnumerable<char>)) { }
 
-    private string Trim(string s) => TrimChars == null ? s.Trim() : s.Trim(TrimChars.ToArray());
+    private string Trim(string s)
+        => TrimChars == null
+            ? s.Trim()
+            : s.Trim(TrimChars.ToArray());
 }
 

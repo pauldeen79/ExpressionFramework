@@ -56,6 +56,60 @@ public class TrimExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Trimmed_Expression_When_Context_Is_NonEmptyString()
+    {
+        // Arrange
+        var sut = new TrimExpression();
+
+        // Act
+        var actual = sut.EvaluateTyped(" trim ");
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be("trim");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Context_Is_NonEmptyString()
+    {
+        // Arrange
+        var sut = new TrimExpression(new[] { '0' });
+
+        // Act
+        var actual = sut.EvaluateTyped("0trim0");
+
+        // Assert
+        actual.GetValueOrThrow().Should().Be("trim");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_EmptyString_When_Context_Is_EmptyString()
+    {
+        // Arrange
+        var sut = new TrimExpression();
+
+        // Act
+        var actual = sut.EvaluateTyped(string.Empty);
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
+    {
+        // Arrange
+        var sut = new TrimExpression();
+
+        // Act
+        var actual = sut.EvaluateTyped(null);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.ErrorMessage.Should().Be("Context must be of type string");
+    }
+
+    [Fact]
     public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
     {
         // Arrange

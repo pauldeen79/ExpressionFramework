@@ -1,48 +1,48 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class FalseExpressionTests
+public class Int32ConstantExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Success_With_Value_True()
+    public void Can_Evaluate_Int32()
     {
         // Arrange
-        var sut = new FalseExpression();
+        var sut = new Int32ConstantExpression(1);
 
         // Act
         var result = sut.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Value.Should().BeEquivalentTo(1);
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Success_With_Value_True()
+    public void Can_Evaluate_Int32_Typed()
     {
         // Arrange
-        var sut = new FalseExpression();
+        var sut = new Int32ConstantExpression(1);
 
         // Act
         var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(false);
+        result.Value.Should().Be(1);
     }
 
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(FalseExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(Int32ConstantExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(FalseExpression));
-        result.Parameters.Should().BeEmpty();
+        result.Name.Should().Be(nameof(Int32ConstantExpression));
+        result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().ContainSingle();
         result.ContextIsRequired.Should().BeNull();
     }

@@ -64,6 +64,67 @@ public class StringConcatenateExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expressions_Is_Empty()
+    {
+        // Arrange
+        var sut = new StringConcatenateExpression(Enumerable.Empty<Expression>());
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("At least one expression is required");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expressions_Contains_Non_String_Value()
+    {
+        // Arrange
+        var sut = new StringConcatenateExpression(new[] { new ConstantExpression(false) });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression must be of type string");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Error_When_Expressions_Returns_One_Item_With_Error_Result()
+    {
+        // Arrange
+        var sut = new StringConcatenateExpression(new[] { new ErrorExpression("Kaboom") });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Concatated_String_When_All_Expressions_Contain_String_Value()
+    {
+        // Arrange
+        var sut = new StringConcatenateExpression(new[]
+        {
+            new ConstantExpression("a"),
+            new ConstantExpression("b"),
+            new ConstantExpression("c")
+        });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("abc");
+    }
+
+    [Fact]
     public void ValidateContext_Returns_Item_When_Expressions_Is_Empty()
     {
         // Arrange

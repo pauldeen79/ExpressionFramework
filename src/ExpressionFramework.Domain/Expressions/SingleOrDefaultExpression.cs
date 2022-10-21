@@ -11,7 +11,7 @@ public partial record SingleOrDefaultExpression
             results => Result<object?>.Success(results.Single()),
             results => Result<object?>.Success(results.Single(x => x.Result.Value).Item),
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context),
-            items => items.Count(x => PredicateExpression == null || PredicateExpression.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value").Value) > 1
+            items => items.Count(x => PredicateExpression == null || PredicateExpression.EvaluateTyped<bool>(x, "Predicate did not return a boolean value").Value) > 1
                 ? Result<IEnumerable<object?>>.Invalid("Sequence contains more than one element")
                 : Result<IEnumerable<object?>>.Success(items)
         );

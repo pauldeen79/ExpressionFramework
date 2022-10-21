@@ -59,6 +59,62 @@ public class SequenceExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_One_Expression_Returns_Invalid()
+    {
+        // Arrange
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message") });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Message");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Error_When_One_Expression_Returns_Error()
+    {
+        // Arrange
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom") });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Empty_Sequence_When_Expressions_Are_Empty()
+    {
+        // Arrange
+        var sut = new SequenceExpression(Enumerable.Empty<Expression>());
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Filled_Sequence_When_Expressions_Are_Not_Empty()
+    {
+        // Arrange
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ConstantExpression(3) });
+
+        // Act
+        var result = sut.EvaluateTyped(null);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] { 1, 2, 3 });
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
