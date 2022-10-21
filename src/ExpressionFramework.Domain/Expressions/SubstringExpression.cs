@@ -14,7 +14,7 @@
 public partial record SubstringExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
-        => EvaluateTyped(context).TryCast<object?>();
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<string> EvaluateTyped(object? context)
         => context is string s
