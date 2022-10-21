@@ -22,9 +22,9 @@ public partial record ToPascalCaseExpression : ITypedExpression<string>
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
         => StringExpression.ValidateContext(context);
 
-    private string? ToPascalCase(string value)
+    private string ToPascalCase(string value)
     {
-        if (!string.IsNullOrEmpty(value))
+        if (value.Length > 0)
         {
             return value.Substring(0, 1).ToLowerInvariant() + value.Substring(1);
         }
