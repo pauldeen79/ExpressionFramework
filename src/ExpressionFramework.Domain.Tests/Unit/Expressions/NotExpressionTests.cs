@@ -17,6 +17,20 @@ public class NotExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
+    {
+        // Arrange
+        var sut = new NotExpression();
+
+        // Act
+        var result = sut.EvaluateTyped(false);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be(true);
+    }
+
+    [Fact]
     public void Evaluate_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
     {
         // Arrange

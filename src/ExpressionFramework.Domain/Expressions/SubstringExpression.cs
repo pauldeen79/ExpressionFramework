@@ -11,40 +11,43 @@
 [ParameterRequired(nameof(LengthExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(string), "A set of characters of the context", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string, IndexExpression did not return an integer, LengthExpression did not return an integer, Index and length must refer to a location within the string")]
-public partial record SubstringExpression
+public partial record SubstringExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
+        => EvaluateTyped(context).TryCast<object?>();
+
+    public Result<string> EvaluateTyped(object? context)
         => context is string s
             ? GetLeftValueFromString(s)
-            : Result<object?>.Invalid("Context must be of type string");
+            : Result<string>.Invalid("Context must be of type string");
 
-    private Result<object?> GetLeftValueFromString(string s)
+    private Result<string> GetLeftValueFromString(string s)
     {
         var indexResult = IndexExpression.Evaluate(s);
         if (!indexResult.IsSuccessful())
         {
-            return indexResult;
+            return Result<string>.FromExistingResult(indexResult);
         }
 
         if (indexResult.Value is not int index)
         {
-            return Result<object?>.Invalid("IndexExpression did not return an integer");
+            return Result<string>.Invalid("IndexExpression did not return an integer");
         }
 
         var lengthResult = LengthExpression.Evaluate(s);
         if (!lengthResult.IsSuccessful())
         {
-            return lengthResult;
+            return Result<string>.FromExistingResult(lengthResult);
         }
 
         if (lengthResult.Value is not int length)
         {
-            return Result<object?>.Invalid("LengthExpression did not return an integer");
+            return Result<string>.Invalid("LengthExpression did not return an integer");
         }
 
         return s.Length >= index + length
-                ? Result<object?>.Success(s.Substring(index, length))
-                : Result<object?>.Invalid("Index and length must refer to a location within the string");
+            ? Result<string>.Success(s.Substring(index, length))
+            : Result<string>.Invalid("Index and length must refer to a location within the string");
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)

@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(AllExpression))]
-public partial record AllExpression
+public partial record AllExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetOptionalScalarValue
@@ -10,6 +10,16 @@ public partial record AllExpression
             PredicateExpression,
             null!, // you can't get here... predicate is always checked
             results => Result<object?>.Success(results.All(x => x.Result.Value)),
+            predicateIsRequired: true
+        );
+
+    public Result<bool> EvaluateTyped(object? context)
+        => EnumerableExpression.GetOptionalScalarValue
+        (
+            context,
+            PredicateExpression,
+            null!, // you can't get here... predicate is always checked
+            results => Result<bool>.Success(results.All(x => x.Result.Value)),
             predicateIsRequired: true
         );
 

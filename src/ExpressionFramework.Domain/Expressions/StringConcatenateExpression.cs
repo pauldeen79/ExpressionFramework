@@ -7,19 +7,22 @@
 [ParameterRequired(nameof(Expressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The concatenated string", "This result will be returned when the expressions are all of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "At least one expression is required, Expression must be of type string")]
-public partial record StringConcatenateExpression
+public partial record StringConcatenateExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
+        => EvaluateTyped(context).TryCast<object?>();
+
+    public Result<string> EvaluateTyped(object? context)
     {
         var values = Expressions.EvaluateUntilFirstError(context);
         if (!values.Any())
         {
-            return Result<object?>.Invalid("At least one expression is required");
+            return Result<string>.Invalid("At least one expression is required");
         }
 
         if (!values.Last().IsSuccessful())
         {
-            return values.Last();
+            return Result<string>.FromExistingResult(values.Last());
         }
 
         var strings = values.Select(x => x.TryCast<string>("Expression must be of type string"))
@@ -29,10 +32,10 @@ public partial record StringConcatenateExpression
         var unsuccessfulResult = strings.FirstOrDefault(x => !x.IsSuccessful());
         if (unsuccessfulResult != null)
         {
-            return Result<object?>.FromExistingResult(unsuccessfulResult);
+            return Result<string>.FromExistingResult(unsuccessfulResult);
         }
 
-        return Result<object?>.Success(string.Concat(strings.Select(x => x.Value)));
+        return Result<string>.Success(string.Concat(strings.Select(x => x.Value)));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
