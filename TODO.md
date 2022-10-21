@@ -1,6 +1,7 @@
 # //TODO
 expressions:
 - Add SequenceExpression, which evaluates all expressions, and returns them as a sequence
+- Add RangeExpression, which creates a range from minimum to maximum value (optionally with step)
 - Add StringJoinExpression, which joins multiple values using a separator
 - Add PadLeft and PadRight string expressions
 - Add CreateObject expression, that creates an object (expando object) with multiple properties

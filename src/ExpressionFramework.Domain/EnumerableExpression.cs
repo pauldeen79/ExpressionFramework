@@ -30,7 +30,8 @@ public static class EnumerableExpression
                                                          Expression? predicate,
                                                          Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
                                                          Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
-                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null,
+                                                         bool predicateIsRequired = false)
         => GetScalarValue
         (
             context,
@@ -39,7 +40,8 @@ public static class EnumerableExpression
             delegateWithPredicate,
             _ => Result<object?>.Invalid("Enumerable is empty"),
             _ => Result<object?>.Invalid("None of the items conform to the supplied predicate"),
-            selectorDelegate
+            selectorDelegate,
+            predicateIsRequired
         );
 
     public static Result<object?> GetOptionalScalarValue(object? context,
@@ -47,7 +49,8 @@ public static class EnumerableExpression
                                                          Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
                                                          Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate = null,
                                                          Func<object?, Result<object?>>? defaultValueDelegate = null,
-                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+                                                         Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null,
+                                                         bool predicateIsRequired = false)
         => GetScalarValue
         (
             context,
@@ -56,7 +59,8 @@ public static class EnumerableExpression
             delegateWithPredicate,
             defaultValueDelegate,
             defaultValueDelegate,
-            selectorDelegate
+            selectorDelegate,
+            predicateIsRequired
         );
 
     public static Result<object?> GetAggregateValue(object? context,
@@ -116,13 +120,24 @@ public static class EnumerableExpression
         }
     }
 
+    public static IEnumerable<ValidationResult> ValidateEmptyPredicate(Expression? predicateExpression)
+    {
+        if (predicateExpression == null)
+        {
+            yield return new ValidationResult("Predicate is required");
+        }
+    }
+
+#pragma warning disable S107 // Methods should not have too many parameters
     public static ExpressionDescriptor GetDescriptor(Type type,
                                                      string description,
                                                      string okValue,
                                                      string okDescription,
                                                      string invalidDescription,
                                                      string errorDescription,
-                                                     bool hasDefaultExpression)
+                                                     bool hasDefaultExpression,
+                                                     bool predicateIsRequired = false)
+#pragma warning restore S107 // Methods should not have too many parameters
         => new(
             type.Name,
             type.FullName,
@@ -133,7 +148,7 @@ public static class EnumerableExpression
             true,
             new[]
             {
-                new ParameterDescriptor("PredicateExpression", typeof(Expression).FullName, "Optional predicate to use", false),
+                new ParameterDescriptor("PredicateExpression", typeof(Expression).FullName, predicateIsRequired ? "Predicate to use" : "Optional predicate to use", predicateIsRequired),
                 new ParameterDescriptor("DefaultExpression", typeof(Expression).FullName, "Optional default value to use", false),
             }.Where(x => x.Name != "DefaultExpression" || hasDefaultExpression),
             new[]
@@ -143,13 +158,16 @@ public static class EnumerableExpression
                 new ReturnValueDescriptor(ResultStatus.Error, "Empty", typeof(object), errorDescription),
             });
 
+#pragma warning disable S107 // Methods should not have too many parameters
     private static Result<object?> GetScalarValue(object? context,
                                                   Expression? predicate,
                                                   Func<IEnumerable<object?>, Result<object?>> delegateWithoutPredicate,
                                                   Func<IEnumerable<ItemResult>, Result<object?>>? delegateWithPredicate,
                                                   Func<object?, Result<object?>>? defaultValueDelegateWithoutPredicate,
                                                   Func<object?, Result<object?>>? defaultValueDelegateWithPredicate,
-                                                  Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null)
+                                                  Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null,
+                                                  bool predicateIsRequired = false)
+#pragma warning restore S107 // Methods should not have too many parameters
     {
         if (context == null)
         {
@@ -159,6 +177,11 @@ public static class EnumerableExpression
         if (context is not IEnumerable e)
         {
             return Result<object?>.Invalid("Context is not of type enumerable");
+        }
+
+        if (predicateIsRequired && predicate == null)
+        {
+            return Result<object?>.Invalid("Predicate is required");
         }
 
         if (selectorDelegate == null)
