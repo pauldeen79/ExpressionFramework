@@ -211,7 +211,7 @@ public static class EnumerableExpression
         var results = itemsResult.Value.Select(x => new ItemResult
         (
             x,
-            predicate.Evaluate(x).TryCast<bool>("Predicate did not return a boolean value")
+            predicate.EvaluateTyped<bool>(x, "Predicate did not return a boolean value")
         )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
 
         if (results.Any(x => !x.Result.IsSuccessful()))

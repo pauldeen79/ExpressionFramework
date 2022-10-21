@@ -22,7 +22,7 @@ public partial record RightExpression : ITypedExpression<string>
 
     private Result<string> GetRightValueFromString(string s)
     {
-        var lengthResult = LengthExpression.Evaluate(s).TryCast<int>("LengthExpression did not return an integer");
+        var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(lengthResult);

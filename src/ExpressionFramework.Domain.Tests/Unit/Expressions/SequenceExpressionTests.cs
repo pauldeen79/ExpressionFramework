@@ -93,7 +93,7 @@ public class SequenceExpressionTests
         var sut = new SequenceExpression(Enumerable.Empty<Expression>());
 
         // Act
-        var result = sut.EvaluateTyped(null).TryCast<IEnumerable<object?>>();
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -107,7 +107,7 @@ public class SequenceExpressionTests
         var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ConstantExpression(3) });
 
         // Act
-        var result = sut.EvaluateTyped(null).TryCast<IEnumerable<object?>>();
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

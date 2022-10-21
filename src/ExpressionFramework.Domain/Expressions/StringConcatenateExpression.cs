@@ -14,7 +14,7 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
 
     public Result<string> EvaluateTyped(object? context)
     {
-        var values = Expressions.EvaluateUntilFirstError(context);
+        var values = Expressions.EvaluateTypedUntilFirstError<string>(context, "Expression must be of type string");
         if (!values.Any())
         {
             return Result<string>.Invalid("At least one expression is required");
@@ -25,7 +25,7 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
             return Result<string>.FromExistingResult(values.Last());
         }
 
-        var strings = values.Select(x => x.TryCast<string>("Expression must be of type string"))
+        var strings = values
             .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
             .ToArray();
 
