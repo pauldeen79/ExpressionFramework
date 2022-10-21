@@ -25,12 +25,6 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
             return Result<string>.FromExistingResult(values.Last());
         }
 
-        var unsuccessfulResult = values.FirstOrDefault(x => !x.IsSuccessful());
-        if (unsuccessfulResult != null)
-        {
-            return Result<string>.FromExistingResult(unsuccessfulResult);
-        }
-
         return Result<string>.Success(string.Concat(values.Select(x => x.Value)));
     }
 
