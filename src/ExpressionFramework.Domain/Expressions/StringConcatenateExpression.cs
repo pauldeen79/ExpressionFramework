@@ -25,17 +25,13 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
             return Result<string>.FromExistingResult(values.Last());
         }
 
-        var strings = values
-            .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
-            .ToArray();
-
-        var unsuccessfulResult = strings.FirstOrDefault(x => !x.IsSuccessful());
+        var unsuccessfulResult = values.FirstOrDefault(x => !x.IsSuccessful());
         if (unsuccessfulResult != null)
         {
             return Result<string>.FromExistingResult(unsuccessfulResult);
         }
 
-        return Result<string>.Success(string.Concat(strings.Select(x => x.Value)));
+        return Result<string>.Success(string.Concat(values.Select(x => x.Value)));
     }
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
