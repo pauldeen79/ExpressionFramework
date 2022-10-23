@@ -53,7 +53,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     [ParameterType(nameof(Parameter), typeof(string))]
     [ParameterRequired(nameof(Parameter), true)]
     [ParameterDescription(nameof(Parameter), "Some other description")]
-    [ReturnValue(ResultStatus.Ok, "Some value", "Some description")]
+    [ReturnValue(ResultStatus.Ok, typeof(bool), "Some value", "Some description")]
     private sealed record SomeAggregator : Evaluatable
     {
         public override Result<bool> Evaluate(object? context)

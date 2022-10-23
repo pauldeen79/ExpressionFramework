@@ -5,7 +5,7 @@
 [OperatorLeftValueType(typeof(string))]
 [OperatorUsesRightValue(true)]
 [OperatorRightValueType(typeof(string))]
-[ReturnValue(ResultStatus.Ok, "true or false", "True when both values are string, and the left value starts with the right value, otherwise false")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true or false", "True when both values are string, and the left value starts with the right value, otherwise false")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Left value or right value are not of type string")]
 public partial record StartsWithOperator
 {

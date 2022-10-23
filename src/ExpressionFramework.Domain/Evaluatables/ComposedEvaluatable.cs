@@ -3,7 +3,7 @@
 [EvaluatableDescription("Evaluates multiple conditions")]
 [ParameterDescription(nameof(Conditions), "Conditions to evaluate")]
 [ParameterRequired(nameof(Conditions), true)]
-[ReturnValue(ResultStatus.Ok, "true when the conditions evaluate to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true when the conditions evaluate to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record ComposedEvaluatable : IValidatableObject
 {
     public override Result<bool> Evaluate(object? context)

@@ -7,7 +7,7 @@
 [ParameterRequired(nameof(Operator), true)]
 [ParameterDescription(nameof(RightExpression), "Right expression")]
 [ParameterRequired(nameof(RightExpression), true)]
-[ReturnValue(ResultStatus.Ok, "true when the condition itself evaluates to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true when the condition itself evaluates to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record ComposableEvaluatable
 {
     public ComposableEvaluatable(Expression leftExpression, Operator @operator, Expression rightExpression)

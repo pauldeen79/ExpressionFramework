@@ -53,7 +53,7 @@ public class ReflectionOperatorDescriptorProviderTests
     [OperatorUsesRightValue(true)]
     [OperatorLeftValueType(typeof(string))]
     [OperatorRightValueType(typeof(string))]
-    [ReturnValue(ResultStatus.Ok, "Some value", "Some description")]
+    [ReturnValue(ResultStatus.Ok, typeof(bool), "Some value", "Some description")]
     private sealed record SomeOperator : Operator
     {
         protected override Result<bool> Evaluate(object? leftValue, object? rightValue)

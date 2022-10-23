@@ -48,7 +48,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     [ParameterType(nameof(Parameter), typeof(string))]
     [ParameterRequired(nameof(Parameter), true)]
     [ParameterDescription(nameof(Parameter), "Some other description")]
-    [ReturnValue(ResultStatus.Ok, "Some value", "Some description")]
+    [ReturnValue(ResultStatus.Ok, typeof(object), "Some value", "Some description")]
     private sealed record SomeAggregator : Aggregator
     {
         public override Result<object?> Aggregate(object? context, Expression secondExpression)

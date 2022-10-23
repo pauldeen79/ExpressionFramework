@@ -5,7 +5,7 @@
 [OperatorLeftValueType(typeof(IEnumerable))]
 [OperatorUsesRightValue(true)]
 [OperatorRightValueType(typeof(object))]
-[ReturnValue(ResultStatus.Ok, "true or false", "True when left value does not contain the right value, otherwise false")]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true or false", "True when left value does not contain the right value, otherwise false")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Left value is not of type IEnumerable")]
 public partial record EnumerableNotContainsOperator
 {
