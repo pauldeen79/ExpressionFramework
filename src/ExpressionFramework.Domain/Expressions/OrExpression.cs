@@ -13,36 +13,10 @@
 public partial record OrExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        if (context is not bool b)
-        {
-            return Result<object?>.Invalid("Context must be of type boolean");
-        }
-
-        var expressionResult = Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean");
-        if (!expressionResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(expressionResult);
-        }
-
-        return Result<object?>.Success(b || expressionResult.Value);
-    }
+        => Result<object?>.FromExistingResult(BooleanExpression.EvaluateBooleanCombination(context, Expression, (a, b) => a || b), x => x);
 
     public Result<bool> EvaluateTyped(object? context)
-    {
-        if (context is not bool b)
-        {
-            return Result<bool>.Invalid("Context must be of type boolean");
-        }
-
-        var expressionResult = Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean");
-        if (!expressionResult.IsSuccessful())
-        {
-            return Result<bool>.FromExistingResult(expressionResult);
-        }
-
-        return Result<bool>.Success(b || expressionResult.Value);
-    }
+        => BooleanExpression.EvaluateBooleanCombination(context, Expression, (a, b) => a || b);
 
     public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
     {
