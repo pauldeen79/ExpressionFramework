@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns the inverted value of the boolean context value")]
-[UsesContext(false)]
+[UsesContext(true)]
 [ContextDescription("Boolean value to invert")]
 [ContextType(typeof(bool))]
 [ContextRequired(true)]
