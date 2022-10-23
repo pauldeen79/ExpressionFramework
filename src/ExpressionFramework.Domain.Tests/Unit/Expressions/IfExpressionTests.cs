@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class ConditionalExpressionTests
+public class IfExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class ConditionalExpressionTests
     public void EvaluateWithConditionResult_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);
@@ -34,7 +34,7 @@ public class ConditionalExpressionTests
     public void EvaluateWithConditionResult_Returns_DefaultExpression_Result_When_Available_And_ConditionEvalution_Returns_False()
     {
         // Arrange
-        var sut = new ConditionalExpression(new SingleEvaluatable("Something", new EqualsOperator(), "Something else"), null, "Default value");
+        var sut = new IfExpression(new SingleEvaluatable("Something", new EqualsOperator(), "Something else"), null, "Default value");
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);
@@ -50,14 +50,14 @@ public class ConditionalExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(ConditionalExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(IfExpression));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ConditionalExpression));
+        result.Name.Should().Be(nameof(IfExpression));
         result.Parameters.Should().HaveCount(3);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();

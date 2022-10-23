@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IConditionalExpression : IExpression
+public interface IIfExpression : IExpression
 {
     [Required]
     IEvaluatable Condition { get; }

@@ -1,6 +1,6 @@
-﻿Feature: ConditionalExpression
+﻿Feature: IfExpression
 
-A conditional expression is a combination of a condition, and two expressions: one which will be used in case the condition is true, or one which will be used when the condition is false
+An if expression is a combination of a condition, and two expressions: one which will be used in case the condition is true, or one which will be used when the condition is false
 
 Scenario: Condition evaluates to true
     Given I have the following condition

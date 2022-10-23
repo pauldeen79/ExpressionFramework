@@ -10,7 +10,7 @@ public sealed class ExpressionSteps
     private Result<object?>? _result;
 
     private ChainedExpressionBuilder ChainedExpressionBuilder => _expressionBuilder as ChainedExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a chained expression?");
-    private ConditionalExpressionBuilder ConditionalExpressionBuilder => _expressionBuilder as ConditionalExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a conditional expression?");
+    private IfExpressionBuilder IfExpressionBuilder => _expressionBuilder as IfExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized an if expression?");
     private SwitchExpressionBuilder SwitchExpressionBuilder => _expressionBuilder as SwitchExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a switch expression?");
     private Expression Expression => _expressionBuilder != null
         ? _expressionBuilder.Build()
@@ -46,7 +46,7 @@ public sealed class ExpressionSteps
 
     [Given(@"I have a conditional expression")]
     public void GivenIHaveAConditionalExpression()
-        => _expressionBuilder = new ConditionalExpressionBuilder().WithCondition(_evaluatableSteps.EvaluatableBuilder);
+        => _expressionBuilder = new IfExpressionBuilder().WithCondition(_evaluatableSteps.EvaluatableBuilder);
 
     [Given(@"I have a switch expression")]
     public void GivenIHaveASwitchExpression()
@@ -76,11 +76,11 @@ public sealed class ExpressionSteps
 
     [Given(@"I use a constant expression '([^']*)' as result expression")]
     public void GivenIUseAConstantExpressionAsResultExpression(string expression)
-        => ConditionalExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
+        => IfExpressionBuilder.ResultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [Given(@"I use a constant expression '([^']*)' as default expression")]
     public void GivenIUseAConstantExpressionAsDefaultExpression(string expression)
-        => ConditionalExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
+        => IfExpressionBuilder.DefaultExpression = new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(expression));
 
     [Given(@"I add the following case")]
     public void GivenIAddTheFollowingCase(Case @case)

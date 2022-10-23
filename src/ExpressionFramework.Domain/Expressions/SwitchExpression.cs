@@ -17,7 +17,7 @@ public partial record SwitchExpression
     {
         foreach (var @case in Cases)
         {
-            var conditionalExpression = new ConditionalExpression(@case.Condition, @case.Expression, null);
+            var conditionalExpression = new IfExpression(@case.Condition, @case.Expression, null);
             var caseResult = conditionalExpression.EvaluateWithConditionResult(context);
             if (!caseResult.IsSuccessful())
             {
