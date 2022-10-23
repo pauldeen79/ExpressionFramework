@@ -7,5 +7,4 @@ expressions:
 - Add Coalesce/FirstNotNull expression, which maybe is just a short-hand for First with a predicate, but maybe is worth to have on its own
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
 - Add expressions: ConvertToInt, ConvertToDouble, ConvertToDecimal, ConvertToBoolean, ParseDateTime, ConvertToString
-- Add expressions: And, Or (with Expressions property that need to be of type boolean)
 - Add expressions: Now, UtcNow, Today
