@@ -20,4 +20,28 @@ public static class BooleanExpression
 
         return Result<bool>.Success(@delegate.Invoke(b, expressionResult.Value));
     }
+
+    public static ExpressionDescriptor GetDescriptor(Type type,
+                                                     string description,
+                                                     string okValue,
+                                                     string okDescription,
+                                                     string invalidDescription,
+                                                     string parameterDescription)
+        => new(
+            type.Name,
+            type.FullName,
+            description,
+            true,
+            typeof(IEnumerable).FullName,
+            "Boolean value to use",
+            true,
+            new[]
+            {
+                new ParameterDescriptor("Expression", typeof(Expression).FullName, parameterDescription, true),
+            },
+            new[]
+            {
+                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
+            });
 }
