@@ -6,7 +6,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate(12345);
@@ -34,7 +34,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Context_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -48,7 +48,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Context_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), new ConstantExpression("default value"));
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), new ConstantExpression("default value"));
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -132,7 +132,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -146,7 +146,7 @@ public class ElementAtOrDefaultExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.ValidateContext(Enumerable.Empty<int>());
@@ -159,7 +159,7 @@ public class ElementAtOrDefaultExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.ValidateContext(null);
@@ -172,7 +172,7 @@ public class ElementAtOrDefaultExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(1), null);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.ValidateContext(44);

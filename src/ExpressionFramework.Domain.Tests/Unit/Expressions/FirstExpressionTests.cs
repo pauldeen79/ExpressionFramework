@@ -132,7 +132,7 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Typed_Predicate()
     {
         // Arrange
-        var sut = new FirstExpression(new BooleanConstantExpression(true));
+        var sut = new FirstExpression(new TypedConstantExpression<bool>(true));
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });

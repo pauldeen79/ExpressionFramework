@@ -24,5 +24,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .AddLiteralCodeStatements("throw new NotImplementedException();")
                 )
+                .AddGenericTypeArguments(x.GenericTypeArguments)
+                .AddGenericTypeArgumentConstraints(x.GenericTypeArgumentConstraints)
                 .Build());
 }

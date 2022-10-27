@@ -21,7 +21,7 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
             var parameters = DescriptorProvider.GetParameters(type);
             var returnValues = DescriptorProvider.GetReturnValues(type);
             _descriptor = new ExpressionDescriptor(
-                name: type.Name,
+                name: RemoveGenerics(type.Name),
                 typeName: type.FullName,
                 description,
                 usesContext,
@@ -34,4 +34,20 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
     }
 
     public ExpressionDescriptor Get() => _descriptor;
+
+    private static string RemoveGenerics(string name)
+    {
+        if (string.IsNullOrEmpty(name))
+        {
+            return name;
+        }
+
+        var index = name.IndexOf("`");
+        if (index == -1)
+        {
+            return name;
+        }
+
+        return name.Substring(0, index);
+    }
 }

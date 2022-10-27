@@ -6,7 +6,7 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate(123);
@@ -34,7 +34,7 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -76,7 +76,7 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate(new[] { 1, 2, 3 });
@@ -90,7 +90,7 @@ public class ElementAtExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.ValidateContext(new[] { 1, 2, 3 });
@@ -103,7 +103,7 @@ public class ElementAtExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.ValidateContext(null);
@@ -116,7 +116,7 @@ public class ElementAtExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(1));
+        var sut = new ElementAtExpression(new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.ValidateContext(44);

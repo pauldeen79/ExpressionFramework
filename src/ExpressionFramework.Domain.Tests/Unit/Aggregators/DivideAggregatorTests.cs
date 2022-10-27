@@ -9,7 +9,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(true, new ConstantExpression(1));
+        var result = sut.Aggregate(true, new TypedConstantExpression<int>(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -24,7 +24,7 @@ public class DivideAggregatorTests
         byte input = 1;
 
         // Act
-        var result = sut.Aggregate(input, new ConstantExpression(2));
+        var result = sut.Aggregate(input, new TypedConstantExpression<byte>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -39,7 +39,7 @@ public class DivideAggregatorTests
         short input = 1;
 
         // Act
-        var result = sut.Aggregate(input, new ConstantExpression(2));
+        var result = sut.Aggregate(input, new TypedConstantExpression<short>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -53,7 +53,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1, new ConstantExpression(2));
+        var result = sut.Aggregate(1, new TypedConstantExpression<int>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -67,7 +67,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1L, new ConstantExpression(2L));
+        var result = sut.Aggregate(1L, new TypedConstantExpression<long>(2L));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -81,7 +81,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1f, new ConstantExpression(2f));
+        var result = sut.Aggregate(1f, new TypedConstantExpression<float>(2f));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -95,7 +95,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1d, new ConstantExpression(2d));
+        var result = sut.Aggregate(1d, new TypedConstantExpression<double>(2d));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -109,7 +109,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1M, new ConstantExpression(2M));
+        var result = sut.Aggregate(1M, new TypedConstantExpression<decimal>(2M));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

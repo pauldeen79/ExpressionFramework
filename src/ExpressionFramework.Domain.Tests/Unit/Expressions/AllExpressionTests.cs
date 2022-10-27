@@ -6,7 +6,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.Evaluate(null);
@@ -20,7 +20,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.Evaluate(123);
@@ -48,7 +48,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_True_When_Context_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.Evaluate(Enumerable.Empty<object>());
@@ -132,7 +132,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -146,7 +146,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.EvaluateTyped(123);
@@ -174,7 +174,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_True_When_Context_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.EvaluateTyped(Enumerable.Empty<object>());
@@ -258,7 +258,7 @@ public class AllExpressionTests
     public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.ValidateContext(new[] { 1, 2, 3 });
@@ -271,7 +271,7 @@ public class AllExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.ValidateContext(null);
@@ -284,7 +284,7 @@ public class AllExpressionTests
     public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(false));
+        var sut = new AllExpression(new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.ValidateContext(44);
