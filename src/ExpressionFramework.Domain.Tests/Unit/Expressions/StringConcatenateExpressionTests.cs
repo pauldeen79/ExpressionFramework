@@ -194,8 +194,9 @@ public class StringConcatenateExpressionTests
         result.Name.Should().Be(nameof(StringConcatenateExpression));
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().BeNull();
-        result.ContextIsRequired.Should().BeNull();
-        result.ContextTypeName.Should().BeNull();
+        result.ContextDescription.Should().NotBeEmpty();
+        result.ContextTypeName.Should().NotBeEmpty();
+        result.UsesContext.Should().BeTrue();
+        result.ContextIsRequired.Should().BeFalse();
     }
 }

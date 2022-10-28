@@ -1,8 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Chains the result of an expression onto the next one, and so on")]
+[UsesContext(true)]
 [ContextDescription("Value to use as context in expression evaluation")]
 [ContextType(typeof(object))]
+[ContextRequired(false)]
 [ParameterDescription(nameof(Expressions), "Expressions to use on chaining. The context is chained to the first expression.")]
 [ParameterRequired(nameof(Expressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Result value of the last expression", "This will be returned in case the last expression returns success (Ok)")]
