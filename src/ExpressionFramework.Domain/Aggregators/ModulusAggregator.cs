@@ -1,16 +1,14 @@
 ﻿namespace ExpressionFramework.Domain.Aggregators;
 
 [AggregatorDescription("Computes the modulus of two numeric values")]
-[UsesContext(true)]
-[ContextDescription("Value to use as context in the aggregator")]
-[ContextType(typeof(object))]
-[ContextRequired(true)]
+[UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Modulus of two values", "This will be returned in case the execution returns success (Ok)")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Could not convert SecondExpression to [Type]. Error message: [Error message], Context is not of a supported type")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Could not convert FirstExpression to [Type]. Error message: [Error message], Could not convert SecondExpression to [Type]. Error message: [Error message]")]
 public partial record ModulusAggregator
 {
-    public override Result<object?> Aggregate(object? context, Expression secondExpression)
+    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
         => NumericAggregator.Evaluate(context,
+                                      firstExpression,
                                       secondExpression,
                                       new Func<byte, byte, object>((b1, b2) => b1 % b2),
                                       new Func<short, short, object>((s1, s2) => s1 % s2),

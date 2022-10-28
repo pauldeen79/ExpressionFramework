@@ -6,10 +6,10 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
     {
         // Arrange
-        var sut = new AggregateExpression(new object[] { 2, 3 }, new AddAggregator());
+        var sut = new AggregateExpression(new object[] { 1, 2, 3 }, new AddAggregator());
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -28,10 +28,10 @@ public class AggregateExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(AggregateExpression));
-        result.Parameters.Should().HaveCount(2);
+        result.Parameters.Should().HaveCount(3);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

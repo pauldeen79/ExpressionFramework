@@ -51,7 +51,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     [ReturnValue(ResultStatus.Ok, typeof(object), "Some value", "Some description")]
     private sealed record SomeAggregator : Aggregator
     {
-        public override Result<object?> Aggregate(object? context, Expression secondExpression)
+        public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
             => Result<object?>.Success("some value");
 
         public object Parameter { get; } = "";

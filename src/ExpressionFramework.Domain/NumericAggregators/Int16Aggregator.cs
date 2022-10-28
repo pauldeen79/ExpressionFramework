@@ -2,13 +2,19 @@
 
 public class Int16Aggregator : INumericAggregator<short>
 {
-    public Result<object?> Aggregate(object? context, Expression secondExpression, Func<short, short, object> aggregatorDelegate)
+    public Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, Func<short, short, object> aggregatorDelegate)
     {
-        if (context is not short s1)
+        var result1 = firstExpression.Evaluate(context);
+        if (!result1.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(result1);
+        }
+
+        if (result1.Value is not short s1)
         {
             return Result<object?>.NotSupported();
         }
-        
+
         var secondExpressionResult = secondExpression.Evaluate(context);
         if (!secondExpressionResult.IsSuccessful())
         {

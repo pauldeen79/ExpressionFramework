@@ -1,12 +1,13 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Aggregates context with other expressions")]
-[UsesContext(true)]
 [ContextDescription("Value to use as context in the aggregator")]
 [ContextType(typeof(object))]
-[ContextRequired(true)]
 [ParameterDescription(nameof(Aggregator), "Aggregator to evaluate")]
 [ParameterRequired(nameof(Aggregator), true)]
+[ParameterDescription(nameof(FirstExpression), "Expression to use as seed in aggregator")]
+[ParameterRequired(nameof(FirstExpression), true)]
+[ParameterType(nameof(FirstExpression), typeof(object))]
 [ParameterDescription(nameof(SubsequentExpressions), "Expressions to use as subsequent expression in aggregator")]
 [ParameterRequired(nameof(SubsequentExpressions), true)]
 [ParameterType(nameof(SubsequentExpressions), typeof(object))]
@@ -15,12 +16,24 @@
 public partial record AggregateExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => SubsequentExpressions.Aggregate(Result<object?>.Success(context), (seed, accumulator)
-            => !seed.IsSuccessful()
-                ? seed
-                : Aggregator.Aggregate(seed.Value, accumulator));
+    {
+        var result = FirstExpression.Evaluate(context);
+        if (!result.IsSuccessful())
+        {
+            return result;
+        }
+        foreach (var expression in SubsequentExpressions)
+        {
+            result = Aggregator.Aggregate(context, new ConstantExpression(result.Value), expression);
+            if (!result.IsSuccessful())
+            {
+                return result;
+            }
+        }
+        return result;
+    }
 
-    public AggregateExpression(IEnumerable<object?> subsequentValues, Aggregator aggregator)
-        : this(subsequentValues.Select(x => new ConstantExpression(x)), aggregator) { }
+    public AggregateExpression(IEnumerable<object?> values, Aggregator aggregator)
+        : this(new ConstantExpression(values.First()), values.Skip(1).Select(x => new ConstantExpression(x)), aggregator) { }
 }
 

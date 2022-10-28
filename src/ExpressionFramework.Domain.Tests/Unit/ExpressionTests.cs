@@ -57,12 +57,12 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(2, new AddAggregator()),
-            new CompoundExpression(3, new AddAggregator())
+            new CompoundExpression(1, 2, new AddAggregator()),
+            new CompoundExpression(new ContextExpression(), new ConstantExpression(3), new AddAggregator())
         });
 
         // Act
-        var result = expression.Evaluate(1);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -79,10 +79,13 @@ public class ExpressionTests
             new SubstringExpressionBuilder()
                 .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
                     new StringLengthExpressionBuilder(),
-                    new CompoundExpressionBuilder().WithAggregator(new SubtractAggregatorBuilder()).WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
+                    new CompoundExpressionBuilder()
+                        .WithAggregator(new SubtractAggregatorBuilder())
+                        .WithFirstExpression(new ContextExpressionBuilder())
+                        .WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
                 )
                 .WithLengthExpression(new ConstantExpressionBuilder().WithValue(6))
-        ).Build();
+        ).BuildTyped();
 
         // Act
         var result = expression.Evaluate(input);
@@ -96,10 +99,10 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_CompoundExpression()
     {
         // Arrange
-        var aggregator = new CompoundExpression(new ConstantExpression("b"), new StringConcatenateAggregator());
+        var aggregator = new CompoundExpression("a", "b", new StringConcatenateAggregator());
 
         // Act
-        var result = aggregator.Evaluate("a");
+        var result = aggregator.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -110,10 +113,10 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
     {
         // Arrange
-        var aggregator = new AggregateExpression(new[] { new ConstantExpression("b"), new ConstantExpression("c") }, new StringConcatenateAggregator());
+        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }, new StringConcatenateAggregator());
 
         // Act
-        var result = aggregator.Evaluate("a");
+        var result = aggregator.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

@@ -3,17 +3,17 @@
 public class StringConcatenateAggregatorTests
 {
     [Fact]
-    public void Aggregate_Returns_Invalid_When_Context_Is_Not_String()
+    public void Aggregate_Returns_Invalid_When_FirstExpression_Is_Not_String()
     {
         // Arrange
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression("b"));
+        var result = sut.Aggregate(null, new EmptyExpression(), new ConstantExpression("b"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type string");
+        result.ErrorMessage.Should().Be("First expression is not of type string");
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate("a", new ErrorExpression("Kaboom"));
+        var result = sut.Aggregate(null, new ConstantExpression("a"), new ErrorExpression("Kaboom"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -37,7 +37,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate("a", new ConstantExpression(1));
+        var result = sut.Aggregate(null, new ConstantExpression("a"), new ConstantExpression(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -51,7 +51,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate("a", new ConstantExpression("b"));
+        var result = sut.Aggregate(null, new ConstantExpression("a"), new ConstantExpression("b"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -72,7 +72,6 @@ public class StringConcatenateAggregatorTests
         result.Name.Should().Be(nameof(StringConcatenateAggregator));
         result.Parameters.Should().BeEmpty();
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextDescription.Should().BeEmpty();
     }
 }

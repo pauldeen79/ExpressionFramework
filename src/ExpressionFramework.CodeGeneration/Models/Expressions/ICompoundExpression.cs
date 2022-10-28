@@ -3,6 +3,8 @@
 public interface ICompoundExpression : IExpression
 {
     [Required]
+    IExpression FirstExpression { get; }
+    [Required]
     IExpression SecondExpression { get; }
     [Required]
     IAggregator Aggregator { get; }
