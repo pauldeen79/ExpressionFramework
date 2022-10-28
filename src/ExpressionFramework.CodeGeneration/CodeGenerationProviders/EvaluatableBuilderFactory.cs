@@ -9,10 +9,10 @@ public class EvaluatableBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IEvaluatable)),
-            "ExpressionFramework.Domain.Builders",
+            new("ExpressionFramework.Domain.Builders",
             "EvaluatableBuilderFactory",
             "ExpressionFramework.Domain.Evaluatable",
             "ExpressionFramework.Domain.Builders.Evaluatables",
             "EvaluatableBuilder",
-            "ExpressionFramework.Domain.Evaluatables");
+            "ExpressionFramework.Domain.Evaluatables"));
 }

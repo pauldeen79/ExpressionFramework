@@ -9,11 +9,11 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IExpression)),
-            "ExpressionFramework.Domain.Builders",
+            new("ExpressionFramework.Domain.Builders",
             "ExpressionBuilderFactory",
             "ExpressionFramework.Domain.Expression",
             "ExpressionFramework.Domain.Builders.Expressions",
             "ExpressionBuilder",
-            "ExpressionFramework.Domain.Expressions",
+            "ExpressionFramework.Domain.Expressions"),
             "if (instance is IUntypedExpressionProvider provider) instance = provider.ToUntyped();");
 }
