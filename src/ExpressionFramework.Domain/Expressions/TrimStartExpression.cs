@@ -21,9 +21,6 @@ public partial record TrimStartExpression : ITypedExpression<string>
             ? Result<string>.Success(TrimStart(s))
             : Result<string>.Invalid("Context must be of type string");
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context);
-
     public TrimStartExpression() : this(default(IEnumerable<char>)) { }
 
     private string TrimStart(string s)

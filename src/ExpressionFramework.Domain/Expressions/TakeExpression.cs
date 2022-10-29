@@ -7,7 +7,7 @@
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]
 [ParameterRequired(nameof(CountExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context must be of type IEnumerable")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression cannot be empty, Expression must be of type IEnumerable")]
 public partial record TakeExpression
 {
     public override Result<object?> Evaluate(object? context)
@@ -22,17 +22,20 @@ public partial record TakeExpression
         {
             return Result<object?>.Invalid("CountExpression did not return an integer");
         }
-        
-        return context is IEnumerable e
+
+        var enumerableResult = Expression.Evaluate(context);
+        if (!enumerableResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(enumerableResult);
+        }
+
+        return enumerableResult.Value is IEnumerable e
             ? EnumerableExpression.GetResultFromEnumerable(e, e => e
                 .Take(count)
                 .Select(x => Result<object?>.Success(x)))
-            : EnumerableExpression.GetInvalidResult(context);
+            : EnumerableExpression.GetInvalidResult(enumerableResult.Value);
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpression.ValidateContext(context, () => IntExpression.ValidateParameter(context, CountExpression, nameof(CountExpression)));
-
-    public TakeExpression(int count) : this(new ConstantExpression(count)) { }
+    public TakeExpression(IEnumerable enumerable, int count) : this(new ConstantExpression(enumerable), new ConstantExpression(count)) { }
 }
 

@@ -37,9 +37,6 @@ public partial record LeftExpression : ITypedExpression<string>
             : Result<string>.Invalid("Length must refer to a location within the string");
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context, () => PerformAdditionalValidation(context));
-
     private IEnumerable<ValidationResult> PerformAdditionalValidation(object? context)
     {
         if (context is not string s)

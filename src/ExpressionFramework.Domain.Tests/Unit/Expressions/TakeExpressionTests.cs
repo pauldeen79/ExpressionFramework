@@ -3,26 +3,26 @@
 public class TakeExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TakeExpression(2);
+        var sut = new TakeExpression(new EmptyExpression(), new ConstantExpression(2));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new TakeExpression(2);
+        var sut = new TakeExpression(new ConstantExpression(1), new ConstantExpression(2));
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -32,10 +32,10 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Invalid_When_CountExpression_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression("non integer value"));
+        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression("non integer value"));
 
         // Act
-        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -46,10 +46,10 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
     {
         // Arrange
-        var sut = new TakeExpression(new ErrorExpression("Kaboom"));
+        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression("Kaboom"));
 
         // Act
-        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -60,92 +60,14 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new TakeExpression(2);
+        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression(2));
 
         // Act
-        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(new[] { "A", "B" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new TakeExpression(2);
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new TakeExpression(2);
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_CountExpression_Returns_Invalid_Result()
-    {
-        // Arrange
-        var sut = new TakeExpression(new InvalidExpression("Some error message"));
-
-        // Act
-        var result = sut.ValidateContext(new[] { "A", "B", "C" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "CountExpression returned an invalid result. Error message: Some error message" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_CountExpression_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new TakeExpression(new ConstantExpression("non integer value"));
-
-        // Act
-        var result = sut.ValidateContext(new[] { "A", "B", "C" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "CountExpression did not return an integer" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new TakeExpression(2);
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
-
-        // Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_CountExpression_Returns_Error_Result()
-    {
-        // Arrange
-        var sut = new TakeExpression(new ErrorExpression("Kaboom"));
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
@@ -160,7 +82,7 @@ public class TakeExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(TakeExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextIsRequired.Should().BeTrue();
     }

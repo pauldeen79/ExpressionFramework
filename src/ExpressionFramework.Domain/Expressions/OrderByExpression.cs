@@ -86,47 +86,6 @@ public partial record OrderByExpression
         return Result<IEnumerable<SortOrder>>.Success(items);
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (context == null)
-        {
-            yield return new ValidationResult("Context cannot be empty");
-            yield break;
-        }
-
-        if (context is not IEnumerable e)
-        {
-            yield return new ValidationResult("Context is not of type enumerable");
-            yield break;
-        }
-
-        var sortOrdersResult = GetSortOrdersResult(context);
-        if (sortOrdersResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"SortOrderExpressions returned an invalid result. Error message: {sortOrdersResult.ErrorMessage}");
-            yield break;
-        }
-        if (!sortOrdersResult.Value!.Any())
-        {
-            yield return new ValidationResult("SortOrderExpressions should have at least one item");
-            yield break;
-        }
-
-        var index = 0;
-        foreach (var sortOrder in sortOrdersResult.Value!)
-        {
-            foreach (var itemResult in e.OfType<object>().Select(x => sortOrder.SortExpression.Evaluate(x)))
-            {
-                if (itemResult.Status == ResultStatus.Invalid)
-                {
-                    yield return new ValidationResult($"SortExpression returned an invalid result on item {index}. Error message: {itemResult.ErrorMessage}");
-                }
-
-                index++;
-            }
-        }
-    }
-
     public OrderByExpression(IEnumerable<SortOrder> sortOrders) : this(sortOrders.Select(x => new ConstantExpression(x))) { }
 }
 

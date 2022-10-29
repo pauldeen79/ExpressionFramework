@@ -19,9 +19,6 @@ public partial record ToPascalCaseExpression : ITypedExpression<string>
             ? Result<string>.Success(ToPascalCase(s))
             : Result<string>.Invalid("Context must be of type string");
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context);
-
     private string ToPascalCase(string value)
     {
         if (value.Length > 0)

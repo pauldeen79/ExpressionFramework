@@ -18,7 +18,4 @@ public partial record ToUpperCaseExpression : ITypedExpression<string>
         => context is string s
             ? Result<string>.Success(s.ToUpper())
             : Result<string>.Invalid("Context must be of type string");
-
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context);
 }

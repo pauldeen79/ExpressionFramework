@@ -26,32 +26,6 @@ public partial record GroupByExpression
         return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, e.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (context == null)
-        {
-            yield return new ValidationResult("Context cannot be empty");
-            yield break;
-        }
-
-        if (context is not IEnumerable e)
-        {
-            yield return new ValidationResult("Context is not of type enumerable");
-            yield break;
-        }
-
-        var index = 0;
-        foreach (var itemResult in e.OfType<object>().Select(x => KeySelectorExpression.Evaluate(x)))
-        {
-            if (itemResult.Status == ResultStatus.Invalid)
-            {
-                yield return new ValidationResult($"KeySelectorExpression returned an invalid result on item {index}. Error message: {itemResult.ErrorMessage}");
-            }
-
-            index++;
-        }
-    }
-
     private bool ItemSatisfiesKey(object? item, object? key)
     {
         var val = KeySelectorExpression.Evaluate(item).Value;

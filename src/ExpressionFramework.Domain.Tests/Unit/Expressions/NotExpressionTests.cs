@@ -23,7 +23,7 @@ public class NotExpressionTests
         var sut = new NotExpression();
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);

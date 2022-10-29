@@ -2,7 +2,7 @@
 
 [ExpressionDescription("Aggregates context with other expressions")]
 [UsesContext(true)]
-[ContextDescription("Value to use as context in the aggregator")]
+[ContextDescription("Value to use as context in expressions and the aggregator")]
 [ContextType(typeof(object))]
 [ContextRequired(false)]
 [ParameterDescription(nameof(Aggregator), "Aggregator to evaluate")]

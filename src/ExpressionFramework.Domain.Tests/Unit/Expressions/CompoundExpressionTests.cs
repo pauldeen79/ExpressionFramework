@@ -9,7 +9,7 @@ public class CompoundExpressionTests
         var sut = new CompoundExpression(1, 2, new AddAggregator());
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

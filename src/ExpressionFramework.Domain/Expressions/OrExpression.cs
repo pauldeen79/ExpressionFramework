@@ -9,14 +9,6 @@ public partial record OrExpression
     public Result<bool> EvaluateTyped(object? context)
         => BooleanExpression.EvaluateBooleanCombination(context, Expression, (a, b) => a || b);
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (context is not bool)
-        {
-            yield return new ValidationResult("Context must be of type boolean");
-        }
-    }
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => BooleanExpression.GetDescriptor
         (

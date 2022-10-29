@@ -9,7 +9,7 @@ public class AggregateExpressionTests
         var sut = new AggregateExpression(new object[] { 1, 2, 3 }, new AddAggregator());
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

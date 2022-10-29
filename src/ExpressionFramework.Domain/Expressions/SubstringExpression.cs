@@ -50,59 +50,6 @@ public partial record SubstringExpression : ITypedExpression<string>
             : Result<string>.Invalid("Index and length must refer to a location within the string");
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context, () => PerformAdditionalValidation(context));
-
-    private IEnumerable<ValidationResult> PerformAdditionalValidation(object? context)
-    {
-        if (context is not string s)
-        {
-            yield break;
-        }
-
-        int? localIndex = null;
-        int? localLength = null;
-
-        var indexResult = IndexExpression.Evaluate(s);
-        if (indexResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"IndexExpression returned an invalid result. Error message: {indexResult.ErrorMessage}");
-        }
-        else if (indexResult.Status == ResultStatus.Ok)
-        {
-            if (indexResult.Value is not int index)
-            {
-                yield return new ValidationResult($"IndexExpression did not return an integer");
-            }
-            else
-            {
-                localIndex = index;
-            }
-        }
-
-        var lengthResult = LengthExpression.Evaluate(s);
-        if (lengthResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"LengthExpression returned an invalid result. Error message: {lengthResult.ErrorMessage}");
-        }
-        else if (lengthResult.Status == ResultStatus.Ok)
-        {
-            if (lengthResult.Value is not int length)
-            {
-                yield return new ValidationResult($"LengthExpression did not return an integer");
-            }
-            else
-            {
-                localLength = length;
-            }
-        }
-
-        if (localIndex.HasValue && localLength.HasValue && s.Length < localIndex + localLength)
-        {
-            yield return new ValidationResult("Index and length must refer to a location within the string");
-        }
-    }
-
     public SubstringExpression(int index, int length) : this(new ConstantExpression(index), new ConstantExpression(length)) { }
 }
 

@@ -30,30 +30,5 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
 
         return Result<string>.Success(string.Concat(values.Select(x => x.Value)));
     }
-
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (!Expressions.Any())
-        {
-            yield return new ValidationResult("At least one expression is required");
-            yield break;
-        }
-
-        foreach (var expression in Expressions)
-        {
-            var result = expression.Evaluate(context);
-            if (result.Status == ResultStatus.Invalid)
-            {
-                yield return new ValidationResult(result.ErrorMessage);
-                yield break;
-            }
-
-            if (result.Value is not string)
-            {
-                yield return new ValidationResult("Expression must be of type string");
-                yield break;
-            }
-        }
-    }
 }
 

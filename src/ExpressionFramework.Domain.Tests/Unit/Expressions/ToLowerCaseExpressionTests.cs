@@ -84,20 +84,6 @@ public class ToLowerCaseExpressionTests
     }
 
     [Fact]
-    public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
-    {
-        // Arrange
-        var sut = new ToLowerCaseExpression();
-
-        // Act
-        var actual = sut.ValidateContext(null);
-
-        // Assert
-        actual.Should().ContainSingle();
-        actual.Single().ErrorMessage.Should().Be("Context must be of type string");
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

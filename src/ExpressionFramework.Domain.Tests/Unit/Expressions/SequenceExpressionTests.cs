@@ -9,7 +9,7 @@ public class SequenceExpressionTests
         var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message") });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -23,7 +23,7 @@ public class SequenceExpressionTests
         var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom") });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

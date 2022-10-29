@@ -33,9 +33,6 @@ public partial record RightExpression : ITypedExpression<string>
             : Result<string>.Invalid("Length must refer to a location within the string");
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context, () => StringExpression.ValidateLength(context, LengthExpression));
-
     public RightExpression(int length) : this(new ConstantExpression(length)) { }
 }
 

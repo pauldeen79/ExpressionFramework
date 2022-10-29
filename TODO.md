@@ -8,3 +8,8 @@ expressions:
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
 - Add expressions: ConvertToInt, ConvertToDouble, ConvertToDecimal, ConvertToBoolean, ParseDateTime, ConvertToString
 - Add expressions: Now, UtcNow, Today
+- Add TypedSequenceExpression<T>
+
+general:
+- Review if we want to add validation for parameters?
+- Review multiple constructors on expressions, which cast objects to expressions. Remove them.

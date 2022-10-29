@@ -87,32 +87,6 @@ public class OrExpressionTests
     }
 
     [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new TrueExpression());
-
-        // Act
-        var result = sut.ValidateContext("not a boolean");
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context must be of type boolean" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_No_Item_When_Context_Is_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new TrueExpression());
-
-        // Act
-        var result = sut.ValidateContext(false);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEmpty();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

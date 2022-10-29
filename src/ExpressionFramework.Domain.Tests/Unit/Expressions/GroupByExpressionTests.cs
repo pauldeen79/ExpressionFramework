@@ -9,7 +9,7 @@ public class GroupByExpressionTests
         var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -54,58 +54,6 @@ public class GroupByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_SelectExpression_Returns_Status_Invalid()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "KeySelectorExpression returned an invalid result on item 2. Error message: Context must be of type string" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new DelegateExpression(x => x?.ToString()?.Length ?? 0));
-
-        // Act
-        var result = sut.ValidateContext(new[] { "a", "b", "cc" });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]

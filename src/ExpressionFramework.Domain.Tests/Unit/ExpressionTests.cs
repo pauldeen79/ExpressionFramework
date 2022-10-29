@@ -6,11 +6,11 @@ public class ExpressionTests
     public void Evaluate_Happy_Flow()
     {
         // Arrange
-        var expression = new FieldExpression("Name");
-        var context = new { Name = "Hello world!" };
+        var value = new { Name = "Hello world!" };
+        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("Name"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -21,11 +21,11 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
     {
         // Arrange
-        var expression = new FieldExpression("InnerProperty.Name");
-        var context = new { InnerProperty = new { Name = "Hello world" } };
+        var value = new { InnerProperty = new { Name = "Hello world" } };
+        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty.Name"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -36,15 +36,15 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_ChainedExpression()
     {
         // Arrange
+        var value = new { InnerProperty = new { Name = "Hello world" } };
         var expression = new ChainedExpression(new[]
         {
-            new FieldExpression("InnerProperty"),
-            new FieldExpression("Name")
+            new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty")),
+            new FieldExpression(new ContextExpression(), new ConstantExpression("Name"))
         });
-        var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -127,11 +127,11 @@ public class ExpressionTests
     public void Can_Get_String_Length_Using_CountExpression()
     {
         // Arrange
-        var expression = new CountExpression(null);
-        var context = "Hello world!";
+        var value = "Hello world!";
+        var expression = new CountExpression(new ConstantExpression(value), null);
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

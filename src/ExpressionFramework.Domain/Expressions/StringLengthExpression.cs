@@ -18,8 +18,5 @@ public partial record StringLengthExpression : ITypedExpression<int>
         => context is string s
             ? Result<int>.Success(s.Length)
             : Result<int>.Invalid("Context must be of type string");
-
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => StringExpression.ValidateContext(context);
 }
 

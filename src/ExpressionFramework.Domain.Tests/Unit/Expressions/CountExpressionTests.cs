@@ -3,41 +3,41 @@
 public class CountExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new EmptyExpression(), null);
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context cannot be empty");
+        result.ErrorMessage.Should().Be("Expression cannot be empty");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(123), null);
 
         // Act
-        var result = sut.Evaluate(123);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type enumerable");
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
-    public void Evaluate_Returns_Zero_When_Context_Is_Empty_Enumerable()
+    public void Evaluate_Returns_Zero_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(Enumerable.Empty<object>()), null);
 
         // Act
-        var result = sut.Evaluate(Enumerable.Empty<object>());
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -48,10 +48,10 @@ public class CountExpressionTests
     public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new CountExpression(new InvalidExpression("Something bad happened"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -62,10 +62,10 @@ public class CountExpressionTests
     public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
     {
         // Arrange
-        var sut = new CountExpression(new ErrorExpression("Something bad happened"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -76,10 +76,10 @@ public class CountExpressionTests
     public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
     {
         // Arrange
-        var sut = new CountExpression(new ConstantExpression("None boolean value"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -87,13 +87,13 @@ public class CountExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Zero_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
+    public void Evaluate_Returns_Zero_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new CountExpression(new DelegateExpression(x => x is int i && i > 10));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -104,10 +104,10 @@ public class CountExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -118,10 +118,10 @@ public class CountExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new CountExpression(new DelegateExpression(x => x is int i && i > 1));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 1));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -129,41 +129,41 @@ public class CountExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new EmptyExpression(), null);
 
         // Act
         var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context cannot be empty");
+        result.ErrorMessage.Should().Be("Expression cannot be empty");
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(123), null);
 
         // Act
-        var result = sut.EvaluateTyped(123);
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type enumerable");
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Zero_When_Context_Is_Empty_Enumerable()
+    public void EvaluateTyped_Returns_Zero_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(Enumerable.Empty<object>()), null);
 
         // Act
-        var result = sut.EvaluateTyped(Enumerable.Empty<object>());
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -174,10 +174,10 @@ public class CountExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new CountExpression(new InvalidExpression("Something bad happened"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -188,10 +188,10 @@ public class CountExpressionTests
     public void EvaluateTyped_Returns_Error_When_PredicateExpression_Returns_Error()
     {
         // Arrange
-        var sut = new CountExpression(new ErrorExpression("Something bad happened"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -202,10 +202,10 @@ public class CountExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
     {
         // Arrange
-        var sut = new CountExpression(new ConstantExpression("None boolean value"));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -213,13 +213,13 @@ public class CountExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Zero_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
+    public void EvaluateTyped_Returns_Zero_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new CountExpression(new DelegateExpression(x => x is int i && i > 10));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10));
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -230,10 +230,10 @@ public class CountExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new CountExpression(null);
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -244,53 +244,14 @@ public class CountExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new CountExpression(new DelegateExpression(x => x is int i && i > 1));
+        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 1));
 
         // Act
-        var result = sut.EvaluateTyped(new[] { 1, 2, 3 });
+        var result = sut.EvaluateTyped(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(2);
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new CountExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(new[] { 1, 2, 3 });
-
-        // Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new CountExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new CountExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
     }
 
     [Fact]
@@ -305,10 +266,10 @@ public class CountExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(CountExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(3);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

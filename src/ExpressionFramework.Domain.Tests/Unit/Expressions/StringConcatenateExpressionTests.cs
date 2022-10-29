@@ -9,7 +9,7 @@ public class StringConcatenateExpressionTests
         var sut = new StringConcatenateExpression(Enumerable.Empty<Expression>());
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -23,7 +23,7 @@ public class StringConcatenateExpressionTests
         var sut = new StringConcatenateExpression(new[] { new ConstantExpression(false) });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -37,7 +37,7 @@ public class StringConcatenateExpressionTests
         var sut = new StringConcatenateExpression(new[] { new ErrorExpression("Kaboom") });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -56,7 +56,7 @@ public class StringConcatenateExpressionTests
         });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -122,62 +122,6 @@ public class StringConcatenateExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("abc");
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Expressions_Is_Empty()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<Expression>());
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "At least one expression is required" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Expressions_Contains_Non_String_Value()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ConstantExpression(false) });
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Expression must be of type string" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Expressions_Contains_Invalid_Result()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[] { new InvalidExpression("error message") });
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "error message" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[]
-        {
-            new ConstantExpression("some string"),
-            new ConstantExpression("some other string")
-        });
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]

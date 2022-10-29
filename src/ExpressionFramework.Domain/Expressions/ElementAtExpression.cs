@@ -7,6 +7,7 @@ public partial record ElementAtExpression
         => EnumerableExpression.GetRequiredScalarValue
         (
             context,
+            Expression,
             null,
             results => IndexExpression
                 .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
@@ -21,17 +22,14 @@ public partial record ElementAtExpression
                         : Result<IEnumerable<object?>>.FromExistingResult(indexResult))
         );
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-        => EnumerableExpression.ValidateContext(context, () => IntExpression.ValidateParameter(context, IndexExpression, nameof(IndexExpression)));
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (
             typeof(ElementAtExpression),
-            "Gets the value at the specified index from the (enumerable) context value",
+            "Gets the value at the specified index from the (enumerable) expression",
             "Value of the item at the specified index of the enumerable",
             "This will be returned in case the enumerable is not empty, and no error occurs",
-            "Context is not of type enumerable, Enumerable is empty, Index is outside the bounds of the array",
+            "Expression is not of type enumerable, Enumerable is empty, Index is outside the bounds of the array",
             "This status (or any other status not equal to Ok) will be returned in case the index evaluation returns something else than Ok",
             false
         );

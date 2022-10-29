@@ -9,7 +9,7 @@ public class ErrorExpressionTests
         var sut = new ErrorExpression("Error message");
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -23,7 +23,7 @@ public class ErrorExpressionTests
         var sut = new ErrorExpression(new ErrorExpression("Kaboom"));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -37,64 +37,12 @@ public class ErrorExpressionTests
         var sut = new ErrorExpression(new ConstantExpression(1));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("ErrorMessageExpression did not return a string");
         result.ValidationErrors.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_ErrorMessageExpression_Returns_Invalid_Result()
-    {
-        // Assert
-        var sut = new ErrorExpression(new InvalidExpression("error message"));
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "ErrorMessageExpression returned an invalid result. Error message: error message" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_ErrorMessageExpression_Returns_Non_String_Value()
-    {
-        // Assert
-        var sut = new ErrorExpression(new ConstantExpression(1));
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "ErrorMessageExpression did not return a string" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Assert
-        var sut = new ErrorExpression("Some error message");
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Should().BeEmpty();
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_ErrorMessageExpression_Returns_Error_Result()
-    {
-        // Assert
-        var sut = new ErrorExpression(new ErrorExpression("Kaboom"));
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
