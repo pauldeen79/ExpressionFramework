@@ -48,7 +48,7 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new ElementAtExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
+        var sut = new ElementAtExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression(new ConstantExpression("Something bad happened")));
 
         // Act
         var result = sut.Evaluate();

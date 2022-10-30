@@ -85,7 +85,5 @@ public partial record OrderByExpression
 
         return Result<IEnumerable<SortOrder>>.Success(items);
     }
-
-    public OrderByExpression(IEnumerable<SortOrder> sortOrders) : this(sortOrders.Select(x => new ConstantExpression(x))) { }
 }
 

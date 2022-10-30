@@ -57,7 +57,7 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(1, 2, new AddAggregator()),
+            new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator()),
             new CompoundExpression(new ContextExpression(), new ConstantExpression(3), new AddAggregator())
         });
 
@@ -99,7 +99,7 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_CompoundExpression()
     {
         // Arrange
-        var aggregator = new CompoundExpression("a", "b", new StringConcatenateAggregator());
+        var aggregator = new CompoundExpression(new ConstantExpression("a"), new ConstantExpression("b"), new StringConcatenateAggregator());
 
         // Act
         var result = aggregator.Evaluate(null);
@@ -113,7 +113,7 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
     {
         // Arrange
-        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }, new StringConcatenateAggregator());
+        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator());
 
         // Act
         var result = aggregator.Evaluate(null);

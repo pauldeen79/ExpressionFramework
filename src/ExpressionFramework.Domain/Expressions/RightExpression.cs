@@ -32,7 +32,5 @@ public partial record RightExpression : ITypedExpression<string>
             ? Result<string>.Success(s.Substring(s.Length - lengthResult.Value, lengthResult.Value))
             : Result<string>.Invalid("Length must refer to a location within the string");
     }
-
-    public RightExpression(int length) : this(new ConstantExpression(length)) { }
 }
 

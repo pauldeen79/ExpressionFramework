@@ -12,7 +12,4 @@ public partial record SingleEvaluatable
 {
     public override Result<bool> Evaluate(object? context)
         => Operator.Evaluate(context, LeftExpression, RightExpression);
-
-    public SingleEvaluatable(object leftValue, Operator @operator, object rightValue)
-        : this(new ConstantExpression(leftValue), @operator, new ConstantExpression(rightValue)) { }
 }

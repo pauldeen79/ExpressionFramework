@@ -6,7 +6,7 @@ public class IfExpressionTests
     public void Evaluate_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class IfExpressionTests
     public void EvaluateWithConditionResult_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression("Kaboom"), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);
@@ -34,7 +34,7 @@ public class IfExpressionTests
     public void EvaluateWithConditionResult_Returns_DefaultExpression_Result_When_Available_And_ConditionEvalution_Returns_False()
     {
         // Arrange
-        var sut = new IfExpression(new SingleEvaluatable("Something", new EqualsOperator(), "Something else"), null, "Default value");
+        var sut = new IfExpression(new SingleEvaluatable(new ConstantExpression("Something"), new EqualsOperator(), new ConstantExpression("Something else")), new EmptyExpression(), new ConstantExpression("Default value"));
 
         // Act
         var result = sut.EvaluateWithConditionResult(null);

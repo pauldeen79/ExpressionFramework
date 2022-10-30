@@ -3,9 +3,7 @@
 public interface IAggregateExpression : IExpression
 {
     [Required]
-    IExpression FirstExpression { get; }
-    [Required]
-    IReadOnlyCollection<IExpression> SubsequentExpressions { get; }
+    IReadOnlyCollection<IExpression> Expressions { get; }
     [Required]
     IAggregator Aggregator { get; }
 }

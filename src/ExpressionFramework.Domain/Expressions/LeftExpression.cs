@@ -36,39 +36,5 @@ public partial record LeftExpression : ITypedExpression<string>
             ? Result<string>.Success(s.Substring(0, length))
             : Result<string>.Invalid("Length must refer to a location within the string");
     }
-
-    private IEnumerable<ValidationResult> PerformAdditionalValidation(object? context)
-    {
-        if (context is not string s)
-        {
-            yield break;
-        }
-
-        int? localLength = null;
-
-        var lengthResult = LengthExpression.Evaluate(context);
-        if (lengthResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"LengthExpression returned an invalid result. Error message: {lengthResult.ErrorMessage}");
-        }
-        else if (lengthResult.Status == ResultStatus.Ok)
-        {
-            if (lengthResult.Value is not int length)
-            {
-                yield return new ValidationResult($"LengthExpression did not return an integer");
-            }
-            else
-            {
-                localLength = length;
-            }
-        }
-
-        if (localLength.HasValue && s.Length < localLength)
-        {
-            yield return new ValidationResult("Length must refer to a location within the string");
-        }
-    }
-
-    public LeftExpression(int length) : this(new ConstantExpression(length)) { }
 }
 

@@ -6,7 +6,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Substring_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -19,7 +19,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Too_Short()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate(string.Empty);
@@ -33,7 +33,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -47,7 +47,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new ConstantExpression(1));
+        var sut = new SubstringExpression(new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -75,7 +75,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom"));
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -103,7 +103,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Substring_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped("test");
@@ -117,7 +117,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Too_Short()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped(string.Empty);
@@ -131,7 +131,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(1, 1);
+        var sut = new SubstringExpression(new ConstantExpression(1), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped(null);
@@ -145,7 +145,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new InvalidExpression("Kaboom"), new ConstantExpression(1));
+        var sut = new SubstringExpression(new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped("test");
@@ -173,14 +173,14 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression("Kaboom"));
+        var sut = new SubstringExpression(new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Something bad happened")));
 
         // Act
         var actual = sut.EvaluateTyped("test");
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.ErrorMessage.Should().Be("Something bad happened");
     }
 
     [Fact]

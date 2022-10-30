@@ -71,7 +71,7 @@ public class FieldExpressionTests
     public void Evaluate_Returns_Error_When_FieldNameExpression_Returns_Error()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new ErrorExpression("Kaboom"));
+        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var actual = expression.Evaluate();

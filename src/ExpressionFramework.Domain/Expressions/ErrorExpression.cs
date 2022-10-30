@@ -23,6 +23,4 @@ public partial record ErrorExpression
 
         return Result<object?>.Error(errorMessage);
     }
-
-    public ErrorExpression(string errorMessage) : this(new ConstantExpression(errorMessage)) { }
 }

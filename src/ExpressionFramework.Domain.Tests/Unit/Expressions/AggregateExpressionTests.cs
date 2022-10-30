@@ -6,7 +6,7 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
     {
         // Arrange
-        var sut = new AggregateExpression(new object[] { 1, 2, 3 }, new AddAggregator());
+        var sut = new AggregateExpression(new object[] { 1, 2, 3 }.Select(x => new ConstantExpression(x)), new AddAggregator());
 
         // Act
         var result = sut.Evaluate();
@@ -28,7 +28,7 @@ public class AggregateExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(AggregateExpression));
-        result.Parameters.Should().HaveCount(3);
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

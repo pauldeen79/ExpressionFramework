@@ -34,7 +34,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Error_When_SelectorExpression_Returns_Error()
     {
         // Arrange
-        var sut = new MaxExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Kaboom"));
+        var sut = new MaxExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

@@ -46,7 +46,7 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression("Kaboom"));
+        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

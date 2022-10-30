@@ -15,8 +15,5 @@ public partial record CompoundExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Aggregator.Aggregate(context, FirstExpression, SecondExpression);
-
-    public CompoundExpression(object? firstValue, object? secondValue, Aggregator aggregator)
-        : this(new ConstantExpression(firstValue), new ConstantExpression(secondValue), aggregator) { }
 }
 

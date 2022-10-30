@@ -6,7 +6,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -19,7 +19,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate(string.Empty);
@@ -33,7 +33,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.Evaluate(null);
@@ -47,7 +47,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ErrorExpression("Kaboom"));
+        var sut = new RightExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var actual = sut.Evaluate("test");
@@ -75,7 +75,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.EvaluateTyped("test");
@@ -89,7 +89,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.EvaluateTyped(string.Empty);
@@ -103,7 +103,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(2));
 
         // Act
         var actual = sut.EvaluateTyped(null);
@@ -117,7 +117,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ErrorExpression("Kaboom"));
+        var sut = new RightExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var actual = sut.EvaluateTyped("test");

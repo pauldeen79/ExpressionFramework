@@ -6,7 +6,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression("Error message", new[] { new ValidationError("Validation error message", new[] { "Member" }) });
+        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ValidationError("Validation error message", new[] { "Member" }) });
 
         // Act
         var result = sut.Evaluate();
@@ -36,7 +36,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new ErrorExpression("Kaboom"));
+        var sut = new InvalidExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

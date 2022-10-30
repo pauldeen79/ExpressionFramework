@@ -35,6 +35,4 @@ public partial record SkipExpression
                 .Select(x => Result<object?>.Success(x)))
             : EnumerableExpression.GetInvalidResult(enumerableResult.Value);
     }
-
-    public SkipExpression(IEnumerable enumerable, int count) : this(new ConstantExpression(enumerable), new ConstantExpression(count)) { }
 }

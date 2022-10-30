@@ -9,7 +9,7 @@ public class OperatorTests
         var sut = new EqualsOperator();
 
         // Act
-        var actual = sut.Evaluate(null, new ErrorExpression("Kaboom"), new EmptyExpression());
+        var actual = sut.Evaluate(null, new ErrorExpression(new ConstantExpression("Kaboom")), new EmptyExpression());
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -23,7 +23,7 @@ public class OperatorTests
         var sut = new EqualsOperator();
 
         // Act
-        var actual = sut.Evaluate(null, new EmptyExpression(), new ErrorExpression("Kaboom"));
+        var actual = sut.Evaluate(null, new EmptyExpression(), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
