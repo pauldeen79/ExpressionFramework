@@ -77,6 +77,7 @@ public class ExpressionTests
         var expression = new ChainedExpressionBuilder().AddExpressions(
             new ContextExpressionBuilder(),
             new SubstringExpressionBuilder()
+                .WithExpression(new ConstantExpressionBuilder().WithValue(input))
                 .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
                     new StringLengthExpressionBuilder(),
                     new CompoundExpressionBuilder()
@@ -88,7 +89,7 @@ public class ExpressionTests
         ).BuildTyped();
 
         // Act
-        var result = expression.Evaluate(input);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

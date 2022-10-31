@@ -3,26 +3,26 @@
 public class LeftExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_LeftValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.GetValueOrThrow().Should().BeEquivalentTo("te");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Too_Short()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate(string.Empty);
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -30,27 +30,27 @@ public class LeftExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new EmptyExpression(), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate(null);
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Context must be of type string");
+        actual.ErrorMessage.Should().Be("Expression must be of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new LeftExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -61,10 +61,10 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression("no integer in here"));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -72,13 +72,13 @@ public class LeftExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
+    public void EvaluateTyped_Returns_LeftValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
@@ -86,13 +86,13 @@ public class LeftExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Too_Short()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped(string.Empty);
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -100,27 +100,27 @@ public class LeftExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(2));
+        var sut = new LeftExpression(new EmptyExpression(), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped(null);
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Context must be of type string");
+        actual.ErrorMessage.Should().Be("Expression must be of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new LeftExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -131,10 +131,10 @@ public class LeftExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression("no integer in here"));
+        var sut = new LeftExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -153,10 +153,10 @@ public class LeftExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(LeftExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

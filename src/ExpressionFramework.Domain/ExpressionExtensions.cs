@@ -2,7 +2,7 @@
 
 public static class ExpressionExtensions
 {
-    public static Result<T> EvaluateTyped<T>(this Expression instance, object? context, string? errorMessage = null)
+    public static Result<T> EvaluateTyped<T>(this Expression instance, object? context = null, string? errorMessage = null)
     {
         if (instance is ITypedExpression<T> typedExpression)
         {
