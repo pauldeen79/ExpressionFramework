@@ -95,9 +95,7 @@ public static class EnumerableExpression
         => GetInvalidResult<object?>(context);
 
     public static Result<T> GetInvalidResult<T>(object? context)
-        => context.Transform(x => Result<T>.Invalid(x == null
-                ? "Expression cannot be empty"
-                : "Expression is not of type enumerable"));
+        => context.Transform(x => Result<T>.Invalid("Expression is not of type enumerable"));
     
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression == null
@@ -155,19 +153,10 @@ public static class EnumerableExpression
                                                bool predicateIsRequired = false)
 #pragma warning restore S107 // Methods should not have too many parameters
     {
-        var enumerableResult = enumerableExpression.Evaluate(context);
+        var enumerableResult = enumerableExpression.Evaluate(context).TryCast<IEnumerable>("Expression is not of type enumerable");
         if (!enumerableResult.IsSuccessful())
         {
             return Result<T>.FromExistingResult(enumerableResult);
-        }
-        if (enumerableResult.Value == null)
-        {
-            return Result<T>.Invalid("Expression cannot be empty");
-        }
-        
-        if (enumerableResult.Value is not IEnumerable e)
-        {
-            return Result<T>.Invalid("Expression is not of type enumerable");
         }
 
         if (predicateIsRequired && predicateExpression == null)
@@ -175,12 +164,9 @@ public static class EnumerableExpression
             return Result<T>.Invalid("Predicate is required");
         }
 
-        if (selectorDelegate == null)
-        {
-            selectorDelegate = new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
-        }
+        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
 
-        var itemsResult = selectorDelegate.Invoke(e.OfType<object?>());
+        var itemsResult = selectorDelegate.Invoke(enumerableResult.Value.OfType<object?>());
         if (!itemsResult.IsSuccessful())
         {
             return Result<T>.FromExistingResult(itemsResult);

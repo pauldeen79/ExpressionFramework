@@ -23,23 +23,18 @@ public partial record FieldExpression
             return Result<object?>.Invalid("Expression cannot be empty");
         }
 
-        var fieldNameResult = FieldNameExpression.Evaluate(result.Value);
+        var fieldNameResult = FieldNameExpression.Evaluate(result.Value).TryCast<string>("FieldNameExpression must be of type string");
         if (!fieldNameResult.IsSuccessful())
         {
-            return fieldNameResult;
+            return Result<object?>.FromExistingResult(fieldNameResult);
         }
 
-        if (fieldNameResult.Value is not string fieldName)
+        if (string.IsNullOrEmpty(fieldNameResult.Value))
         {
-            return Result<object?>.Invalid("FieldNameExpression did not return a string");
+            return Result<object?>.Invalid("FieldNameExpression must be a non empty string");
         }
 
-        if (string.IsNullOrEmpty(fieldName))
-        {
-            return Result<object?>.Invalid("FieldNameExpression returned an empty string");
-        }
-
-        return GetValue(result.Value, fieldName);
+        return GetValue(result.Value, fieldNameResult.Value!);
     }
 
     private Result<object?> GetValue(object value, string fieldName)

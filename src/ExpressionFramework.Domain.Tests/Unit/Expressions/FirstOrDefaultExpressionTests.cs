@@ -13,7 +13,7 @@ public class FirstOrDefaultExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression cannot be empty");
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]

@@ -64,7 +64,7 @@ public class FieldExpressionTests
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("FieldNameExpression returned an empty string");
+        actual.ErrorMessage.Should().Be("FieldNameExpression must be a non empty string");
     }
 
     [Fact]
@@ -92,7 +92,7 @@ public class FieldExpressionTests
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("FieldNameExpression did not return a string");
+        actual.ErrorMessage.Should().Be("FieldNameExpression must be of type string");
     }
 
     [Fact]
