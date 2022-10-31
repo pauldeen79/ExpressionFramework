@@ -3,6 +3,20 @@
 public class AggregateExpressionTests
 {
     [Fact]
+    public void Evaluate_Returns_Invalid_When_Expression_Contains_No_Items()
+    {
+        // Arrange
+        var sut = new AggregateExpression(Enumerable.Empty<Expression>(), new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Sequence contains no elements");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
     {
         // Arrange
@@ -29,7 +43,7 @@ public class AggregateExpressionTests
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(AggregateExpression));
         result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
+        result.ReturnValues.Should().HaveCount(3);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
         result.UsesContext.Should().BeTrue();

@@ -11,6 +11,7 @@
 [ParameterRequired(nameof(Expressions), true)]
 [ParameterType(nameof(Expressions), typeof(object))]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Result value of the last expression", "This will be returned in case the aggregator returns success (Ok)")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Sequence contains no elements")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case the aggregator returns something else than Ok")]
 public partial record AggregateExpression
 {
@@ -18,7 +19,7 @@ public partial record AggregateExpression
     {
         if (!Expressions.Any())
         {
-            return Result<object?>.NoContent();
+            return Result<object?>.Invalid("Sequence contains no elements");
         }
 
         var result = Expressions.First().Evaluate(context);
