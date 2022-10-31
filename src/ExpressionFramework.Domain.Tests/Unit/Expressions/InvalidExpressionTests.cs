@@ -6,7 +6,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ValidationError("Validation error message", new[] { "Member" }) });
+        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ValidationError("Validation error message", new[] { "Member" }) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -14,7 +14,7 @@ public class InvalidExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrors);
+        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions.Select(x => x.Evaluate().Value));
     }
 
     [Fact]

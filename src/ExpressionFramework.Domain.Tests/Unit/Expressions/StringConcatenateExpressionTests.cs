@@ -27,7 +27,7 @@ public class StringConcatenateExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type string");
+        result.ErrorMessage.Should().Be("Expressions must be of type string");
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class StringConcatenateExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type string");
+        result.ErrorMessage.Should().Be("Expressions must be of type string");
     }
 
     [Fact]

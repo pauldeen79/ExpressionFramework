@@ -5,5 +5,5 @@ public interface IInvalidExpression : IExpression
     [Required]
     IExpression ErrorMessageExpression { get; }
     [Required]
-    IReadOnlyCollection<ValidationError> ValidationErrors { get; }
+    IReadOnlyCollection<IExpression> ValidationErrorExpressions { get; }
 }

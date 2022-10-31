@@ -9,7 +9,7 @@
 [ParameterType(nameof(Expressions), typeof(string))]
 [ParameterRequired(nameof(Expressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The concatenated string", "This result will be returned when the expressions are all of type string")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "At least one expression is required, Expression must be of type string")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "At least one expression is required, Expressions must be of type string")]
 public partial record StringConcatenateExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
@@ -17,7 +17,7 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
 
     public Result<string> EvaluateTyped(object? context)
     {
-        var values = Expressions.EvaluateTypedUntilFirstError<string>(context, "Expression must be of type string");
+        var values = Expressions.EvaluateTypedUntilFirstError<string>(context, "Expressions must be of type string");
         if (!values.Any())
         {
             return Result<string>.Invalid("At least one expression is required");
