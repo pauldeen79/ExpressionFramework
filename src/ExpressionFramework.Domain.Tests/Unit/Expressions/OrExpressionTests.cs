@@ -3,41 +3,41 @@
 public class OrExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Boolean()
+    public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new TrueExpression());
+        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
 
         // Act
-        var result = sut.Evaluate("not a boolean");
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context must be of type boolean");
+        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Boolean()
+    public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new EmptyExpression());
+        var sut = new OrExpression(new ConstantExpression(true), new EmptyExpression());
 
         // Act
-        var result = sut.Evaluate(true);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
+        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
     }
 
     [Fact]
-    public void Evaluate_Returns_Success_When_Context_And_Expression_Are_Both_Boolean()
+    public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new TrueExpression());
+        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
 
         // Act
-        var result = sut.Evaluate(false);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -45,41 +45,41 @@ public class OrExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Not_Of_Type_Boolean()
+    public void EvaluateTyped_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new TrueExpression());
+        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
 
         // Act
-        var result = sut.EvaluateTyped("not a boolean");
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context must be of type boolean");
+        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Boolean()
+    public void EvaluateTyped_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new EmptyExpression());
+        var sut = new OrExpression(new ConstantExpression(true), new EmptyExpression());
 
         // Act
-        var result = sut.EvaluateTyped(true);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
+        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Success_When_Context_And_Expression_Are_Both_Boolean()
+    public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new TrueExpression());
+        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
 
         // Act
-        var result = sut.EvaluateTyped(false);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -98,7 +98,7 @@ public class OrExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(OrExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

@@ -4,19 +4,19 @@
 public partial record AndExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(BooleanExpression.EvaluateBooleanCombination(context, Expression, (a, b) => a && b), x => x);
+        => Result<object?>.FromExistingResult(BooleanExpression.EvaluateBooleanCombination(context, FirstExpression, SecondExpression, (a, b) => a && b), x => x);
 
     public Result<bool> EvaluateTyped(object? context)
-        => BooleanExpression.EvaluateBooleanCombination(context, Expression, (a, b) => a && b);
+        => BooleanExpression.EvaluateBooleanCombination(context, FirstExpression, SecondExpression, (a, b) => a && b);
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => BooleanExpression.GetDescriptor
         (
             typeof(AndExpression),
-            "Returns the AND-combination value of the boolean context value and the expression",
-            "AND-combinated value of the boolean context value and the expression",
-            "This result will be returned when the context and the expression are boolean values",
-            "Context must be of type boolean, Expression must be of type boolean",
+            "Returns the AND-combination value of two boolean expressions",
+            "AND-combinated value of the two boolean expressions",
+            "This result will be returned when both expressions are boolean values",
+            "FirstExpression must be of type boolean, SecondExpression must be of type boolean",
             "Boolean expression to perform AND combination on"
         );
 }
