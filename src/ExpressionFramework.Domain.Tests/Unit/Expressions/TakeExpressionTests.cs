@@ -39,7 +39,7 @@ public class TakeExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("CountExpression did not return an integer");
+        result.ErrorMessage.Should().Be("CountExpression is not of type integer");
     }
 
     [Fact]

@@ -6,7 +6,7 @@
 [UsesContext(true)]
 [ContextDescription("Value to use as context in the expression")]
 [ContextType(typeof(object))]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Fieldname [x] is not found on type [y]")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression cannot be empty, Fieldname [x] is not found on type [y]")]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the field (property)", "This will be returned if the field (property) is found")]
 public partial record FieldExpression
 {

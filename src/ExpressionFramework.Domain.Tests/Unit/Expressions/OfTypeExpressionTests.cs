@@ -6,7 +6,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OfTypeExpression(new EmptyExpression(), typeof(string));
+        var sut = new OfTypeExpression(new EmptyExpression(), new ConstantExpression(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(1), typeof(string));
+        var sut = new OfTypeExpression(new ConstantExpression(1), new ConstantExpression(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
@@ -32,7 +32,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), typeof(string));
+        var sut = new OfTypeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
