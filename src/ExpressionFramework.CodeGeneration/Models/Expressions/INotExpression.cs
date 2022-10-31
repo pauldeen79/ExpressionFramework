@@ -2,4 +2,6 @@
 
 public interface INotExpression : IExpression
 {
+    [Required]
+    IExpression Expression { get; }
 }
