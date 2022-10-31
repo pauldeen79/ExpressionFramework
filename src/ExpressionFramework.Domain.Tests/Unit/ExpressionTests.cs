@@ -79,7 +79,8 @@ public class ExpressionTests
             new SubstringExpressionBuilder()
                 .WithExpression(new ConstantExpressionBuilder().WithValue(input))
                 .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
-                    new StringLengthExpressionBuilder(),
+                    new StringLengthExpressionBuilder()
+                        .WithExpression(new ContextExpressionBuilder()),
                     new CompoundExpressionBuilder()
                         .WithAggregator(new SubtractAggregatorBuilder())
                         .WithFirstExpression(new ContextExpressionBuilder())
@@ -143,11 +144,10 @@ public class ExpressionTests
     public void Can_Get_String_Length_Using_StringLengthExpression()
     {
         // Arrange
-        var expression = new StringLengthExpression();
-        var context = "Hello world!";
+        var expression = new StringLengthExpression(new ConstantExpression("Hello world!"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
