@@ -20,15 +20,10 @@ public partial record SubstringExpression : ITypedExpression<string>
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<string> EvaluateTyped(object? context)
-    {
-        var stringResult = Expression.EvaluateTyped<string>(context, "Expression must be of type string");
-        if (!stringResult.IsSuccessful())
-        {
-            return stringResult;
-        }
-
-        return GetSubstringFromString(stringResult.Value!);
-    }
+        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+            result.IsSuccessful()
+                ? GetSubstringFromString(result.Value!)
+                : result);
 
     private Result<string> GetSubstringFromString(string s)
     {

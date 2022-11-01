@@ -11,25 +11,12 @@
 public partial record StringLengthExpression : ITypedExpression<int>
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var stringResult = Expression.EvaluateTyped<string>(context, "Expression must be of type string");
-        if (!stringResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(stringResult);
-        }
-
-        return Result<object?>.Success(stringResult.Value!.Length);
-    }
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<int> EvaluateTyped(object? context)
-    {
-        var stringResult = Expression.EvaluateTyped<string>(context, "Expression must be of type string");
-        if (!stringResult.IsSuccessful())
-        {
-            return Result<int>.FromExistingResult(stringResult);
-        }
-
-        return Result<int>.Success(stringResult.Value!.Length);
-    }
+        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+            result.IsSuccessful()
+                ? Result<int>.Success(result.Value!.Length)
+                : Result<int>.FromExistingResult(result));
 }
 

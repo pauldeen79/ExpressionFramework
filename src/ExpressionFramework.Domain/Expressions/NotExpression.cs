@@ -11,25 +11,12 @@
 public partial record NotExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var boolResult = Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean");
-        if (!boolResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(boolResult);
-        }
-
-        return Result<object?>.Success(!boolResult.Value!);
-    }
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<bool> EvaluateTyped(object? context)
-    {
-        var boolResult = Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean");
-        if (!boolResult.IsSuccessful())
-        {
-            return boolResult;
-        }
-
-        return Result<bool>.Success(!boolResult.Value!);
-    }
+        => Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean").Transform(result =>
+            result.IsSuccessful()
+                ? Result<bool>.Success(!result.Value!)
+                : result);
 }
 

@@ -17,31 +17,21 @@ public partial record LeftExpression : ITypedExpression<string>
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<string> EvaluateTyped(object? context)
-    {
-        var stringResult = Expression.EvaluateTyped<string>(context, "Expression must be of type string");
-        if (!stringResult.IsSuccessful())
-        {
-            return stringResult;
-        }
-
-        return GetLeftValueFromString(stringResult.Value!);
-    }
+        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+            result.IsSuccessful()
+                ? GetLeftValueFromString(result.Value!)
+                : result);
 
     private Result<string> GetLeftValueFromString(string s)
     {
-        var lengthResult = LengthExpression.Evaluate(s);
+        var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");
         if (!lengthResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(lengthResult);
         }
 
-        if (lengthResult.Value is not int length)
-        {
-            return Result<string>.Invalid("LengthExpression did not return an integer");
-        }
-
-        return s.Length >= length
-            ? Result<string>.Success(s.Substring(0, length))
+        return s.Length >= lengthResult.Value
+            ? Result<string>.Success(s.Substring(0, lengthResult.Value))
             : Result<string>.Invalid("Length must refer to a location within the string");
     }
 }

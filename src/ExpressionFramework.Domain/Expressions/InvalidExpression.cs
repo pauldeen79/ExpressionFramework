@@ -1,8 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns an invalid result")]
-[UsesContext(false)]
-[ParameterDescription(nameof(ErrorMessageExpression), "Error message to use")]
+[ParameterDescription(nameof(ErrorMessageExpression), "Error message to use (may be empty)")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
 [ParameterDescription(nameof(ValidationErrorExpressions), "Validation errors to use")]
 [ParameterRequired(nameof(ValidationErrorExpressions), true)]
@@ -19,7 +18,7 @@ public partial record InvalidExpression
         
         if (errorMessageResult.Value is not string errorMessage)
         {
-            return Result<object?>.Invalid("ErrorMessageExpression did not return a string");
+            return Result<object?>.Invalid();
         }
 
         if (!ValidationErrorExpressions.Any())

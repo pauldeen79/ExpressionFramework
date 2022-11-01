@@ -57,7 +57,7 @@ public class InvalidExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("ErrorMessageExpression did not return a string");
+        result.ErrorMessage.Should().BeNull();
         result.ValidationErrors.Should().BeEmpty();
     }
 

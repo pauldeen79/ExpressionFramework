@@ -4,7 +4,7 @@
 public partial record AndExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(BooleanExpression.EvaluateBooleanCombination(context, FirstExpression, SecondExpression, (a, b) => a && b), x => x);
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<bool> EvaluateTyped(object? context)
         => BooleanExpression.EvaluateBooleanCombination(context, FirstExpression, SecondExpression, (a, b) => a && b);

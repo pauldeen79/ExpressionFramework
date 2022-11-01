@@ -9,13 +9,8 @@
 public partial record ErrorExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var errorMessageResult = ErrorMessageExpression.EvaluateTyped<string>(context, "ErrorMessageExpression did not return a string");
-        if (!errorMessageResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(errorMessageResult);
-        }
-
-        return Result<object?>.Error(errorMessageResult.Value!);
-    }
+        => ErrorMessageExpression.EvaluateTyped<string>(context, "ErrorMessageExpression did not return a string").Transform(result =>
+            result.IsSuccessful()
+                ? Result<object?>.Error(result.Value!)
+                : Result<object?>.FromExistingResult(result));
 }
