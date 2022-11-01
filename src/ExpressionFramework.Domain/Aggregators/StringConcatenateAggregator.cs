@@ -3,7 +3,7 @@
 [AggregatorDescription("Concatenates two string values")]
 [UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Concatenation of two string values", "This will be returned in case the execution returns success (Ok)")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "First expressio is not of type string, Second expression is not of type string")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "First expression is not of type string, Second expression is not of type string")]
 public partial record StringConcatenateAggregator
 {
     public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
