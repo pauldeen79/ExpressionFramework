@@ -10,17 +10,12 @@ public partial record ErrorExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var errorMessageResult = ErrorMessageExpression.Evaluate(context);
+        var errorMessageResult = ErrorMessageExpression.EvaluateTyped<string>(context, "ErrorMessageExpression did not return a string");
         if (!errorMessageResult.IsSuccessful())
         {
-            return errorMessageResult;
+            return Result<object?>.FromExistingResult(errorMessageResult);
         }
 
-        if (errorMessageResult.Value is not string errorMessage)
-        {
-            return Result<object?>.Invalid("ErrorMessageExpression did not return a string");
-        }
-
-        return Result<object?>.Error(errorMessage);
+        return Result<object?>.Error(errorMessageResult.Value!);
     }
 }

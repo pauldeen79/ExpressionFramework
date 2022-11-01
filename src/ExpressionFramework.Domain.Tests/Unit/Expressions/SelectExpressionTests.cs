@@ -70,6 +70,6 @@ public class SelectExpressionTests
         result.Name.Should().Be(nameof(SelectExpression));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

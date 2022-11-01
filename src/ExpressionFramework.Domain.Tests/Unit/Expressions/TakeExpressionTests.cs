@@ -84,6 +84,6 @@ public class TakeExpressionTests
         result.Name.Should().Be(nameof(TakeExpression));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

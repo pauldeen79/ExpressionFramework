@@ -1,9 +1,8 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Takes a number of items from an enumerable context value")]
-[ContextType(typeof(IEnumerable))]
 [ContextDescription("The enumerable value to take elements from")]
-[ContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]
 [ParameterRequired(nameof(CountExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerable")]

@@ -1,9 +1,8 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Groups items from an enumerable context value using a key selector expression")]
+[ContextDescription("Value to use as context in the expression")]
 [ContextType(typeof(IEnumerable))]
-[ContextDescription("The enumerable value to group elements for")]
-[ContextRequired(true)]
 [ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]
 [ParameterRequired(nameof(KeySelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with grouped items (IGrouping<object, object>)", "This result will be returned when the context is enumerable")]
@@ -12,18 +11,19 @@ public partial record GroupByExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        if (context is not IEnumerable e)
+        var enumerableResult = Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
+        if (!enumerableResult.IsSuccessful())
         {
-            return Result<object?>.Invalid("Context is not of type enumerable");
+            return Result<object?>.FromExistingResult(enumerableResult);
         }
 
-        var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(e, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
+        var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(enumerableResult.Value!, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
         if (!keysResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(keysResult);
         }
 
-        return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, e.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
+        return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, enumerableResult.Value!.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
     private bool ItemSatisfiesKey(object? item, object? key)
