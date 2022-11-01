@@ -13,6 +13,7 @@ public class OfTypeExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
@@ -26,6 +27,20 @@ public class OfTypeExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_TypeExpression_Is_Not_Of_Type_Type()
+    {
+        // Arrange
+        var sut = new OfTypeExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("not a type"));
+
+        // Act
+        var result = sut.Evaluate();
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("TypeExpression is not of type Type");
     }
 
     [Fact]

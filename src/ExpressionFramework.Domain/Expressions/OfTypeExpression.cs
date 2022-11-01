@@ -20,7 +20,7 @@ public partial record OfTypeExpression
         var typeResult = TypeExpression.EvaluateTyped<Type>(context, "TypeExpression is not of type Type");
         if (!typeResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(enumerableResult);
+            return Result<object?>.FromExistingResult(typeResult);
         }
 
         return EnumerableExpression.GetResultFromEnumerable(enumerableResult.Value!, e => e
