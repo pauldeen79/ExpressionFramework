@@ -1,19 +1,22 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Sorts items from an enumerable context value using sort expressions")]
-[ContextType(typeof(IEnumerable))]
 [ContextDescription("The enumerable value to transform elements for")]
-[ContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]
 [ParameterRequired(nameof(SortOrderExpressions), true)]
+[ParameterDescription(nameof(Expression), "Enumerable to get ordered items for")]
+[ParameterRequired(nameof(Expression), true)]
+[ParameterType(nameof(Expression), typeof(IEnumerable))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context is not of type enumerable, SortOrders should have at least one sort order")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, SortOrders should have at least one sort order")]
 public partial record OrderByExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => context is IEnumerable e
-            ? GetSortedEnumerable(context, e.OfType<object?>())
-            : EnumerableExpression.GetInvalidResult(context);
+        => Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable").Transform(result =>
+            result.IsSuccessful()
+                ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
+                : Result<object?>.FromExistingResult(result));
 
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
