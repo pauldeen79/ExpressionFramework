@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Returns the length of the (string) context")]
+[ExpressionDescription("Returns the length of the (string) expression")]
 [UsesContext(true)]
 [ContextDescription("Context to use on expression evaluation")]
 [ParameterDescription(nameof(Expression), "String to get the length for")]

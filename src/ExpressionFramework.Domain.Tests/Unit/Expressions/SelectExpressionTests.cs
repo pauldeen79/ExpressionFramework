@@ -6,7 +6,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(new EmptyExpression(), new ToUpperCaseExpression());
+        var sut = new SelectExpression(new EmptyExpression(), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(1), new ToUpperCaseExpression());
+        var sut = new SelectExpression(new ConstantExpression(1), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.Evaluate();
@@ -46,7 +46,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression());
+        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.Evaluate();
