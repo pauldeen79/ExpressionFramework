@@ -118,6 +118,7 @@ public static class EnumerableExpression
                                                      string invalidDescription,
                                                      string errorDescription,
                                                      bool hasDefaultExpression,
+                                                     Type resultValueType,
                                                      bool predicateIsRequired = false)
 #pragma warning restore S107 // Methods should not have too many parameters
         => new(
@@ -130,15 +131,15 @@ public static class EnumerableExpression
             null,
             new[]
             {
-                new ParameterDescriptor("Expression", typeof(Expression).FullName, "Enumerable expression to use", true),
-                new ParameterDescriptor("PredicateExpression", typeof(Expression).FullName, predicateIsRequired ? "Predicate to use" : "Optional predicate to use", predicateIsRequired),
-                new ParameterDescriptor("DefaultExpression", typeof(Expression).FullName, "Optional default value to use", false),
+                new ParameterDescriptor("Expression", typeof(IEnumerable).FullName, "Enumerable expression to use", true),
+                new ParameterDescriptor("PredicateExpression", typeof(bool).FullName, predicateIsRequired ? "Predicate to use" : "Optional predicate to use", predicateIsRequired),
+                new ParameterDescriptor("DefaultExpression", typeof(object).FullName, "Optional default value to use", false),
             }.Where(x => x.Name != "DefaultExpression" || hasDefaultExpression),
             new[]
             {
-                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
-                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
-                new ReturnValueDescriptor(ResultStatus.Error, "Empty", typeof(object), errorDescription),
+                new ReturnValueDescriptor(ResultStatus.Ok, okValue, resultValueType, okDescription),
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", null, invalidDescription),
+                new ReturnValueDescriptor(ResultStatus.Error, "Empty", null, errorDescription),
             });
 
 #pragma warning disable S107 // Methods should not have too many parameters

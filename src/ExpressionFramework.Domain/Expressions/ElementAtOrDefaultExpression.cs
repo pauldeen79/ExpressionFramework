@@ -27,7 +27,8 @@ public partial record ElementAtOrDefaultExpression
             "This will be returned in case the enumerable is not empty, and no error occurs",
             "Expression is not of type enumerable, Enumerable is empty, Index is outside the bounds of the array",
             "This status (or any other status not equal to Ok) will be returned in case the index evaluation returns something else than Ok",
-            true
+            hasDefaultExpression: true,
+            resultValueType: typeof(object)
         );
 }
 

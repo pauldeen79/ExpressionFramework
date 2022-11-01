@@ -26,7 +26,8 @@ public partial record SingleOrDefaultExpression
             "This will be returned in case the enumerable contains a single element, and no error occurs",
             "Expression is not of type enumerable, Predicate did not return a boolean value, Sequence contains one than one element",
             "This status (or any other status not equal to Ok) will be returned in case the predicate evaluation returns something else than Ok",
-            true
+            hasDefaultExpression: true,
+            resultValueType: typeof(object)
         );
 }
 

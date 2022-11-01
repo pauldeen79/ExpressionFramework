@@ -39,8 +39,8 @@ public static class BooleanExpression
             true,
             new[]
             {
-                new ParameterDescriptor("FirstExpression", typeof(Expression).FullName, parameterDescription, true),
-                new ParameterDescriptor("SecondExpression", typeof(Expression).FullName, parameterDescription, true),
+                new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
+                new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
             },
             new[]
             {

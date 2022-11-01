@@ -32,7 +32,8 @@ public partial record AnyExpression : ITypedExpression<bool>
             "This will be returned in case no error occurs",
             "Expression is not of type enumerable, Predicate did not return a boolean value",
             "This status (or any other status not equal to Ok) will be returned in case the predicate evaluation returns something else than Ok",
-            false
+            hasDefaultExpression: false,
+            resultValueType: typeof(bool)
         );
 }
 

@@ -15,7 +15,8 @@ public partial record MinExpression
             "This will be returned in case no error occurs",
             "Expression cannot be empty, Expression must be of type IEnumerable",
             "This status (or any other status not equal to Ok) will be returned in case the selector evaluation returns something else than Ok",
-            false
+            hasDefaultExpression: false,
+            resultValueType: typeof(object)
         );
 }
 
