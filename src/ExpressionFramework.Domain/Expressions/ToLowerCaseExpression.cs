@@ -2,8 +2,7 @@
 
 [ExpressionDescription("Converts the expression to lower case")]
 [UsesContext(true)]
-[ContextDescription("Expression to use on expression evaluation")]
-[ContextType(typeof(string))]
+[ContextDescription("Context to use on expression evaluation")]
 [ParameterDescription(nameof(Expression), "String to get the lower case for")]
 [ParameterRequired(nameof(Expression), true)]
 [ParameterType(nameof(Expression), typeof(string))]

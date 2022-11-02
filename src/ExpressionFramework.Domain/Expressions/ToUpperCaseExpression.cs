@@ -2,7 +2,7 @@
 
 [ExpressionDescription("Converts the expression to upper case")]
 [UsesContext(true)]
-[ContextDescription("Expression to use on expression evaluation")]
+[ContextDescription("Context to use on expression evaluation")]
 [ParameterDescription(nameof(Expression), "String to get the upper case for")]
 [ParameterRequired(nameof(Expression), true)]
 [ParameterType(nameof(Expression), typeof(string))]

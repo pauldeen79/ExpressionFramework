@@ -2,7 +2,7 @@
 
 [ExpressionDescription("Converts the expression to pascal case")]
 [UsesContext(true)]
-[ContextDescription("Expression to use on expression evaluation")]
+[ContextDescription("Context to use on expression evaluation")]
 [ParameterDescription(nameof(Expression), "String to get the pascal case for")]
 [ParameterRequired(nameof(Expression), true)]
 [ParameterType(nameof(Expression), typeof(string))]
