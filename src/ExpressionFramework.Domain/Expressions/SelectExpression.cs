@@ -10,7 +10,7 @@
 public partial record SelectExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(e, e => e
+        => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
 }
 

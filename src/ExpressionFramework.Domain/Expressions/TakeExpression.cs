@@ -17,13 +17,7 @@ public partial record TakeExpression
             return Result<object?>.FromExistingResult(countResult);
         }
 
-        var enumerableResult = Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
-        if (!enumerableResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(enumerableResult);
-        }
-
-        return EnumerableExpression.GetResultFromEnumerable(enumerableResult.Value!, e => e
+        return EnumerableExpression.GetResultFromEnumerable(Expression, context, e => e
             .Take(countResult.Value)
             .Select(x => Result<object?>.Success(x)));
     }

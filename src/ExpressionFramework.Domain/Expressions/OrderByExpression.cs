@@ -40,7 +40,7 @@ public partial record OrderByExpression
         IOrderedEnumerable<object?>? orderedEnumerable = null;
         foreach (var sortOrder in sortOrdersResult.Value!)
         {
-            var sortExpressionEvaluated = EnumerableExpression.GetResultFromEnumerable(e, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
+            var sortExpressionEvaluated = EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
             if (!sortExpressionEvaluated.IsSuccessful())
             {
                 return sortExpressionEvaluated;

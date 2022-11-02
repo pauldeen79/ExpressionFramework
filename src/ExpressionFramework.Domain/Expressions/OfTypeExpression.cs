@@ -11,19 +11,13 @@ public partial record OfTypeExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var enumerableResult = Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
-        if (!enumerableResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(enumerableResult);
-        }
-
         var typeResult = TypeExpression.EvaluateTyped<Type>(context, "TypeExpression is not of type Type");
         if (!typeResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(typeResult);
         }
 
-        return EnumerableExpression.GetResultFromEnumerable(enumerableResult.Value!, e => e
+        return EnumerableExpression.GetResultFromEnumerable(Expression, context, e => e
             .Where(x => x != null && typeResult.Value!.IsInstanceOfType(x))
             .Select(x => Result<object?>.Success(x)));
     }

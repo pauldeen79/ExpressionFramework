@@ -2,10 +2,18 @@
 
 public static class EnumerableExpression
 {
-    public static Result<object?> GetResultFromEnumerable(IEnumerable e,
-                                                          Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
+    public static Result<object?> GetResultFromEnumerable(
+        Expression expression,
+        object? context,
+        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        var results = @delegate(e.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
+        var enumerableResult = expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
+        if (!enumerableResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(enumerableResult);
+        }
+
+        var results = @delegate(enumerableResult.Value!.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
         {
             return results.Last();
@@ -14,10 +22,18 @@ public static class EnumerableExpression
         return Result<object?>.Success(results.Select(x => x.Value));
     }
 
-    public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(IEnumerable e,
-                                                                            Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
+    public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
+        Expression expression,
+        object? context,
+        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        var results = @delegate(e.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
+        var enumerableResult = expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
+        if (!enumerableResult.IsSuccessful())
+        {
+            return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
+        }
+
+        var results = @delegate(enumerableResult.Value!.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
         {
             return Result<IEnumerable<object?>>.FromExistingResult(results.Last());
@@ -73,23 +89,12 @@ public static class EnumerableExpression
                                                  Expression enumerableExpression,
                                                  Func<IEnumerable<object?>, Result<T>> aggregateDelegate,
                                                  Expression? selectorExpression = null)
-    {
-        var enumerableResult = enumerableExpression.Evaluate(context);
-        if (!enumerableResult.IsSuccessful())
-        {
-            return Result<T>.FromExistingResult(enumerableResult);
-        }
-
-        return enumerableResult.Value is IEnumerable e
-                ? GetTypedResultFromEnumerable(e, x => x
-                    .Select(y => selectorExpression == null
-                        ? Result<object?>.Success(y)
-                        : selectorExpression.Evaluate(y)))
-                    .Transform(result => result.IsSuccessful()
-                        ? aggregateDelegate.Invoke(result.Value!)
-                        : Result<T>.FromExistingResult(result))
-                : GetInvalidResult<T>(enumerableResult.Value);
-    }
+        => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
+            .Select(y => selectorExpression == null
+                ? Result<object?>.Success(y)
+                : selectorExpression.Evaluate(y))).Transform(result => result.IsSuccessful()
+                    ? aggregateDelegate.Invoke(result.Value!)
+                    : Result<T>.FromExistingResult(result));
 
     public static Result<object?> GetInvalidResult(object? context)
         => GetInvalidResult<object?>(context);

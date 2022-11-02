@@ -11,18 +11,12 @@
 public partial record WhereExpression
 {
     public override Result<object?> Evaluate(object? context)
-    {
-        var enumerableResult = Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
-        if (!enumerableResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(enumerableResult);
-        }
-
-        return EnumerableExpression.GetResultFromEnumerable(enumerableResult.Value!, e => e
-                .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
-                .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
-                .Select(x => x.Result.IsSuccessful() ? Result<object?>.Success(x.Item) : x.Result));
-    }
+        => EnumerableExpression.GetResultFromEnumerable(Expression, context, e => e
+            .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
+            .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
+            .Select(x => x.Result.IsSuccessful()
+                ? Result<object?>.Success(x.Item)
+                : x.Result));
 
     private Result<object?> GetResult(Result<object?> itemResult)
     {

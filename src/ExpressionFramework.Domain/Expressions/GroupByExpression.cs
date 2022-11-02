@@ -17,7 +17,7 @@ public partial record GroupByExpression
             return Result<object?>.FromExistingResult(enumerableResult);
         }
 
-        var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(enumerableResult.Value!, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
+        var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(new ConstantExpression(enumerableResult.Value!), context, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
         if (!keysResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(keysResult);
