@@ -2,5 +2,7 @@
 
 public interface ITrimExpression : IExpression
 {
-    IReadOnlyCollection<char>? TrimChars { get; }
+    [Required]
+    IExpression Expression { get; }
+    IExpression? TrimCharsExpression { get; }
 }

@@ -3,82 +3,58 @@
 public class OfTypeExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new OfTypeExpression(new EmptyExpression(), new ConstantExpression(typeof(string)));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new OfTypeExpression(new ConstantExpression(1), new ConstantExpression(typeof(string)));
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_TypeExpression_Is_Not_Of_Type_Type()
+    {
+        // Arrange
+        var sut = new OfTypeExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("not a type"));
+
+        // Act
+        var result = sut.Evaluate();
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("TypeExpression is not of type Type");
     }
 
     [Fact]
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(typeof(string));
+        var sut = new OfTypeExpression(new ConstantExpression(new object?[] { "A", "B", 1, null, "C" }), new ConstantExpression(typeof(string)));
 
         // Act
-        var result = sut.Evaluate(new object[] { "A", "B", 1, "C" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new OfTypeExpression(typeof(string));
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new OfTypeExpression(typeof(string));
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new OfTypeExpression(typeof(string));
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "A", "B", 1, "C" });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
@@ -93,8 +69,8 @@ public class OfTypeExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(OfTypeExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

@@ -3,17 +3,17 @@
 public class DivideAggregatorTests
 {
     [Fact]
-    public void Aggregate_Return_Invalid_When_Using_Unsupported_Context_Type()
+    public void Aggregate_Return_Invalid_When_Using_Unsupported_FirstExpression()
     {
         // Arrange
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(true, new TypedConstantExpression<int>(1));
+        var result = sut.Aggregate(new ConstantExpression(true), new TypedConstantExpression<int>(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of a supported type");
+        result.ErrorMessage.Should().Be("First expression is not of a supported type");
     }
 
     [Fact]
@@ -24,7 +24,7 @@ public class DivideAggregatorTests
         byte input = 1;
 
         // Act
-        var result = sut.Aggregate(input, new TypedConstantExpression<byte>(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new TypedConstantExpression<byte>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -39,7 +39,7 @@ public class DivideAggregatorTests
         short input = 1;
 
         // Act
-        var result = sut.Aggregate(input, new TypedConstantExpression<short>(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new TypedConstantExpression<short>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -53,7 +53,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1, new TypedConstantExpression<int>(2));
+        var result = sut.Aggregate(new ConstantExpression(1), new TypedConstantExpression<int>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -67,7 +67,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1L, new TypedConstantExpression<long>(2L));
+        var result = sut.Aggregate(new ConstantExpression(1L), new TypedConstantExpression<long>(2L));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -81,7 +81,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1f, new TypedConstantExpression<float>(2f));
+        var result = sut.Aggregate(new ConstantExpression(1f), new TypedConstantExpression<float>(2f));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -95,7 +95,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1d, new TypedConstantExpression<double>(2d));
+        var result = sut.Aggregate(new ConstantExpression(1d), new TypedConstantExpression<double>(2d));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -109,7 +109,7 @@ public class DivideAggregatorTests
         var sut = new DivideAggregator();
 
         // Act
-        var result = sut.Aggregate(1M, new TypedConstantExpression<decimal>(2M));
+        var result = sut.Aggregate(new ConstantExpression(1M), new TypedConstantExpression<decimal>(2M));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -130,7 +130,6 @@ public class DivideAggregatorTests
         result.Name.Should().Be(nameof(DivideAggregator));
         result.Parameters.Should().BeEmpty();
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
+        result.ContextDescription.Should().BeEmpty();
     }
 }

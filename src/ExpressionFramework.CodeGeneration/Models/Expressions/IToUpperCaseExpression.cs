@@ -2,4 +2,6 @@
 
 public interface IToUpperCaseExpression : IExpression
 {
+    [Required]
+    IExpression Expression { get; }
 }

@@ -4,6 +4,7 @@ internal static class NumericAggregator
 {
 #pragma warning disable S107 // Methods should not have too many parameters
     internal static Result<object?> Evaluate(object? context,
+                                             Expression firstExpression,
                                              Expression secondExpression,
                                              Func<byte, byte, object> byteAggregatorDelegate,
                                              Func<short, short, object> shortAggregatorDelegate,
@@ -15,13 +16,13 @@ internal static class NumericAggregator
 #pragma warning restore S107 // Methods should not have too many parameters
         => new Func<Result<object?>>[]
         {
-            () => new ByteAggregator().Aggregate(context, secondExpression, byteAggregatorDelegate),
-            () => new Int16Aggregator().Aggregate(context, secondExpression, shortAggregatorDelegate),
-            () => new Int32Aggregator().Aggregate(context, secondExpression, intAggregatorDelegate),
-            () => new Int64Aggregator().Aggregate(context, secondExpression, longAggregatorDelegate),
-            () => new SingleAggregator().Aggregate(context, secondExpression, singleAggregatorDelegate),
-            () => new DoubleAggregator().Aggregate(context, secondExpression, doubleAggregatorDelegate),
-            () => new DecimalAggregator().Aggregate(context, secondExpression, decimalAggregatorDelegate),
-            () => Result<object?>.Invalid("Context is not of a supported type")
+            () => new ByteAggregator().Aggregate(context, firstExpression, secondExpression, byteAggregatorDelegate),
+            () => new Int16Aggregator().Aggregate(context, firstExpression, secondExpression, shortAggregatorDelegate),
+            () => new Int32Aggregator().Aggregate(context, firstExpression, secondExpression, intAggregatorDelegate),
+            () => new Int64Aggregator().Aggregate(context, firstExpression, secondExpression, longAggregatorDelegate),
+            () => new SingleAggregator().Aggregate(context, firstExpression, secondExpression, singleAggregatorDelegate),
+            () => new DoubleAggregator().Aggregate(context, firstExpression, secondExpression, doubleAggregatorDelegate),
+            () => new DecimalAggregator().Aggregate(context, firstExpression, secondExpression, decimalAggregatorDelegate),
+            () => Result<object?>.Invalid("First expression is not of a supported type")
         }.Select(x => x.Invoke()).First(x => x.Status != ResultStatus.NotSupported);
 }

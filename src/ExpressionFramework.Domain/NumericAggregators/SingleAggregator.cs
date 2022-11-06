@@ -2,13 +2,19 @@
 
 public class SingleAggregator : INumericAggregator<float>
 {
-    public Result<object?> Aggregate(object? context, Expression secondExpression, Func<float, float, object> aggregatorDelegate)
+    public Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, Func<float, float, object> aggregatorDelegate)
     {
-        if (context is not float f1)
+        var result1 = firstExpression.Evaluate(context);
+        if (!result1.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(result1);
+        }
+
+        if (result1.Value is not float f1)
         {
             return Result<object?>.NotSupported();
         }
-        
+
         var secondExpressionResult = secondExpression.Evaluate(context);
         if (!secondExpressionResult.IsSuccessful())
         {

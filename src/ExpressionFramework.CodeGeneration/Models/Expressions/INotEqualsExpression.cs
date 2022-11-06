@@ -1,11 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ICompoundExpression : IExpression
+public interface INotEqualsExpression : IExpression
 {
     [Required]
     IExpression FirstExpression { get; }
     [Required]
     IExpression SecondExpression { get; }
-    [Required]
-    IAggregator Aggregator { get; }
 }

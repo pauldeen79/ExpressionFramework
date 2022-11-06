@@ -3,41 +3,41 @@
 public class SumExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new EmptyExpression(), null);
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context cannot be empty");
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(12345), null);
 
         // Act
-        var result = sut.Evaluate(12345);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type enumerable");
+        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_SelectorExpression_Returns_Error()
     {
         // Arrange
-        var sut = new SumExpression(new ErrorExpression("Kaboom"));
+        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2, 3 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -45,13 +45,13 @@ public class SumExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Enumerable_Values_Are_Not_All_Numeric()
+    public void Evaluate_Returns_Invalid_When_Expression_Enumerable_Values_Are_Not_All_Numeric()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { "A", "B", "C" }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { "A", "B", "C" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -62,10 +62,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Byte_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { (byte)1, (byte)2 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { (byte)1, (byte)2 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -76,10 +76,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Short_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { (short)1, (short)2 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { (short)1, (short)2 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -90,10 +90,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Int_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -104,10 +104,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Long_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { (long)1, (long)2 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { (long)1, (long)2 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -118,10 +118,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Float_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { (float)1.5, (float)2.25 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { (float)1.5, (float)2.25 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -132,10 +132,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Double_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { 1.5, 2.25 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { 1.5, 2.25 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -146,10 +146,10 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Decimal_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(null);
+        var sut = new SumExpression(new ConstantExpression(new[] { (decimal)1.5, (decimal)2.25 }), null);
 
         // Act
-        var result = sut.Evaluate(new[] { (decimal)1.5, (decimal)2.25 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -160,66 +160,14 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_SelectorExpression_Result_When_SelectorExpression_Is_Not_Null()
     {
         // Arrange
-        var sut = new SumExpression(new DelegateExpression(x => Convert.ToInt32(x)));
+        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
 
         // Act
-        var result = sut.Evaluate(new[] { 1, 2 });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(3);
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new SumExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SumExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(12345);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Enumerable_Values_Are_Not_All_Numeric()
-    {
-        // Arrange
-        var sut = new SumExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(new object[] { 1, 2, "C" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Could only compute sum of numeric values" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new SumExpression(null);
-
-        // Act
-        var result = sut.ValidateContext(new object[] { 1, 2, 3 });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
@@ -234,8 +182,8 @@ public class SumExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(SumExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(3);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

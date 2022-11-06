@@ -3,26 +3,26 @@
 public class RightExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
+    public void Evaluate_Returns_RightValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.GetValueOrThrow().Should().BeEquivalentTo("st");
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Too_Short()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate(string.Empty);
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -30,27 +30,27 @@ public class RightExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new EmptyExpression(), new ConstantExpression(2));
 
         // Act
-        var actual = sut.Evaluate(null);
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Context must be of type string");
+        actual.ErrorMessage.Should().Be("Expression must be of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ErrorExpression("Kaboom"));
+        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -61,10 +61,10 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("no integer in here"));
+        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
 
         // Act
-        var actual = sut.Evaluate("test");
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -72,13 +72,13 @@ public class RightExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_LeftValue_From_Context_When_Context_Is_NonEmptyString()
+    public void EvaluateTyped_Returns_RightValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
@@ -86,13 +86,13 @@ public class RightExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Too_Short()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped(string.Empty);
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
@@ -100,27 +100,27 @@ public class RightExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Null()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(2);
+        var sut = new RightExpression(new EmptyExpression(), new ConstantExpression(2));
 
         // Act
-        var actual = sut.EvaluateTyped(null);
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Context must be of type string");
+        actual.ErrorMessage.Should().Be("Expression must be of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ErrorExpression("Kaboom"));
+        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -131,67 +131,14 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("no integer in here"));
+        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
 
         // Act
-        var actual = sut.EvaluateTyped("test");
+        var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_Value_Is_Not_String()
-    {
-        // Arrange
-        var sut = new RightExpression(2);
-
-        // Act
-        var actual = sut.ValidateContext(null);
-
-        // Assert
-        actual.Should().ContainSingle();
-        actual.Single().ErrorMessage.Should().Be("Context must be of type string");
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Returns_Invalid_Result()
-    {
-        // Arrange
-        var sut = new RightExpression(new InvalidExpression("kaboom"));
-
-        // Act
-        var actual = sut.ValidateContext(string.Empty);
-
-        // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "LengthExpression returned an invalid result. Error message: kaboom" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_LengthExpression_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new RightExpression(new ConstantExpression("not an integer"));
-
-        // Act
-        var actual = sut.ValidateContext(string.Empty);
-
-        // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "LengthExpression did not return an integer" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_ValidationError_When_Context_Is_Too_Short()
-    {
-        // Arrange
-        var sut = new RightExpression(2);
-
-        // Act
-        var actual = sut.ValidateContext(string.Empty);
-
-        // Assert
-        actual.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Length must refer to a location within the string" });
     }
 
     [Fact]
@@ -206,10 +153,10 @@ public class RightExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(RightExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

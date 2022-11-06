@@ -4,44 +4,48 @@ public static class BooleanExpression
 {
     public static Result<bool> EvaluateBooleanCombination(
         object? context,
-        Expression expression,
+        Expression firstExpression,
+        Expression secondExpression,
         Func<bool, bool, bool> @delegate)
     {
-        if (context is not bool b)
+        var firstExpressionResult = firstExpression.EvaluateTyped<bool>(context, "FirstExpression must be of type boolean");
+        if (!firstExpressionResult.IsSuccessful())
         {
-            return Result<bool>.Invalid("Context must be of type boolean");
+            return Result<bool>.FromExistingResult(firstExpressionResult);
         }
 
-        var expressionResult = expression.EvaluateTyped<bool>(context, "Expression must be of type boolean");
-        if (!expressionResult.IsSuccessful())
+        var secondExpressionResult = secondExpression.EvaluateTyped<bool>(context, "SecondExpression must be of type boolean");
+        if (!secondExpressionResult.IsSuccessful())
         {
-            return Result<bool>.FromExistingResult(expressionResult);
+            return Result<bool>.FromExistingResult(secondExpressionResult);
         }
 
-        return Result<bool>.Success(@delegate.Invoke(b, expressionResult.Value));
+        return Result<bool>.Success(@delegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value));
     }
 
     public static ExpressionDescriptor GetDescriptor(Type type,
                                                      string description,
                                                      string okValue,
                                                      string okDescription,
-                                                     string invalidDescription,
+                                                     string? invalidDescription,
                                                      string parameterDescription)
         => new(
             type.Name,
             type.FullName,
             description,
             true,
-            typeof(IEnumerable).FullName,
-            "Boolean value to use",
-            true,
+            null,
+            "Context to use on expression evaluation",
+            null,
             new[]
             {
-                new ParameterDescriptor("Expression", typeof(Expression).FullName, parameterDescription, true),
+                new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
+                new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
             },
             new[]
             {
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
-                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
-            });
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
+            }.Where(x => invalidDescription != null || x.Status != ResultStatus.Invalid)
+        );
 }

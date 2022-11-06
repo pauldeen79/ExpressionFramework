@@ -9,7 +9,7 @@ public class TrueExpressionTests
         var sut = new TrueExpression();
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

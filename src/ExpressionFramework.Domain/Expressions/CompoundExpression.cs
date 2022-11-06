@@ -2,7 +2,7 @@
 
 [ExpressionDescription("Executes an aggregator")]
 [UsesContext(true)]
-[ContextDescription("Value to use as context in the aggregator")]
+[ContextDescription("Value to use as context in expressions and the aggregator")]
 [ContextType(typeof(object))]
 [ContextRequired(false)]
 [ParameterDescription(nameof(Aggregator), "Aggregator to evaluate")]
@@ -14,9 +14,6 @@
 public partial record CompoundExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Aggregator.Aggregate(context, SecondExpression);
-
-    public CompoundExpression(object? secondValue, Aggregator aggregator)
-        : this(new ConstantExpression(secondValue), aggregator) { }
+        => Aggregator.Aggregate(context, FirstExpression, SecondExpression);
 }
 

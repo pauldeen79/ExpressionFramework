@@ -2,5 +2,8 @@
 
 public partial record Aggregator
 {
-    public abstract Result<object?> Aggregate(object? context, Expression secondExpression);
+    public Result<object?> Aggregate(Expression firstExpression, Expression secondExpression)
+        => Aggregate(null, firstExpression, secondExpression);
+
+    public abstract Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression);
 }

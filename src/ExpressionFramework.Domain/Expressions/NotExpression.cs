@@ -1,22 +1,22 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Returns the inverted value of the boolean context value")]
+[ExpressionDescription("Returns the inverted value of the boolean value")]
 [UsesContext(true)]
-[ContextDescription("Boolean value to invert")]
-[ContextType(typeof(bool))]
-[ContextRequired(true)]
-[ReturnValue(ResultStatus.Ok, typeof(bool), "Inverted value of the boolean context value", "This result will be returned when the context is a boolean value")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type boolean")]
+[ContextDescription("Context to use on expression evaluation")]
+[ParameterDescription(nameof(Expression), "Boolean to invert")]
+[ParameterRequired(nameof(Expression), true)]
+[ParameterType(nameof(Expression), typeof(bool))]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "Inverted value of the boolean context value", "This result will be returned when the expression is a boolean value")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type boolean")]
 public partial record NotExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
-        => context is bool b
-            ? Result<object?>.Success(!b)
-            : Result<object?>.Invalid("Context must be of type boolean");
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<bool> EvaluateTyped(object? context)
-        => context is bool b
-            ? Result<bool>.Success(!b)
-            : Result<bool>.Invalid("Context must be of type boolean");
+        => Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean").Transform(result =>
+            result.IsSuccessful()
+                ? Result<bool>.Success(!result.Value!)
+                : result);
 }
 

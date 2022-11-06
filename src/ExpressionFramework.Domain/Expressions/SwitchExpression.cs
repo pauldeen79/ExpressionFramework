@@ -17,8 +17,7 @@ public partial record SwitchExpression
     {
         foreach (var @case in Cases)
         {
-            var conditionalExpression = new IfExpression(@case.Condition, @case.Expression, null);
-            var caseResult = conditionalExpression.EvaluateWithConditionResult(context);
+            var caseResult = EvaluateWithConditionResult(@case, context);
             if (!caseResult.IsSuccessful())
             {
                 return Result<object?>.FromExistingResult(caseResult);
@@ -35,5 +34,21 @@ public partial record SwitchExpression
         }
 
         return Result<object?>.Success(null);
+    }
+
+    private Result<(bool ConditionResult, Result<object?> ExpressionResult)> EvaluateWithConditionResult(Case @case, object? context)
+    {
+        var result = new EvaluatableExpression(@case.Condition).EvaluateTyped(context);
+        if (!result.IsSuccessful())
+        {
+            return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.FromExistingResult(result);
+        }
+
+        if (result.Value)
+        {
+            return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((true, @case.Expression.Evaluate(context)));
+        }
+
+        return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((false, Result<object?>.Success(null)));
     }
 }

@@ -1,11 +1,10 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Returns an invalid result")]
-[UsesContext(false)]
-[ParameterDescription(nameof(ErrorMessageExpression), "Error message to use")]
+[ParameterDescription(nameof(ErrorMessageExpression), "Error message to use (may be empty)")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
-[ParameterDescription(nameof(ValidationErrors), "Validation errors to use")]
-[ParameterRequired(nameof(ValidationErrors), true)]
+[ParameterDescription(nameof(ValidationErrorExpressions), "Validation errors to use")]
+[ParameterRequired(nameof(ValidationErrorExpressions), true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "This result will always be returned")]
 public partial record InvalidExpression
 {
@@ -19,32 +18,25 @@ public partial record InvalidExpression
         
         if (errorMessageResult.Value is not string errorMessage)
         {
-            return Result<object?>.Invalid("ErrorMessageExpression did not return a string");
+            return Result<object?>.Invalid();
         }
 
-        return Result<object?>.Invalid(errorMessage, ValidationErrors);
+        if (!ValidationErrorExpressions.Any())
+        {
+            return Result<object?>.Invalid(errorMessage);
+        }
+
+        var validationErrorResult = ValidationErrorExpressions.EvaluateTypedUntilFirstError<ValidationError>(context, "ValidationErrorExpressions must be a collection of type string");
+        if (!validationErrorResult.Last().IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(validationErrorResult.Last());
+        }
+
+        return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));
     }
 
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
+    public InvalidExpression(Expression errorMessageExpression) : this(errorMessageExpression, Enumerable.Empty<Expression>())
     {
-        var errorMessageResult = ErrorMessageExpression.Evaluate(context);
-        if (errorMessageResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"ErrorMessageExpression returned an invalid result. Error message: {errorMessageResult.ErrorMessage}");
-        }
-        else if (errorMessageResult.Status == ResultStatus.Ok && errorMessageResult.Value is not string fieldName)
-        {
-            yield return new ValidationResult($"ErrorMessageExpression did not return a string");
-        }
     }
-
-    public InvalidExpression(Expression errorMessageExpression)
-        : this(errorMessageExpression, Enumerable.Empty<ValidationError>()) { }
-
-    public InvalidExpression(string errorMessage)
-        : this(new ConstantExpression(errorMessage), Enumerable.Empty<ValidationError>()) { }
-
-    public InvalidExpression(string errorMessage, IEnumerable<ValidationError> validationErrors)
-        : this(new ConstantExpression(errorMessage), validationErrors) { }
 }
 

@@ -2,4 +2,6 @@
 
 public interface IToPascalCaseExpression : IExpression
 {
+    [Required]
+    IExpression Expression { get; }
 }

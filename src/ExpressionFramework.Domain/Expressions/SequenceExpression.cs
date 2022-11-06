@@ -6,7 +6,7 @@
 [ParameterRequired(nameof(Expressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Enumerable with items", "This will be returned in case all expressions return Ok")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case any expression returns something else than Ok")]
-public partial record SequenceExpression
+public partial record SequenceExpression : ITypedExpression<IEnumerable<object?>>
 {
     public override Result<object?> Evaluate(object? context)
     {

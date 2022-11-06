@@ -3,5 +3,7 @@
 public interface IElementAtExpression : IExpression
 {
     [Required]
+    IExpression Expression { get; }
+    [Required]
     IExpression IndexExpression { get; }
 }

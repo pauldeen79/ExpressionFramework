@@ -3,26 +3,26 @@
 public class OrderByExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) });
+        var sut = new OrderByExpression(new EmptyExpression(), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) });
+        var sut = new OrderByExpression(new ConstantExpression(1), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -33,10 +33,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(Enumerable.Empty<Expression>());
+        var sut = new OrderByExpression(new ConstantExpression(data), Enumerable.Empty<Expression>());
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -48,10 +48,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new ConstantExpression("no sort order") });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new ConstantExpression("no sort order") });
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -63,10 +63,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new SortOrder(new ErrorExpression("Kaboom"), SortOrderDirection.Ascending) });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ErrorExpression(new ConstantExpression("Kaboom")), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -78,10 +78,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new InvalidExpression("Kaboom") });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new InvalidExpression(new ConstantExpression("Kaboom")) });
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -93,10 +93,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = Enumerable.Empty<object?>();
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -109,10 +109,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -125,10 +125,10 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) }.Select(x => new ConstantExpression(x)));
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -141,14 +141,14 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
-        var sut = new OrderByExpression(new[]
+        var sut = new OrderByExpression(new ConstantExpression(data), new[]
         {
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending))
         });
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -161,99 +161,19 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
-        var sut = new OrderByExpression(new[]
+        var sut = new OrderByExpression(new ConstantExpression(data), new[]
         {
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Descending))
         });
 
         // Act
-        var result = sut.Evaluate(data);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
         (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(new[] { "C2", "C1", "B2", "B1", "A2", "A1" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) });
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) });
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_SortOrder_Expression_Returns_Status_Invalid()
-    {
-        // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new DelegateResultExpression(x => x is string s && s == "a" ? Result<object?>.Invalid("It's wrong") : Result<object?>.Success(x)), SortOrderDirection.Descending) });
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortExpression returned an invalid result on item 0. Error message: It's wrong" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_SortOrders_Is_Empty()
-    {
-        // Arrange
-        var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(Enumerable.Empty<Expression>());
-
-        // Act
-        var result = sut.ValidateContext(data);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrderExpressions should have at least one item" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_SortOrders_Is_Of_Wrong_Rype()
-    {
-        // Arrange
-        var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new[] { new ConstantExpression("no sort order") });
-
-        // Act
-        var result = sut.ValidateContext(data);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SortOrderExpressions returned an invalid result. Error message: SortOrderExpressions item with index 0 is not of type SortOrder" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new OrderByExpression(new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) });
-
-        // Act
-        var result = sut.ValidateContext(new[] { "a", "b", "c" });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
@@ -268,8 +188,8 @@ public class OrderByExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(OrderByExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

@@ -2,13 +2,19 @@
 
 public class DoubleAggregator : INumericAggregator<double>
 {
-    public Result<object?> Aggregate(object? context, Expression secondExpression, Func<double, double, object> aggregatorDelegate)
+    public Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, Func<double, double, object> aggregatorDelegate)
     {
-        if (context is not double d1)
+        var result1 = firstExpression.Evaluate(context);
+        if (!result1.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(result1);
+        }
+
+        if (result1.Value is not double d1)
         {
             return Result<object?>.NotSupported();
         }
-        
+
         var secondExpressionResult = secondExpression.Evaluate(context);
         if (!secondExpressionResult.IsSuccessful())
         {

@@ -6,10 +6,10 @@ public class NotExpressionTests
     public void Evaluate_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression();
+        var sut = new NotExpression(new ConstantExpression(false));
 
         // Act
-        var result = sut.Evaluate(false);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -17,45 +17,45 @@ public class NotExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
     {
         // Arrange
-        var sut = new NotExpression();
+        var sut = new NotExpression(new EmptyExpression());
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context must be of type boolean");
+        result.ErrorMessage.Should().Be("Expression must be of type boolean");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression();
+        var sut = new NotExpression(new ConstantExpression(true));
 
         // Act
-        var result = sut.EvaluateTyped(false);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(true);
+        result.Value.Should().Be(false);
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Context_Is_Of_Wrong_Type()
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
     {
         // Arrange
-        var sut = new NotExpression();
+        var sut = new NotExpression(new EmptyExpression());
 
         // Act
-        var result = sut.EvaluateTyped(null);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context must be of type boolean");
+        result.ErrorMessage.Should().Be("Expression must be of type boolean");
     }
 
     [Fact]
@@ -70,8 +70,8 @@ public class NotExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(NotExpression));
-        result.Parameters.Should().BeEmpty();
+        result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

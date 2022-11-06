@@ -3,5 +3,7 @@
 public interface IOrExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    IExpression FirstExpression { get; }
+    [Required]
+    IExpression SecondExpression { get; }
 }

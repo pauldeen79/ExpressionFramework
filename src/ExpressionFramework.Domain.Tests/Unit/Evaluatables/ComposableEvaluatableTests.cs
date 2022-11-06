@@ -14,7 +14,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition });
+        var actual = Evaluate(new[] { condition });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -32,7 +32,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition });
+        var actual = Evaluate(new[] { condition });
 
 
         // Assert
@@ -47,11 +47,11 @@ public class ComposableEvaluatableTests
         (
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression("Kaboom")
+            new ErrorExpression(new ConstantExpression("Kaboom"))
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition });
+        var actual = Evaluate(new[] { condition });
 
 
         // Assert
@@ -70,11 +70,11 @@ public class ComposableEvaluatableTests
             Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression("Kaboom")
+            new ErrorExpression(new ConstantExpression("Kaboom"))
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition });
+        var actual = Evaluate(new[] { condition });
 
 
         // Assert
@@ -101,7 +101,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition1, condition2 });
+        var actual = Evaluate(new[] { condition1, condition2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -126,7 +126,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition1, condition2 });
+        var actual = Evaluate(new[] { condition1, condition2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -163,7 +163,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(new[] { condition1, condition2, condition3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -200,7 +200,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(null, new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(new[] { condition1, condition2, condition3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -222,6 +222,6 @@ public class ComposableEvaluatableTests
         result.ReturnValues.Should().ContainSingle();
     }
 
-    private static Result<bool> Evaluate(object? context, IEnumerable<ComposableEvaluatable> conditions)
-        => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateTyped(context);
+    private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)
+        => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateTyped();
 }

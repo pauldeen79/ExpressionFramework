@@ -9,7 +9,7 @@ public class TypedConstantExpressionTests
         var sut = new TypedConstantExpression<int>(1);
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

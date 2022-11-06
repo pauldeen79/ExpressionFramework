@@ -3,26 +3,26 @@
 public class SelectExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new SelectExpression(new EmptyExpression(), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Not_Of_Type_Enumerable()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new SelectExpression(new ConstantExpression(1), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -32,10 +32,10 @@ public class SelectExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new SelectExpression(new ErrorExpression("Kaboom"));
+        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Act
-        var result = sut.Evaluate(new[] { "a", "b", "c" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -46,66 +46,14 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
+        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
-        var result = sut.Evaluate(new[] { "a", "b", "c" });
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Null()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(null);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context cannot be empty" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_Context_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(44);
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "Context is not of type enumerable" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Item_When_SelectExpression_Returns_Status_Invalid()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(new object[] { "a", "b", 1, "c" });
-
-        // Assert
-        result.Select(x => x.ErrorMessage).Should().BeEquivalentTo(new[] { "SelectorExpression returned an invalid result on item 2. Error message: Context must be of type string" });
-    }
-
-    [Fact]
-    public void ValidateContext_Returns_Empty_Sequence_When_All_Is_Well()
-    {
-        // Arrange
-        var sut = new SelectExpression(new ToUpperCaseExpression());
-
-        // Act
-        var result = sut.ValidateContext(new[] { "a", "b", "c" });
-
-        // Assert
-        result.Should().BeEmpty();
     }
 
     [Fact]
@@ -120,8 +68,8 @@ public class SelectExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(SelectExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ContextIsRequired.Should().BeNull();
     }
 }

@@ -2,4 +2,6 @@
 
 public interface IStringLengthExpression : IExpression
 {
+    [Required]
+    IExpression Expression { get; }
 }

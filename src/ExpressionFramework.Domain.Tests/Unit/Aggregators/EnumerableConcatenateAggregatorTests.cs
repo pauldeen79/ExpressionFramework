@@ -3,17 +3,17 @@
 public class EnumerableConcatenateAggregatorTests
 {
     [Fact]
-    public void Aggregate_Returns_Invalid_When_Context_Is_Not_Enumerable()
+    public void Aggregate_Returns_Invalid_When_FirstExpression_Is_Not_Enumerable()
     {
         // Arrange
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(new[] { "b" }));
+        var result = sut.Aggregate(new EmptyExpression(), new ConstantExpression(new[] { "b" }));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type enumerable");
+        result.ErrorMessage.Should().Be("First expression is not of type enumerable");
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(new[] { "a" }, new ErrorExpression("Kaboom"));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -37,7 +37,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(new[] { "a" }, new ConstantExpression(1));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -51,7 +51,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(new[] { "a" }, new ConstantExpression(new[] { "b" }));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(new[] { "b" }));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -71,8 +71,7 @@ public class EnumerableConcatenateAggregatorTests
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(EnumerableConcatenateAggregator));
         result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
+        result.ReturnValues.Should().ContainSingle();
+        result.ContextDescription.Should().BeEmpty();
     }
 }

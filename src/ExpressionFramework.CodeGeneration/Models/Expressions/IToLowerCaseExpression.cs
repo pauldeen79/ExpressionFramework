@@ -2,4 +2,6 @@
 
 public interface IToLowerCaseExpression : IExpression
 {
+    [Required]
+    IExpression Expression { get; }
 }

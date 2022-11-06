@@ -1,19 +1,22 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [ExpressionDescription("Sorts items from an enumerable context value using sort expressions")]
-[ContextType(typeof(IEnumerable))]
 [ContextDescription("The enumerable value to transform elements for")]
-[ContextRequired(true)]
+[ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]
 [ParameterRequired(nameof(SortOrderExpressions), true)]
+[ParameterDescription(nameof(Expression), "Enumerable to get ordered items for")]
+[ParameterRequired(nameof(Expression), true)]
+[ParameterType(nameof(Expression), typeof(IEnumerable))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerable")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context cannot be empty, Context is not of type enumerable, SortOrders should have at least one sort order")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, SortOrders should have at least one sort order")]
 public partial record OrderByExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => context is IEnumerable e
-            ? GetSortedEnumerable(context, e.OfType<object?>())
-            : EnumerableExpression.GetInvalidResult(context);
+        => Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable").Transform(result =>
+            result.IsSuccessful()
+                ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
+                : Result<object?>.FromExistingResult(result));
 
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
@@ -37,7 +40,7 @@ public partial record OrderByExpression
         IOrderedEnumerable<object?>? orderedEnumerable = null;
         foreach (var sortOrder in sortOrdersResult.Value!)
         {
-            var sortExpressionEvaluated = EnumerableExpression.GetResultFromEnumerable(e, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
+            var sortExpressionEvaluated = EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
             if (!sortExpressionEvaluated.IsSuccessful())
             {
                 return sortExpressionEvaluated;
@@ -85,48 +88,5 @@ public partial record OrderByExpression
 
         return Result<IEnumerable<SortOrder>>.Success(items);
     }
-
-    public override IEnumerable<ValidationResult> ValidateContext(object? context, ValidationContext validationContext)
-    {
-        if (context == null)
-        {
-            yield return new ValidationResult("Context cannot be empty");
-            yield break;
-        }
-
-        if (context is not IEnumerable e)
-        {
-            yield return new ValidationResult("Context is not of type enumerable");
-            yield break;
-        }
-
-        var sortOrdersResult = GetSortOrdersResult(context);
-        if (sortOrdersResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"SortOrderExpressions returned an invalid result. Error message: {sortOrdersResult.ErrorMessage}");
-            yield break;
-        }
-        if (!sortOrdersResult.Value!.Any())
-        {
-            yield return new ValidationResult("SortOrderExpressions should have at least one item");
-            yield break;
-        }
-
-        var index = 0;
-        foreach (var sortOrder in sortOrdersResult.Value!)
-        {
-            foreach (var itemResult in e.OfType<object>().Select(x => sortOrder.SortExpression.Evaluate(x)))
-            {
-                if (itemResult.Status == ResultStatus.Invalid)
-                {
-                    yield return new ValidationResult($"SortExpression returned an invalid result on item {index}. Error message: {itemResult.ErrorMessage}");
-                }
-
-                index++;
-            }
-        }
-    }
-
-    public OrderByExpression(IEnumerable<SortOrder> sortOrders) : this(sortOrders.Select(x => new ConstantExpression(x))) { }
 }
 

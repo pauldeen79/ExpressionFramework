@@ -2,51 +2,72 @@
 
 public static class StringExpression
 {
-    public static IEnumerable<ValidationResult> ValidateContext(object? context, Func<IEnumerable<ValidationResult>>? additionalValidationErrorsDelegate = null)
-    {
-        if (context is not string)
-        {
-            yield return new ValidationResult("Context must be of type string");
-        }
+    public static ExpressionDescriptor GetStringEdgeDescriptor(
+        Type type,
+        string description,
+        string expressionDescription,
+        string okValue,
+        string okDescription)
+        => GetDescriptor(
+            type,
+            description,
+            expressionDescription,
+            okValue, 
+            okDescription,
+            "LengthExpression",
+            "Number of characters to use",
+            typeof(int),
+            true,
+            "Expression must be of type string, LengthExpression did not return an integer, Length must refer to a location within the string");
 
-        if (additionalValidationErrorsDelegate != null)
-        {
-            foreach (var error in additionalValidationErrorsDelegate.Invoke())
+    public static ExpressionDescriptor GetStringTrimDescriptor(
+        Type type,
+        string description,
+        string expressionDescription,
+        string okValue,
+        string okDescription)
+        => GetDescriptor(
+            type,
+            description,
+            expressionDescription,
+            okValue,
+            okDescription,
+            "TrimCharsExpression",
+            "Optional trim characters to use. When empty, space will be used",
+            typeof(char[]),
+            false,
+            "Expression must be of type string, TrimCharsExpression must be of type char[]");
+
+#pragma warning disable S107 // Methods should not have too many parameters
+    private static ExpressionDescriptor GetDescriptor(
+        Type type,
+        string description,
+        string expressionDescription,
+        string okValue,
+        string okDescription,
+        string customExpressionName,
+        string customExpressionDescription,
+        Type customExpressionType,
+        bool customExpressionRequired,
+        string invalidDescription)
+#pragma warning restore S107 // Methods should not have too many parameters
+        => new(
+            type.Name,
+            type.FullName,
+            description,
+            true,
+            null,
+            null,
+            null,
+            new[]
             {
-                yield return error;
-            }
-        }
-    }
-
-    public static IEnumerable<ValidationResult> ValidateLength(object? context, Expression lengthExpression)
-    {
-        if (context is not string s)
-        {
-            yield break;
-        }
-
-        int? localLength = null;
-
-        var lengthResult = lengthExpression.Evaluate(context);
-        if (lengthResult.Status == ResultStatus.Invalid)
-        {
-            yield return new ValidationResult($"LengthExpression returned an invalid result. Error message: {lengthResult.ErrorMessage}");
-        }
-        else if (lengthResult.Status == ResultStatus.Ok)
-        {
-            if (lengthResult.Value is not int length)
+                new ParameterDescriptor(customExpressionName, customExpressionType.FullName, customExpressionDescription, customExpressionRequired),
+                new ParameterDescriptor("Expression", typeof(string).FullName, expressionDescription, true),
+            },
+            new[]
             {
-                yield return new ValidationResult($"LengthExpression did not return an integer");
+                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(string), okDescription),
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", null, invalidDescription),
             }
-            else
-            {
-                localLength = length;
-            }
-        }
-
-        if (localLength.HasValue && s.Length < localLength)
-        {
-            yield return new ValidationResult("Length must refer to a location within the string");
-        }
-    }
+        );
 }

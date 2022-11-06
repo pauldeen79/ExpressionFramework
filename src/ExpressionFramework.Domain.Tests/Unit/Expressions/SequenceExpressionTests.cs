@@ -6,10 +6,10 @@ public class SequenceExpressionTests
     public void Evaluate_Returns_Invalid_When_One_Expression_Returns_Invalid()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message") });
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression(new ConstantExpression("Message")) });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -20,10 +20,10 @@ public class SequenceExpressionTests
     public void Evaluate_Returns_Error_When_One_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom") });
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression(new ConstantExpression("Kaboom")) });
 
         // Act
-        var result = sut.Evaluate(null);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -62,7 +62,7 @@ public class SequenceExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_One_Expression_Returns_Invalid()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message") });
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression(new ConstantExpression("Message")) });
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -76,7 +76,7 @@ public class SequenceExpressionTests
     public void EvaluateTyped_Returns_Error_When_One_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom") });
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression(new ConstantExpression("Kaboom")) });
 
         // Act
         var result = sut.EvaluateTyped(null);

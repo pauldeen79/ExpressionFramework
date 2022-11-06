@@ -6,10 +6,10 @@ public class CompoundExpressionTests
     public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
     {
         // Arrange
-        var sut = new CompoundExpression(2, new AddAggregator());
+        var sut = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator());
 
         // Act
-        var result = sut.Evaluate(1);
+        var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -28,10 +28,11 @@ public class CompoundExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(CompoundExpression));
-        result.Parameters.Should().HaveCount(2);
+        result.Parameters.Should().HaveCount(3);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
+        result.UsesContext.Should().BeTrue();
         result.ContextIsRequired.Should().BeFalse();
     }
 }

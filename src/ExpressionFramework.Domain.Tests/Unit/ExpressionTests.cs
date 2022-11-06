@@ -6,11 +6,11 @@ public class ExpressionTests
     public void Evaluate_Happy_Flow()
     {
         // Arrange
-        var expression = new FieldExpression("Name");
-        var context = new { Name = "Hello world!" };
+        var value = new { Name = "Hello world!" };
+        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("Name"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -21,11 +21,11 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_DuckTyping()
     {
         // Arrange
-        var expression = new FieldExpression("InnerProperty.Name");
-        var context = new { InnerProperty = new { Name = "Hello world" } };
+        var value = new { InnerProperty = new { Name = "Hello world" } };
+        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty.Name"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -36,15 +36,15 @@ public class ExpressionTests
     public void Can_Evaluate_Nested_FieldExpression_Using_ChainedExpression()
     {
         // Arrange
+        var value = new { InnerProperty = new { Name = "Hello world" } };
         var expression = new ChainedExpression(new[]
         {
-            new FieldExpression("InnerProperty"),
-            new FieldExpression("Name")
+            new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty")),
+            new FieldExpression(new ContextExpression(), new ConstantExpression("Name"))
         });
-        var context = new { InnerProperty = new { Name = "Hello world" } };
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -57,12 +57,12 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(2, new AddAggregator()),
-            new CompoundExpression(3, new AddAggregator())
+            new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator()),
+            new CompoundExpression(new ContextExpression(), new ConstantExpression(3), new AddAggregator())
         });
 
         // Act
-        var result = expression.Evaluate(1);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -77,15 +77,20 @@ public class ExpressionTests
         var expression = new ChainedExpressionBuilder().AddExpressions(
             new ContextExpressionBuilder(),
             new SubstringExpressionBuilder()
+                .WithExpression(new ConstantExpressionBuilder().WithValue(input))
                 .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
-                    new StringLengthExpressionBuilder(),
-                    new CompoundExpressionBuilder().WithAggregator(new SubtractAggregatorBuilder()).WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
+                    new StringLengthExpressionBuilder()
+                        .WithExpression(new ContextExpressionBuilder()),
+                    new CompoundExpressionBuilder()
+                        .WithAggregator(new SubtractAggregatorBuilder())
+                        .WithFirstExpression(new ContextExpressionBuilder())
+                        .WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
                 )
                 .WithLengthExpression(new ConstantExpressionBuilder().WithValue(6))
-        ).Build();
+        ).BuildTyped();
 
         // Act
-        var result = expression.Evaluate(input);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -96,10 +101,10 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_CompoundExpression()
     {
         // Arrange
-        var aggregator = new CompoundExpression(new ConstantExpression("b"), new StringConcatenateAggregator());
+        var aggregator = new CompoundExpression(new ConstantExpression("a"), new ConstantExpression("b"), new StringConcatenateAggregator());
 
         // Act
-        var result = aggregator.Evaluate("a");
+        var result = aggregator.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -110,10 +115,10 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
     {
         // Arrange
-        var aggregator = new AggregateExpression(new[] { new ConstantExpression("b"), new ConstantExpression("c") }, new StringConcatenateAggregator());
+        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator());
 
         // Act
-        var result = aggregator.Evaluate("a");
+        var result = aggregator.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -124,11 +129,11 @@ public class ExpressionTests
     public void Can_Get_String_Length_Using_CountExpression()
     {
         // Arrange
-        var expression = new CountExpression(null);
-        var context = "Hello world!";
+        var value = "Hello world!";
+        var expression = new CountExpression(new ConstantExpression(value), null);
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate(null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -139,11 +144,10 @@ public class ExpressionTests
     public void Can_Get_String_Length_Using_StringLengthExpression()
     {
         // Arrange
-        var expression = new StringLengthExpression();
-        var context = "Hello world!";
+        var expression = new StringLengthExpression(new ConstantExpression("Hello world!"));
 
         // Act
-        var result = expression.Evaluate(context);
+        var result = expression.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

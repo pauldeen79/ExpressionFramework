@@ -3,5 +3,7 @@
 public interface IOfTypeExpression : IExpression
 {
     [Required]
-    Type Type { get; }
+    IExpression Expression { get; }
+    [Required]
+    IExpression TypeExpression { get; }
 }
