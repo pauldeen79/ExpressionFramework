@@ -47,7 +47,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression(typeof(string)));
+        var sut = new OfTypeExpression(new ConstantExpression(new object?[] { "A", "B", 1, null, "C" }), new ConstantExpression(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
