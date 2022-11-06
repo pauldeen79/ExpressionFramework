@@ -96,12 +96,6 @@ public static class EnumerableExpression
                     ? aggregateDelegate.Invoke(result.Value!)
                     : Result<T>.FromExistingResult(result));
 
-    public static Result<object?> GetInvalidResult(object? context)
-        => GetInvalidResult<object?>(context);
-
-    public static Result<T> GetInvalidResult<T>(object? context)
-        => context.Transform(x => Result<T>.Invalid("Expression is not of type enumerable"));
-    
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression == null
             ? new EmptyExpression().Evaluate(context)
