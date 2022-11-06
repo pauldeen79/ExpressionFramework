@@ -130,7 +130,7 @@ public static class EnumerableExpression
             type.Name,
             type.FullName,
             description,
-            false,
+            true,
             null,
             null,
             null,
