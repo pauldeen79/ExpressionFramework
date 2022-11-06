@@ -8,6 +8,12 @@ public partial record NowExpression : ITypedExpression<DateTime>
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<DateTime> EvaluateTyped(object? context)
-        => Result<DateTime>.Success(DateTimeProvider == null ? DateTime.Now : DateTimeProvider.GetCurrentDateTime());
+        => Result<DateTime>.Success(DateTimeProvider == null
+            ? DateTime.Now
+            : DateTimeProvider.GetCurrentDateTime());
+
+    public NowExpression() : this(default(IDateTimeProvider))
+    {
+    }
 }
 

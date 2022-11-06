@@ -35,4 +35,18 @@ public class NowExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(dateTime);
     }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Current_DateTime_Without_DateTimeProvider()
+    {
+        // Arrange
+        var sut = new NowExpression();
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(5));
+    }
 }

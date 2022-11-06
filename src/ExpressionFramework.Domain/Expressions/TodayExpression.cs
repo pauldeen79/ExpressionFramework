@@ -8,6 +8,12 @@ public partial record TodayExpression : ITypedExpression<DateTime>
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<DateTime> EvaluateTyped(object? context)
-        => Result<DateTime>.Success(DateTimeProvider == null ? DateTime.Today : DateTimeProvider.GetCurrentDateTime().Date);
+        => Result<DateTime>.Success(DateTimeProvider == null
+            ? DateTime.Today
+            : DateTimeProvider.GetCurrentDateTime().Date);
+
+    public TodayExpression() : this(default(IDateTimeProvider))
+    {
+    }
 }
 

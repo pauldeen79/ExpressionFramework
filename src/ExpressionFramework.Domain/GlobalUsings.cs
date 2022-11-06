@@ -7,6 +7,7 @@ global using System.Globalization;
 global using System.Linq;
 global using System.Reflection;
 global using System.Text;
+global using CrossCutting.Common.Abstractions;
 global using CrossCutting.Common.Extensions;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain.Attributes;
