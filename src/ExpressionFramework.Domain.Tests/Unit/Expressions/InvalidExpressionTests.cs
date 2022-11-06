@@ -47,6 +47,20 @@ public class InvalidExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_ValidationErrors_Returns_Error()
+    {
+        // Assert
+        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ErrorExpression(new ConstantExpression("Kaboom")) });
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
     {
         // Assert

@@ -17,7 +17,7 @@ public class AggregateExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
+    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression()
     {
         // Arrange
         var sut = new AggregateExpression(new object[] { 1, 2, 3 }.Select(x => new ConstantExpression(x)), new AddAggregator());
@@ -28,6 +28,34 @@ public class AggregateExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(1 + 2 + 3);
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_FirstExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new AggregateExpression(new Expression[] { new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1) }, new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_SecondExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new AggregateExpression(new Expression[] { new ConstantExpression(1), new ErrorExpression(new ConstantExpression("Kaboom")) }, new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]

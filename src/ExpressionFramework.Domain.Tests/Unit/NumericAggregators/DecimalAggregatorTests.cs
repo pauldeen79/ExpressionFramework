@@ -18,6 +18,21 @@ public class DecimalAggregatorTests
     }
 
     [Fact]
+    public void Aggregate_Returns_Error_When_FirstExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new DecimalAggregator();
+        decimal value = 2;
+
+        // Act
+        var result = sut.Aggregate(null, new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression(value), (_, _) => "some value");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Aggregate_Returns_Invalid_When_SecondValue_Could_Not_Be_Converted_To_Correct_Type()
     {
         // Arrange
