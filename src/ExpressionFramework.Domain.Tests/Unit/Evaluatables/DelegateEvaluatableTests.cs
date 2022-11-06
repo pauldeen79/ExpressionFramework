@@ -11,7 +11,7 @@ public class DelegateEvaluatableTests
         var sut = new DelegateEvaluatable(() => input);
 
         // Act
-        var actual = sut.Evaluate(null);
+        var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
