@@ -7,7 +7,7 @@ expressions:
 - Add Coalesce/FirstNotNull expression, which maybe is just a short-hand for First with a predicate, but maybe is worth to have on its own
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
 - Add expressions: ConvertToInt, ConvertToDouble, ConvertToDecimal, ConvertToBoolean, ParseDateTime, ConvertToString
-- Add expressions: DateAdd
+- Add expressions: DateAdd(expression, part, numbe), CreateDateTime(year, month, day, hour, minute, second)
 - Add TypedSequenceExpression<T>
 
 general:

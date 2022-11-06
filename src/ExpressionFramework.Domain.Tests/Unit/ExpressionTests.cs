@@ -153,4 +153,25 @@ public class ExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("Hello world!".Length);
     }
+
+    [Fact]
+    public void Can_Get_Current_Month_Using_ChainedExpression_Of_Today_And_Field()
+    {
+        // Arrange
+        var dateTime = DateTime.Now;
+        var dateTimeProvider = new Mock<IDateTimeProvider>();
+        dateTimeProvider.Setup(x => x.GetCurrentDateTime()).Returns(dateTime);
+        var currentMonthExpression = new ChainedExpression(new Expression[]
+        {
+            new TodayExpression(dateTimeProvider.Object),
+            new FieldExpression(new ContextExpression(), new ConstantExpression("Month"))
+        });
+
+        // Act
+        var result = currentMonthExpression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(dateTime.Month);
+    }
 }
