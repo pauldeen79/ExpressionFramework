@@ -12,7 +12,7 @@
 [ParameterRequired(nameof(Operator), true)]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "Result value of the operator evaluation", "This result will be returned when the evaluation succeeds")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case operator evaluation returns something else than Ok")]
-public partial record OperatorExpression
+public partial record OperatorExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

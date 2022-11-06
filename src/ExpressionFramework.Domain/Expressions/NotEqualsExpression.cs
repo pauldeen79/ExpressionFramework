@@ -24,11 +24,11 @@ public partial record NotEqualsExpression : ITypedExpression<bool>
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()
-    => BooleanExpression.GetDescriptor(
-        typeof(NotEqualsExpression),
-        "Evaluates two expressions, and compares the two results. It will return false when they are equal, or true otherwise.",
-        "true of false",
-        "This result will always be returned",
-        null,
-        "Boolean expression to perform NotEquals operation on");
+        => BooleanExpression.GetDescriptor(
+            typeof(NotEqualsExpression),
+            "Evaluates two expressions, and compares the two results. It will return false when they are equal, or true otherwise.",
+            "true of false",
+            "This result will always be returned",
+            null,
+            "Boolean expression to perform NotEquals operation on");
 }
