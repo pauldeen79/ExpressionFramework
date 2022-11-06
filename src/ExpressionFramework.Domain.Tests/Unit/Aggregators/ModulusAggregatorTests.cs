@@ -9,7 +9,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(true), new ConstantExpression(1));
+        var result = sut.Aggregate(new ConstantExpression(true), new ConstantExpression(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -24,7 +24,7 @@ public class ModulusAggregatorTests
         byte input = 1;
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(input), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -39,7 +39,7 @@ public class ModulusAggregatorTests
         short input = 1;
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(input), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -53,7 +53,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(1), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(1), new ConstantExpression(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -67,7 +67,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(1L), new ConstantExpression(2L));
+        var result = sut.Aggregate(new ConstantExpression(1L), new ConstantExpression(2L));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -81,7 +81,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(1f), new ConstantExpression(2f));
+        var result = sut.Aggregate(new ConstantExpression(1f), new ConstantExpression(2f));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -95,7 +95,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(1d), new ConstantExpression(2d));
+        var result = sut.Aggregate(new ConstantExpression(1d), new ConstantExpression(2d));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -109,7 +109,7 @@ public class ModulusAggregatorTests
         var sut = new ModulusAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(1M), new ConstantExpression(2M));
+        var result = sut.Aggregate(new ConstantExpression(1M), new ConstantExpression(2M));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

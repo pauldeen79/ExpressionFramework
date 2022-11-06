@@ -9,7 +9,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new EmptyExpression(), new ConstantExpression("b"));
+        var result = sut.Aggregate(new EmptyExpression(), new ConstantExpression("b"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -23,7 +23,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression("a"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var result = sut.Aggregate(new ConstantExpression("a"), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -37,7 +37,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression("a"), new ConstantExpression(1));
+        var result = sut.Aggregate(new ConstantExpression("a"), new ConstantExpression(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -51,7 +51,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression("a"), new ConstantExpression("b"));
+        var result = sut.Aggregate(new ConstantExpression("a"), new ConstantExpression("b"));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

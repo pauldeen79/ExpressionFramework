@@ -9,7 +9,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new EmptyExpression(), new ConstantExpression(new[] { "b" }));
+        var result = sut.Aggregate(new EmptyExpression(), new ConstantExpression(new[] { "b" }));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -23,7 +23,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(new[] { "a" }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ErrorExpression(new ConstantExpression("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -37,7 +37,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(new[] { "a" }), new ConstantExpression(1));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(1));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -51,7 +51,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(new[] { "a" }), new ConstantExpression(new[] { "b" }));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(new[] { "b" }));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
