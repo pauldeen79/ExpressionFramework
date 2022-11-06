@@ -35,6 +35,22 @@ public class NotEqualsExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Correct_Value_On_Success()
+    {
+        // Arrange
+        var firstExpression = new ConstantExpression("1");
+        var secondExpression = new ConstantExpression("1");
+        var expression = new NotEqualsExpression(firstExpression, secondExpression);
+
+        // Act
+        var actual = expression.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be(false);
+    }
+
+    [Fact]
     public void EvaluateTyped_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
@@ -75,7 +91,7 @@ public class NotEqualsExpressionTests
         var expression = new NotEqualsExpression(firstExpression, secondExpression);
 
         // Act
-        var actual = expression.EvaluateTyped(null);
+        var actual = expression.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
