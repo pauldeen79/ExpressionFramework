@@ -27,16 +27,16 @@ public static class BooleanExpression
                                                      string description,
                                                      string okValue,
                                                      string okDescription,
-                                                     string invalidDescription,
+                                                     string? invalidDescription,
                                                      string parameterDescription)
         => new(
             type.Name,
             type.FullName,
             description,
             true,
-            typeof(IEnumerable).FullName,
-            "Boolean value to use",
-            true,
+            null,
+            "Context to use on expression evaluation",
+            null,
             new[]
             {
                 new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
@@ -45,6 +45,7 @@ public static class BooleanExpression
             new[]
             {
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
-                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription),
-            });
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
+            }.Where(x => invalidDescription != null || x.Status != ResultStatus.Invalid)
+        );
 }

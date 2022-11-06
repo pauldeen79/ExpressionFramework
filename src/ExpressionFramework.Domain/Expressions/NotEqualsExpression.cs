@@ -1,15 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Evaluates two expressions, and compares the two results. It will return true when they are unequal, or false otherwise.")]
-[UsesContext(true)]
-[ContextDescription("Context to use on expression evaluation")]
-[ContextRequired(false)]
-[ContextType(typeof(object))]
-[ParameterDescription(nameof(FirstExpression), "First expression")]
-[ParameterRequired(nameof(FirstExpression), true)]
-[ParameterDescription(nameof(SecondExpression), "Second expression")]
-[ParameterRequired(nameof(SecondExpression), true)]
-[ReturnValue(ResultStatus.Ok, typeof(bool), "true of false", "This result will always be returned")]
+[DynamicDescriptor(typeof(NotEqualsExpression))]
 public partial record NotEqualsExpression : ITypedExpression<bool>
 {
     public override Result<object?> Evaluate(object? context)
@@ -31,4 +22,13 @@ public partial record NotEqualsExpression : ITypedExpression<bool>
             ? Result<bool>.FromExistingResult(nonSuccessfulResult)
             : Result<bool>.Success(!EqualsOperator.IsValid(results[0], results[1]));
     }
+
+    public static ExpressionDescriptor GetExpressionDescriptor()
+    => BooleanExpression.GetDescriptor(
+        typeof(NotEqualsExpression),
+        "Evaluates two expressions, and compares the two results. It will return false when they are equal, or true otherwise.",
+        "true of false",
+        "This result will always be returned",
+        null,
+        "Boolean expression to perform NotEquals operation on");
 }

@@ -96,6 +96,6 @@ public class NotEqualsExpressionTests
         result.Name.Should().Be(nameof(NotEqualsExpression));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ContextIsRequired.Should().BeNull();
     }
 }
