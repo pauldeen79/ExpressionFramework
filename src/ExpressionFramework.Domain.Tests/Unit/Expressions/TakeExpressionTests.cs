@@ -60,7 +60,7 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression(2));
+        var sut = new TakeExpression(new object[] { "A", "B", 1, "C" }, 2);
 
         // Act
         var result = sut.Evaluate();
