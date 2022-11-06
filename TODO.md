@@ -7,7 +7,7 @@ expressions:
 - Add Coalesce/FirstNotNull expression, which maybe is just a short-hand for First with a predicate, but maybe is worth to have on its own
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
 - Add expressions: ConvertToInt, ConvertToDouble, ConvertToDecimal, ConvertToBoolean, ParseDateTime, ConvertToString
-- Add expressions: Now, UtcNow, Today
+- Add expressions: DateAdd
 - Add TypedSequenceExpression<T>
 
 general:

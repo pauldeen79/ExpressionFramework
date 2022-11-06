@@ -1,6 +1,7 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.Globalization;
 global using CrossCutting.Common;
+global using CrossCutting.Common.Abstractions;
 global using CrossCutting.Common.Results;
 global using ExpressionFramework.Domain.AggregatorDescriptors;
 global using ExpressionFramework.Domain.Aggregators;
@@ -20,6 +21,7 @@ global using ExpressionFramework.Domain.OperatorDescriptorProviders;
 global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.SpecFlow.Tests.Support;
 global using FluentAssertions;
+global using Moq;
 global using TechTalk.SpecFlow;
 global using TechTalk.SpecFlow.Assist;
 global using Xunit;
