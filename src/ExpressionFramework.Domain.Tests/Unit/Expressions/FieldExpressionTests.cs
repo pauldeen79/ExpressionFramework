@@ -37,7 +37,7 @@ public class FieldExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Context_Is_Null()
+    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
@@ -51,6 +51,23 @@ public class FieldExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Expression cannot be empty");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var expression = new FieldExpressionBuilder()
+            .WithExpression(new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")))
+            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
+            .Build();
+
+        // Act
+        var actual = expression.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]

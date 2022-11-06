@@ -3,7 +3,7 @@
 public class ChainedExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Error_When_ExpressionEvaluation_Fails()
+    public void Evaluate_Returns_Error_When_First_ExpressionEvaluation_Fails()
     {
         // Arrange
         var expression = new ChainedExpressionBuilder()
@@ -11,6 +11,26 @@ public class ChainedExpressionTests
             (
                 new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")),
                 new EmptyExpressionBuilder()
+            )
+            .Build();
+
+        // Act
+        var actual = expression.Evaluate(default);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_Second_ExpressionEvaluation_Fails()
+    {
+        // Arrange
+        var expression = new ChainedExpressionBuilder()
+            .AddExpressions
+            (
+                new EmptyExpressionBuilder(),
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom"))
             )
             .Build();
 

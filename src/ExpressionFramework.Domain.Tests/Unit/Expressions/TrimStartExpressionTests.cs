@@ -56,6 +56,20 @@ public class TrimStartExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_TrimCharsExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ErrorExpression(new ConstantExpression("Kaboom")));
+
+        // Act
+        var actual = sut.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void EvaluateTyped_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
