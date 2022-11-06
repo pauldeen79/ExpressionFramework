@@ -1,15 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Trims the end characters of the expression")]
-[UsesContext(true)]
-[ContextDescription("Context to use on expression evaluation")]
-[ParameterDescription(nameof(Expression), "String to get the trimmed value for")]
-[ParameterRequired(nameof(Expression), true)]
-[ParameterType(nameof(Expression), typeof(string))]
-[ParameterDescription(nameof(TrimCharsExpression), "Optional trim characters to use. When empty, space will be used")]
-[ParameterRequired(nameof(TrimCharsExpression), false)]
-[ReturnValue(ResultStatus.Ok, typeof(string), "The trim end value of the expression", "This result will be returned when the expression is of type string")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string")]
+[DynamicDescriptor(typeof(TrimEndExpression))]
 public partial record TrimEndExpression : ITypedExpression<string>
 {
     public override Result<object?> Evaluate(object? context)
@@ -38,5 +29,13 @@ public partial record TrimEndExpression : ITypedExpression<string>
 
         return Result<string>.Success(s.TrimEnd(trimCharsResult.Value!));
     }
+
+    public static ExpressionDescriptor GetExpressionDescriptor()
+        => StringExpression.GetStringTrimDescriptor(
+            typeof(TrimEndExpression),
+            "Trims the end characters of the expression",
+            "String to get the trimmed value for",
+            "The trim end value of the expression",
+            "This result will be returned when the expression is of type string");
 }
 
