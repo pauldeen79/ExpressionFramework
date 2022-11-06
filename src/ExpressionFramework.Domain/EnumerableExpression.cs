@@ -107,14 +107,6 @@ public static class EnumerableExpression
             ? new EmptyExpression().Evaluate(context)
             : defaultExpression.Evaluate(context);
 
-    public static IEnumerable<ValidationResult> ValidateEmptyPredicate(Expression? predicateExpression)
-    {
-        if (predicateExpression == null)
-        {
-            yield return new ValidationResult("Predicate is required");
-        }
-    }
-
 #pragma warning disable S107 // Methods should not have too many parameters
     public static ExpressionDescriptor GetDescriptor(Type type,
                                                      string description,
