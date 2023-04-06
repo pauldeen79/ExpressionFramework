@@ -14,4 +14,5 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
     protected override bool AddBackingFieldsForCollectionProperties => true;
     protected override bool AddPrivateSetters => true;
+    protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Optional;
 }

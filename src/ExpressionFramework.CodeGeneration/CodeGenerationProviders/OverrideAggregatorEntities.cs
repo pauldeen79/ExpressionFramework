@@ -9,7 +9,7 @@ public class OverrideAggregatorEntities : ExpressionFrameworkCSharpClassBase
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override IClass? BaseClass => CreateBaseclass(typeof(IAggregator), "ExpressionFramework.Domain");
-    protected override bool ValidateArgumentsInConstructor => false; // there are no properties in aggregators, so this is not necessary
+    protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Never; // there are no properties in aggregators, so this is not necessary
 
     public override object CreateModel()
         => GetImmutableClasses(GetOverrideModels(typeof(IAggregator)), "ExpressionFramework.Domain.Aggregators");
