@@ -23,7 +23,7 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
                     .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
                     .AddParameters(new ParameterBuilder().WithName("secondExpression").WithTypeName("ExpressionFramework.Domain.Expression"))
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
-                    .AddLiteralCodeStatements("throw new NotImplementedException();")
+                    .AddNotImplementedException()
                 )
                 .Build());
 

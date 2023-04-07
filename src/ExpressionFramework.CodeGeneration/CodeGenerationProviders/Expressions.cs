@@ -22,7 +22,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     .WithOverride()
                     .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
-                    .AddLiteralCodeStatements("throw new NotImplementedException();")
+                    .AddNotImplementedException()
                 )
                 .AddGenericTypeArguments(x.GenericTypeArguments)
                 .AddGenericTypeArgumentConstraints(x.GenericTypeArgumentConstraints)

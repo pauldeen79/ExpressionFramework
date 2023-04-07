@@ -19,3 +19,8 @@ public partial record ToLowerCaseExpression : ITypedExpression<string>
                 ? Result<string>.Success(result.Value!.ToLower())
                 : result);
 }
+
+public partial record ToLowerCaseExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

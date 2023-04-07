@@ -19,3 +19,8 @@ public partial record ToUpperCaseExpression : ITypedExpression<string>
                 ? Result<string>.Success(result.Value!.ToUpper())
                 : result);
 }
+
+public partial record ToUpperCaseExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

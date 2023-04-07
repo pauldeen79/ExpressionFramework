@@ -22,7 +22,7 @@ public class Evaluatables : ExpressionFrameworkCSharpClassBase
                     .WithOverride()
                     .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
                     .WithType(typeof(Result<bool>))
-                    .AddLiteralCodeStatements("throw new NotImplementedException();")
+                    .AddNotImplementedException()
                 )
                 .Build());
 }

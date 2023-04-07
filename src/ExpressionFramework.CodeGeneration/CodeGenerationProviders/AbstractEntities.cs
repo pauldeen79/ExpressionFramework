@@ -9,6 +9,8 @@ public class AbstractEntities : ExpressionFrameworkCSharpClassBase
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
 
+    protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Never; // there are no properties in abstract base types (Aggregators, Evaluatables, Expressions and Operators), so this is not necessary
+
     public override object CreateModel()
         => GetImmutableClasses(GetAbstractModels(), "ExpressionFramework.Domain");
 }

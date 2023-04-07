@@ -34,3 +34,7 @@ public partial record WhereExpression
     }
 }
 
+public partial record WhereExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

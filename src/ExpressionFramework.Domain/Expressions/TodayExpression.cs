@@ -17,3 +17,7 @@ public partial record TodayExpression : ITypedExpression<DateTime>
     }
 }
 
+public partial record TodayExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -16,7 +16,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Tests", "src\ExpressionFramework.Domain.Tests\ExpressionFramework.Domain.Tests.csproj", "{2649118A-C218-4CC6-9A3D-A00A2730BE24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Domain.Builders", "src\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj", "{7537166A-6351-4CFC-A20B-C94AA127248D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Builders", "src\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj", "{7537166A-6351-4CFC-A20B-C94AA127248D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelFramework.CodeGeneration", "..\ModelFramework\src\ModelFramework.CodeGeneration\ModelFramework.CodeGeneration.csproj", "{01B1C8D5-1908-4EFF-85C8-445737417F39}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelFramework.Objects", "..\ModelFramework\src\ModelFramework.Objects\ModelFramework.Objects.csproj", "{27538990-10A7-4B59-93BD-953E797249CA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +44,14 @@ Global
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01B1C8D5-1908-4EFF-85C8-445737417F39}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01B1C8D5-1908-4EFF-85C8-445737417F39}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01B1C8D5-1908-4EFF-85C8-445737417F39}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01B1C8D5-1908-4EFF-85C8-445737417F39}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27538990-10A7-4B59-93BD-953E797249CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27538990-10A7-4B59-93BD-953E797249CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27538990-10A7-4B59-93BD-953E797249CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27538990-10A7-4B59-93BD-953E797249CA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
