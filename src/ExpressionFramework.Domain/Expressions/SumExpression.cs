@@ -49,3 +49,8 @@ public partial record SumExpression
         return Result<object?>.Invalid("Could only compute sum of numeric values");
     }
 }
+
+public partial record SumExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

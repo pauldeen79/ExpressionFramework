@@ -17,3 +17,7 @@ public partial record TypedDelegateExpression<T> : ITypedExpression<T>, IUntyped
         => new DelegateExpression(context => Value.Invoke(context));
 }
 
+public partial record TypedDelegateExpressionBase<T>
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

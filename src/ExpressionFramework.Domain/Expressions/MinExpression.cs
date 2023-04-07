@@ -20,3 +20,7 @@ public partial record MinExpression
         );
 }
 
+public partial record MinExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

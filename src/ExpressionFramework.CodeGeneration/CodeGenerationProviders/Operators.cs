@@ -27,7 +27,7 @@ public class Operators : ExpressionFrameworkCSharpClassBase
                         new ParameterBuilder().WithName("rightValue").WithType(typeof(object)).WithIsNullable()
                     )
                     .WithType(typeof(Result<bool>))
-                    .AddLiteralCodeStatements("throw new NotImplementedException();")
+                    .AddNotImplementedException()
                 )
                 .Build());
 }

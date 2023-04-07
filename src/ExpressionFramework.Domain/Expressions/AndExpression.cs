@@ -21,3 +21,7 @@ public partial record AndExpression : ITypedExpression<bool>
         );
 }
 
+public partial record AndExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

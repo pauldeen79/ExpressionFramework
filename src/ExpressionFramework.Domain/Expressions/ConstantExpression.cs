@@ -10,3 +10,8 @@ public partial record ConstantExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.Success(Value);
 }
+
+public partial record ConstantExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

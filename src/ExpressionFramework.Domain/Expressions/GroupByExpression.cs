@@ -41,3 +41,7 @@ public partial record GroupByExpression
     }
 }
 
+public partial record GroupByExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

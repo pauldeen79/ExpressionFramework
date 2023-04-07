@@ -36,3 +36,8 @@ public partial record IfExpression
         return Result<object?>.Success(null);
     }
 }
+
+public partial record IfExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

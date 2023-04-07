@@ -30,3 +30,7 @@ public partial record StringFindExpression : ITypedExpression<int>
     }
 }
 
+public partial record StringFindExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

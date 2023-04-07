@@ -35,3 +35,8 @@ public partial record ElementAtExpression
             resultValueType: typeof(object)
         );
 }
+
+public partial record ElementAtExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

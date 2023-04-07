@@ -19,6 +19,16 @@ public class ConstantEvaluatableTests
     }
 
     [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var evaluatable = new ConstantEvaluatableBase(false);
+
+        // Act & Assert
+        evaluatable.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
     public void Get_Returns_Descriptor_Provider()
     {
         // Arrange

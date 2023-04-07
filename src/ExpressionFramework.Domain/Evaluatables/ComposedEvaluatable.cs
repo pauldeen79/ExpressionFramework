@@ -20,13 +20,13 @@ public partial record ComposedEvaluatable : IValidatableObject
     {
         var groupCounter = 0;
         var index = 0;
-        foreach (var condition in Conditions)
+        foreach (var evaluatable in Conditions)
         {
-            if (condition.StartGroup)
+            if (evaluatable.StartGroup)
             {
                 groupCounter++;
             }
-            if (condition.EndGroup)
+            if (evaluatable.EndGroup)
             {
                 groupCounter--;
             }
@@ -54,9 +54,9 @@ public partial record ComposedEvaluatable : IValidatableObject
 
     private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
-        foreach (var condition in conditions)
+        foreach (var evaluatable in conditions)
         {
-            var itemResult = IsItemValid(context, condition);
+            var itemResult = IsItemValid(context, evaluatable);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -74,16 +74,16 @@ public partial record ComposedEvaluatable : IValidatableObject
     private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
         var builder = new StringBuilder();
-        foreach (var condition in conditions)
+        foreach (var evaluatable in conditions)
         {
             if (builder.Length > 0)
             {
-                builder.Append(condition.Combination == Combination.And ? "&" : "|");
+                builder.Append(evaluatable.Combination == Combination.And ? "&" : "|");
             }
 
-            var prefix = condition.StartGroup ? "(" : string.Empty;
-            var suffix = condition.EndGroup ? ")" : string.Empty;
-            var itemResult = IsItemValid(context, condition);
+            var prefix = evaluatable.StartGroup ? "(" : string.Empty;
+            var suffix = evaluatable.EndGroup ? ")" : string.Empty;
+            var itemResult = IsItemValid(context, evaluatable);
             if (!itemResult.IsSuccessful())
             {
                 return itemResult;
@@ -165,4 +165,9 @@ public partial record ComposedEvaluatable : IValidatableObject
         => closeIndex == expression.Length
             ? string.Empty
             : expression.Substring(closeIndex + 1);
+}
+
+public partial record ComposedEvaluatableBase
+{
+    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
 }

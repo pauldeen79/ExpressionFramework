@@ -28,3 +28,7 @@ public partial record FirstOrDefaultExpression
         );
 }
 
+public partial record FirstOrDefaultExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

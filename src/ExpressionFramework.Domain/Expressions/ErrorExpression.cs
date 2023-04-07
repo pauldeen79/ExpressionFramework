@@ -14,3 +14,8 @@ public partial record ErrorExpression
                 ? Result<object?>.Error(result.Value!)
                 : Result<object?>.FromExistingResult(result));
 }
+
+public partial record ErrorExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -20,3 +20,7 @@ public partial record NotExpression : ITypedExpression<bool>
                 : result);
 }
 
+public partial record NotExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

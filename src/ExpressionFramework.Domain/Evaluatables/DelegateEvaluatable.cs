@@ -9,3 +9,8 @@ public partial record DelegateEvaluatable
     public override Result<bool> Evaluate(object? context)
         => Result<bool>.Success(Value.Invoke());
 }
+
+public partial record DelegateEvaluatableBase
+{
+    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
+}

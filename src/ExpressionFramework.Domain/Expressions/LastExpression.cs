@@ -26,3 +26,8 @@ public partial record LastExpression
             resultValueType: typeof(object)
         );
 }
+
+public partial record LastExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -20,3 +20,7 @@ public partial record MaxExpression
         );
 }
 
+public partial record MaxExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

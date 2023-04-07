@@ -32,3 +32,7 @@ public partial record StringConcatenateExpression : ITypedExpression<string>
     }
 }
 
+public partial record StringConcatenateExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

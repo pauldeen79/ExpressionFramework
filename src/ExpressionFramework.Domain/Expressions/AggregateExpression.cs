@@ -41,3 +41,7 @@ public partial record AggregateExpression
     }
 }
 
+public partial record AggregateExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

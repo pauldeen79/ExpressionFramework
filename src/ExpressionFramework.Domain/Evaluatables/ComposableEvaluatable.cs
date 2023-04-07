@@ -24,3 +24,7 @@ public partial record ComposableEvaluatable
         => Operator.Evaluate(context, LeftExpression, RightExpression);
 }
 
+public partial record ComposableEvaluatableBase
+{
+    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
+}

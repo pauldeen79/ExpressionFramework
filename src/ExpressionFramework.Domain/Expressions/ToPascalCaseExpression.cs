@@ -29,3 +29,8 @@ public partial record ToPascalCaseExpression : ITypedExpression<string>
         return value;
     }
 }
+
+public partial record ToPascalCaseExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

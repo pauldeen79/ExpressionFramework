@@ -31,3 +31,7 @@ public partial record SequenceExpression : ITypedExpression<IEnumerable<object?>
     }
 }
 
+public partial record SequenceExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

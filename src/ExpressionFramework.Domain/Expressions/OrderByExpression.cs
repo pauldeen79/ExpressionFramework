@@ -90,3 +90,7 @@ public partial record OrderByExpression
     }
 }
 
+public partial record OrderByExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -20,3 +20,7 @@ public partial record StringLengthExpression : ITypedExpression<int>
                 : Result<int>.FromExistingResult(result));
 }
 
+public partial record StringLengthExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

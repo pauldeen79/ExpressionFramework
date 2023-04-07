@@ -52,3 +52,8 @@ public partial record SwitchExpression
         return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((false, Result<object?>.Success(null)));
     }
 }
+
+public partial record SwitchExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

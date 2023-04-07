@@ -32,7 +32,7 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(null));
+        var sut = new StringLengthExpression(new ConstantExpression(default(object?)));
 
         // Act
         var actual = sut.Evaluate();
@@ -72,7 +72,7 @@ public class StringLengthExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(null));
+        var sut = new StringLengthExpression(new ConstantExpression(default(object?)));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -82,7 +82,16 @@ public class StringLengthExpressionTests
         actual.ErrorMessage.Should().Be("Expression must be of type string");
     }
 
-   
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new StringLengthExpressionBase(new EmptyExpression());
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {

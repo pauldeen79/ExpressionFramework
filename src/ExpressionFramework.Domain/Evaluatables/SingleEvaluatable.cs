@@ -13,3 +13,8 @@ public partial record SingleEvaluatable
     public override Result<bool> Evaluate(object? context)
         => Operator.Evaluate(context, LeftExpression, RightExpression);
 }
+
+public partial record SingleEvaluatableBase
+{
+    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -40,3 +40,7 @@ public partial record InvalidExpression
     }
 }
 
+public partial record InvalidExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

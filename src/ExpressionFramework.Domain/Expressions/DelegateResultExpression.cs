@@ -11,3 +11,7 @@ public partial record DelegateResultExpression
         => Result.Invoke(context);
 }
 
+public partial record DelegateResultExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

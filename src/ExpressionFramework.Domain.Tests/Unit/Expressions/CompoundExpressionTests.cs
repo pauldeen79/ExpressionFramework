@@ -17,6 +17,16 @@ public class CompoundExpressionTests
     }
 
     [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new CompoundExpressionBase(new EmptyExpression(), new EmptyExpression(), new AddAggregator());
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

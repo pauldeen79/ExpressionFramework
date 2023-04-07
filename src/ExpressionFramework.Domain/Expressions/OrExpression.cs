@@ -21,3 +21,7 @@ public partial record OrExpression : ITypedExpression<bool>
         );
 }
 
+public partial record OrExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

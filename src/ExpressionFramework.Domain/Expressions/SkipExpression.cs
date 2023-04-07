@@ -23,3 +23,8 @@ public partial record SkipExpression
             .Select(x => Result<object?>.Success(x)));
     }
 }
+
+public partial record SkipExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

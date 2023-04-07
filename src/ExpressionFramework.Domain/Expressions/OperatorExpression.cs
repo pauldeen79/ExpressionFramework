@@ -21,3 +21,7 @@ public partial record OperatorExpression : ITypedExpression<bool>
         => Operator.Evaluate(context, LeftExpression, RightExpression);
 }
 
+public partial record OperatorExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

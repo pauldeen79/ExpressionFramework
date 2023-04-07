@@ -17,3 +17,7 @@ public partial record EvaluatableExpression : ITypedExpression<bool>
         => Condition.Evaluate(context);
 }
 
+public partial record EvaluatableExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

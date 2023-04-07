@@ -32,3 +32,8 @@ public partial record EqualsExpression : ITypedExpression<bool>
             null,
             "Boolean expression to perform Equals operation on");
 }
+
+public partial record EqualsExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

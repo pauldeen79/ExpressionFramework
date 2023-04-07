@@ -62,3 +62,8 @@ public partial record FieldExpression
         return Result<object?>.Success(returnValue);
     }
 }
+
+public partial record FieldExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

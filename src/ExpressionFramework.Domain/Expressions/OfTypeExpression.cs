@@ -23,3 +23,7 @@ public partial record OfTypeExpression
     }
 }
 
+public partial record OfTypeExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -32,3 +32,7 @@ public partial record ElementAtOrDefaultExpression
         );
 }
 
+public partial record ElementAtOrDefaultExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -39,3 +39,7 @@ public partial record TrimEndExpression : ITypedExpression<string>
             "This result will be returned when the expression is of type string");
 }
 
+public partial record TrimEndExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

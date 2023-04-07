@@ -12,3 +12,7 @@ public partial record TrueExpression : ITypedExpression<bool>
         => Result<bool>.Success(true);
 }
 
+public partial record TrueExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

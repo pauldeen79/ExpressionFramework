@@ -32,3 +32,8 @@ public partial record NotEqualsExpression : ITypedExpression<bool>
             null,
             "Boolean expression to perform NotEquals operation on");
 }
+
+public partial record NotEqualsExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}
