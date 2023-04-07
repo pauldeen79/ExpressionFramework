@@ -6,7 +6,7 @@ public class ComposableEvaluatableTests
     public void Evaluate_Works_Correctly_On_Equals_With_Sequences()
     {
         // Arrange
-        var condition = new ComposableEvaluatable
+        var evaluatable = new ComposableEvaluatable
         (
             new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
             new EqualsOperator(),
@@ -14,7 +14,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition });
+        var actual = Evaluate(new[] { evaluatable });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -24,7 +24,7 @@ public class ComposableEvaluatableTests
     public void Evaluate_Works_Correctly_On_Contains_With_Sequence_Of_Strings()
     {
         // Arrange
-        var condition = new ComposableEvaluatable
+        var evaluatable = new ComposableEvaluatable
         (
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
@@ -32,7 +32,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition });
+        var actual = Evaluate(new[] { evaluatable });
 
 
         // Assert
@@ -43,7 +43,7 @@ public class ComposableEvaluatableTests
     public void Evaluate_Returns_Error_When_Condition_Evaluation_Fails_On_Non_Grouped_Conditions()
     {
         // Arrange
-        var condition = new ComposableEvaluatable
+        var evaluatable = new ComposableEvaluatable
         (
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
@@ -51,7 +51,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition });
+        var actual = Evaluate(new[] { evaluatable });
 
 
         // Assert
@@ -63,7 +63,7 @@ public class ComposableEvaluatableTests
     public void Evaluate_Returns_Error_When_Condition_Evaluation_Fails_On_Grouped_Conditions()
     {
         // Arrange
-        var condition = new ComposableEvaluatable
+        var evaluatable = new ComposableEvaluatable
         (
             true,
             true,
@@ -74,7 +74,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition });
+        var actual = Evaluate(new[] { evaluatable });
 
 
         // Assert
@@ -86,13 +86,13 @@ public class ComposableEvaluatableTests
     public void Can_Evaluate_Multiple_Conditions_With_And_Combination()
     {
         // Arrange
-        var condition1 = new ComposableEvaluatable
+        var evaluatable1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new ComposableEvaluatable
+        var evaluatable2 = new ComposableEvaluatable
         (
             Combination.And,
             new ConstantExpression("54321"),
@@ -101,7 +101,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition1, condition2 });
+        var actual = Evaluate(new[] { evaluatable1, evaluatable2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -111,13 +111,13 @@ public class ComposableEvaluatableTests
     public void Can_Evaluate_Multiple_Conditions_With_Or_Combination()
     {
         // Arrange
-        var condition1 = new ComposableEvaluatable
+        var evaluatable1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new ComposableEvaluatable
+        var evaluatable2 = new ComposableEvaluatable
         (
             Combination.Or,
             new ConstantExpression("54321"),
@@ -126,7 +126,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition1, condition2 });
+        var actual = Evaluate(new[] { evaluatable1, evaluatable2 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -137,13 +137,13 @@ public class ComposableEvaluatableTests
     {
         // Arrange
         //This translates to: True&(False|True) -> True
-        var condition1 = new ComposableEvaluatable
+        var evaluatable1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("12345")
         );
-        var condition2 = new ComposableEvaluatable
+        var evaluatable2 = new ComposableEvaluatable
         (
             startGroup: true,
             endGroup: false,
@@ -152,7 +152,7 @@ public class ComposableEvaluatableTests
             new EqualsOperator(),
             new ConstantExpression("wrong")
         );
-        var condition3 = new ComposableEvaluatable
+        var evaluatable3 = new ComposableEvaluatable
         (
             startGroup: false,
             endGroup: true,
@@ -163,7 +163,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(new[] { evaluatable1, evaluatable2, evaluatable3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -174,13 +174,13 @@ public class ComposableEvaluatableTests
     {
         // Arrange
         //This translates to: False|(True&True) -> True
-        var condition1 = new ComposableEvaluatable
+        var evaluatable1 = new ComposableEvaluatable
         (
             new ConstantExpression("12345"),
             new EqualsOperator(),
             new ConstantExpression("wrong")
         );
-        var condition2 = new ComposableEvaluatable
+        var evaluatable2 = new ComposableEvaluatable
         (
             startGroup: true,
             endGroup: false,
@@ -189,7 +189,7 @@ public class ComposableEvaluatableTests
             new EqualsOperator(),
             new ConstantExpression("54321")
         );
-        var condition3 = new ComposableEvaluatable
+        var evaluatable3 = new ComposableEvaluatable
         (
             startGroup: false,
             endGroup: true,
@@ -200,7 +200,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { condition1, condition2, condition3 });
+        var actual = Evaluate(new[] { evaluatable1, evaluatable2, evaluatable3 });
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -220,6 +220,24 @@ public class ComposableEvaluatableTests
         result.Name.Should().Be(nameof(ComposableEvaluatable));
         result.Parameters.Should().HaveCount(6);
         result.ReturnValues.Should().ContainSingle();
+    }
+
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var evaluatable = new ComposableEvaluatableBase
+        (
+            false,
+            false,
+            Combination.And,
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
+            new EqualsOperator(),
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }))
+        );
+
+        // Act & Assert
+        evaluatable.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)

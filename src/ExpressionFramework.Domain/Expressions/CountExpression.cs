@@ -36,3 +36,8 @@ public partial record CountExpression : ITypedExpression<int>
             resultValueType: typeof(int)
         );
 }
+
+public partial record CountExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

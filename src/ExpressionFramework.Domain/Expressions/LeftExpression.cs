@@ -34,3 +34,7 @@ public partial record LeftExpression : ITypedExpression<string>
             "This result will be returned when the context is of type string");
 }
 
+public partial record LeftExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

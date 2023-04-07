@@ -14,3 +14,7 @@ public partial record SelectExpression
             .Select(x => SelectorExpression.Evaluate(x))));
 }
 
+public partial record SelectExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

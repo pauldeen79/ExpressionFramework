@@ -12,3 +12,7 @@ public partial record FalseExpression : ITypedExpression<bool>
         => Result<bool>.Success(false);
 }
 
+public partial record FalseExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

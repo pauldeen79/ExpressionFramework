@@ -57,6 +57,16 @@ public class ChainedExpressionTests
     }
 
     [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new ChainedExpressionBase(Enumerable.Empty<Expression>());
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

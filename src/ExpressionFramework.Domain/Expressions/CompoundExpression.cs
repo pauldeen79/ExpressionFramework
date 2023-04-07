@@ -17,3 +17,7 @@ public partial record CompoundExpression
         => Aggregator.Aggregate(context, FirstExpression, SecondExpression);
 }
 
+public partial record CompoundExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

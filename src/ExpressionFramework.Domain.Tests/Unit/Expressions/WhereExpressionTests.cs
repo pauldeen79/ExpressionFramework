@@ -70,6 +70,16 @@ public class WhereExpressionTests
     }
 
     [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new WhereExpressionBase(new EmptyExpression(), new EmptyExpression());
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

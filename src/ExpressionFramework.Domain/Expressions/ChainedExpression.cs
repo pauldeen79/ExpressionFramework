@@ -34,3 +34,8 @@ public partial record ChainedExpression
         return result;
     }
 }
+
+public partial record ChainedExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -68,6 +68,16 @@ public class ComposedEvaluatableTests
         result.ReturnValues.Should().ContainSingle();
     }
 
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var evaluatable = new ComposedEvaluatableBase(Enumerable.Empty<ComposableEvaluatable>());
+
+        // Act & Assert
+        evaluatable.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
     private static ComposableEvaluatableBuilder CreateEvaluatableBuilder()
         => new ComposableEvaluatableBuilder()
             .WithLeftExpression(new EmptyExpressionBuilder())

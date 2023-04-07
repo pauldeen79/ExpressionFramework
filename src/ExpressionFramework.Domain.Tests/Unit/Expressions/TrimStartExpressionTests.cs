@@ -45,7 +45,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(null));
+        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
 
         // Act
         var actual = sut.Evaluate();
@@ -112,7 +112,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(null));
+        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -120,6 +120,16 @@ public class TrimStartExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Expression must be of type string");
+    }
+
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new TrimStartExpressionBase(new EmptyExpression(), null);
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]

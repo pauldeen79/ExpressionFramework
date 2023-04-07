@@ -3,6 +3,21 @@
 public class SingleEvaluatableTests
 {
     [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var evaluatable = new SingleEvaluatableBase
+        (
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
+            new EqualsOperator(),
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }))
+        );
+
+        // Act & Assert
+        evaluatable.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

@@ -40,3 +40,7 @@ public partial record AllExpression : ITypedExpression<bool>
         );
 }
 
+public partial record AllExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

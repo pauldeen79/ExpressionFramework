@@ -31,3 +31,7 @@ public partial record SingleOrDefaultExpression
         );
 }
 
+public partial record SingleOrDefaultExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

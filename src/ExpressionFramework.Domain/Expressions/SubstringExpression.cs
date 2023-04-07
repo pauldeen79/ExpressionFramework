@@ -54,3 +54,8 @@ public partial record SubstringExpression : ITypedExpression<string>
             : Result<string>.Invalid("Index and length must refer to a location within the string");
     }
 }
+
+public partial record SubstringExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

@@ -20,7 +20,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression(new ConstantExpression("Hello world"), new ConstantExpression(null));
+        var sut = new StringFindExpression(new ConstantExpression("Hello world"), new ConstantExpression(default(object?)));
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression(new ConstantExpression(null), new ConstantExpression("e"));
+        var sut = new StringFindExpression(new ConstantExpression(default(object?)), new ConstantExpression("e"));
 
         // Act
         var result = sut.Evaluate();
@@ -56,6 +56,16 @@ public class StringFindExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("Hello world".IndexOf("e"));
+    }
+
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new StringFindExpressionBase(new EmptyExpression(), new EmptyExpression());
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]

@@ -49,4 +49,14 @@ public class NowExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(5));
     }
+
+    [Fact]
+    public void BaseClass_Cannot_Evaluate()
+    {
+        // Arrange
+        var expression = new NowExpressionBase(null);
+
+        // Act & Assert
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
 }

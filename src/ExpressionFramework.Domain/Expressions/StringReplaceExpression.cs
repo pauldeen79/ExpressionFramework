@@ -37,3 +37,7 @@ public partial record StringReplaceExpression : ITypedExpression<string>
     }
 }
 
+public partial record StringReplaceExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}

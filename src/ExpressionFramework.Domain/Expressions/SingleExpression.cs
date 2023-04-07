@@ -30,3 +30,7 @@ public partial record SingleExpression
         );
 }
 
+public partial record SingleExpressionBase
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}
