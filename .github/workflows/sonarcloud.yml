@@ -24,7 +24,7 @@ jobs:
       - name: Build code generation
         run: dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj -c Release --no-restore
       - name: Run code generation
-        run: dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net6.0/ExpressionFramework.CodeGeneration.dll
+        run: dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/ExpressionFramework.CodeGeneration.dll
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.2.2
         with:
