@@ -15,7 +15,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 6.0.x
+          dotnet-version: 7.0.x
       - name: Fetch origin/main
         run: |
           git fetch --no-tags --prune --depth=1 origin main
@@ -26,7 +26,7 @@ jobs:
       - name: Run code generation
         run: dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net6.0/ExpressionFramework.CodeGeneration.dll
       - name: sonarscan-dotnet
-        uses: highbyte/sonarscan-dotnet@v2.1.2
+        uses: highbyte/sonarscan-dotnet@v2.2.2
         with:
           sonarProjectKey: pauldeen79_ExpressionFramework
           sonarProjectName: ExpressionFramework

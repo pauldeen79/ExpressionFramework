@@ -44,7 +44,7 @@ public class DecimalAggregatorTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Could not convert SecondExpression to Decimal. Error message: Input string was not in a correct format.");
+        result.ErrorMessage.Should().Be("Could not convert SecondExpression to Decimal. Error message: The input string 'unsupported type' was not in a correct format.");
         result.Value.Should().BeNull();
     }
 

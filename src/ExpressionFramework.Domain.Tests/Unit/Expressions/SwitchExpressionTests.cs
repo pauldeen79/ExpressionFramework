@@ -77,7 +77,7 @@ public class SwitchExpressionTests
         result.ContextIsRequired.Should().BeFalse();
     }
 
-    private record ErrorEvaluatable : Evaluatable
+    private sealed record ErrorEvaluatable : Evaluatable
     {
         public ErrorEvaluatable(string errorMessage) => ErrorMessage = errorMessage;
 

@@ -44,7 +44,7 @@ public class DoubleAggregatorTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Could not convert SecondExpression to Double. Error message: Input string was not in a correct format.");
+        result.ErrorMessage.Should().Be("Could not convert SecondExpression to Double. Error message: The input string 'unsupported type' was not in a correct format.");
         result.Value.Should().BeNull();
     }
 
