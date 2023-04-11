@@ -3,13 +3,12 @@
 [ExcludeFromCodeCoverage]
 public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Expressions";
-    public override string DefaultFileName => "Entities.generated.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/Expressions";
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), "ExpressionFramework.Domain");
+    protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), Constants.Namespaces.Domain);
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideModels(typeof(IExpression)), "ExpressionFramework.Domain.Expressions");
+        => GetImmutableClasses(GetOverrideModels(typeof(IExpression)), CurrentNamespace);
 }

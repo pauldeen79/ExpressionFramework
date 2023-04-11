@@ -3,14 +3,13 @@
 [ExcludeFromCodeCoverage]
 public class OverrideAggregatorEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Aggregators";
-    public override string DefaultFileName => "Entities.generated.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/Aggregators";
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override IClass? BaseClass => CreateBaseclass(typeof(IAggregator), "ExpressionFramework.Domain");
+    protected override IClass? BaseClass => CreateBaseclass(typeof(IAggregator), Constants.Namespaces.Domain);
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Never; // there are no properties in aggregators, so this is not necessary
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideModels(typeof(IAggregator)), "ExpressionFramework.Domain.Aggregators");
+        => GetImmutableClasses(GetOverrideModels(typeof(IAggregator)), CurrentNamespace);
 }

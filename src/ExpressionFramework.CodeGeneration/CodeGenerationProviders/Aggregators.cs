@@ -3,8 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class Aggregators : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Aggregators";
-    public override string DefaultFileName => "Aggregators.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/{nameof(Aggregators)}";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
@@ -13,7 +12,7 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetOverrideModels(typeof(IAggregator))
             .Select(x => new ClassBuilder()
-                .WithNamespace("ExpressionFramework.Domain.Aggregators")
+                .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)
                 .WithPartial()
                 .WithRecord()
@@ -21,7 +20,7 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
                     .WithName("Aggregate")
                     .WithOverride()
                     .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
-                    .AddParameters(new ParameterBuilder().WithName("secondExpression").WithTypeName("ExpressionFramework.Domain.Expression"))
+                    .AddParameters(new ParameterBuilder().WithName("secondExpression").WithTypeName(GetModelTypeName(typeof(IExpression))))
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .AddNotImplementedException()
                 )

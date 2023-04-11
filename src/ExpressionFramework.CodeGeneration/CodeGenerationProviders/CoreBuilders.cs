@@ -3,12 +3,11 @@
 [ExcludeFromCodeCoverage]
 public class CoreBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders";
-    public override string DefaultFileName => "Builders.template.generated.cs";
+    public override string Path => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetCoreModels(),
-            "ExpressionFramework.Domain",
-            "ExpressionFramework.Domain.Builders");
+            Constants.Namespaces.Domain,
+            Constants.Namespaces.DomainBuilders);
 }

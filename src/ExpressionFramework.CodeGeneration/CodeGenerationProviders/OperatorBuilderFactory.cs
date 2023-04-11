@@ -3,16 +3,15 @@
 [ExcludeFromCodeCoverage]
 public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders";
-    public override string DefaultFileName => "Builders.template.generated.cs";
+    public override string Path => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IOperator)),
-            new("ExpressionFramework.Domain.Builders",
-            "OperatorBuilderFactory",
-            "ExpressionFramework.Domain.Operator",
-            "ExpressionFramework.Domain.Builders.Operators",
+            new(Constants.Namespaces.DomainBuilders,
+            nameof(OperatorBuilderFactory),
+            $"{Constants.Namespaces.Domain}.Operator",
+            $"{Constants.Namespaces.DomainBuilders}.Operators",
             "OperatorBuilder",
-            "ExpressionFramework.Domain.Operators"));
+            $"{Constants.Namespaces.Domain}.Operators"));
 }

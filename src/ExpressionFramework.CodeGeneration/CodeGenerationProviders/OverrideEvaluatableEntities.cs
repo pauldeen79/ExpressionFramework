@@ -3,13 +3,12 @@
 [ExcludeFromCodeCoverage]
 public class OverrideEvaluatableEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Evaluatables";
-    public override string DefaultFileName => "Entities.generated.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/Evaluatables";
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override IClass? BaseClass => CreateBaseclass(typeof(IEvaluatable), "ExpressionFramework.Domain");
+    protected override IClass? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain);
 
     public override object CreateModel()
-        => GetImmutableClasses(GetOverrideModels(typeof(IEvaluatable)), "ExpressionFramework.Domain.Evaluatables");
+        => GetImmutableClasses(GetOverrideModels(typeof(IEvaluatable)), CurrentNamespace);
 }

@@ -3,8 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders";
-    public override string DefaultFileName => "Builders.generated.cs";
+    public override string Path => Constants.Namespaces.DomainBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
@@ -12,6 +11,6 @@ public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetAbstractModels(),
-            "ExpressionFramework.Domain",
-            "ExpressionFramework.Domain.Builders");
+            Constants.Namespaces.Domain,
+            Constants.Namespaces.DomainBuilders);
 }

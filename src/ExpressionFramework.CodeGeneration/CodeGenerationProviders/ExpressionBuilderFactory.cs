@@ -3,17 +3,16 @@
 [ExcludeFromCodeCoverage]
 public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders";
-    public override string DefaultFileName => "Builders.template.generated.cs";
+    public override string Path => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IExpression)),
-            new("ExpressionFramework.Domain.Builders",
-            "ExpressionBuilderFactory",
-            "ExpressionFramework.Domain.Expression",
-            "ExpressionFramework.Domain.Builders.Expressions",
+            new(Constants.Namespaces.DomainBuilders,
+            nameof(ExpressionBuilderFactory),
+            $"{Constants.Namespaces.Domain}.Expression",
+            $"{Constants.Namespaces.DomainBuilders}.Expressions",
             "ExpressionBuilder",
-            "ExpressionFramework.Domain.Expressions"),
+            $"{Constants.Namespaces.Domain}.Expressions"),
             "if (instance is IUntypedExpressionProvider provider) instance = provider.ToUntyped();");
 }

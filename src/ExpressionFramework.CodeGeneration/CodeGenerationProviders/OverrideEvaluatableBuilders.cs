@@ -3,17 +3,16 @@
 [ExcludeFromCodeCoverage]
 public class OverrideEvaluatableBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders/Evaluatables";
-    public override string DefaultFileName => "Builders.generated.cs";
+    public override string Path => $"{Constants.Namespaces.DomainBuilders}/Evaluatables";
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override IClass? BaseClass => CreateBaseclass(typeof(IEvaluatable), "ExpressionFramework.Domain");
-    protected override string BaseClassBuilderNamespace => "ExpressionFramework.Domain.Builders";
+    protected override IClass? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain);
+    protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetOverrideModels(typeof(IEvaluatable)),
-            "ExpressionFramework.Domain.Evaluatables",
-            "ExpressionFramework.Domain.Builders.Evaluatables");
+            $"{Constants.Namespaces.Domain}.Evaluatables",
+            CurrentNamespace);
 }

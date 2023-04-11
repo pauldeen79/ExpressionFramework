@@ -3,8 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class Operators : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Operators";
-    public override string DefaultFileName => "Operators.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/Operators";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
@@ -13,7 +12,7 @@ public class Operators : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetOverrideModels(typeof(IOperator))
             .Select(x => new ClassBuilder()
-                .WithNamespace("ExpressionFramework.Domain.Operators")
+                .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)
                 .WithPartial()
                 .WithRecord()

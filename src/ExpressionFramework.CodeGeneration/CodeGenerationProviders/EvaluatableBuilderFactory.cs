@@ -3,16 +3,15 @@
 [ExcludeFromCodeCoverage]
 public class EvaluatableBuilderFactory : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain.Builders";
-    public override string DefaultFileName => "Builders.template.generated.cs";
+    public override string Path => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IEvaluatable)),
-            new("ExpressionFramework.Domain.Builders",
-            "EvaluatableBuilderFactory",
-            "ExpressionFramework.Domain.Evaluatable",
-            "ExpressionFramework.Domain.Builders.Evaluatables",
+            new(Constants.Namespaces.DomainBuilders,
+            nameof(EvaluatableBuilderFactory),
+            $"{Constants.Namespaces.Domain}.Evaluatable",
+            $"{Constants.Namespaces.DomainBuilders}.Evaluatables",
             "EvaluatableBuilder",
-            "ExpressionFramework.Domain.Evaluatables"));
+            $"{Constants.Namespaces.Domain}.Evaluatables"));
 }

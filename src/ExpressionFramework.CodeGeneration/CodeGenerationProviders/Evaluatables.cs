@@ -3,8 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class Evaluatables : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Evaluatables";
-    public override string DefaultFileName => "Evaluatables.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/{nameof(Evaluatables)}";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
@@ -13,7 +12,7 @@ public class Evaluatables : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetOverrideModels(typeof(IEvaluatable))
             .Select(x => new ClassBuilder()
-                .WithNamespace("ExpressionFramework.Domain.Evaluatables")
+                .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)
                 .WithPartial()
                 .WithRecord()

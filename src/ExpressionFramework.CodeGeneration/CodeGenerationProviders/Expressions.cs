@@ -3,8 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class Expressions : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => "ExpressionFramework.Domain/Expressions";
-    public override string DefaultFileName => "Expressions.cs";
+    public override string Path => $"{Constants.Namespaces.Domain}/Expressions";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
@@ -13,7 +12,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
             .Select(x => new ClassBuilder()
-                .WithNamespace("ExpressionFramework.Domain.Expressions")
+                .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)
                 .WithPartial()
                 .WithRecord()
