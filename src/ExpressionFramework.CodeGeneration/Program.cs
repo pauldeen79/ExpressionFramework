@@ -7,7 +7,7 @@ internal static class Program
     {
         // Setup code generation
         var currentDirectory = Directory.GetCurrentDirectory();
-        var basePath = currentDirectory.EndsWith("ExpressionFramework")
+        var basePath = currentDirectory.EndsWith(Constants.ProjectName)
             ? Path.Combine(currentDirectory, @"src/")
             : Path.Combine(currentDirectory, @"../../../../");
         var generateMultipleFiles = true;
