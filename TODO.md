@@ -15,5 +15,5 @@ general:
 - Review if we want to add validation for parameters?
 - Expression parser, based on the generic FunctionParser in CrossCutting. format: FUNCTIONNAME(arguments)
   Need to think of a way to replace stuff like 1+1 -> Plus(1, 1) using regular expressions
-- ToString override on Expresion, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
+- ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
 - Add some constructor overloads to expressions
