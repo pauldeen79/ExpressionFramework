@@ -6,7 +6,7 @@ public class NotExpressionTests
     public void Evaluate_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression(new ConstantExpression(false));
+        var sut = new NotExpression(false);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class NotExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
     {
         // Arrange
-        var sut = new NotExpression(new EmptyExpression());
+        var sut = new NotExpression(_ => null);
 
         // Act
         var result = sut.Evaluate();
