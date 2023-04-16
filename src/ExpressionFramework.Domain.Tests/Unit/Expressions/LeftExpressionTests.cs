@@ -6,7 +6,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_LeftValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression("test"), new ConstantExpression(2));
+        var sut = new LeftExpression("test", 2);
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new LeftExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
+        var sut = new LeftExpression(_ => string.Empty, _ => 2);
 
         // Act
         var actual = sut.Evaluate();

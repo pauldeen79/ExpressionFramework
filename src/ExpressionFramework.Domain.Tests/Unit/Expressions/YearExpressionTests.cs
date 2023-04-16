@@ -6,7 +6,7 @@ public class YearExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new YearExpression(new EmptyExpression());
+        var sut = new YearExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class YearExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new YearExpression(new ConstantExpression(123));
+        var sut = new YearExpression(_ => 123);
 
         // Act
         var result = sut.Evaluate();

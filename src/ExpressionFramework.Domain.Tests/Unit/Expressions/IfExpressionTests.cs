@@ -17,6 +17,34 @@ public class IfExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Result_Using_Constant_Expression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), "Correct");
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Correct");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Delegate_Expression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable(_ => "A", new EqualsOperator(), _ => "A"), _ => "Correct");
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Correct");
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

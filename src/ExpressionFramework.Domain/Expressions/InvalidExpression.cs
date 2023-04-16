@@ -38,6 +38,8 @@ public partial record InvalidExpression
     public InvalidExpression(Expression errorMessageExpression) : this(errorMessageExpression, Enumerable.Empty<Expression>())
     {
     }
+    public InvalidExpression(object? errorMessageExpression, IEnumerable<object?> validationErrorExpressions) : this(new ConstantExpression(errorMessageExpression), validationErrorExpressions.Select(x => new ConstantExpression(x))) { }
+    public InvalidExpression(Func<object?, object?> errorMessageExpression, IEnumerable<Func<object?, object?>> validationErrorExpressions) : this(new DelegateExpression(errorMessageExpression), validationErrorExpressions.Select(x => new DelegateExpression(x))) { }
 }
 
 public partial record InvalidExpressionBase

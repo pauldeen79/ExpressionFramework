@@ -29,6 +29,12 @@ public partial record SequenceExpression : ITypedExpression<IEnumerable<object?>
 
         return Result<IEnumerable<object?>>.Success(values.Select(x => x.Value));
     }
+
+    public SequenceExpression(params Expression[] expressions) : this(expressions.AsEnumerable()) { }
+    public SequenceExpression(IEnumerable<object?> expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }
+    public SequenceExpression(params object?[] expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }
+    public SequenceExpression(IEnumerable<Func<object?, object?>> expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
+    public SequenceExpression(params Func<object?, object?>[] expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
 }
 
 public partial record SequenceExpressionBase

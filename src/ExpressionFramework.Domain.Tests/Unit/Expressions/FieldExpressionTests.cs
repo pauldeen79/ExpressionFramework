@@ -20,6 +20,34 @@ public class FieldExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Success_Result_From_ValueProvider_Using_Constants()
+    {
+        // Arrange
+        var expression = new FieldExpression(new MyClass { MyProperty = "Test" }, nameof(MyClass.MyProperty));
+
+        // Act
+        var actual = expression.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be("Test");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Success_Result_From_ValueProvider_Using_Delegates()
+    {
+        // Arrange
+        var expression = new FieldExpression(_ => new MyClass { MyProperty = "Test" }, _ => nameof(MyClass.MyProperty));
+
+        // Act
+        var actual = expression.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be("Test");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Invalid_Result_From_ValueProvider()
     {
         // Arrange

@@ -39,6 +39,9 @@ public partial record AggregateExpression
 
         return result;
     }
+
+    public AggregateExpression(IEnumerable<object?> expressions, Aggregator aggregator) : this(expressions.Select(x => new ConstantExpression(x)), aggregator) { }
+    public AggregateExpression(IEnumerable<Func<object?, object?>> expressions, Aggregator aggregator) : this(expressions.Select(x => new DelegateExpression(x)), aggregator) {}
 }
 
 public partial record AggregateExpressionBase

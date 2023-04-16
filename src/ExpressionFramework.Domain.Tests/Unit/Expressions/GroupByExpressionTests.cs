@@ -57,6 +57,34 @@ public class GroupByExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well_Using_Constant()
+    {
+        // Arrange
+        var sut = new GroupByExpression(new[] { "a", "b", "cc" }, x => x?.ToString()?.Length ?? 0);
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well_Using_Delegate()
+    {
+        // Arrange
+        var sut = new GroupByExpression(_ => new[] { "a", "b", "cc" }, x => x?.ToString()?.Length ?? 0);
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

@@ -3,10 +3,24 @@
 public class CompoundExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression()
+    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression_Using_Constant_Values()
     {
         // Arrange
-        var sut = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator());
+        var sut = new CompoundExpression(1, 2, new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(1 + 2);
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression_Using_Delegates()
+    {
+        // Arrange
+        var sut = new CompoundExpression(_ => 1, _ => 2, new AddAggregator());
 
         // Act
         var result = sut.Evaluate();

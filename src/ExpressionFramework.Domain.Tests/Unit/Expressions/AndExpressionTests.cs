@@ -6,7 +6,7 @@ public class AndExpressionTests
     public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(new ConstantExpression("not a boolean"), new TrueExpression());
+        var sut = new AndExpression("not a boolean", true);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class AndExpressionTests
     public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(new ConstantExpression(true), new EmptyExpression());
+        var sut = new AndExpression(_ => true, _ => null);
 
         // Act
         var result = sut.Evaluate();

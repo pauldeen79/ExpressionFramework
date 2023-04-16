@@ -20,6 +20,9 @@ public partial record NotExpression : ITypedExpression<bool>
             result.IsSuccessful()
                 ? Result<bool>.Success(!result.Value!)
                 : result);
+
+    public NotExpression(object? expression) : this(new ConstantExpression(expression)) { }
+    public NotExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
 
 public partial record NotExpressionBase

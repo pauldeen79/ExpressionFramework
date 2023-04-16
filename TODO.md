@@ -17,3 +17,4 @@ general:
   Need to think of a way to replace stuff like 1+1 -> Plus(1, 1) using regular expressions
 - ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
 - Add some constructor overloads to expressions
+- Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime>

@@ -6,7 +6,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_ErrorResult()
     {
         // Assert
-        var sut = new ErrorExpression(new ConstantExpression("Error message"));
+        var sut = new ErrorExpression("Error message");
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
     {
         // Assert
-        var sut = new ErrorExpression(new ConstantExpression(1));
+        var sut = new ErrorExpression(_ => 1);
 
         // Act
         var result = sut.Evaluate();

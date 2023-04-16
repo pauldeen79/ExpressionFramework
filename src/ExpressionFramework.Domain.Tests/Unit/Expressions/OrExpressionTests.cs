@@ -6,7 +6,7 @@ public class OrExpressionTests
     public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
+        var sut = new OrExpression("not a boolean", true);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class OrExpressionTests
     public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression(true), new EmptyExpression());
+        var sut = new OrExpression(_ => true, _ => null);
 
         // Act
         var result = sut.Evaluate();

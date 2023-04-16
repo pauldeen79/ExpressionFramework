@@ -23,6 +23,7 @@ public partial record ChainedExpression
         {
             return result;
         }
+
         foreach (var expression in Expressions.Skip(1))
         {
             result = expression.Evaluate(result.Value);
@@ -31,6 +32,7 @@ public partial record ChainedExpression
                 return result;
             }
         }
+
         return result;
     }
 }

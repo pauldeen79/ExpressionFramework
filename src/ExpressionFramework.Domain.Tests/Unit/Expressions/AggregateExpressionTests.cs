@@ -6,7 +6,21 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Contains_No_Items()
     {
         // Arrange
-        var sut = new AggregateExpression(Enumerable.Empty<Expression>(), new AddAggregator());
+        var sut = new AggregateExpression(Enumerable.Empty<object?>(), new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Sequence contains no elements");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_When_Expression_Contains_No_Items_Using_Delegates()
+    {
+        // Arrange
+        var sut = new AggregateExpression(Enumerable.Empty<Func<object?, object?>>(), new AddAggregator());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +34,21 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression()
     {
         // Arrange
-        var sut = new AggregateExpression(new object[] { 1, 2, 3 }.Select(x => new ConstantExpression(x)), new AddAggregator());
+        var sut = new AggregateExpression(new object?[] { 1, 2, 3 }, new AddAggregator());
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(1 + 2 + 3);
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression_Using_Delegates()
+    {
+        // Arrange
+        var sut = new AggregateExpression(new Func<object?, object?>[] { _ => 1, _ => 2, _ => 3 }, new AddAggregator());
 
         // Act
         var result = sut.Evaluate();

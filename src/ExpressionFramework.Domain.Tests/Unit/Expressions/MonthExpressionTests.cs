@@ -6,7 +6,7 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MonthExpression(new EmptyExpression());
+        var sut = new MonthExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(new ConstantExpression(123));
+        var sut = new MonthExpression(_ => 123);
 
         // Act
         var result = sut.Evaluate();

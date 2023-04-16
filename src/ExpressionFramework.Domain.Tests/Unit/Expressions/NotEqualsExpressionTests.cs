@@ -38,9 +38,7 @@ public class NotEqualsExpressionTests
     public void Evaluate_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ConstantExpression("1");
-        var expression = new NotEqualsExpression(firstExpression, secondExpression);
+        var expression = new NotEqualsExpression(1, 1);
 
         // Act
         var actual = expression.Evaluate();
@@ -86,9 +84,7 @@ public class NotEqualsExpressionTests
     public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ConstantExpression("1");
-        var expression = new NotEqualsExpression(firstExpression, secondExpression);
+        var expression = new NotEqualsExpression(_ => 1, _ => 1);
 
         // Act
         var actual = expression.EvaluateTyped();
@@ -112,9 +108,7 @@ public class NotEqualsExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ConstantExpression("1");
-        var expression = new NotEqualsExpression(firstExpression, secondExpression);
+        var expression = new NotEqualsExpression(1, 1);
 
         // Act
         var result = expression.GetPrimaryExpression();

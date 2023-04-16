@@ -28,6 +28,9 @@ public partial record GroupByExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
+    public GroupByExpression(object? expression, Func<object?, object?> keySelectorExpression) : this(new ConstantExpression(expression), new DelegateExpression(keySelectorExpression)) { }
+    public GroupByExpression(Func<object?, object?> expression, Func<object?, object?> keySelectorExpression) : this(new DelegateExpression(expression), new DelegateExpression(keySelectorExpression)) { }
+
     private bool ItemSatisfiesKey(object? item, object? key)
     {
         var val = KeySelectorExpression.Evaluate(item).Value;

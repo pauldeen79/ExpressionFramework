@@ -19,6 +19,9 @@ public partial record AndExpression : ITypedExpression<bool>
             "FirstExpression must be of type boolean, SecondExpression must be of type boolean",
             "Boolean expression to perform AND combination on"
         );
+
+    public AndExpression(object? firstExpression, object? secondExpression) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression)) { }
+    public AndExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression)) { }
 }
 
 public partial record AndExpressionBase

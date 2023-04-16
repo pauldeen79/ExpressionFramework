@@ -9,10 +9,14 @@ public partial record MonthExpression : ITypedExpression<int>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Month);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression()
+        => Result<Expression>.Success(Expression);
 
     public Result<int> EvaluateTyped(object? context)
         => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Month);
+
+    public MonthExpression(object? expression) : this(new ConstantExpression(expression)) { }
+    public MonthExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
 
 public partial record MonthExpressionBase

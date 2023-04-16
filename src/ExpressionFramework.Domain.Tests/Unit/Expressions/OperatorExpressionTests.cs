@@ -7,9 +7,7 @@ public class OperatorExpressionTests
     {
         // Arrange
         var @operator = new EqualsOperator();
-        var leftExpression = new ConstantExpression("A");
-        var rightExpression = new ConstantExpression("B");
-        var sut = new OperatorExpression(leftExpression, rightExpression, @operator);
+        var sut = new OperatorExpression("A", "B", @operator);
 
         // Act
         var result = sut.Evaluate();
@@ -24,9 +22,7 @@ public class OperatorExpressionTests
     {
         // Arrange
         var @operator = new EqualsOperator();
-        var leftExpression = new ConstantExpression("A");
-        var rightExpression = new ConstantExpression("B");
-        var sut = new OperatorExpression(leftExpression, rightExpression, @operator);
+        var sut = new OperatorExpression(_ => "A", _ => "B", @operator);
 
         // Act
         var result = sut.EvaluateTyped(null);

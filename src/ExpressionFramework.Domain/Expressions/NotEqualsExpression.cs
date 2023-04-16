@@ -31,6 +31,9 @@ public partial record NotEqualsExpression : ITypedExpression<bool>
             "This result will always be returned",
             null,
             "Boolean expression to perform NotEquals operation on");
+
+    public NotEqualsExpression(object? firstExpression, object? secondExpression) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression)) { }
+    public NotEqualsExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression)) { }
 }
 
 public partial record NotEqualsExpressionBase

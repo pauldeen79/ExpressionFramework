@@ -3,10 +3,25 @@
 public class InvalidExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
+    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors_Using_Constants()
     {
         // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ValidationError("Validation error message", new[] { "Member" }) }.Select(x => new ConstantExpression(x)));
+        var sut = new InvalidExpression("Error message", new[] { new ValidationError("Validation error message", new[] { "Member" }) });
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Error message");
+        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions.Select(x => x.Evaluate().Value));
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors_Using_Delegates()
+    {
+        // Assert
+        var sut = new InvalidExpression(_ => "Error message", new Func<object?, object?>[] { _ => new ValidationError("Validation error message", new[] { "Member" }) });
 
         // Act
         var result = sut.Evaluate();

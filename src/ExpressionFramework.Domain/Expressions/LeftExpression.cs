@@ -34,6 +34,9 @@ public partial record LeftExpression : ITypedExpression<string>
             "String to get the first characters for",
             "The first characters of the expression",
             "This result will be returned when the context is of type string");
+
+    public LeftExpression(object? expression, object? lengthExpression) : this(new ConstantExpression(expression), new ConstantExpression(lengthExpression)) { }
+    public LeftExpression(Func<object?, object?> expression, Func<object?, object?> lengthExpression) : this(new DelegateExpression(expression), new DelegateExpression(lengthExpression)) { }
 }
 
 public partial record LeftExpressionBase

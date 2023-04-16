@@ -31,6 +31,9 @@ public partial record EqualsExpression : ITypedExpression<bool>
             "This result will always be returned",
             null,
             "Boolean expression to perform Equals operation on");
+
+    public EqualsExpression(object? firstExpression, object? secondExpression) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression)) { }
+    public EqualsExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression)) { }
 }
 
 public partial record EqualsExpressionBase

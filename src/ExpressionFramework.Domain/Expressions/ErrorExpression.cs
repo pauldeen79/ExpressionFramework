@@ -13,6 +13,9 @@ public partial record ErrorExpression
             result.IsSuccessful()
                 ? Result<object?>.Error(result.Value!)
                 : Result<object?>.FromExistingResult(result));
+
+    public ErrorExpression(object? errorMessageExpression) : this(new ConstantExpression(errorMessageExpression)) { }
+    public ErrorExpression(Func<object?, object?> errorMessageExpression) : this(new DelegateExpression(errorMessageExpression)) { }
 }
 
 public partial record ErrorExpressionBase
