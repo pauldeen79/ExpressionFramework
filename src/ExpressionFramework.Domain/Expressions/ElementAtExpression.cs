@@ -22,6 +22,8 @@ public partial record ElementAtExpression
                         : Result<IEnumerable<object?>>.FromExistingResult(indexResult))
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

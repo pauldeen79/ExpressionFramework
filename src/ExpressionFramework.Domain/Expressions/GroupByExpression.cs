@@ -26,6 +26,8 @@ public partial record GroupByExpression
         return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, enumerableResult.Value!.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     private bool ItemSatisfiesKey(object? item, object? key)
     {
         var val = KeySelectorExpression.Evaluate(item).Value;

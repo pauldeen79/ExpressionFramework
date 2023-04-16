@@ -13,6 +13,8 @@ public partial record LastExpression
             results => Result<object?>.Success(results.Last(x => x.Result.Value).Item)
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

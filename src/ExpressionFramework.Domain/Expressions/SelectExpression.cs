@@ -12,6 +12,8 @@ public partial record SelectExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
+
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 }
 
 public partial record SelectExpressionBase

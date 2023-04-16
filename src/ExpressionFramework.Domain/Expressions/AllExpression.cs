@@ -14,6 +14,8 @@ public partial record AllExpression : ITypedExpression<bool>
             predicateIsRequired: true
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public Result<bool> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
         (

@@ -95,4 +95,17 @@ public class StringReplaceExpressionTests
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var expression = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
 }

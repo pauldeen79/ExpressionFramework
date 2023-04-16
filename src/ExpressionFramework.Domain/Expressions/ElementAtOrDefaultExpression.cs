@@ -18,6 +18,8 @@ public partial record ElementAtOrDefaultExpression
                         : Result<object?>.FromExistingResult(indexResult))
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

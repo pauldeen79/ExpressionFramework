@@ -69,6 +69,19 @@ public class AggregateExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var expression = new AggregateExpression(new object[] { 1, 2, 3 }.Select(x => new ConstantExpression(x)), new AddAggregator());
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

@@ -18,6 +18,8 @@ public partial record WhereExpression
                 ? Result<object?>.Success(x.Item)
                 : x.Result));
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     private Result<object?> GetResult(Result<object?> itemResult)
     {
         if (!itemResult.IsSuccessful())

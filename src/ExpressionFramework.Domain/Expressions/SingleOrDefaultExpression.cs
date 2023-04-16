@@ -17,6 +17,8 @@ public partial record SingleOrDefaultExpression
                 : Result<IEnumerable<object?>>.Success(items)
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

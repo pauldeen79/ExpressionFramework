@@ -22,6 +22,8 @@ public partial record TakeExpression
             .Select(x => Result<object?>.Success(x)));
     }
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public TakeExpression(IEnumerable enumerable, int count) : this(new ConstantExpression(enumerable), new ConstantExpression(count)) { }
 }
 

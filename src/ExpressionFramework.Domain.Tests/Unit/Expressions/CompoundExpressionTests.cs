@@ -3,7 +3,7 @@
 public class CompoundExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Aggregation_Of_Context_And_SecondExpression()
+    public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression()
     {
         // Arrange
         var sut = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator());
@@ -24,6 +24,19 @@ public class CompoundExpressionTests
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var expression = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator());
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
     }
 
     [Fact]

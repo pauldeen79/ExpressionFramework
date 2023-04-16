@@ -14,6 +14,8 @@ public partial record FirstOrDefaultExpression
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

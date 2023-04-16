@@ -18,6 +18,8 @@ public partial record OrderByExpression
                 ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
                 : Result<object?>.FromExistingResult(result));
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
         var sortOrdersResult = GetSortOrdersResult(context);

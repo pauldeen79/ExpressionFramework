@@ -67,7 +67,20 @@ public class EvaluatableExpressionTests
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
-    
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var expression = new EvaluatableExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {

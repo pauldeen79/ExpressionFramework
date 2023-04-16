@@ -51,6 +51,19 @@ public class TodayExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var expression = new TodayExpression();
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

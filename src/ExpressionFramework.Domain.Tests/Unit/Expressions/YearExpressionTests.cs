@@ -87,6 +87,20 @@ public class YearExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new YearExpression(new ConstantExpression(DateTime.Today));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

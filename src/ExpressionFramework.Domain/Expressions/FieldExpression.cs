@@ -37,6 +37,8 @@ public partial record FieldExpression
         return GetValue(result.Value, fieldNameResult.Value!);
     }
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     private Result<object?> GetValue(object value, string fieldName)
     {
         var type = value.GetType();

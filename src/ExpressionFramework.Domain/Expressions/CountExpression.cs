@@ -13,6 +13,8 @@ public partial record CountExpression : ITypedExpression<int>
             results => Result<object?>.Success(results.Count(x => x.Result.Value))
         );
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public Result<int> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
         (

@@ -22,6 +22,8 @@ public partial record SkipExpression
             .Skip(countResult.Value)
             .Select(x => Result<object?>.Success(x)));
     }
+
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 }
 
 public partial record SkipExpressionBase

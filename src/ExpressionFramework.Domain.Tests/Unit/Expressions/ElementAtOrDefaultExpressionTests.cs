@@ -152,6 +152,20 @@ public class ElementAtOrDefaultExpressionTests
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
+[Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new TypedConstantExpression<int>(1), null);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {

@@ -31,7 +31,7 @@ public class AllExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_True_When_Context_Is_Empty_Enumerable()
+    public void Evaluate_Returns_True_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
         var sut = new AllExpression(new ConstantExpression(Enumerable.Empty<object>()), new TypedConstantExpression<bool>(false));
@@ -234,6 +234,20 @@ public class AllExpressionTests
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new AllExpression(new ConstantExpression(Enumerable.Empty<object>()), new TypedConstantExpression<bool>(false));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

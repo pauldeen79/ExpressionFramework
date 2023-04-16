@@ -67,6 +67,20 @@ public class GroupByExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new GroupByExpression(new ConstantExpression(new[] { "a", "b", "cc" }), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

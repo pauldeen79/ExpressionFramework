@@ -93,6 +93,21 @@ public class EqualsExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported()
+    {
+        // Arrange
+        var firstExpression = new ConstantExpression("1");
+        var secondExpression = new ConstantExpression("1");
+        var expression = new EqualsExpression(firstExpression, secondExpression);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

@@ -94,6 +94,20 @@ public class ToUpperCaseExpressionTests
     }
 
     [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new ToUpperCaseExpression(new ConstantExpression("Some text"));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

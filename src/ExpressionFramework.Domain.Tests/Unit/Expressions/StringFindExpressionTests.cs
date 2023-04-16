@@ -81,4 +81,18 @@ public class StringFindExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("Hello world".IndexOf("e"));
     }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    {
+        // Arrange
+        var expression = new StringFindExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<ConstantExpression>();
+    }
 }

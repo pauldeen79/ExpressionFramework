@@ -21,6 +21,8 @@ public partial record OfTypeExpression
             .Where(x => x != null && typeResult.Value!.IsInstanceOfType(x))
             .Select(x => Result<object?>.Success(x)));
     }
+
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 }
 
 public partial record OfTypeExpressionBase

@@ -6,6 +6,8 @@ public partial record TrimStartExpression : ITypedExpression<string>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
             result.IsSuccessful()
