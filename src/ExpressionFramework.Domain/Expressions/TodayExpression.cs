@@ -8,7 +8,7 @@ public partial record TodayExpression : ITypedExpression<DateTime>
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<DateTime> EvaluateTyped(object? context)
-        => Result<DateTime>.Success(DateTimeProvider == null
+        => Result<DateTime>.Success(DateTimeProvider is null
             ? DateTime.Today
             : DateTimeProvider.GetCurrentDateTime().Date);
 

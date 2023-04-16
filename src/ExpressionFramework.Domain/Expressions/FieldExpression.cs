@@ -18,7 +18,7 @@ public partial record FieldExpression
             return Result<object?>.FromExistingResult(result);
         }
 
-        if (result.Value == null)
+        if (result.Value is null)
         {
             return Result<object?>.Invalid("Expression cannot be empty");
         }
@@ -47,13 +47,13 @@ public partial record FieldExpression
         {
             var property = type.GetProperty(part);
 
-            if (property == null)
+            if (property is null)
             {
                 return Result<object?>.Invalid($"Fieldname [{fieldName}] is not found on type [{type.FullName}]");
             }
 
             returnValue = property.GetValue(value);
-            if (returnValue == null)
+            if (returnValue is null)
             {
                 break;
             }

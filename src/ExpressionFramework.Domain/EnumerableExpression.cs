@@ -90,14 +90,14 @@ public static class EnumerableExpression
                                                  Func<IEnumerable<object?>, Result<T>> aggregateDelegate,
                                                  Expression? selectorExpression = null)
         => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
-            .Select(y => selectorExpression == null
+            .Select(y => selectorExpression is null
                 ? Result<object?>.Success(y)
                 : selectorExpression.Evaluate(y))).Transform(result => result.IsSuccessful()
                     ? aggregateDelegate.Invoke(result.Value!)
                     : Result<T>.FromExistingResult(result));
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
-        => defaultExpression == null
+        => defaultExpression is null
             ? new EmptyExpression().Evaluate(context)
             : defaultExpression.Evaluate(context);
 
@@ -151,7 +151,7 @@ public static class EnumerableExpression
             return Result<T>.FromExistingResult(enumerableResult);
         }
 
-        if (predicateIsRequired && predicateExpression == null)
+        if (predicateIsRequired && predicateExpression is null)
         {
             return Result<T>.Invalid("Predicate is required");
         }
@@ -164,7 +164,7 @@ public static class EnumerableExpression
             return Result<T>.FromExistingResult(itemsResult);
         }
 
-        if (predicateExpression == null)
+        if (predicateExpression is null)
         {
             if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate != null)
             {

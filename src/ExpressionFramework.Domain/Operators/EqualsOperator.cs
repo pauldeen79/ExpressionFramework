@@ -13,12 +13,12 @@ public partial record EqualsOperator
 
     internal static bool IsValid(object? leftValue, object? rightValue)
     {
-        if (leftValue == null && rightValue == null)
+        if (leftValue is null && rightValue is null)
         {
             return true;
         }
 
-        if (leftValue == null || rightValue == null)
+        if (leftValue is null || rightValue is null)
         {
             return false;
         }

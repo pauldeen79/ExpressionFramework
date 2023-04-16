@@ -8,5 +8,5 @@
 public partial record IsNullOrEmptyOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
-        => Result<bool>.Success(leftValue == null || leftValue.ToString() == string.Empty);
+        => Result<bool>.Success(leftValue is null || leftValue.ToString() == string.Empty);
 }

@@ -18,7 +18,7 @@ public partial record TrimExpression : ITypedExpression<string>
 
     private Result<string> Trim(object? context, string s)
     {
-        if (TrimCharsExpression == null)
+        if (TrimCharsExpression is null)
         {
             return Result<string>.Success(s.Trim());
         }

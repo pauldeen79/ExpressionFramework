@@ -18,7 +18,7 @@ public partial record TrimStartExpression : ITypedExpression<string>
 
     private Result<string> TrimStart(object? context, string s)
     {
-        if (TrimCharsExpression == null)
+        if (TrimCharsExpression is null)
         {
             return Result<string>.Success(s.TrimStart());
         }
