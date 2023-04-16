@@ -6,7 +6,7 @@ public class OrderByExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OrderByExpression(new EmptyExpression(), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(default(object?), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class OrderByExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new OrderByExpression(new ConstantExpression(1), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(_ => 1, new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();

@@ -37,6 +37,9 @@ public partial record CountExpression : ITypedExpression<int>
             hasDefaultExpression: false,
             resultValueType: typeof(int)
         );
+
+    public CountExpression(object? expression, Expression? predicateExpression = null) : this(new ConstantExpression(expression), predicateExpression) { }
+    public CountExpression(Func<object?, object?> expression, Expression? predicateExpression = null) : this(new DelegateExpression(expression), predicateExpression) { }
 }
 
 public partial record CountExpressionBase

@@ -24,7 +24,8 @@ public partial record TakeExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
-    public TakeExpression(IEnumerable enumerable, int count) : this(new ConstantExpression(enumerable), new ConstantExpression(count)) { }
+    public TakeExpression(object? expression, int count) : this(new ConstantExpression(expression), new ConstantExpression(count)) { }
+    public TakeExpression(Func<object?, object?> expression, Func<object?, int> countDelegate) : this(new DelegateExpression(expression), new TypedDelegateExpression<int>(countDelegate)) { }
 }
 
 public partial record TakeExpressionBase

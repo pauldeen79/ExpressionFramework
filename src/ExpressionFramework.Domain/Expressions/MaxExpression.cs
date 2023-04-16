@@ -20,6 +20,9 @@ public partial record MaxExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
+
+    public MaxExpression(object? expression, Expression? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression) { }
+    public MaxExpression(Func<object?, object?> expression, Expression? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression) { }
 }
 
 public partial record MaxExpressionBase

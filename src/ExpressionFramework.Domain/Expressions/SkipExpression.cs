@@ -24,6 +24,9 @@ public partial record SkipExpression
     }
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
+    public SkipExpression(object? expression, int count) : this(new ConstantExpression(expression), new ConstantExpression(count)) { }
+    public SkipExpression(Func<object?, object?> expression, Func<object?, int> countDelegate) : this(new DelegateExpression(expression), new TypedDelegateExpression<int>(countDelegate)) { }
 }
 
 public partial record SkipExpressionBase

@@ -6,7 +6,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new EmptyExpression(), new TypedConstantExpression<bool>(false));
+        var sut = new AllExpression(default(object?), new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(123), new TypedConstantExpression<bool>(false));
+        var sut = new AllExpression(_ => default, new TypedConstantExpression<bool>(false));
 
         // Act
         var result = sut.Evaluate();

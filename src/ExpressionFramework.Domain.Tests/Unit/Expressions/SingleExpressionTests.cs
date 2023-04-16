@@ -6,7 +6,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SingleExpression(new EmptyExpression(), null);
+        var sut = new SingleExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SingleExpression(new ConstantExpression(12345), null);
+        var sut = new SingleExpression(_ => 12345);
 
         // Act
         var result = sut.Evaluate();

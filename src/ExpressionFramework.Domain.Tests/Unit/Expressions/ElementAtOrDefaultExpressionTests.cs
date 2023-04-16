@@ -6,7 +6,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new EmptyExpression(), new TypedConstantExpression<int>(1), null);
+        var sut = new ElementAtOrDefaultExpression(default(object?), new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(12345), new TypedConstantExpression<int>(1), null);
+        var sut = new ElementAtOrDefaultExpression(_ => 12345, new TypedConstantExpression<int>(1), null);
 
         // Act
         var result = sut.Evaluate();

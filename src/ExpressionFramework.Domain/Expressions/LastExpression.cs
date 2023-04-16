@@ -27,6 +27,9 @@ public partial record LastExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
+
+    public LastExpression(object? expression, Expression? predicateExpression = null) : this(new ConstantExpression(expression), predicateExpression) { }
+    public LastExpression(Func<object?, object?> expression, Expression? predicateExpression = null) : this(new DelegateExpression(expression), predicateExpression) { }
 }
 
 public partial record LastExpressionBase

@@ -6,7 +6,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MaxExpression(new EmptyExpression(), null);
+        var sut = new MaxExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new MaxExpression(new ConstantExpression(12345), null);
+        var sut = new MaxExpression(_ => 12345);
 
         // Act
         var result = sut.Evaluate();

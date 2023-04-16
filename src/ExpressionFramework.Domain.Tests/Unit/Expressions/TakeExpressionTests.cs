@@ -6,7 +6,7 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TakeExpression(new EmptyExpression(), new ConstantExpression(2));
+        var sut = new TakeExpression(default(object?), 2);
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression(1), new ConstantExpression(2));
+        var sut = new TakeExpression(_ => 1, _ => 2);
 
         // Act
         var result = sut.Evaluate();

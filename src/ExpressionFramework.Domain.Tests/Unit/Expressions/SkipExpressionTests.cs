@@ -6,7 +6,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SkipExpression(new EmptyExpression(), new TypedConstantExpression<int>(1));
+        var sut = new SkipExpression(default(object?), 1);
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(1), new TypedConstantExpression<int>(1));
+        var sut = new SkipExpression(_ => 1, _ => 1);
 
         // Act
         var result = sut.Evaluate();

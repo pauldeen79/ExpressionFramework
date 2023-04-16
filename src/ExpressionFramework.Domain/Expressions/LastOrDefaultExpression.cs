@@ -28,6 +28,9 @@ public partial record LastOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
+
+    public LastOrDefaultExpression(object? expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new ConstantExpression(expression), predicateExpression, defaultExpression) { }
+    public LastOrDefaultExpression(Func<object?, object?> expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new DelegateExpression(expression), predicateExpression, defaultExpression) { }
 }
 
 public partial record LastOrDefaultExpressionBase

@@ -20,6 +20,9 @@ public partial record OrderByExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
+    public OrderByExpression(object? expression, IEnumerable<Expression> sortOrderExpressions) : this(new ConstantExpression(expression), sortOrderExpressions) { }
+    public OrderByExpression(Func<object?, object?> expression, IEnumerable<Expression> sortOrderExpressions) : this(new DelegateExpression(expression), sortOrderExpressions) { }
+
     private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
         var sortOrdersResult = GetSortOrdersResult(context);

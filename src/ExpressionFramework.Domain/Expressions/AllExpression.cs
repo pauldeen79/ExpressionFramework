@@ -40,6 +40,9 @@ public partial record AllExpression : ITypedExpression<bool>
             predicateIsRequired: true,
             resultValueType: typeof(bool)
         );
+
+    public AllExpression(object? expression, Expression predicateExpression) : this(new ConstantExpression(expression), predicateExpression) { }
+    public AllExpression(Func<object?, object?> expression, Expression? predicateExpression) : this(new DelegateExpression(expression), predicateExpression) { }
 }
 
 public partial record AllExpressionBase

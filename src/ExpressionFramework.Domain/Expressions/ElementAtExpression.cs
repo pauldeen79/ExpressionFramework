@@ -36,6 +36,9 @@ public partial record ElementAtExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
+
+    public ElementAtExpression(object? expression, Expression indexExpression) : this(new ConstantExpression(expression), indexExpression) { }
+    public ElementAtExpression(Func<object?, object?> expression, Expression indexExpression) : this(new DelegateExpression(expression), indexExpression) { }
 }
 
 public partial record ElementAtExpressionBase

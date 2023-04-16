@@ -31,6 +31,9 @@ public partial record SingleOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
+
+    public SingleOrDefaultExpression(object? expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new ConstantExpression(expression), predicateExpression, defaultExpression) { }
+    public SingleOrDefaultExpression(Func<object?, object?> expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new DelegateExpression(expression), predicateExpression, defaultExpression) { }
 }
 
 public partial record SingleOrDefaultExpressionBase

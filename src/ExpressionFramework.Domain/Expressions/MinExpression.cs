@@ -20,6 +20,9 @@ public partial record MinExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
+
+    public MinExpression(object? expression, Expression? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression) { }
+    public MinExpression(Func<object?, object?> expression, Expression? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression) { }
 }
 
 public partial record MinExpressionBase

@@ -32,6 +32,9 @@ public partial record ElementAtOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
+
+    public ElementAtOrDefaultExpression(object? expression, Expression indexExpression, Expression? defaultExpression = null) : this(new ConstantExpression(expression), indexExpression, defaultExpression) { }
+    public ElementAtOrDefaultExpression(Func<object?, object?> expression, Expression indexExpression, Expression? defaultExpression = null) : this(new DelegateExpression(expression), indexExpression, defaultExpression) { }
 }
 
 public partial record ElementAtOrDefaultExpressionBase

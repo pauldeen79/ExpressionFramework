@@ -37,6 +37,9 @@ public partial record AnyExpression : ITypedExpression<bool>
             hasDefaultExpression: false,
             resultValueType: typeof(bool)
         );
+
+    public AnyExpression(object? expression, Expression? predicateExpression = null) : this(new ConstantExpression(expression), predicateExpression) { }
+    public AnyExpression(Func<object?, object?> expression, Expression? predicateExpression = null) : this(new DelegateExpression(expression), predicateExpression) { }
 }
 
 public partial record AnyExpressionBase

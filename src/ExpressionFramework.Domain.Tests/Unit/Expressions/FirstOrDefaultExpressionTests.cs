@@ -6,7 +6,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new EmptyExpression(), null, null);
+        var sut = new FirstOrDefaultExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ConstantExpression(12345), null, null);
+        var sut = new FirstOrDefaultExpression(_ => 12345);
 
         // Act
         var result = sut.Evaluate();

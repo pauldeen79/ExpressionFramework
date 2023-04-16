@@ -6,7 +6,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MinExpression(new EmptyExpression(), null);
+        var sut = new MinExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new MinExpression(new ConstantExpression(12345), null);
+        var sut = new MinExpression(_ => 12345);
 
         // Act
         var result = sut.Evaluate();

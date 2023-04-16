@@ -30,6 +30,9 @@ public partial record SingleExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
+
+    public SingleExpression(object? expression, Expression? predicateExpression = null) : this(new ConstantExpression(expression), predicateExpression) { }
+    public SingleExpression(Func<object?, object?> expression, Expression? predicateExpression = null) : this(new DelegateExpression(expression), predicateExpression) { }
 }
 
 public partial record SingleExpressionBase

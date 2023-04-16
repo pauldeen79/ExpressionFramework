@@ -23,6 +23,9 @@ public partial record OfTypeExpression
     }
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
+    public OfTypeExpression(object? expression, Expression typeExpression) : this(new ConstantExpression(expression), typeExpression) { }
+    public OfTypeExpression(Func<object?, object?> expression, Expression typeExpression) : this(new DelegateExpression(expression), typeExpression) { }
 }
 
 public partial record OfTypeExpressionBase

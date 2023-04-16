@@ -6,7 +6,7 @@ public class CountExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new CountExpression(new EmptyExpression(), null);
+        var sut = new CountExpression(default(object?));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class CountExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new CountExpression(new ConstantExpression(123), null);
+        var sut = new CountExpression(_ => 123);
 
         // Act
         var result = sut.Evaluate();

@@ -14,6 +14,9 @@ public partial record SelectExpression
             .Select(x => SelectorExpression.Evaluate(x))));
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
+    public SelectExpression(object? expression, Expression selectorExpression) : this(new ConstantExpression(expression), selectorExpression) { }
+    public SelectExpression(Func<object?, object?> expression, Expression selectorExpression) : this(new DelegateExpression(expression), selectorExpression) { }
 }
 
 public partial record SelectExpressionBase
