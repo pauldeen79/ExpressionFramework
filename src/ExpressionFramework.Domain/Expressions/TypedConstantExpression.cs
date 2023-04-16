@@ -15,6 +15,8 @@ public partial record TypedConstantExpression<T> : ITypedExpression<T>, IUntyped
 
     public Expression ToUntyped()
         => new ConstantExpression(Value);
+
+    public static implicit operator TypedConstantExpression<T>(T source) => new TypedConstantExpression<T>(source);
 }
 
 public partial record TypedConstantExpressionBase<T>

@@ -3,6 +3,17 @@
 public class TypedConstantExpressionTests
 {
     [Fact]
+    public void Can_Convert_Any_Value_To_TypedConstantExpression_Using_Implicit_Operator()
+    {
+        // Act
+        TypedConstantExpression<int> expression = 1;
+
+        // Assert
+        expression.Should().BeOfType<TypedConstantExpression<int>>();
+        expression.Value.Should().Be(1);
+    }
+
+    [Fact]
     public void Can_Evaluate_Value()
     {
         // Arrange
