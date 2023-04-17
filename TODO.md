@@ -3,6 +3,7 @@ expressions:
 - Add RangeExpression, which creates a range from minimum to maximum value (optionally with step)
 - Add StringJoinExpression, which joins multiple values using a separator
 - Add PadLeft and PadRight string expressions
+- Add StringFormat and StringJoin string expressions
 - Add CreateObject expression, that creates an object (expando object) with multiple properties
 - Add Coalesce/FirstNotNull expression, which maybe is just a short-hand for First with a predicate, but maybe is worth to have on its own
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
@@ -16,6 +17,5 @@ general:
 - Expression parser, based on the generic FunctionParser in CrossCutting. format: FUNCTIONNAME(arguments)
   Need to think of a way to replace stuff like 1+1 -> Plus(1, 1) using regular expressions
 - ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
-- Add some constructor overloads to expressions
 - Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime>
 - Move Aggregators, Evaluatables, Expressions and Operators to separate packages. This way, consumers can just get the Domain without all the implementations. Just like using Abstractions, but then more in a DDD style.
