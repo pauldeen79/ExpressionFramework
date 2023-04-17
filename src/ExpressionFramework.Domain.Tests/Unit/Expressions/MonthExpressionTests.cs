@@ -6,7 +6,7 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MonthExpression(default(object?));
+        var sut = new MonthExpression(new EmptyExpression());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(_ => 123);
+        var sut = new MonthExpression(new ConstantExpression(123));
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(new ConstantExpression(new DateTime(2010, 1, 2)));
+        var sut = new MonthExpression(new DateTime(2010, 1, 2));
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class MonthExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(new ConstantExpression(new DateTime(2010, 1, 2)));
+        var sut = new MonthExpression(_ => new DateTime(2010, 1, 2));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -97,16 +97,30 @@ public class MonthExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new MonthExpression(new ConstantExpression(DateTime.Today));
+        var expression = new MonthExpression(DateTime.Today);
 
         // Act
         var result = expression.GetPrimaryExpression();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<TypedConstantExpression<DateTime>>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new MonthExpression(_ => DateTime.Today);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<TypedDelegateExpression<DateTime>>();
     }
 }

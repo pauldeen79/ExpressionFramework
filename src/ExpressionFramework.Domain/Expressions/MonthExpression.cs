@@ -15,8 +15,8 @@ public partial record MonthExpression : ITypedExpression<int>
     public Result<int> EvaluateTyped(object? context)
         => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Month);
 
-    public MonthExpression(object? expression) : this(new ConstantExpression(expression)) { }
-    public MonthExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
+    public MonthExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
+    public MonthExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }
 
 public partial record MonthExpressionBase

@@ -15,8 +15,8 @@ public partial record YearExpression : ITypedExpression<int>
     public Result<int> EvaluateTyped(object? context)
         => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Year);
 
-    public YearExpression(object? expression) : this(new ConstantExpression(expression)) { }
-    public YearExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
+    public YearExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
+    public YearExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }
 
 public partial record YearExpressionBase
