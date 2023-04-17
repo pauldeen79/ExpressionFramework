@@ -6,9 +6,7 @@ public class AnyExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        var sut = new AnyExpression(default(IEnumerable?), default);
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+        var sut = new AnyExpression(new EmptyExpression(), new DelegateExpression(_ => false));
 
         // Act
         var result = sut.Evaluate();
