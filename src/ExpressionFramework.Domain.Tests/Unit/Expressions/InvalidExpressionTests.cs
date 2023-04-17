@@ -117,7 +117,7 @@ public class InvalidExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported_With_DelegateExpression()
     {
         // Arrange
-        var expression = new InvalidExpression(_ => "Something went wrong", Enumerable.Empty<Func<object?, ValidationError>>());
+        var expression = new InvalidExpression(_ => "Something went wrong");
 
         // Act
         var result = expression.GetPrimaryExpression();
