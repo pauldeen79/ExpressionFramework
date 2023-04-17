@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Evaluatables;
+﻿using System.Security.Cryptography;
+
+namespace ExpressionFramework.Domain.Tests.Unit.Evaluatables;
 
 public class ComposableEvaluatableTests
 {
@@ -8,9 +10,9 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
-            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
+            new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }),
             new EqualsOperator(),
-            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }))
+            new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })
         );
 
         // Act
@@ -26,9 +28,9 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
-            new ConstantExpression(new[] { "1", "2", "3" }),
+            new[] { "1", "2", "3" },
             new EnumerableContainsOperator(),
-            new ConstantExpression("2")
+            "2"
         );
 
         // Act
@@ -45,6 +47,9 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
+            false,
+            false,
+            Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
             new ErrorExpression(new ConstantExpression("Kaboom"))
@@ -88,16 +93,16 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable1 = new ComposableEvaluatable
         (
-            new ConstantExpression("12345"),
-            new EqualsOperator(),
-            new ConstantExpression("12345")
+            _ => "12345",
+            () => new EqualsOperator(),
+            _ => "12345"
         );
         var evaluatable2 = new ComposableEvaluatable
         (
-            Combination.And,
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("54321")
+            _ => "54321",
+            () => new EqualsOperator(),
+            _ => "54321",
+            combination: Combination.And
         );
 
         // Act
@@ -113,16 +118,16 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable1 = new ComposableEvaluatable
         (
-            new ConstantExpression("12345"),
-            new EqualsOperator(),
-            new ConstantExpression("12345")
+            _ => "12345",
+            () => new EqualsOperator(),
+            _ => "12345"
         );
         var evaluatable2 = new ComposableEvaluatable
         (
-            Combination.Or,
-            new ConstantExpression("54321"),
+            "54321",
             new EqualsOperator(),
-            new ConstantExpression("wrong")
+            "wrong",
+            combination: Combination.Or
         );
 
         // Act
@@ -139,27 +144,27 @@ public class ComposableEvaluatableTests
         //This translates to: True&(False|True) -> True
         var evaluatable1 = new ComposableEvaluatable
         (
-            new ConstantExpression("12345"),
+            "12345",
             new EqualsOperator(),
-            new ConstantExpression("12345")
+            "12345"
         );
         var evaluatable2 = new ComposableEvaluatable
         (
+            "54321",
+            new EqualsOperator(),
+            "wrong",
             startGroup: true,
             endGroup: false,
-            Combination.And,
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("wrong")
+            combination: Combination.And
         );
         var evaluatable3 = new ComposableEvaluatable
         (
+            _ => "54321",
+            () => new EqualsOperator(),
+            _ => "54321",
             startGroup: false,
             endGroup: true,
-            Combination.Or,
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("54321")
+            combination: Combination.Or
         );
 
         // Act
@@ -176,27 +181,27 @@ public class ComposableEvaluatableTests
         //This translates to: False|(True&True) -> True
         var evaluatable1 = new ComposableEvaluatable
         (
-            new ConstantExpression("12345"),
+            "12345",
             new EqualsOperator(),
-            new ConstantExpression("wrong")
+            "wrong"
         );
         var evaluatable2 = new ComposableEvaluatable
         (
+            "54321",
+            new EqualsOperator(),
+            "54321",
             startGroup: true,
             endGroup: false,
-            Combination.Or,
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("54321")
+            combination: Combination.Or
         );
         var evaluatable3 = new ComposableEvaluatable
         (
+            "54321",
+            new EqualsOperator(),
+            "54321",
             startGroup: false,
             endGroup: true,
-            Combination.And,
-            new ConstantExpression("54321"),
-            new EqualsOperator(),
-            new ConstantExpression("54321")
+            combination: Combination.And
         );
 
         // Act
