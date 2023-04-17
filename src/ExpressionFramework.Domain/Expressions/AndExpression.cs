@@ -20,8 +20,8 @@ public partial record AndExpression : ITypedExpression<bool>
             "Boolean expression to perform AND combination on"
         );
 
-    public AndExpression(object? firstExpression, object? secondExpression) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression)) { }
-    public AndExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression)) { }
+    public AndExpression(bool firstExpression, bool secondExpression) : this(new TypedConstantExpression<bool>(firstExpression), new TypedConstantExpression<bool>(secondExpression)) { }
+    public AndExpression(Func<object?, bool> firstExpression, Func<object?, bool> secondExpression) : this(new TypedDelegateExpression<bool>(firstExpression), new TypedDelegateExpression<bool>(secondExpression)) { }
 }
 
 public partial record AndExpressionBase

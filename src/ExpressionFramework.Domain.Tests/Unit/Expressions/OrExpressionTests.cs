@@ -6,7 +6,7 @@ public class OrExpressionTests
     public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression("not a boolean", true);
+        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class OrExpressionTests
     public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(_ => true, _ => null);
+        var sut = new OrExpression(new TrueExpression(), new EmptyExpression());
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class OrExpressionTests
     public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new OrExpression(false, true);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class OrExpressionTests
     public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new OrExpression(false, true);
 
         // Act
         var result = sut.EvaluateTyped();
@@ -97,10 +97,23 @@ public class OrExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
+    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpressions()
     {
         // Arrange
-        var expression = new OrExpression(new TrueExpression(), new FalseExpression());
+        var expression = new OrExpression(true, false);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpressions()
+    {
+        // Arrange
+        var expression = new OrExpression(_ => true, _ => false);
 
         // Act
         var result = expression.GetPrimaryExpression();

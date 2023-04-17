@@ -6,7 +6,7 @@ public class AndExpressionTests
     public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new AndExpression("not a boolean", true);
+        var sut = new AndExpression(new ConstantExpression("not a boolean"), new TrueExpression());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class AndExpressionTests
     public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(_ => true, _ => null);
+        var sut = new AndExpression(new TrueExpression(), new EmptyExpression());
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class AndExpressionTests
     public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new AndExpression(false, true);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class AndExpressionTests
     public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new AndExpression(false, true);
 
         // Act
         var result = sut.EvaluateTyped();
@@ -90,17 +90,30 @@ public class AndExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new AndExpressionBase(new TrueExpression(), new TrueExpression());
+        var expression = new AndExpressionBase(new ConstantExpression(true), new ConstantExpression(true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
+    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpressions()
     {
         // Arrange
-        var expression = new AndExpression(new ConstantExpression(false), new TrueExpression());
+        var expression = new AndExpression(false, true);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpressions()
+    {
+        // Arrange
+        var expression = new AndExpression(_ => false, _ => true);
 
         // Act
         var result = expression.GetPrimaryExpression();

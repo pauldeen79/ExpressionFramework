@@ -20,8 +20,8 @@ public partial record OrExpression : ITypedExpression<bool>
             "Boolean expression to perform OR combination on"
         );
 
-    public OrExpression(object? firstExpression, object? secondExpression) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression)) { }
-    public OrExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression)) { }
+    public OrExpression(bool firstExpression, bool secondExpression) : this(new TypedConstantExpression<bool>(firstExpression), new TypedConstantExpression<bool>(secondExpression)) { }
+    public OrExpression(Func<object?, bool> firstExpression, Func<object?, bool> secondExpression) : this(new TypedDelegateExpression<bool>(firstExpression), new TypedDelegateExpression<bool>(secondExpression)) { }
 }
 
 public partial record OrExpressionBase
