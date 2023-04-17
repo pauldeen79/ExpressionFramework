@@ -20,7 +20,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression(default(object?)), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression("Hello world", default, "f");
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_ReplaceExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression(default(object?)));
+        var sut = new StringReplaceExpression("Hello world", "e", default);
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +48,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression(default(object?)), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression(default, "e", "f");
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +62,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class StringReplaceExpressionTests
     public void EvaluateTyped_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression(_ => "Hello world", _ => "e", _ => "f");
 
         // Act
         var result = sut.EvaluateTyped();
@@ -100,7 +100,7 @@ public class StringReplaceExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var expression = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -21,6 +21,9 @@ public partial record StringLengthExpression : ITypedExpression<int>
             result.IsSuccessful()
                 ? Result<int>.Success(result.Value!.Length)
                 : Result<int>.FromExistingResult(result));
+
+    public StringLengthExpression(object? expression) : this(new ConstantExpression(expression)) { }
+    public StringLengthExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
 
 public partial record StringLengthExpressionBase

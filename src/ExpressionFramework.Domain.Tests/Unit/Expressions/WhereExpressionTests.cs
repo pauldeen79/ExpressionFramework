@@ -6,7 +6,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new WhereExpression(new EmptyExpression(), new DelegateExpression(x => x is string));
+        var sut = new WhereExpression(default(object?), x => x is string);
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new WhereExpression(new ConstantExpression(1), new DelegateExpression(x => x is string));
+        var sut = new WhereExpression(1, x => x is string);
 
         // Act
         var result = sut.Evaluate();
@@ -32,7 +32,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Invalid_When_Predicate_Does_Not_Return_A_Boolean_Value()
     {
         // Arrange
-        var sut = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new DelegateExpression(_ => "not a boolean value"));
+        var sut = new WhereExpression(_ => new object[] { "A", "B", 1, "C" }, _ => "not a boolean value");
 
         // Act
         var result = sut.Evaluate();
@@ -59,7 +59,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new DelegateExpression(x => x is string));
+        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
 
         // Act
         var result = sut.Evaluate();
@@ -80,10 +80,10 @@ public class WhereExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new DelegateExpression(x => x is string));
+        var expression = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -91,6 +91,20 @@ public class WhereExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new WhereExpression(_ => new object[] { "A", "B", 1, "C" }, x => x is string);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

@@ -21,10 +21,24 @@ public class SwitchExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails()
+    public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails_No_Default()
     {
         // Arrange
-        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, null);
+        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, default(Func<object?, object?>?));
+
+        // Act
+        var actual = expression.Evaluate(default);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails_Filled_Default()
+    {
+        // Arrange
+        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, _ => null);
 
         // Act
         var actual = expression.Evaluate(default);
@@ -59,10 +73,23 @@ public class SwitchExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
+    public void GetPrimaryExpression_Returns_NotSupported_No_Default()
     {
         // Arrange
-        var expression = new SwitchExpression(Enumerable.Empty<Case>(), null);
+        var expression = new SwitchExpression(Enumerable.Empty<Case>(), default(object?));
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported_Filled_Default()
+    {
+        // Arrange
+        var expression = new SwitchExpression(Enumerable.Empty<Case>(), 12345);
 
         // Act
         var result = expression.GetPrimaryExpression();

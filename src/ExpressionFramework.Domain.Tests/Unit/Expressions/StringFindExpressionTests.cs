@@ -20,7 +20,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression(new ConstantExpression("Hello world"), new ConstantExpression(default(object?)));
+        var sut = new StringFindExpression("Hello world", default);
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression(new ConstantExpression(default(object?)), new ConstantExpression("e"));
+        var sut = new StringFindExpression(_ => default, _ => "e");
 
         // Act
         var result = sut.Evaluate();

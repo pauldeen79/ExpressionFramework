@@ -22,14 +22,12 @@ public partial record ToPascalCaseExpression : ITypedExpression<string>
                 : result);
 
     private string ToPascalCase(string value)
-    {
-        if (value.Length > 0)
-        {
-            return value.Substring(0, 1).ToLowerInvariant() + value.Substring(1);
-        }
+        => value.Length > 0
+            ? value.Substring(0, 1).ToLowerInvariant() + value.Substring(1)
+            : value;
 
-        return value;
-    }
+    public ToPascalCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
+    public ToPascalCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
 
 public partial record ToPascalCaseExpressionBase

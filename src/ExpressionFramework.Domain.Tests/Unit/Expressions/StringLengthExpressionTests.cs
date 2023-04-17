@@ -6,7 +6,7 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_Length_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression("some"));
+        var sut = new StringLengthExpression("some");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_0_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(string.Empty));
+        var sut = new StringLengthExpression(_ => string.Empty);
 
         // Act
         var actual = sut.Evaluate();

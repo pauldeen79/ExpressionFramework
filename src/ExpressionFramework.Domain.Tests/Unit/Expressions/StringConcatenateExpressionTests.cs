@@ -6,7 +6,7 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<Expression>());
+        var sut = new StringConcatenateExpression(Enumerable.Empty<object?>());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Invalid_When_Expressions_Contains_Non_String_Value()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ConstantExpression(false) });
+        var sut = new StringConcatenateExpression(new Func<object?, object?>[] { _ => false });
 
         // Act
         var result = sut.Evaluate();

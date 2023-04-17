@@ -6,7 +6,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_UpperCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression("Upper"));
+        var sut = new ToUpperCaseExpression("Upper");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToUpperCaseExpression(_ => string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -32,7 +32,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToUpperCaseExpression(default(object?));
 
         // Act
         var actual = sut.Evaluate();
@@ -46,7 +46,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_UpperCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression("Upper"));
+        var sut = new ToUpperCaseExpression("Upper");
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -60,7 +60,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToUpperCaseExpression(string.Empty);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -73,7 +73,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToUpperCaseExpression(default(object?));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -94,10 +94,10 @@ public class ToUpperCaseExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new ToUpperCaseExpression(new ConstantExpression("Some text"));
+        var expression = new ToUpperCaseExpression("Some text");
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -105,6 +105,20 @@ public class ToUpperCaseExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new ToUpperCaseExpression(_ => "Some text");
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

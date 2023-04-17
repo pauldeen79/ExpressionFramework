@@ -34,6 +34,9 @@ public partial record WhereExpression
 
         return itemResult;
     }
+
+    public WhereExpression(object? expression, Func<object?, object?> predicateExpression) : this(new ConstantExpression(expression), new DelegateExpression(predicateExpression)) { }
+    public WhereExpression(Func<object?, object?> expression, Func<object?, object?> predicateExpression) : this(new DelegateExpression(expression), new DelegateExpression(predicateExpression)) { }
 }
 
 public partial record WhereExpressionBase

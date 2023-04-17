@@ -6,7 +6,7 @@ public class ToLowerCaseExpressionTests
     public void Evaluate_Returns_LowerCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression("LOWER"));
+        var sut = new ToLowerCaseExpression("LOWER");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class ToLowerCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToLowerCaseExpression(_ => string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -32,7 +32,7 @@ public class ToLowerCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToLowerCaseExpression(default(object?));
 
         // Act
         var actual = sut.Evaluate();
@@ -46,7 +46,7 @@ public class ToLowerCaseExpressionTests
     public void EvaluateTyped_Returns_LowerCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression("LOWER"));
+        var sut = new ToLowerCaseExpression("LOWER");
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -60,7 +60,7 @@ public class ToLowerCaseExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToLowerCaseExpression(string.Empty);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -73,7 +73,7 @@ public class ToLowerCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToLowerCaseExpression(default(object?));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -94,10 +94,10 @@ public class ToLowerCaseExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new ToLowerCaseExpression(new ConstantExpression("Some text"));
+        var expression = new ToLowerCaseExpression("Some text");
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -105,6 +105,19 @@ public class ToLowerCaseExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
+    }
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new ToLowerCaseExpression(_ => "Some text");
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

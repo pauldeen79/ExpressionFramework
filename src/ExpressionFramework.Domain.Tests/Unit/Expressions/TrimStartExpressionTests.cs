@@ -6,7 +6,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(" trim "));
+        var sut = new TrimStartExpression(" trim ");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ConstantExpression(new[] { '0' }));
+        var sut = new TrimStartExpression("0trim0", new[] { '0' });
 
         // Act
         var actual = sut.Evaluate();
@@ -32,7 +32,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(string.Empty));
+        var sut = new TrimStartExpression(_ => string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -45,7 +45,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
+        var sut = new TrimStartExpression(default(object?));
 
         // Act
         var actual = sut.Evaluate();
@@ -73,7 +73,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(" trim "));
+        var sut = new TrimStartExpression(" trim ");
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -86,7 +86,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ConstantExpression(new[] { '0' }));
+        var sut = new TrimStartExpression(_ => "0trim0", _ => new[] { '0' });
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -99,7 +99,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(string.Empty));
+        var sut = new TrimStartExpression(string.Empty);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -112,7 +112,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
+        var sut = new TrimStartExpression(default(object?));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -133,10 +133,10 @@ public class TrimStartExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new TrimStartExpression(new ConstantExpression("Some text"));
+        var expression = new TrimStartExpression("Some text");
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -144,6 +144,20 @@ public class TrimStartExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new TrimStartExpression(_ => "Some text");
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

@@ -50,6 +50,9 @@ public partial record SumExpression
 
         return Result<object?>.Invalid("Could only compute sum of numeric values");
     }
+
+    public SumExpression(object? expression, Func<object?, object?>? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
+    public SumExpression(Func<object?, object?> expression, Func<object?, object?>? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
 }
 
 public partial record SumExpressionBase

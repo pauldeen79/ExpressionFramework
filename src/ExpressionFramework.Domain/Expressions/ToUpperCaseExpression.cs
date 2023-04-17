@@ -20,6 +20,9 @@ public partial record ToUpperCaseExpression : ITypedExpression<string>
             result.IsSuccessful()
                 ? Result<string>.Success(result.Value!.ToUpper())
                 : result);
+
+    public ToUpperCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
+    public ToUpperCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
 
 public partial record ToUpperCaseExpressionBase

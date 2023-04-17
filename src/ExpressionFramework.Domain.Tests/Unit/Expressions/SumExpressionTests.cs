@@ -20,7 +20,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(12345), null);
+        var sut = new SumExpression(12345, default);
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +48,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Enumerable_Values_Are_Not_All_Numeric()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { "A", "B", "C" }), null);
+        var sut = new SumExpression(new[] { "A", "B", "C" }, default);
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +62,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Byte_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (byte)1, (byte)2 }), null);
+        var sut = new SumExpression(_ => new byte[] { 1, 2 }, default);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Short_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (short)1, (short)2 }), null);
+        var sut = new SumExpression(new[] { (short)1, (short)2 }, default);
 
         // Act
         var result = sut.Evaluate();
@@ -160,7 +160,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_SelectorExpression_Result_When_SelectorExpression_Is_Not_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var sut = new SumExpression(_ => new[] { 1, 2 }, x => Convert.ToInt32(x));
 
         // Act
         var result = sut.Evaluate();
@@ -184,7 +184,7 @@ public class SumExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SumExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var expression = new SumExpression(new[] { 1, 2 }, x => Convert.ToInt32(x));
 
         // Act
         var result = expression.GetPrimaryExpression();

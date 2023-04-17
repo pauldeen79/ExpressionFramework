@@ -14,8 +14,6 @@ public partial record TrimExpression : ITypedExpression<string>
                 ? Trim(context, result.Value!)
                 : result);
 
-    public TrimExpression(Expression expression) : this(expression, null) { }
-
     private Result<string> Trim(object? context, string s)
     {
         if (TrimCharsExpression is null)
@@ -39,6 +37,9 @@ public partial record TrimExpression : ITypedExpression<string>
             "String to get the trimmed value for",
             "The trim start and end value of the expression",
             "This result will be returned when the expression is of type string");
+
+    public TrimExpression(object? expression, object? trimCharsExpression = null) : this(new ConstantExpression(expression), trimCharsExpression == null ? null : new ConstantExpression(trimCharsExpression)) { }
+    public TrimExpression(Func<object?, object?> expression, Func<object?, object?>? trimCharsExpression = null) : this(new DelegateExpression(expression), trimCharsExpression == null ? null : new DelegateExpression(trimCharsExpression)) { }
 }
 
 public partial record TrimExpressionBase

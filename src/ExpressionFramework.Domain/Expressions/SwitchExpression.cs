@@ -51,6 +51,9 @@ public partial record SwitchExpression
 
         return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((false, Result<object?>.Success(null)));
     }
+
+    public SwitchExpression(IEnumerable<Case> cases, object? defaultExpression) : this(cases, defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
+    public SwitchExpression(IEnumerable<Case> cases, Func<object?, object?>? defaultExpression) : this(cases, defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
 
 public partial record SwitchExpressionBase
