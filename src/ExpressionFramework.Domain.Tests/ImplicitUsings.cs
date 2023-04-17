@@ -1,4 +1,5 @@
-﻿global using System.ComponentModel.DataAnnotations;
+﻿global using System.Collections;
+global using System.ComponentModel.DataAnnotations;
 global using System.Globalization;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Abstractions;

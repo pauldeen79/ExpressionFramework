@@ -41,8 +41,8 @@ public partial record AllExpression : ITypedExpression<bool>
             resultValueType: typeof(bool)
         );
 
-    public AllExpression(object? expression, Expression predicateExpression) : this(new ConstantExpression(expression), predicateExpression) { }
-    public AllExpression(Func<object?, object?> expression, Expression predicateExpression) : this(new DelegateExpression(expression), predicateExpression) { }
+    public AllExpression(IEnumerable expression, Func<object?, bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
+    public AllExpression(Func<object?, IEnumerable> expression, Func<object?, bool> predicateExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 }
 
 public partial record AllExpressionBase

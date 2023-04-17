@@ -6,7 +6,9 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(default(object?), new TypedConstantExpression<bool>(false));
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        var sut = new AllExpression(default(IEnumerable?), _ => false);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(_ => default, new TypedConstantExpression<bool>(false));
+#pragma warning disable CS8603 // Possible null reference return.
+        var sut = new AllExpression(_ => default, _ => false);
+#pragma warning restore CS8603 // Possible null reference return.
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +38,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_True_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(Enumerable.Empty<object>()), new TypedConstantExpression<bool>(false));
+        var sut = new AllExpression(_ => Enumerable.Empty<object?>(), _ => false);
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +94,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_False_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10));
+        var sut = new AllExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +108,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 1));
+        var sut = new AllExpression(new[] { 1, 2, 3 }, x => x is int i && i > 1);
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +122,9 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new EmptyExpression(), new TypedConstantExpression<bool>(false));
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
+        var sut = new AllExpression(default(IEnumerable?), _ => false);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -146,7 +152,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_True_When_Context_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(Enumerable.Empty<object>()), new TypedConstantExpression<bool>(false));
+        var sut = new AllExpression(Enumerable.Empty<object>(), _ => false);
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -202,7 +208,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_False_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10));
+        var sut = new AllExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -216,7 +222,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 1));
+        var sut = new AllExpression(new[] { 1, 2, 3 }, x => x is int i && i > 1);
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -237,10 +243,10 @@ public class AllExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new AllExpression(new ConstantExpression(Enumerable.Empty<object>()), new TypedConstantExpression<bool>(false));
+        var expression = new AllExpression(Enumerable.Empty<object>(), _ => false);
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -248,6 +254,20 @@ public class AllExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new AllExpression(_ => Enumerable.Empty<object>(), _ => false);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]
