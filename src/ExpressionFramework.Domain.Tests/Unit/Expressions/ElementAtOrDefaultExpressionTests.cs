@@ -62,7 +62,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression(new ConstantExpression("Something bad happened")), default);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"), default);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Error_When_IndexExpression_Returns_Error()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Something bad happened")), default);
+        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"), default);
 
         // Act
         var result = sut.Evaluate();
@@ -146,7 +146,7 @@ public class ElementAtOrDefaultExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new ElementAtOrDefaultExpressionBase(new EmptyExpression(), new EmptyExpression(), null);
+        var expression = new ElementAtOrDefaultExpressionBase(new EmptyExpression(), new EmptyExpression(), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

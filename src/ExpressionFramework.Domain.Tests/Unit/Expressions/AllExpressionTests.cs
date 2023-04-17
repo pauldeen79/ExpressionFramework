@@ -48,7 +48,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression(new ConstantExpression("Something bad happened")));
+        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +62,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Something bad happened")));
+        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
 
         // Act
         var result = sut.Evaluate();
@@ -160,7 +160,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression(new ConstantExpression("Something bad happened")));
+        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -174,7 +174,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Error_When_PredicateExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Something bad happened")));
+        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
 
         // Act
         var result = sut.EvaluateTyped(null);

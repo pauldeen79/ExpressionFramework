@@ -78,7 +78,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new InvalidExpression(new ConstantExpression("Kaboom")) });
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new InvalidExpression("Kaboom") });
 
         // Act
         var result = sut.Evaluate();

@@ -33,7 +33,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(default, 1, 1);
+        var sut = new SubstringExpression(new EmptyExpression(), new DefaultExpression<int>(), new DefaultExpression<int>());
 
         // Act
         var actual = sut.Evaluate();
@@ -47,7 +47,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
+        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression("Kaboom"), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate();
@@ -61,7 +61,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
     {
         // Arrange
-        var sut = new SubstringExpression("test", "not an integer", 1);
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression("not an integer"), new ConstantExpression(1));
 
         // Act
         var actual = sut.Evaluate();
@@ -75,7 +75,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Kaboom")));
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression("Kaboom"));
 
         // Act
         var actual = sut.Evaluate();
@@ -89,7 +89,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
     {
         // Arrange
-        var sut = new SubstringExpression("test", 1, "not an integer");
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new ConstantExpression("not an integer"));
 
         // Act
         var actual = sut.Evaluate();
@@ -131,7 +131,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(default, 1, 1);
+        var sut = new SubstringExpression(new EmptyExpression(), new DefaultExpression<int>(), new DefaultExpression<int>());
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -145,7 +145,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1));
+        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression("Kaboom"), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -159,7 +159,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
     {
         // Arrange
-        var sut = new SubstringExpression("test", "not an integer", 1);
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression("not an integer"), new ConstantExpression(1));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -173,7 +173,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression(new ConstantExpression("Something bad happened")));
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression("Something bad happened"));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -187,7 +187,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
     {
         // Arrange
-        var sut = new SubstringExpression("test", 1, "not an integer");
+        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new ConstantExpression("not an integer"));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -208,7 +208,7 @@ public class SubstringExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
         var expression = new SubstringExpression("Hello world", 1, 1);
@@ -218,9 +218,23 @@ public class SubstringExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<TypedConstantExpression<string>>();
     }
-    
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new SubstringExpression(_ => "Hello world", _ => 1, _ => 1);
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<TypedDelegateExpression<string>>();
+    }
+
     [Fact]
     public void Can_Determine_Descriptor_Provider()
     {

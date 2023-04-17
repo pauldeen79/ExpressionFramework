@@ -34,7 +34,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
     {
         // Assert
-        var sut = new ErrorExpression(_ => 1);
+        var sut = new ErrorExpression(new ConstantExpression(1));
 
         // Act
         var result = sut.Evaluate();
@@ -56,10 +56,23 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
+    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpression()
     {
         // Arrange
-        var expression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var expression = new ErrorExpression("Kaboom");
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpression()
+    {
+        // Arrange
+        var expression = new ErrorExpression(_ => "Kaboom");
 
         // Act
         var result = expression.GetPrimaryExpression();

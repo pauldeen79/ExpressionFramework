@@ -6,7 +6,7 @@ public class SequenceExpressionTests
     public void Evaluate_Returns_Invalid_When_One_Expression_Returns_Invalid()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression(new ConstantExpression("Message")) }.AsEnumerable());
+        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message") }.AsEnumerable());
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class SequenceExpressionTests
     public void Evaluate_Returns_Error_When_One_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SequenceExpression(new Expression[] { new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression(new ConstantExpression("Kaboom")) }.AsEnumerable());
+        var sut = new SequenceExpression(new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom"));
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +104,7 @@ public class SequenceExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_One_Expression_Returns_Invalid()
     {
         // Arrange
-        var sut = new SequenceExpression(new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression(new ConstantExpression("Message")));
+        var sut = new SequenceExpression(new ConstantExpression(1), new ConstantExpression(2), new InvalidExpression("Message"));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -118,7 +118,7 @@ public class SequenceExpressionTests
     public void EvaluateTyped_Returns_Error_When_One_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SequenceExpression(new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new SequenceExpression(new ConstantExpression(1), new ConstantExpression(2), new ErrorExpression("Kaboom"));
 
         // Act
         var result = sut.EvaluateTyped(null);

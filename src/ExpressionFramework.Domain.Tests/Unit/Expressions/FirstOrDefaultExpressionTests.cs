@@ -62,7 +62,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression(new ConstantExpression("Something bad happened")), null);
+        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"), default);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Something bad happened")), null);
+        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"), default);
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +90,7 @@ public class FirstOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
     {
         // Arrange
-        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"), null);
+        var sut = new FirstOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"), default);
 
         // Act
         var result = sut.Evaluate();
