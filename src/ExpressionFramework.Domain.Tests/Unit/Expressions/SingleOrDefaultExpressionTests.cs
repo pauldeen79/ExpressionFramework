@@ -6,7 +6,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(default(object?));
+        var sut = new SingleOrDefaultExpression(new EmptyExpression(), default, default);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(_ => 12345);
+        var sut = new SingleOrDefaultExpression(new ConstantExpression(12345), default, default);
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +34,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(Enumerable.Empty<object>()), null, null);
+        var sut = new SingleOrDefaultExpression(Enumerable.Empty<object>());
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +48,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(Enumerable.Empty<object>()), null, new ConstantExpression("default value"));
+        var sut = new SingleOrDefaultExpression(Enumerable.Empty<object>(), default, "default value");
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +104,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10), null);
+        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +118,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10), new ConstantExpression("default"));
+        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10, "default");
 
         // Act
         var result = sut.Evaluate();
@@ -132,7 +132,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), null, null);
+        var sut = new SingleOrDefaultExpression(_ => new[] { 1, 2, 3 });
 
         // Act
         var result = sut.Evaluate();
@@ -146,7 +146,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_With_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), null, new ConstantExpression(true));
+        var sut = new SingleOrDefaultExpression(_ => new[] { 1, 2, 3 }, default, _ => true);
 
         // Act
         var result = sut.Evaluate();
@@ -160,7 +160,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1 }), null, null);
+        var sut = new SingleOrDefaultExpression(_ => new[] { 1 });
 
         // Act
         var result = sut.Evaluate();
@@ -174,7 +174,7 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => x is int i && i > 1), null);
+        var sut = new SingleOrDefaultExpression(new[] { 1, 2 }, x => x is int i && i > 1);
 
         // Act
         var result = sut.Evaluate();
@@ -194,18 +194,33 @@ public class SingleOrDefaultExpressionTests
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
+
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange
-        var expression = new SingleOrDefaultExpression(new ConstantExpression(new[] { "a", "b", "c" }), null, null);
+        var expression = new SingleOrDefaultExpression(new[] { "a", "b", "c" }, _ => true, "some default value");
 
         // Act
         var result = expression.GetPrimaryExpression();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
+    }
+
+    [Fact]
+    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
+    {
+        // Arrange
+        var expression = new SingleOrDefaultExpression(_ => new[] { "a", "b", "c" }, _ => true, _ => "some default value");
+
+        // Act
+        var result = expression.GetPrimaryExpression();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
     }
 
     [Fact]

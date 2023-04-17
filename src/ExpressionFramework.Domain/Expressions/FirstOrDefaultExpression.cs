@@ -29,8 +29,8 @@ public partial record FirstOrDefaultExpression
             resultValueType: typeof(object)
         );
 
-    public FirstOrDefaultExpression(object? expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new ConstantExpression(expression), predicateExpression, defaultExpression) { }
-    public FirstOrDefaultExpression(Func<object?, object?> expression, Expression? predicateExpression = null, Expression? defaultExpression = null) : this(new DelegateExpression(expression), predicateExpression, defaultExpression) { }
+    public FirstOrDefaultExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null, object? defaultExpression = null) : this(new ConstantExpression(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
+    public FirstOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
 
 public partial record FirstOrDefaultExpressionBase

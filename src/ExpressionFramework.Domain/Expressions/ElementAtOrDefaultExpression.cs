@@ -33,8 +33,8 @@ public partial record ElementAtOrDefaultExpression
             resultValueType: typeof(object)
         );
 
-    public ElementAtOrDefaultExpression(object? expression, Expression indexExpression, Expression? defaultExpression = null) : this(new ConstantExpression(expression), indexExpression, defaultExpression) { }
-    public ElementAtOrDefaultExpression(Func<object?, object?> expression, Expression indexExpression, Expression? defaultExpression = null) : this(new DelegateExpression(expression), indexExpression, defaultExpression) { }
+    public ElementAtOrDefaultExpression(IEnumerable expression, int indexExpression, object? defaultExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
+    public ElementAtOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
 
 public partial record ElementAtOrDefaultExpressionBase

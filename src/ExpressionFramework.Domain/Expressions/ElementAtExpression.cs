@@ -37,8 +37,8 @@ public partial record ElementAtExpression
             resultValueType: typeof(object)
         );
 
-    public ElementAtExpression(object? expression, Expression indexExpression) : this(new ConstantExpression(expression), indexExpression) { }
-    public ElementAtExpression(Func<object?, object?> expression, Expression indexExpression) : this(new DelegateExpression(expression), indexExpression) { }
+    public ElementAtExpression(IEnumerable expression, int indexExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression)) { }
+    public ElementAtExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression)) { }
 }
 
 public partial record ElementAtExpressionBase
