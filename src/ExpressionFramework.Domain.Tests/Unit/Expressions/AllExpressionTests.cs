@@ -253,7 +253,7 @@ public class AllExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
     }
 
     [Fact]
@@ -267,7 +267,7 @@ public class AllExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
+        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
     }
 
     [Fact]

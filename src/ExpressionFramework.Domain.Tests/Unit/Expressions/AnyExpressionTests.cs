@@ -7,7 +7,7 @@ public class AnyExpressionTests
     {
         // Arrange
 #pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
-        var sut = new AnyExpression(default(Expression), default);
+        var sut = new AnyExpression(default(IEnumerable?), default);
 #pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
         // Act
@@ -277,21 +277,21 @@ public class AnyExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
     }
 
     [Fact]
     public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
     {
         // Arrange
-        var expression = new AnyExpression(Enumerable.Empty<object>());
+        var expression = new AnyExpression(_ => Enumerable.Empty<object>());
 
         // Act
         var result = expression.GetPrimaryExpression();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
+        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
     }
 
     [Fact]
