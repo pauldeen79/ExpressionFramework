@@ -25,6 +25,8 @@ public partial record CountExpression : ITypedExpression<int>
             results => Result<int>.Success(results.Count(x => x.Result.Value))
         );
 
+    public Expression ToUntyped() => this;
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

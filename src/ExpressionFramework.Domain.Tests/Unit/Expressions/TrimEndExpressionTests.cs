@@ -59,7 +59,7 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_Error_When_TrimCharsExpression_Returns_Error()
     {
         // Arrange
-        var sut = new TrimEndExpression(new ConstantExpression("0trim0"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new TrimEndExpression(new ConstantExpression("0trim0"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();

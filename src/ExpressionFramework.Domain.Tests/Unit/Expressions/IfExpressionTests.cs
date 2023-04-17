@@ -6,7 +6,7 @@ public class IfExpressionTests
     public void Evaluate_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.Evaluate();

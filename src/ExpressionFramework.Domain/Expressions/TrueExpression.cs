@@ -10,6 +10,8 @@ public partial record TrueExpression : ITypedExpression<bool>
 
     public Result<bool> EvaluateTyped(object? context)
         => Result<bool>.Success(true);
+
+    public Expression ToUntyped() => this;
 }
 
 public partial record TrueExpressionBase

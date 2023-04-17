@@ -9,7 +9,7 @@ public class ChainedExpressionTests
         var expression = new ChainedExpressionBuilder()
             .AddExpressions
             (
-                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")),
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom")),
                 new EmptyExpressionBuilder()
             )
             .Build();
@@ -30,7 +30,7 @@ public class ChainedExpressionTests
             .AddExpressions
             (
                 new EmptyExpressionBuilder(),
-                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom"))
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom"))
             )
             .Build();
 

@@ -63,7 +63,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ErrorExpression(new ConstantExpression("Kaboom")), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();

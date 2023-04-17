@@ -47,7 +47,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -117,7 +117,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var actual = sut.EvaluateTyped();

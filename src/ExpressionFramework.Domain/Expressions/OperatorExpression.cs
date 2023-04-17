@@ -20,6 +20,8 @@ public partial record OperatorExpression : ITypedExpression<bool>
     public Result<bool> EvaluateTyped(object? context)
         => Operator.Evaluate(context, LeftExpression, RightExpression);
 
+    public Expression ToUntyped() => this;
+
     public OperatorExpression(object? leftExpression, object? rightExpression, Operator @operator) : this(new ConstantExpression(leftExpression), new ConstantExpression(rightExpression), @operator) { }
     public OperatorExpression(Func<object?, object?> leftExpression, Func<object?, object?> rightExpression, Operator @operator) : this(new DelegateExpression(leftExpression), new DelegateExpression(rightExpression), @operator) { }
 }

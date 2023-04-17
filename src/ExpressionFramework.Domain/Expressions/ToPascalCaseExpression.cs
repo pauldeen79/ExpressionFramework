@@ -21,6 +21,8 @@ public partial record ToPascalCaseExpression : ITypedExpression<string>
                 ? Result<string>.Success(ToPascalCase(result.Value!))
                 : result);
 
+    public Expression ToUntyped() => this;
+
     private string ToPascalCase(string value)
         => value.Length > 0
             ? value.Substring(0, 1).ToLowerInvariant() + value.Substring(1)

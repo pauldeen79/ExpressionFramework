@@ -34,7 +34,7 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Error_When_Expressions_Returns_One_Item_With_Error_Result()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new ConstantExpression("Kaboom")) });
+        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) });
 
         // Act
         var result = sut.Evaluate();
@@ -95,7 +95,7 @@ public class StringConcatenateExpressionTests
     public void EvaluateTyped_Returns_Error_When_Expressions_Returns_One_Item_With_Error_Result()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new ConstantExpression("Kaboom")) });
+        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) });
 
         // Act
         var result = sut.EvaluateTyped(null);

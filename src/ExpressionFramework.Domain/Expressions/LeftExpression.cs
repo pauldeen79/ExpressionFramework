@@ -14,6 +14,8 @@ public partial record LeftExpression : ITypedExpression<string>
                 ? GetLeftValueFromString(result.Value!)
                 : result);
 
+    public Expression ToUntyped() => this;
+
     private Result<string> GetLeftValueFromString(string s)
     {
         var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");

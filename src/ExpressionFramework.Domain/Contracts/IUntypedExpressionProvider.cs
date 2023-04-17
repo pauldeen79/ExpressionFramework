@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain;
+﻿namespace ExpressionFramework.Domain.Contracts;
 
 public interface IUntypedExpressionProvider
 {

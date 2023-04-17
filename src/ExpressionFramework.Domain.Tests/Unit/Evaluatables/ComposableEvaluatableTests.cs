@@ -52,7 +52,7 @@ public class ComposableEvaluatableTests
             Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression(new ConstantExpression("Kaboom"))
+            new ErrorExpression(new TypedConstantExpression<string>("Kaboom"))
         );
 
         // Act
@@ -75,7 +75,7 @@ public class ComposableEvaluatableTests
             Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression(new ConstantExpression("Kaboom"))
+            new ErrorExpression(new TypedConstantExpression<string>("Kaboom"))
         );
 
         // Act

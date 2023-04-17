@@ -62,7 +62,7 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Error_When_FirstExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AggregateExpression(new Expression[] { new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression(1) }, new AddAggregator());
+        var sut = new AggregateExpression(new Expression[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new ConstantExpression(1) }, new AddAggregator());
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Error_When_SecondExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AggregateExpression(new Expression[] { new ConstantExpression(1), new ErrorExpression(new ConstantExpression("Kaboom")) }, new AddAggregator());
+        var sut = new AggregateExpression(new Expression[] { new ConstantExpression(1), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) }, new AddAggregator());
 
         // Act
         var result = sut.Evaluate();

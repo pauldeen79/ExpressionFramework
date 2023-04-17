@@ -23,7 +23,7 @@ public class EnumerableConcatenateAggregatorTests
         var sut = new EnumerableConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

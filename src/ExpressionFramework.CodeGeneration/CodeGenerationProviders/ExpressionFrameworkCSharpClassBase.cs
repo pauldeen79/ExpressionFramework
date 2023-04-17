@@ -21,12 +21,13 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
         {
+            var init = $"({Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<string>)ExpressionBuilderFactory.Create(source.{{0}}.ToUntyped())";
             property.ConvertSinglePropertyToBuilderOnBuilder
             (
                 $"{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>",
                 property.IsNullable
-                    ? "_{1}Delegate = new (() => source.{0} == null ? null : {0}.ToBuilder())"
-                    : "_{1}Delegate = new (() => source.{0}.ToBuilder())"
+                    ? "_{1}Delegate = new (() => source.{0} == null ? null : " + init + ")"
+                    : "_{1}Delegate = new (() => " + init + ")"
                 );
 
             if (!property.IsNullable)

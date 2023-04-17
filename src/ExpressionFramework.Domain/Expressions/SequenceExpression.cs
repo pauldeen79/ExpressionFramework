@@ -30,6 +30,8 @@ public partial record SequenceExpression : ITypedExpression<IEnumerable<object?>
         return Result<IEnumerable<object?>>.Success(values.Select(x => x.Value));
     }
 
+    public Expression ToUntyped() => this;
+
     public SequenceExpression(params Expression[] expressions) : this(expressions.AsEnumerable()) { }
     public SequenceExpression(IEnumerable<object?> expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }
     public SequenceExpression(params object?[] expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }

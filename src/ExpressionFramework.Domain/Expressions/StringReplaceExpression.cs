@@ -36,6 +36,8 @@ public partial record StringReplaceExpression : ITypedExpression<string>
                 : Result<string>.FromExistingResult(result));
     }
 
+    public Expression ToUntyped() => this;
+
     public StringReplaceExpression(object? expression, object? findExpression, object? replaceExpression) : this(new ConstantExpression(expression), new ConstantExpression(findExpression), new ConstantExpression(replaceExpression)) { }
     public StringReplaceExpression(Func<object?, object?> expression, Func<object?, object?> findExpression, Func<object?, object?> replaceExpression) : this(new DelegateExpression(expression), new DelegateExpression(findExpression), new DelegateExpression(replaceExpression)) { }
 }

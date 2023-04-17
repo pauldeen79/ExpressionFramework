@@ -9,7 +9,7 @@
 public partial record ErrorExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => ErrorMessageExpression.EvaluateTyped<string>(context, "ErrorMessageExpression did not return a string").Transform(result =>
+        => ErrorMessageExpression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
                 ? Result<object?>.Error(result.Value!)
                 : Result<object?>.FromExistingResult(result));

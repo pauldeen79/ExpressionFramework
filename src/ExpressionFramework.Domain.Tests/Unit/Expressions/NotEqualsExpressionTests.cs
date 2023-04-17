@@ -6,7 +6,7 @@ public class NotEqualsExpressionTests
     public void Evaluate_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
-        var firstExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var firstExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var secondExpression = new ConstantExpression("2");
         var sut = new NotEqualsExpression(firstExpression, secondExpression);
 
@@ -23,7 +23,7 @@ public class NotEqualsExpressionTests
     {
         // Arrange
         var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var secondExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var expression = new NotEqualsExpression(firstExpression, secondExpression);
 
         // Act
@@ -52,7 +52,7 @@ public class NotEqualsExpressionTests
     public void EvaluateTyped_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
-        var firstExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var firstExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var secondExpression = new ConstantExpression("2");
         var sut = new NotEqualsExpression(firstExpression, secondExpression);
 
@@ -69,7 +69,7 @@ public class NotEqualsExpressionTests
     {
         // Arrange
         var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var secondExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var expression = new NotEqualsExpression(firstExpression, secondExpression);
 
         // Act

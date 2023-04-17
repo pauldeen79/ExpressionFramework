@@ -25,7 +25,7 @@ public class SingleAggregatorTests
         float value = 2;
 
         // Act
-        var result = sut.Aggregate(null, new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression(value), (_, _) => "some value");
+        var result = sut.Aggregate(null, new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new ConstantExpression(value), (_, _) => "some value");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -71,7 +71,7 @@ public class SingleAggregatorTests
         float value = 1;
 
         // Act
-        var result = sut.Aggregate(null, new ConstantExpression(value), new ErrorExpression(new ConstantExpression("Kaboom")), (b1, b2) => b1 + b2);
+        var result = sut.Aggregate(null, new ConstantExpression(value), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), (b1, b2) => b1 + b2);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

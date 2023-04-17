@@ -14,5 +14,5 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
             $"{Constants.Namespaces.DomainBuilders}.Expressions",
             "ExpressionBuilder",
             $"{Constants.Namespaces.Domain}.Expressions"),
-            "if (instance is IUntypedExpressionProvider provider) instance = provider.ToUntyped();");
+            $"if (instance is {Constants.Namespaces.Domain}.Contracts.{nameof(IUntypedExpressionProvider)} provider) instance = provider.ToUntyped();");
 }

@@ -45,7 +45,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Predicate()
     {
         // Arrange
-        var sut = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

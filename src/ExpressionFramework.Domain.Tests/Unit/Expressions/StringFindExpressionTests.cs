@@ -6,7 +6,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Error_When_FindExpression_Returns_Error()
     {
         // Arrange
-        var sut = new StringFindExpression(new ConstantExpression("Hello world"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new StringFindExpression(new ConstantExpression("Hello world"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

@@ -20,7 +20,8 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new ErrorExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new ErrorExpression(new TypedErrorConstantExpression<string>("Kaboom"));
+        //var sut = new ErrorExpression(new TypedDelegateResultExpression<string>(_ => new ErrorExpression("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -31,25 +32,10 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
-    {
-        // Assert
-        var sut = new ErrorExpression(new ConstantExpression(1));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("ErrorMessageExpression did not return a string");
-        result.ValidationErrors.Should().BeEmpty();
-    }
-
-    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new ErrorExpressionBase(new EmptyExpression());
+        var expression = new ErrorExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

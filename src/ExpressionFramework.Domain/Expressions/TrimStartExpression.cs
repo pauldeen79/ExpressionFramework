@@ -14,6 +14,8 @@ public partial record TrimStartExpression : ITypedExpression<string>
                 ? TrimStart(context, result.Value!)
                 : result);
 
+    public Expression ToUntyped() => this;
+
     private Result<string> TrimStart(object? context, string s)
     {
         if (TrimCharsExpression is null)

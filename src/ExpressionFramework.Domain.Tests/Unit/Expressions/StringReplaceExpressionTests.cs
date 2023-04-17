@@ -6,7 +6,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Error_When_FindExpression_Returns_Error()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new ConstantExpression("f"));
 
         // Act
         var result = sut.Evaluate();

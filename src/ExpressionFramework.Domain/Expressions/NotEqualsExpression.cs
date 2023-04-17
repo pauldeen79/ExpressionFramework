@@ -23,6 +23,8 @@ public partial record NotEqualsExpression : ITypedExpression<bool>
             : Result<bool>.Success(!EqualsOperator.IsValid(results[0], results[1]));
     }
 
+    public Expression ToUntyped() => this;
+
     public static ExpressionDescriptor GetExpressionDescriptor()
         => BooleanExpression.GetDescriptor(
             typeof(NotEqualsExpression),

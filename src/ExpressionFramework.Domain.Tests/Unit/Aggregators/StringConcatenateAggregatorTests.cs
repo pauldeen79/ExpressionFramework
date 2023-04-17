@@ -23,7 +23,7 @@ public class StringConcatenateAggregatorTests
         var sut = new StringConcatenateAggregator();
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression("a"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var result = sut.Aggregate(new ConstantExpression("a"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

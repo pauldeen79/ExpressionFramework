@@ -21,6 +21,8 @@ public partial record ToUpperCaseExpression : ITypedExpression<string>
                 ? Result<string>.Success(result.Value!.ToUpper())
                 : result);
 
+    public Expression ToUntyped() => this;
+
     public ToUpperCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public ToUpperCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
