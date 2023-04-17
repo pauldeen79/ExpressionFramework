@@ -18,3 +18,4 @@ general:
 - ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
 - Add some constructor overloads to expressions
 - Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime>
+- Move Aggregators, Evaluatables, Expressions and Operators to separate packages. This way, consumers can just get the Domain without all the implementations. Just like using Abstractions, but then more in a DDD style.
