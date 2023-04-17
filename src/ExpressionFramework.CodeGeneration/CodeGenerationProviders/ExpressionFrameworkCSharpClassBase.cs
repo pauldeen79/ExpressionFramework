@@ -33,10 +33,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             if (!property.IsNullable)
             {
                 // TODO: Find out if we want to assume you want to use a typed constant expression builder. It's polymorphic, so I guess the user has to decide?
-                /// property.SetDefaultValueForBuilderClassConstructor(new Literal($"new {Constants.Namespaces.DomainBuilders}.Expressions.TypedConstantExpressionBuilder<{typeName.GetGenericArguments()}>()"));
+                property.SetDefaultValueForBuilderClassConstructor(new Literal($"({Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typeName.GetGenericArguments()}>)ExpressionBuilderFactory.Create(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({GetDefaultValue(typeName.GetGenericArguments())}))"));
             }
         }
 
         base.FixImmutableBuilderProperty(property, typeName);
     }
+
+    private static string GetDefaultValue(string typeName)
+        => typeName == "System.String"
+            ? "string.Empty"
+            : $"default({typeName})";
 }

@@ -11,6 +11,7 @@ global using ExpressionFramework.CodeGeneration.Models;
 global using ExpressionFramework.CodeGeneration.Models.Contracts;
 global using ExpressionFramework.CodeGeneration.Models.Domains;
 global using ModelFramework.CodeGeneration.CodeGenerationProviders;
+global using ModelFramework.Common;
 global using ModelFramework.Common.Extensions;
 global using ModelFramework.Objects.Builders;
 global using ModelFramework.Objects.Contracts;
