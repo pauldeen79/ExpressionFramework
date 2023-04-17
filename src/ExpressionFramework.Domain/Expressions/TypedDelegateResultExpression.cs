@@ -1,20 +1,17 @@
-﻿//namespace ExpressionFramework.Domain.Expressions;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-//public partial record TypedDelegateResultExpression<T> : ITypedExpression<T>
-//{
-//    public override Result<object?> Evaluate(object? context)
-//    {
-//        throw new System.NotImplementedException();
-//    }
+public partial record TypedDelegateResultExpression<T> : ITypedExpression<T>
+{
+    public override Result<object?> Evaluate(object? context)
+        => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
-//    public Result<T> EvaluateTyped(object? context)
-//    {
-//        throw new NotImplementedException();
-//    }
+    public Result<T> EvaluateTyped(object? context)
+        => Value.Invoke(context);
 
-//    public Expression ToUntyped()
-//    {
-//        throw new NotImplementedException();
-//    }
-//}
+    public Expression ToUntyped() => new DelegateResultExpression(ctx => Result<object?>.FromExistingResult(Value.Invoke(ctx)));
+}
 
+public partial record TypedDelegateResultExpressionBase<T>
+{
+    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
+}
