@@ -255,6 +255,19 @@ public class AnyExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new AnyExpression(new ConstantExpression(new[] { 1, 2, 3 }), new DelegateExpression(x => x is int i && i > 10));
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<AnyExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

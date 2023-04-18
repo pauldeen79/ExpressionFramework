@@ -87,6 +87,19 @@ public class YearExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new YearExpression(DateTime.Today);
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<YearExpression>();
+    }
+
+    [Fact]
     public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
     {
         // Arrange

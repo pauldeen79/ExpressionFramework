@@ -84,6 +84,19 @@ public class ToLowerCaseExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new ToLowerCaseExpression("A");
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<ToLowerCaseExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
@@ -106,6 +119,7 @@ public class ToLowerCaseExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
     }
+
     [Fact]
     public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
     {

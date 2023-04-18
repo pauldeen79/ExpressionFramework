@@ -111,6 +111,19 @@ public class SelectExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new SelectExpression(new[] { "a", "b", "c" }, new ToUpperCaseExpression(new ContextExpression()));
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<SelectExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
