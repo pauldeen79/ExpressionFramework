@@ -29,7 +29,7 @@ public class ExpressionBuilderFactoryTests
         var result = ExpressionBuilderFactory.CreateTyped(new StringLengthExpression("test"));
 
         // Assert
-        result.Should().BeOfType<StringLengthExpression>();
+        result.Should().BeOfType<StringLengthExpressionBuilder>();
     }
 
     [Fact]
