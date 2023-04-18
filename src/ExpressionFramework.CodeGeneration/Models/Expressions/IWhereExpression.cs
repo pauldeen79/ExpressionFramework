@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IWhereExpression : IExpression
+public interface IWhereExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
     IExpression Expression { get; }

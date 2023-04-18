@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ISubstringExpression : IExpression
+public interface ISubstringExpression : IExpression, ITypedExpression<string>
 {
     [Required]
     IExpression Expression { get; }
