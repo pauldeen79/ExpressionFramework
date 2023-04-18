@@ -8,7 +8,7 @@
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that satisfy the predicate", "This result will be returned when the context is enumerable, and the predicate returns a boolean value")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, Predicate did not return a boolean value")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case predicate evaluation fails")]
-public partial record WhereExpression
+public partial record WhereExpression : ITypedExpression<IEnumerable<object?>>
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetResultFromEnumerable(Expression, context, e => e
@@ -34,6 +34,16 @@ public partial record WhereExpression
 
         return itemResult;
     }
+
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context)
+        => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => e
+            .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
+            .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
+            .Select(x => x.Result.IsSuccessful()
+                ? Result<object?>.Success(x.Item)
+                : x.Result));
+
+    public Expression ToUntyped() => this;
 
     public WhereExpression(object? expression, Func<object?, object?> predicateExpression) : this(new ConstantExpression(expression), new DelegateExpression(predicateExpression)) { }
     public WhereExpression(Func<object?, object?> expression, Func<object?, object?> predicateExpression) : this(new DelegateExpression(expression), new DelegateExpression(predicateExpression)) { }

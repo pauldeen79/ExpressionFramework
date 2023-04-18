@@ -70,6 +70,73 @@ public class WhereExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
+    {
+        // Arrange
+        var sut = new WhereExpression(default(object?), x => x is string);
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
+    {
+        // Arrange
+        var sut = new WhereExpression(1, x => x is string);
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Predicate_Does_Not_Return_A_Boolean_Value()
+    {
+        // Arrange
+        var sut = new WhereExpression(_ => new object[] { "A", "B", 1, "C" }, _ => "not a boolean value");
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_NonSuccessfulResult_From_Predicate()
+    {
+        // Arrange
+        var sut = new WhereExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Filtered_Sequence_When_All_Is_Well()
+    {
+        // Arrange
+        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
