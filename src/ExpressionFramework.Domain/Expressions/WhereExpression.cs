@@ -11,12 +11,7 @@
 public partial record WhereExpression : ITypedExpression<IEnumerable<object?>>
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetResultFromEnumerable(Expression, context, e => e
-            .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
-            .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
-            .Select(x => x.Result.IsSuccessful()
-                ? Result<object?>.Success(x.Item)
-                : x.Result));
+        => EnumerableExpression.GetResultFromEnumerable(Expression, context, Filter);
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
@@ -36,17 +31,19 @@ public partial record WhereExpression : ITypedExpression<IEnumerable<object?>>
     }
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-        => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => e
-            .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
-            .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
-            .Select(x => x.Result.IsSuccessful()
-                ? Result<object?>.Success(x.Item)
-                : x.Result));
+        => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, Filter);
 
     public Expression ToUntyped() => this;
 
     public WhereExpression(object? expression, Func<object?, object?> predicateExpression) : this(new ConstantExpression(expression), new DelegateExpression(predicateExpression)) { }
     public WhereExpression(Func<object?, object?> expression, Func<object?, object?> predicateExpression) : this(new DelegateExpression(expression), new DelegateExpression(predicateExpression)) { }
+
+    private IEnumerable<Result<object?>> Filter(IEnumerable<object?> e) => e
+        .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
+        .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
+        .Select(x => x.Result.IsSuccessful()
+            ? Result<object?>.Success(x.Item)
+            : x.Result);
 }
 
 public partial record WhereExpressionBase
