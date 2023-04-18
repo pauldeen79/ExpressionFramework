@@ -82,4 +82,105 @@ public class ErrorExpressionTests
         result.ReturnValues.Should().HaveCount(2);
         result.ContextIsRequired.Should().BeNull();
     }
+
+    [Fact]
+    public void Can_Build_ErrorExpression_From_Builder_With_Default_Message()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder();
+
+        // Act
+        var expression = builder.BuildTyped();
+
+        // Assert
+        expression.Should().BeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().BeEmpty();
+    }
+
+    [Fact]
+    public void Cannot_Build_ErrorExpression_From_Builder_With_Explicit_Null_Message()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder().WithErrorMessageExpression(() => null!);
+
+        // Act & Assert
+        builder.Invoking(x => x.BuildTyped()).Should().Throw<ValidationException>().WithMessage("The ErrorMessageExpression field is required.");
+    }
+
+    [Fact]
+    public void Can_Build_ErrorExpression_From_Builder_With_Custom_Message()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder()
+            .WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom"));
+
+        // Act
+        var expression = builder.BuildTyped();
+
+        // Assert
+        expression.Should().BeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Can_Create_ErrorExpressionBuilder_From_Existing_Constant_ErrorMessage_And_Then_Build_Again()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder
+        (
+            new ErrorExpressionBuilder()
+                .WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom"))
+                .BuildTyped()
+        );
+
+        // Act
+        var expression = builder.BuildTyped();
+
+        // Assert
+        expression.Should().BeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Can_Create_ErrorExpressionBuilder_From_Existing_Delegate_ErrorMessage_And_Then_Build_Again()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder
+        (
+            new ErrorExpressionBuilder()
+                .WithErrorMessageExpression(new TypedDelegateExpressionBuilder<string>().WithValue(_ => "Kaboom"))
+                .BuildTyped()
+        );
+
+        // Act
+        var expression = builder.BuildTyped();
+
+        // Assert
+        expression.Should().BeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.Should().BeOfType<TypedDelegateExpression<string>>();
+        ((TypedDelegateExpression<string>)expression.ErrorMessageExpression).Value.Invoke(default).Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Can_Create_ErrorExpressionBuilder_From_Existing_LeftExpression_And_Then_Build_Again()
+    {
+        // Arrange
+        var builder = new ErrorExpressionBuilder
+        (
+            new ErrorExpressionBuilder()
+                .WithErrorMessageExpression(new LeftExpressionBuilder().WithExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom")).WithLengthExpression(new TypedConstantExpressionBuilder<int>().WithValue(1)))
+                .BuildTyped()
+        );
+
+        // Act
+        var expression = builder.BuildTyped();
+
+        // Assert
+        expression.Should().BeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.Should().BeOfType<LeftExpression>();
+        ((LeftExpression)expression.ErrorMessageExpression).EvaluateTyped().Value.Should().Be("K");
+    }
 }

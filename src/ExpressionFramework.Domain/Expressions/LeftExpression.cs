@@ -6,10 +6,10 @@ public partial record LeftExpression : ITypedExpression<string>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
                 ? GetLeftValueFromString(result.Value!)
                 : result);
@@ -18,7 +18,7 @@ public partial record LeftExpression : ITypedExpression<string>
 
     private Result<string> GetLeftValueFromString(string s)
     {
-        var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");
+        var lengthResult = LengthExpression.EvaluateTyped(s);
         if (!lengthResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(lengthResult);
@@ -37,8 +37,8 @@ public partial record LeftExpression : ITypedExpression<string>
             "The first characters of the expression",
             "This result will be returned when the context is of type string");
 
-    public LeftExpression(object? expression, object? lengthExpression) : this(new ConstantExpression(expression), new ConstantExpression(lengthExpression)) { }
-    public LeftExpression(Func<object?, object?> expression, Func<object?, object?> lengthExpression) : this(new DelegateExpression(expression), new DelegateExpression(lengthExpression)) { }
+    public LeftExpression(string expression, int lengthExpression) : this(new TypedConstantExpression<string>(expression), new TypedConstantExpression<int>(lengthExpression)) { }
+    public LeftExpression(Func<object?, string> expression, Func<object?, int> lengthExpression) : this(new TypedDelegateExpression<string>(expression), new TypedDelegateExpression<int>(lengthExpression)) { }
 }
 
 public partial record LeftExpressionBase

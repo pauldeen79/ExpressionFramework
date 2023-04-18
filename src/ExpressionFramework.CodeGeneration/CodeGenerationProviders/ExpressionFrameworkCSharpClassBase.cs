@@ -21,19 +21,19 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
         {
-            var init = $"({Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<string>)ExpressionBuilderFactory.Create(source.{{0}}.ToUntyped())";
+            var init = $"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(source.{{0}})";
             property.ConvertSinglePropertyToBuilderOnBuilder
             (
                 $"{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>",
                 property.IsNullable
                     ? "_{1}Delegate = new (() => source.{0} == null ? null : " + init + ")"
                     : "_{1}Delegate = new (() => " + init + ")"
-                );
+            );
 
             if (!property.IsNullable)
             {
-                // TODO: Find out if we want to assume you want to use a typed constant expression builder. It's polymorphic, so I guess the user has to decide?
-                property.SetDefaultValueForBuilderClassConstructor(new Literal($"({Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typeName.GetGenericArguments()}>)ExpressionBuilderFactory.Create(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({GetDefaultValue(typeName.GetGenericArguments())}))"));
+                // Allow a default value which implements ITypedExpression<T>, using a default constant value
+                property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({GetDefaultValue(typeName.GetGenericArguments())}))"));
             }
         }
 
