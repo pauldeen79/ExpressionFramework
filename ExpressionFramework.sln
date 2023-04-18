@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Builders", "src\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj", "{7537166A-6351-4CFC-A20B-C94AA127248D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelFramework.CodeGeneration", "..\ModelFramework\src\ModelFramework.CodeGeneration\ModelFramework.CodeGeneration.csproj", "{615CB4B2-D358-469B-8E41-1F420DCAF625}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,10 +40,6 @@ Global
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7537166A-6351-4CFC-A20B-C94AA127248D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{615CB4B2-D358-469B-8E41-1F420DCAF625}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{615CB4B2-D358-469B-8E41-1F420DCAF625}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{615CB4B2-D358-469B-8E41-1F420DCAF625}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{615CB4B2-D358-469B-8E41-1F420DCAF625}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

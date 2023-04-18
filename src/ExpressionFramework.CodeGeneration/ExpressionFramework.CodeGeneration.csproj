@@ -14,6 +14,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\ModelFramework\src\ModelFramework.CodeGeneration\ModelFramework.CodeGeneration.csproj" />
+      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.53" />
     </ItemGroup>
 </Project>
