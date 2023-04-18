@@ -45,23 +45,14 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName()?.Replace("ExpressionFramework.CodeGeneration.Models.", $"{Constants.Namespaces.Domain}.");
         if (!string.IsNullOrEmpty(typedInterface))
         {
-            var key = $"{typeBaseBuilder.Namespace}.{typeBaseBuilder.Name}"; //TODO: Add a GetFullName() method to non-generic TypeBaseBuilder class, just like we have on the TypeBase class
+            var key = typeBaseBuilder.GetFullName();
             if (!_typedInterfaceMap.ContainsKey(key))
             {
-                //Console.WriteLine($"Adding to typed interfacemap: {typeBaseBuilder.Name}");
-
                 _typedInterfaceMap.Add(key, typedInterface);
-                //typeBaseBuilder.AddMethods(new ClassMethodBuilder()
-                //   .WithName("Build")
-                //   .WithTypeName($"{typeof(ITypedExpression<>).WithoutGenerics()}Builder<{typedInterface.GetGenericArguments()}>")
-                //   .AddLiteralCodeStatements("return BuildTyped();")
-                //   .WithExplicitInterfaceName($"{Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typedInterface.GetGenericArguments()}>"))
-                //   .AddInterfaces(typedInterface);
             }
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
         {
-            //Console.WriteLine($"Want to check interfacemap for builder: {typeBaseBuilder.Name}");
             var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
             if (_typedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString(), out typedInterface))
             {
