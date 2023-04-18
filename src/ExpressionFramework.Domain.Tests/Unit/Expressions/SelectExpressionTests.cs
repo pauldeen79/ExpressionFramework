@@ -57,6 +57,60 @@ public class SelectExpressionTests
     }
 
     [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
+    {
+        // Arrange
+        var sut = new SelectExpression(default(object?), new ToUpperCaseExpression(new ContextExpression()));
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
+    {
+        // Arrange
+        var sut = new SelectExpression(_ => 1, new ToUpperCaseExpression(new ContextExpression()));
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_NonSuccessfulResult_From_Selector()
+    {
+        // Arrange
+        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void EvaluateTyped_Returns_Projected_Sequence_When_All_Is_Well()
+    {
+        // Arrange
+        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+
+        // Act
+        var result = sut.EvaluateTyped();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
