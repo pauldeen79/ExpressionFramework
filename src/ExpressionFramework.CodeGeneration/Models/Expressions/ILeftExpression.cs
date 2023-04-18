@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ILeftExpression : IExpression
+public interface ILeftExpression : IExpression, ITypedExpression<string>
 {
     [Required]
     ITypedExpression<string> Expression { get; }
