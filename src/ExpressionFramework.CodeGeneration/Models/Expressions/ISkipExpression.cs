@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface ISkipExpression : IExpression
+public interface ISkipExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
     IExpression Expression { get; }

@@ -10,42 +10,46 @@
 [ParameterType(nameof(Expression), typeof(IEnumerable))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, SortOrders should have at least one sort order")]
-public partial record OrderByExpression
+public partial record OrderByExpression : ITypedExpression<IEnumerable<object?>>
 {
-    public override Result<object?> Evaluate(object? context)
+    public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
+
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable").Transform(result =>
             result.IsSuccessful()
                 ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
-                : Result<object?>.FromExistingResult(result));
+                : Result<IEnumerable<object?>>.FromExistingResult(result));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public Expression ToUntyped() => this;
 
     public OrderByExpression(object? expression, IEnumerable<Expression> sortOrderExpressions) : this(new ConstantExpression(expression), sortOrderExpressions) { }
     public OrderByExpression(Func<object?, object?> expression, IEnumerable<Expression> sortOrderExpressions) : this(new DelegateExpression(expression), sortOrderExpressions) { }
 
-    private Result<object?> GetSortedEnumerable(object? context, IEnumerable<object?> e)
+    private Result<IEnumerable<object?>> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
         var sortOrdersResult = GetSortOrdersResult(context);
         if (!sortOrdersResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(sortOrdersResult);
+            return Result<IEnumerable<object?>>.FromExistingResult(sortOrdersResult);
         }
 
         if (!sortOrdersResult.Value!.Any())
         {
-            return Result<object?>.Invalid("SortOrderExpressions should have at least one item");
+            return Result<IEnumerable<object?>>.Invalid("SortOrderExpressions should have at least one item");
         }
 
         if (!e.Any())
         {
-            return Result<object?>.Success(e);
+            return Result<IEnumerable<object?>>.Success(e);
         }
 
         var first = true;
         IOrderedEnumerable<object?>? orderedEnumerable = null;
         foreach (var sortOrder in sortOrdersResult.Value!)
         {
-            var sortExpressionEvaluated = EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
+            var sortExpressionEvaluated = EnumerableExpression.GetTypedResultFromEnumerable(new ConstantExpression(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
             if (!sortExpressionEvaluated.IsSuccessful())
             {
                 return sortExpressionEvaluated;
@@ -67,7 +71,7 @@ public partial record OrderByExpression
             }
         }
 
-        return Result<object?>.Success(e);
+        return Result<IEnumerable<object?>>.Success(e);
     }
 
     private Result<IEnumerable<SortOrder>> GetSortOrdersResult(object? context)
