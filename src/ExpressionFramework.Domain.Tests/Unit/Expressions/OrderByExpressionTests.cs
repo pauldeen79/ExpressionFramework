@@ -177,6 +177,24 @@ public class OrderByExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
+        var sut = new OrderByExpression(new ConstantExpression(data), new[]
+        {
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
+            new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending))
+        });
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<OrderByExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

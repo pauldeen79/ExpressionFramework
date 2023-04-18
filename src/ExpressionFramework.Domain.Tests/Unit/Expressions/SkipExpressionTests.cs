@@ -71,6 +71,19 @@ public class SkipExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new SkipExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new TypedConstantExpression<int>(1));
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<SkipExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
