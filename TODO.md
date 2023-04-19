@@ -8,14 +8,17 @@ expressions:
 - Add Coalesce/FirstNotNull expression, which maybe is just a short-hand for First with a predicate, but maybe is worth to have on its own
 - Add expressions: IsOfType, IsNotOfType, IsNotNull, IsNull, IsNotEmptyString, IsEmptyString
 - Add expressions: ConvertToInt, ConvertToDouble, ConvertToDecimal, ConvertToBoolean, ParseDateTime, ConvertToString
-- Add expressions: DateAdd(expression, part, numbe), CreateDateTime(year, month, day, hour, minute, second)
+- Add expressions: DateAdd(expression, part, number), CreateDateTime(year, month, day, hour, minute, second), Hour, Minute, Second
 - Add TypedSequenceExpression<T>
 - Add FormattableStringExpression, with a formattable string (you might also used the generic ConstantExpression, but it seems logical to have a special cased one for this in the front-end so you can recognize it)
 
 general:
 - Review if we want to add validation for parameters?
 - Expression parser, based on the generic FunctionParser in CrossCutting. format: FUNCTIONNAME(arguments)
-  Need to think of a way to replace stuff like 1+1 -> Plus(1, 1) using regular expressions
-- ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression
-- Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime>
+  Need to think of a way to replace stuff like 1+1 -> Plus(1, 1) using regular expressions, or use formula parser when available in CrossCutting
+- ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression (should be compatible with parsing of a function string)
+- Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime> -> refactor remaining expressions to implement this
 - Move Aggregators, Evaluatables, Expressions and Operators to separate packages. This way, consumers can just get the Domain without all the implementations. Just like using Abstractions, but then more in a DDD style.
+- Generate the following method in maunal class when ITypedExpression<T> is implemented in expression
+Result<T> EvaluateTyped(object? context); -> throw new NotImplementedException();
+Expression ToUntyped(); -> return this;
