@@ -42,6 +42,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
+        if (typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
+        {
+            return;
+        }
+
         var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName();
         if (!string.IsNullOrEmpty(typedInterface))
         {
@@ -49,6 +54,14 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             if (!_typedInterfaceMap.ContainsKey(key))
             {
                 _typedInterfaceMap.Add(key, typedInterface);
+            }
+        }
+        else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.Domain}.Expressions")
+        {
+            var key = typeBaseBuilder.GetFullName();
+            if (_typedInterfaceMap.TryGetValue(key, out typedInterface))
+            {
+                typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpression<{typedInterface.GetGenericArguments()}>");
             }
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
