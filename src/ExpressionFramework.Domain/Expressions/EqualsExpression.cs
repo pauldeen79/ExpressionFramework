@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(EqualsExpression))]
-public partial record EqualsExpression : ITypedExpression<bool>
+public partial record EqualsExpression
 {
     public override Result<object?> Evaluate(object? context)
     {

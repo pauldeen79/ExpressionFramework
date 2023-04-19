@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(AllExpression))]
-public partial record AllExpression : ITypedExpression<bool>
+public partial record AllExpression
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetOptionalScalarValue

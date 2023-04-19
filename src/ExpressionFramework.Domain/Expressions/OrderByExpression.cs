@@ -10,7 +10,7 @@
 [ParameterType(nameof(Expression), typeof(IEnumerable))]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with sorted items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, SortOrders should have at least one sort order")]
-public partial record OrderByExpression : ITypedExpression<IEnumerable<object?>>
+public partial record OrderByExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 

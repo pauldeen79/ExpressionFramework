@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(NotEqualsExpression))]
-public partial record NotEqualsExpression : ITypedExpression<bool>
+public partial record NotEqualsExpression
 {
     public override Result<object?> Evaluate(object? context)
     {

@@ -7,7 +7,7 @@
 [ParameterRequired(nameof(TypeExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that are of the specified type", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable")]
-public partial record OfTypeExpression : ITypedExpression<IEnumerable<object?>>
+public partial record OfTypeExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 

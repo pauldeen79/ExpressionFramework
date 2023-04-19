@@ -8,7 +8,7 @@
 [ParameterType(nameof(Expression), typeof(string))]
 [ReturnValue(ResultStatus.Ok, typeof(int), "The length of the (string) expression", "This result will be returned when the context is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string")]
-public partial record StringLengthExpression : ITypedExpression<int>
+public partial record StringLengthExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

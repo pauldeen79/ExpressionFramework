@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(TrimStartExpression))]
-public partial record TrimStartExpression : ITypedExpression<string>
+public partial record TrimStartExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

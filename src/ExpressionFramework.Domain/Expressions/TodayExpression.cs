@@ -2,7 +2,7 @@
 
 [ExpressionDescription("Gets the current date")]
 [ReturnValue(ResultStatus.Ok, typeof(DateTime), "Current date", "This is always returned")]
-public partial record TodayExpression : ITypedExpression<DateTime>
+public partial record TodayExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

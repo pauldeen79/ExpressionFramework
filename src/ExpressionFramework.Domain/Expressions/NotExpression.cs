@@ -8,7 +8,7 @@
 [ParameterType(nameof(Expression), typeof(bool))]
 [ReturnValue(ResultStatus.Ok, typeof(bool), "Inverted value of the boolean context value", "This result will be returned when the expression is a boolean value")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type boolean")]
-public partial record NotExpression : ITypedExpression<bool>
+public partial record NotExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

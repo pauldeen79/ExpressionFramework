@@ -7,7 +7,7 @@
 [ParameterRequired(nameof(SelectorExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with transformed items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression cannot be empty, Expression is not of type enumerable")]
-public partial record SelectExpression : ITypedExpression<IEnumerable<object?>>
+public partial record SelectExpression
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, e => e

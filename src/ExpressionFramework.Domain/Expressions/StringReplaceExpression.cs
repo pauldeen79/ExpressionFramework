@@ -11,7 +11,7 @@
 [ParameterType(nameof(FindExpression), typeof(string))]
 [ReturnValue(ResultStatus.Ok, typeof(string), "Expression with replaced value", "This result will be returned when the expression is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string, FindExpression must be of type string, ReplaceExpression must be of type string")]
-public partial record StringReplaceExpression : ITypedExpression<string>
+public partial record StringReplaceExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

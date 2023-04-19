@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
 [DynamicDescriptor(typeof(CountExpression))]
-public partial record CountExpression : ITypedExpression<int>
+public partial record CountExpression
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetOptionalScalarValue

@@ -7,7 +7,7 @@
 [ParameterRequired(nameof(CountExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with taken items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "CountExpression is not of type integer, Expression is not of type IEnumerable")]
-public partial record TakeExpression : ITypedExpression<IEnumerable<object?>>
+public partial record TakeExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 

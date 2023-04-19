@@ -8,7 +8,7 @@
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with items that satisfy the predicate", "This result will be returned when the context is enumerable, and the predicate returns a boolean value")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, Predicate did not return a boolean value")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case predicate evaluation fails")]
-public partial record WhereExpression : ITypedExpression<IEnumerable<object?>>
+public partial record WhereExpression
 {
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetResultFromEnumerable(Expression, context, Filter);

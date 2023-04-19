@@ -8,7 +8,7 @@
 [ParameterType(nameof(Expression), typeof(string))]
 [ReturnValue(ResultStatus.Ok, typeof(string), "The value of the expression converted to lower case", "This result will be returned when the expression is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string")]
-public partial record ToLowerCaseExpression : ITypedExpression<string>
+public partial record ToLowerCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);

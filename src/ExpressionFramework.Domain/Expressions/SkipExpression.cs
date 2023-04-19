@@ -8,7 +8,7 @@
 [ParameterRequired(nameof(CountExpression), true)]
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with skipped items", "This result will be returned when the context is enumerable")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "CountExpression is not of type integer, Expression is not of type IEnumerable")]
-public partial record SkipExpression : ITypedExpression<IEnumerable<object?>>
+public partial record SkipExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 

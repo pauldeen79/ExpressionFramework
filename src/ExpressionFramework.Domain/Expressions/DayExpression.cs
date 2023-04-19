@@ -4,7 +4,7 @@
 [UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, typeof(int), "Day number (within a month)", "This result will be returned when the expression is of type DateTime")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type DateTime")]
-public partial record DayExpression : ITypedExpression<int>
+public partial record DayExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Day);
