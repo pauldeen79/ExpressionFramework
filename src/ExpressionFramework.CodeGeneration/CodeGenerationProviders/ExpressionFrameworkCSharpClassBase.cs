@@ -42,7 +42,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName()?.Replace("ExpressionFramework.CodeGeneration.Models.", $"{Constants.Namespaces.Domain}.");
+        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName();
         if (!string.IsNullOrEmpty(typedInterface))
         {
             var key = typeBaseBuilder.GetFullName();
