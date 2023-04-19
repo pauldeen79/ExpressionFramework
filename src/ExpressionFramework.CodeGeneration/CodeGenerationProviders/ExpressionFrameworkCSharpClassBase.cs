@@ -33,7 +33,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             if (!property.IsNullable)
             {
                 // Allow a default value which implements ITypedExpression<T>, using a default constant value
-                property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({GetDefaultValue(typeName.GetGenericArguments())}))"));
+                property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}))"));
             }
         }
 
@@ -83,8 +83,4 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     }
 
     private readonly Dictionary<string, string> _typedInterfaceMap = new();
-    private static string GetDefaultValue(string typeName)
-        => typeName == "System.String"
-            ? "string.Empty"
-            : $"default({typeName})";
 }
