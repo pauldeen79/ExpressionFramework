@@ -45,12 +45,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName();
         if (!string.IsNullOrEmpty(typedInterface))
         {
-            if (typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate") && typedInterface.EndsWith("<T?>"))
-            {
-                // HACK: Remove the '?' in 'T?'
-                typedInterface = typedInterface[..^2] + ">";
-            }
-
             var key = typeBaseBuilder.GetFullName();
             if (!_typedInterfaceMap.ContainsKey(key))
             {
