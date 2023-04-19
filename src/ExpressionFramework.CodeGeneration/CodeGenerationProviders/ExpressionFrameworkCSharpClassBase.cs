@@ -42,14 +42,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        if (typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
-        {
-            return;
-        }
-
         var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName();
         if (!string.IsNullOrEmpty(typedInterface))
         {
+            if (typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate") && typedInterface.EndsWith("<T?>"))
+            {
+                // HACK: Remove the '?' in 'T?'
+                typedInterface = typedInterface[..^2] + ">";
+            }
+
             var key = typeBaseBuilder.GetFullName();
             if (!_typedInterfaceMap.ContainsKey(key))
             {
@@ -67,7 +68,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
         {
             var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
-            if (_typedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString(), out typedInterface))
+            if (_typedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
             {
                 typeBaseBuilder.AddMethods
                 (

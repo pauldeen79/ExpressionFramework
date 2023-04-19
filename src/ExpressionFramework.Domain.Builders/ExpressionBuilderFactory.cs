@@ -7,6 +7,7 @@ public static partial class ExpressionBuilderFactory
         {
             TypedConstantExpression<T> x => new TypedConstantExpressionBuilder<T>(x),
             TypedDelegateExpression<T> x => new TypedDelegateExpressionBuilder<T>(x),
+            TypedDelegateResultExpression<T> x => new TypedDelegateResultExpressionBuilder<T>(x),
             _ => CreateStandard(source)
         };
 

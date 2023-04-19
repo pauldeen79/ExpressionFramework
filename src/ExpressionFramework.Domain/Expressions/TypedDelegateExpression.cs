@@ -5,7 +5,7 @@
 [ParameterDescription(nameof(Value), "Delegate to use")]
 [ParameterRequired(nameof(Value), true)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "The return value from the delegate that is supplied with the Value parameter", "This result will always be returned")]
-public partial record TypedDelegateExpression<T> : ITypedExpression<T>
+public partial record TypedDelegateExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.Success(Value.Invoke(context));

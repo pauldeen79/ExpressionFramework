@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-public partial record TypedDelegateResultExpression<T> : ITypedExpression<T>
+public partial record TypedDelegateResultExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
