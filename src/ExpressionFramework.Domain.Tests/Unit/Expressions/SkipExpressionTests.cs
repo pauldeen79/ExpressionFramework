@@ -71,14 +71,14 @@ public class SkipExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SkipExpression(new[] { "a", "b", "c" }, 1);
+        var expression = new SkipExpression(_ => new[] { "a", "b", "c" }, _ => 1);
 
         // Act
         var result = expression.GetPrimaryExpression();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
+        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]
