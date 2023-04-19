@@ -3,7 +3,7 @@
 public partial record TypedDelegateResultExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public Result<T> EvaluateTyped(object? context)
         => Value.Invoke(context);

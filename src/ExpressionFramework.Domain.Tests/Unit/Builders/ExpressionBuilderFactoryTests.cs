@@ -13,6 +13,16 @@ public class ExpressionBuilderFactoryTests
     }
 
     [Fact]
+    public void CreateTyped_Returns_Correct_Result_On_TypedConstantResultExpression()
+    {
+        // Act
+        var result = ExpressionBuilderFactory.CreateTyped(new TypedConstantResultExpression<int>(Result<int>.Success(1)));
+
+        // Assert
+        result.Should().BeOfType<TypedConstantResultExpressionBuilder<int>>();
+    }
+
+    [Fact]
     public void CreateTyped_Returns_Correct_Result_On_TypedDelegateExpression()
     {
         // Act

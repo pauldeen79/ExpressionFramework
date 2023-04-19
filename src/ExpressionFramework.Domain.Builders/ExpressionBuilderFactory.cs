@@ -6,6 +6,7 @@ public static partial class ExpressionBuilderFactory
         => source switch
         {
             TypedConstantExpression<T> x => new TypedConstantExpressionBuilder<T>(x),
+            TypedConstantResultExpression<T> x => new TypedConstantResultExpressionBuilder<T>(x),
             TypedDelegateExpression<T> x => new TypedDelegateExpressionBuilder<T>(x),
             TypedDelegateResultExpression<T> x => new TypedDelegateResultExpressionBuilder<T>(x),
             _ => CreateStandard(source)
