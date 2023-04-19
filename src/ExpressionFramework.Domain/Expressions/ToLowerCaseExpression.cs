@@ -21,8 +21,6 @@ public partial record ToLowerCaseExpression
                 ? Result<string>.Success(result.Value!.ToLower())
                 : result);
 
-    public Expression ToUntyped() => this;
-
     public ToLowerCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public ToLowerCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }

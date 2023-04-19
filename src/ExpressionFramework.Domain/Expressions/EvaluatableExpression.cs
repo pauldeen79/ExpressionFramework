@@ -15,8 +15,6 @@ public partial record EvaluatableExpression : ITypedExpression<bool>
 
     public Result<bool> EvaluateTyped(object? context)
         => Condition.Evaluate(context);
-
-    public Expression ToUntyped() => this;
 }
 
 public partial record EvaluatableExpressionBase

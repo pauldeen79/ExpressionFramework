@@ -12,8 +12,6 @@ public partial record NowExpression
             ? DateTime.Now
             : DateTimeProvider.GetCurrentDateTime());
 
-    public Expression ToUntyped() => this;
-
     public NowExpression() : this(default(IDateTimeProvider))
     {
     }

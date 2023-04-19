@@ -41,8 +41,6 @@ public partial record AllExpression
             resultValueType: typeof(bool)
         );
 
-    public Expression ToUntyped() => this;
-
     public AllExpression(IEnumerable expression, Func<object?, bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
     public AllExpression(Func<object?, IEnumerable> expression, Func<object?, bool> predicateExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 }

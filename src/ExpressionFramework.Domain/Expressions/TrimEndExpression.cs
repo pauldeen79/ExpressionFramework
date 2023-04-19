@@ -14,8 +14,6 @@ public partial record TrimEndExpression
                 ? TrimEnd(context, result.Value!)
                 : result);
 
-    public Expression ToUntyped() => this;
-
     private Result<string> TrimEnd(object? context, string s)
     {
         if (TrimCharsExpression is null)

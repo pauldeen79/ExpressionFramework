@@ -31,8 +31,6 @@ public partial record StringConcatenateExpression
         return Result<string>.Success(string.Concat(values.Select(x => x.Value)));
     }
 
-    public Expression ToUntyped() => this;
-
     public StringConcatenateExpression(IEnumerable<object?> expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }
     public StringConcatenateExpression(IEnumerable<Func<object?, object?>> expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
 }

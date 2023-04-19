@@ -22,8 +22,6 @@ public partial record OrderByExpression
                 ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
                 : Result<IEnumerable<object?>>.FromExistingResult(result));
 
-    public Expression ToUntyped() => this;
-
     public OrderByExpression(object? expression, IEnumerable<Expression> sortOrderExpressions) : this(new ConstantExpression(expression), sortOrderExpressions) { }
     public OrderByExpression(Func<object?, object?> expression, IEnumerable<Expression> sortOrderExpressions) : this(new DelegateExpression(expression), sortOrderExpressions) { }
 

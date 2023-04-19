@@ -15,8 +15,6 @@ public partial record DayExpression
     public Result<int> EvaluateTyped(object? context)
         => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Day);
 
-    public Expression ToUntyped() => this;
-
     public DayExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
     public DayExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }

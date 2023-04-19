@@ -21,4 +21,3 @@ general:
 - Move Aggregators, Evaluatables, Expressions and Operators to separate packages. This way, consumers can just get the Domain without all the implementations. Just like using Abstractions, but then more in a DDD style.
 - Generate the following method in maunal class when ITypedExpression<T> is implemented in expression
 Result<T> EvaluateTyped(object? context); -> throw new NotImplementedException();
-Expression ToUntyped(); -> return this;

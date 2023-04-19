@@ -10,8 +10,6 @@ public partial record FalseExpression
 
     public Result<bool> EvaluateTyped(object? context)
         => Result<bool>.Success(false);
-
-    public Expression ToUntyped() => this;
 }
 
 public partial record FalseExpressionBase

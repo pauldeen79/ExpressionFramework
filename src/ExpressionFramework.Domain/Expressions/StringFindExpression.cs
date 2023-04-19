@@ -32,8 +32,6 @@ public partial record StringFindExpression
                 : Result<int>.FromExistingResult(result));
     }
 
-    public Expression ToUntyped() => this;
-
     public StringFindExpression(object? expression, object? findExpression) : this(new ConstantExpression(expression), new ConstantExpression(findExpression)) { }
     public StringFindExpression(Func<object?, object?> expression, Func<object?, object?> findExpression) : this(new DelegateExpression(expression), new DelegateExpression(findExpression)) { }
 }

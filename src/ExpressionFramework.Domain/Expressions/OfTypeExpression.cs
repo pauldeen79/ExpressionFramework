@@ -24,8 +24,6 @@ public partial record OfTypeExpression
         return EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => IsOfType(e, typeResult));
     }
 
-    public Expression ToUntyped() => this;
-
     public OfTypeExpression(object? expression, Expression typeExpression) : this(new ConstantExpression(expression), typeExpression) { }
     public OfTypeExpression(Func<object?, object?> expression, Expression typeExpression) : this(new DelegateExpression(expression), typeExpression) { }
 

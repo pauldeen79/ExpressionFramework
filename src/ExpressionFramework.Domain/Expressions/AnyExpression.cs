@@ -25,8 +25,6 @@ public partial record AnyExpression
             results => Result<bool>.Success(results.Any(x => x.Result.Value))
         );
 
-    public Expression ToUntyped() => this;
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

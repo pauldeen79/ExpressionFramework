@@ -28,8 +28,6 @@ public partial record SubstringExpression
                 ? GetSubstringFromString(result.Value!)
                 : result);
 
-    public Expression ToUntyped() => this;
-
     private Result<string> GetSubstringFromString(string s)
     {
         var indexResult = IndexExpression.Evaluate(s);

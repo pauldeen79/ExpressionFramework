@@ -33,8 +33,6 @@ public partial record WhereExpression
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, Filter);
 
-    public Expression ToUntyped() => this;
-
     public WhereExpression(object? expression, Func<object?, object?> predicateExpression) : this(new ConstantExpression(expression), new DelegateExpression(predicateExpression)) { }
     public WhereExpression(Func<object?, object?> expression, Func<object?, object?> predicateExpression) : this(new DelegateExpression(expression), new DelegateExpression(predicateExpression)) { }
 

@@ -46,23 +46,32 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         if (!string.IsNullOrEmpty(typedInterface))
         {
             var key = typeBaseBuilder.GetFullName();
-            if (!_typedInterfaceMap.ContainsKey(key))
+            if (!TypedInterfaceMap.ContainsKey(key))
             {
-                _typedInterfaceMap.Add(key, typedInterface);
+                TypedInterfaceMap.Add(key, typedInterface);
             }
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.Domain}.Expressions")
         {
             var key = typeBaseBuilder.GetFullName();
-            if (_typedInterfaceMap.TryGetValue(key, out typedInterface))
+            if (TypedInterfaceMap.TryGetValue(key, out typedInterface))
             {
                 typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpression<{typedInterface.GetGenericArguments()}>");
+                if (!typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
+                {
+                    typeBaseBuilder.AddMethods(
+                        new ClassMethodBuilder()
+                            .WithName("ToUntyped")
+                            .WithTypeName("Expression")
+                            .AddLiteralCodeStatements("return this;")
+                    );
+                }
             }
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
         {
             var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
-            if (_typedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
+            if (TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
             {
                 typeBaseBuilder.AddMethods
                 (
@@ -77,5 +86,5 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
     }
 
-    private readonly Dictionary<string, string> _typedInterfaceMap = new();
+    protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
 }

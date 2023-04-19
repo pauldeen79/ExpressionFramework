@@ -12,8 +12,6 @@ public partial record TodayExpression
             ? DateTime.Today
             : DateTimeProvider.GetCurrentDateTime().Date);
 
-    public Expression ToUntyped() => this;
-
     public TodayExpression() : this(default(IDateTimeProvider))
     {
     }

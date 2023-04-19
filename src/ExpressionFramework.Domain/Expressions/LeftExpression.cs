@@ -14,8 +14,6 @@ public partial record LeftExpression
                 ? GetLeftValueFromString(result.Value!)
                 : result);
 
-    public Expression ToUntyped() => this;
-
     private Result<string> GetLeftValueFromString(string s)
     {
         var lengthResult = LengthExpression.EvaluateTyped(s);

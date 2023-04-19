@@ -14,8 +14,6 @@ public partial record RightExpression
                 ? GetRightValueFromString(result.Value!)
                 : result);
 
-    public Expression ToUntyped() => this;
-
     private Result<string> GetRightValueFromString(string s)
     {
         var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");

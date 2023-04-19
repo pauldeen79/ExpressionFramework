@@ -9,8 +9,6 @@ public partial record AndExpression
     public Result<bool> EvaluateTyped(object? context)
         => BooleanExpression.EvaluateBooleanCombination(context, FirstExpression, SecondExpression, (a, b) => a && b);
 
-    public Expression ToUntyped() => this;
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => BooleanExpression.GetDescriptor
         (

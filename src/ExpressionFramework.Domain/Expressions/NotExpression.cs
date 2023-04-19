@@ -21,8 +21,6 @@ public partial record NotExpression
                 ? Result<bool>.Success(!result.Value!)
                 : result);
 
-    public Expression ToUntyped() => this;
-
     public NotExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public NotExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }

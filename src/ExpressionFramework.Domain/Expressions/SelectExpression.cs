@@ -19,8 +19,6 @@ public partial record SelectExpression
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetTypedResultFromEnumerable(new ConstantExpression(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
 
-    public Expression ToUntyped() => this;
-
     public SelectExpression(object? expression, Expression selectorExpression) : this(new ConstantExpression(expression), selectorExpression) { }
     public SelectExpression(Func<object?, object?> expression, Expression selectorExpression) : this(new DelegateExpression(expression), selectorExpression) { }
 }
