@@ -14,16 +14,7 @@ public partial record SkipExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
-    public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-    {
-        var countResult = CountExpression.EvaluateTyped(context);
-        if (!countResult.IsSuccessful())
-        {
-            return Result<IEnumerable<object?>>.FromExistingResult(countResult);
-        }
-
-        return EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => Skip(e, countResult));
-    }
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Skip);
 
     public Expression ToUntyped() => this;
 

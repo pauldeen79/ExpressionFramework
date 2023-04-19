@@ -13,16 +13,7 @@ public partial record TakeExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
-    public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-    {
-        var countResult = CountExpression.EvaluateTyped(context);
-        if (!countResult.IsSuccessful())
-        {
-            return Result<IEnumerable<object?>>.FromExistingResult(countResult);
-        }
-
-        return EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => Take(e, countResult));
-    }
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Take);
 
     public Expression ToUntyped() => this;
 

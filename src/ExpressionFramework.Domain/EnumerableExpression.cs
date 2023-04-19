@@ -50,6 +50,22 @@ public static class EnumerableExpression
         return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
     }
 
+    public static Result<IEnumerable<object?>> GetTypedResultFromEnumerableWithCount(
+        ITypedExpression<IEnumerable> expression,
+        ITypedExpression<int> countExpression,
+        object? context,
+        Func<IEnumerable<object?>, Result<int>, IEnumerable<Result<object?>>> @delegate)
+    {
+        var countResult = countExpression.EvaluateTyped(context);
+        if (!countResult.IsSuccessful())
+        {
+            return Result<IEnumerable<object?>>.FromExistingResult(countResult);
+        }
+
+        return GetTypedResultFromEnumerable(expression, context, e => @delegate(e, countResult));
+
+    }
+
     private static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
         IEnumerable enumerable,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
