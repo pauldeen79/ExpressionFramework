@@ -11,11 +11,11 @@ public partial record TakeExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
     {
-        var countResult = CountExpression.EvaluateTyped<int>(context, "CountExpression is not of type integer");
+        var countResult = CountExpression.EvaluateTyped(context);
         if (!countResult.IsSuccessful())
         {
             return Result<IEnumerable<object?>>.FromExistingResult(countResult);
@@ -26,8 +26,8 @@ public partial record TakeExpression
 
     public Expression ToUntyped() => this;
 
-    public TakeExpression(object? expression, int count) : this(new ConstantExpression(expression), new ConstantExpression(count)) { }
-    public TakeExpression(Func<object?, object?> expression, Func<object?, int> countDelegate) : this(new DelegateExpression(expression), new TypedDelegateExpression<int>(countDelegate)) { }
+    public TakeExpression(IEnumerable expression, int count) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(count)) { }
+    public TakeExpression(Func<object?, IEnumerable> expression, Func<object?, int> countDelegate) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(countDelegate)) { }
 
     private static IEnumerable<Result<object?>> Take(IEnumerable<object?> e, Result<int> countResult) => e
         .Take(countResult.Value)

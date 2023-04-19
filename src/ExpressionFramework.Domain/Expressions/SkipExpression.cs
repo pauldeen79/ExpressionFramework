@@ -12,11 +12,11 @@ public partial record SkipExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
     {
-        var countResult = CountExpression.EvaluateTyped<int>(context, "CountExpression is not of type integer");
+        var countResult = CountExpression.EvaluateTyped(context);
         if (!countResult.IsSuccessful())
         {
             return Result<IEnumerable<object?>>.FromExistingResult(countResult);
@@ -27,8 +27,8 @@ public partial record SkipExpression
 
     public Expression ToUntyped() => this;
 
-    public SkipExpression(object? expression, int count) : this(new ConstantExpression(expression), new ConstantExpression(count)) { }
-    public SkipExpression(Func<object?, object?> expression, Func<object?, int> countDelegate) : this(new DelegateExpression(expression), new TypedDelegateExpression<int>(countDelegate)) { }
+    public SkipExpression(IEnumerable expression, int count) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(count)) { }
+    public SkipExpression(Func<object?, IEnumerable> expression, Func<object?, int> countDelegate) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(countDelegate)) { }
 
     private static IEnumerable<Result<object?>> Skip(IEnumerable<object?> e, Result<int> countResult) => e
         .Skip(countResult.Value)

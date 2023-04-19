@@ -33,7 +33,28 @@ public static class EnumerableExpression
             return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
         }
 
-        var results = @delegate(enumerableResult.Value!.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
+        return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
+    }
+
+    public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
+        ITypedExpression<IEnumerable> expression,
+        object? context,
+        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
+    {
+        var enumerableResult = expression.EvaluateTyped(context);
+        if (!enumerableResult.IsSuccessful())
+        {
+            return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
+        }
+
+        return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
+    }
+
+    private static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
+        IEnumerable enumerable,
+        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
+    {
+        var results = @delegate(enumerable.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
         {
             return Result<IEnumerable<object?>>.FromExistingResult(results.Last());

@@ -3,50 +3,24 @@
 public class TakeExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new TakeExpression(default(object?), 2);
+        var sut = new TakeExpression(new TypedDelegateResultExpression<IEnumerable>(_ => Result<IEnumerable>.Error("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new TakeExpression(_ => 1, _ => 2);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_CountExpression_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression("non integer value"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("CountExpression is not of type integer");
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new TakeExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -74,7 +48,7 @@ public class TakeExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new TakeExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new TypedConstantExpression<int>(1));
+        var sut = new TakeExpression(new object[] { "A", "B", 1, "C" }, 1);
 
         // Act
         var actual = sut.ToUntyped();
@@ -87,7 +61,7 @@ public class TakeExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new TakeExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new TakeExpressionBase(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

@@ -3,7 +3,7 @@
 public interface ITakeExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    IExpression CountExpression { get; }
+    ITypedExpression<int> CountExpression { get; }
 }
