@@ -21,14 +21,23 @@ public class ByteAggregator : INumericAggregator<byte>
             return result2;
         }
 
+        byte b2;
         try
         {
-            var b2 = Convert.ToByte(result2.Value!, CultureInfo.InvariantCulture);
-            return Result<object?>.Success(aggregatorDelegate.Invoke(b1, b2));
+            b2 = Convert.ToByte(result2.Value!, CultureInfo.InvariantCulture);
         }
         catch (Exception ex)
         {
             return Result<object?>.Invalid($"Could not convert SecondExpression to Byte. Error message: {ex.Message}");
+        }
+
+        try
+        {
+            return Result<object?>.Success(aggregatorDelegate.Invoke(b1, b2));
+        }
+        catch (Exception ex)
+        {
+            return Result<object?>.Error($"Aggregation failed. Error message: {ex.Message}");
         }
     }
 }

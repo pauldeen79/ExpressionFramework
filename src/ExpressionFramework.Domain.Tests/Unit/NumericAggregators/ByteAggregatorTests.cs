@@ -33,6 +33,21 @@ public class ByteAggregatorTests
     }
 
     [Fact]
+    public void Aggregate_Returns_Error_When_Aggregation_Returns_Error()
+    {
+        // Arrange
+        var sut = new ByteAggregator();
+        byte value = 2;
+
+        // Act
+        var result = sut.Aggregate(null, new ConstantExpression(value), new ConstantExpression(2), (_, _) => throw new InvalidOperationException("Kaboom"));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Aggregation failed. Error message: Kaboom");
+    }
+
+    [Fact]
     public void Aggregate_Returns_Invalid_When_SecondValue_Could_Not_Be_Converted_To_Correct_Type()
     {
         // Arrange
