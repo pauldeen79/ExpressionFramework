@@ -18,8 +18,3 @@ public partial record DayExpression
     public DayExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
     public DayExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }
-
-public partial record DayExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

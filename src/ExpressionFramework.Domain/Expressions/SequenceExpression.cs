@@ -36,8 +36,3 @@ public partial record SequenceExpression
     public SequenceExpression(IEnumerable<Func<object?, object?>> expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
     public SequenceExpression(params Func<object?, object?>[] expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
 }
-
-public partial record SequenceExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

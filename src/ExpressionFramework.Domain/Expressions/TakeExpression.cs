@@ -22,8 +22,3 @@ public partial record TakeExpression
         .Take(countResult.Value)
         .Select(x => Result<object?>.Success(x));
 }
-
-public partial record TakeExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

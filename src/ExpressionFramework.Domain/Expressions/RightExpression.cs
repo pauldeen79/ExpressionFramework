@@ -38,8 +38,3 @@ public partial record RightExpression
     public RightExpression(object? expression, object? lengthExpression) : this(new ConstantExpression(expression), new ConstantExpression(lengthExpression)) { }
     public RightExpression(Func<object?, object?> expression, Func<object?, object?> lengthExpression) : this(new DelegateExpression(expression), new DelegateExpression(lengthExpression)) { }
 }
-
-public partial record RightExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

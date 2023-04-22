@@ -40,13 +40,7 @@ public partial record GroupByExpression
     [ExcludeFromCodeCoverage]
     private sealed class Grouping<TKey, TElement> : List<TElement>, IGrouping<TKey, TElement>
     {
-        public Grouping(TKey key, IEnumerable<TElement> collection)
-            : base(collection) => Key = key;
+        public Grouping(TKey key, IEnumerable<TElement> collection) : base(collection) => Key = key;
         public TKey Key { get; }
     }
-}
-
-public partial record GroupByExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
 }

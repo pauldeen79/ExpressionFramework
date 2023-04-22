@@ -67,6 +67,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     );
                 }
             }
+            else if (key.EndsWith("Base"))
+            {
+                typeBaseBuilder.AddMethods(
+                    new ClassMethodBuilder()
+                        .WithName("Evaluate")
+                        .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<object?>")
+                        .WithOverride()
+                        .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
+                        .AddNotImplementedException()
+                );
+            }
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
         {

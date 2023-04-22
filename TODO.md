@@ -19,5 +19,3 @@ general:
 - ToString override on Expression, which generates a function string when possible (GenerateFunctionString of type Result<string>), otherwise the name of the expression (should be compatible with parsing of a function string)
 - Try to do a POC to restrict input to functions, like Day/Month/Year only accepting Expression<DateTime> -> refactor remaining expressions to implement this
 - Move Aggregators, Evaluatables, Expressions and Operators to separate packages. This way, consumers can just get the Domain without all the implementations. Just like using Abstractions, but then more in a DDD style.
-- Generate the following method in maunal class when ITypedExpression<T> is implemented in expression
-Result<T> EvaluateTyped(object? context); -> throw new NotImplementedException();

@@ -8,8 +8,3 @@ public partial record EmptyExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.Success(null);
 }
-
-public partial record EmptyExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

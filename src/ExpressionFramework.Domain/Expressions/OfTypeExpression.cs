@@ -31,8 +31,3 @@ public partial record OfTypeExpression
         .Where(x => x != null && typeResult.Value!.IsInstanceOfType(x))
         .Select(x => Result<object?>.Success(x));
 }
-
-public partial record OfTypeExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

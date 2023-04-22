@@ -24,8 +24,3 @@ public partial record MaxExpression
     public MaxExpression(object? expression, Expression? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression) { }
     public MaxExpression(Func<object?, object?> expression, Expression? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression) { }
 }
-
-public partial record MaxExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

@@ -35,8 +35,3 @@ public partial record StringFindExpression
     public StringFindExpression(object? expression, object? findExpression) : this(new ConstantExpression(expression), new ConstantExpression(findExpression)) { }
     public StringFindExpression(Func<object?, object?> expression, Func<object?, object?> findExpression) : this(new DelegateExpression(expression), new DelegateExpression(findExpression)) { }
 }
-
-public partial record StringFindExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

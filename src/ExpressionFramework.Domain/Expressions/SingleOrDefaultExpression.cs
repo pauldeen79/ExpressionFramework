@@ -35,8 +35,3 @@ public partial record SingleOrDefaultExpression
     public SingleOrDefaultExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null, object? defaultExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
     public SingleOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
-
-public partial record SingleOrDefaultExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

@@ -17,8 +17,3 @@ public partial record ErrorExpression
     public ErrorExpression(string errorMessageExpression = "") : this(new TypedConstantExpression<string>(errorMessageExpression)) { }
     public ErrorExpression(Func<object?, string> errorMessageExpression) : this(new TypedDelegateExpression<string>(errorMessageExpression)) { }
 }
-
-public partial record ErrorExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

@@ -10,8 +10,3 @@ public partial record DelegateResultExpression
     public override Result<object?> Evaluate(object? context)
         => Result.Invoke(context);
 }
-
-public partial record DelegateResultExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

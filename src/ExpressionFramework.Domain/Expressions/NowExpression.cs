@@ -16,8 +16,3 @@ public partial record NowExpression
     {
     }
 }
-
-public partial record NowExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

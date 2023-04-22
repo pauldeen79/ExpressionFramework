@@ -18,8 +18,3 @@ public partial record YearExpression
     public YearExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
     public YearExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }
-
-public partial record YearExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

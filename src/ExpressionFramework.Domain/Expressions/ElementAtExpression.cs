@@ -40,8 +40,3 @@ public partial record ElementAtExpression
     public ElementAtExpression(IEnumerable expression, int indexExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression)) { }
     public ElementAtExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression)) { }
 }
-
-public partial record ElementAtExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

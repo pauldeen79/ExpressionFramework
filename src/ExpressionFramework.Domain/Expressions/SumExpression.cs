@@ -54,8 +54,3 @@ public partial record SumExpression
     public SumExpression(object? expression, Func<object?, object?>? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
     public SumExpression(Func<object?, object?> expression, Func<object?, object?>? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
 }
-
-public partial record SumExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

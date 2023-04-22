@@ -96,8 +96,3 @@ public partial record OrderByExpression
         return Result<IEnumerable<SortOrder>>.Success(items);
     }
 }
-
-public partial record OrderByExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

@@ -29,8 +29,3 @@ public partial record ToPascalCaseExpression
     public ToPascalCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public ToPascalCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
-
-public partial record ToPascalCaseExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

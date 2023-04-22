@@ -16,8 +16,3 @@ public partial record TypedConstantResultExpression<T>
     public Expression ToUntyped()
         => new ConstantExpression(Value.Value);
 }
-
-public partial record TypedConstantResultExpressionBase<T>
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

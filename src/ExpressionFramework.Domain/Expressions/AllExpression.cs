@@ -44,8 +44,3 @@ public partial record AllExpression
     public AllExpression(IEnumerable expression, Func<object?, bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
     public AllExpression(Func<object?, IEnumerable> expression, Func<object?, bool> predicateExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 }
-
-public partial record AllExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

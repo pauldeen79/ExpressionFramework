@@ -36,8 +36,3 @@ public partial record ElementAtOrDefaultExpression
     public ElementAtOrDefaultExpression(IEnumerable expression, int indexExpression, object? defaultExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
     public ElementAtOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
-
-public partial record ElementAtOrDefaultExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

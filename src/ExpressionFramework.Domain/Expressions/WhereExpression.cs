@@ -43,8 +43,3 @@ public partial record WhereExpression
             ? Result<object?>.Success(x.Item)
             : x.Result);
 }
-
-public partial record WhereExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

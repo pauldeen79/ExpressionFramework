@@ -34,8 +34,3 @@ public partial record StringConcatenateExpression
     public StringConcatenateExpression(IEnumerable<object?> expressions) : this(expressions.Select(x => new ConstantExpression(x))) { }
     public StringConcatenateExpression(IEnumerable<Func<object?, object?>> expressions) : this(expressions.Select(x => new DelegateExpression(x))) { }
 }
-
-public partial record StringConcatenateExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

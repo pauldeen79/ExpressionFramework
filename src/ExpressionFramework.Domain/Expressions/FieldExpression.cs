@@ -67,8 +67,3 @@ public partial record FieldExpression
     public FieldExpression(object? expression, object? fieldNameExpression) : this(new ConstantExpression(expression), new ConstantExpression(fieldNameExpression)) { }
     public FieldExpression(Func<object?, object?> expression, Func<object?, object?> fieldNameExpression) : this(new DelegateExpression(expression), new DelegateExpression(fieldNameExpression)) { }
 }
-
-public partial record FieldExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

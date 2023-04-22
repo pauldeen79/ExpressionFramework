@@ -11,8 +11,3 @@ public partial record ContextExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.Success(context);
 }
-
-public partial record ContextExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

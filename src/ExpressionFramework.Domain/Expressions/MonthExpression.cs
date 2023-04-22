@@ -18,8 +18,3 @@ public partial record MonthExpression
     public MonthExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
     public MonthExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
 }
-
-public partial record MonthExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

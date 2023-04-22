@@ -15,8 +15,3 @@ public partial record TypedDelegateResultExpression<T>
 
     public Expression ToUntyped() => new DelegateResultExpression(ctx => Result<object?>.FromExistingResult(Value.Invoke(ctx)));
 }
-
-public partial record TypedDelegateResultExpressionBase<T>
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

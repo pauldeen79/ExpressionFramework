@@ -23,8 +23,3 @@ public partial record SkipExpression
         .Skip(countResult.Value)
         .Select(x => Result<object?>.Success(x));
 }
-
-public partial record SkipExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

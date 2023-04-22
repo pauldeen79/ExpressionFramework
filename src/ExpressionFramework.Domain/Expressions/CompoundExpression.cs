@@ -19,8 +19,3 @@ public partial record CompoundExpression
     public CompoundExpression(object? firstExpression, object? secondExpression, Aggregator aggregator) : this(new ConstantExpression(firstExpression), new ConstantExpression(secondExpression), aggregator) { }
     public CompoundExpression(Func<object?, object?> firstExpression, Func<object?, object?> secondExpression, Aggregator aggregator) : this(new DelegateExpression(firstExpression), new DelegateExpression(secondExpression), aggregator) { }
 }
-
-public partial record CompoundExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

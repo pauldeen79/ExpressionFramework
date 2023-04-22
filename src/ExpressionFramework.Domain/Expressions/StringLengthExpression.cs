@@ -25,8 +25,3 @@ public partial record StringLengthExpression
     public StringLengthExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public StringLengthExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
-
-public partial record StringLengthExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

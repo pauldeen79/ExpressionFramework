@@ -22,8 +22,3 @@ public partial record SelectExpression
     public SelectExpression(object? expression, Expression selectorExpression) : this(new ConstantExpression(expression), selectorExpression) { }
     public SelectExpression(Func<object?, object?> expression, Expression selectorExpression) : this(new DelegateExpression(expression), selectorExpression) { }
 }
-
-public partial record SelectExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

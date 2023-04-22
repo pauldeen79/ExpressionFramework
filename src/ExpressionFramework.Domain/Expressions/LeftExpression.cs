@@ -38,8 +38,3 @@ public partial record LeftExpression
     public LeftExpression(string expression, int lengthExpression) : this(new TypedConstantExpression<string>(expression), new TypedConstantExpression<int>(lengthExpression)) { }
     public LeftExpression(Func<object?, string> expression, Func<object?, int> lengthExpression) : this(new TypedDelegateExpression<string>(expression), new TypedDelegateExpression<int>(lengthExpression)) { }
 }
-
-public partial record LeftExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

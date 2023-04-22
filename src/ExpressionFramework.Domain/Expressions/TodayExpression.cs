@@ -16,8 +16,3 @@ public partial record TodayExpression
     {
     }
 }
-
-public partial record TodayExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

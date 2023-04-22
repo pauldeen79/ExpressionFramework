@@ -55,8 +55,3 @@ public partial record SwitchExpression
     public SwitchExpression(IEnumerable<Case> cases, object? defaultExpression) : this(cases, defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
     public SwitchExpression(IEnumerable<Case> cases, Func<object?, object?>? defaultExpression) : this(cases, defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
 }
-
-public partial record SwitchExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

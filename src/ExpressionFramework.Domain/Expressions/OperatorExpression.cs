@@ -23,8 +23,3 @@ public partial record OperatorExpression
     public OperatorExpression(object? leftExpression, object? rightExpression, Operator @operator) : this(new ConstantExpression(leftExpression), new ConstantExpression(rightExpression), @operator) { }
     public OperatorExpression(Func<object?, object?> leftExpression, Func<object?, object?> rightExpression, Operator @operator) : this(new DelegateExpression(leftExpression), new DelegateExpression(rightExpression), @operator) { }
 }
-
-public partial record OperatorExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

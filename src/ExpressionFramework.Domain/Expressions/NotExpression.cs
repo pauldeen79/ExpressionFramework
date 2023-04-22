@@ -24,8 +24,3 @@ public partial record NotExpression
     public NotExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public NotExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
-
-public partial record NotExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}

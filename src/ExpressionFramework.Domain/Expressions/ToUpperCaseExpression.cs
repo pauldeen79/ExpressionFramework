@@ -24,8 +24,3 @@ public partial record ToUpperCaseExpression
     public ToUpperCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
     public ToUpperCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }
-
-public partial record ToUpperCaseExpressionBase
-{
-    public override Result<object?> Evaluate(object? context) => throw new NotImplementedException();
-}
