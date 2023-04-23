@@ -5,5 +5,5 @@ public interface IAllExpression : IExpression, ITypedExpression<bool>
     [Required]
     IExpression Expression { get; }
     [Required]
-    IExpression PredicateExpression { get; }
+    ITypedDelegateExpression<bool> PredicateExpression { get; }
 }

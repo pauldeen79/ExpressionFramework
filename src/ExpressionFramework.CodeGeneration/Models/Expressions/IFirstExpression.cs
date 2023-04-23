@@ -4,5 +4,5 @@ public interface IFirstExpression : IExpression
 {
     [Required]
     IExpression Expression { get; }
-    IExpression? PredicateExpression { get; }
+    ITypedDelegateExpression<bool>? PredicateExpression { get; }
 }

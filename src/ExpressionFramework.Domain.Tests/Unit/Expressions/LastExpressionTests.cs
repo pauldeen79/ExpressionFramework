@@ -6,7 +6,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LastExpression(new EmptyExpression(), new EmptyExpression());
+        var sut = new LastExpression(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => default));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new LastExpression(new ConstantExpression(12345), new EmptyExpression());
+        var sut = new LastExpression(new ConstantExpression(12345), new TypedDelegateExpression<bool>(_ => default));
 
         // Act
         var result = sut.Evaluate();
@@ -42,48 +42,6 @@ public class LastExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Enumerable is empty");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
-    {
-        // Arrange
-        var sut = new LastExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
-    {
-        // Arrange
-        var sut = new LastExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
-    {
-        // Arrange
-        var sut = new LastExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
     }
 
     [Fact]

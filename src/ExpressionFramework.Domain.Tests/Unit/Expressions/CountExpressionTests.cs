@@ -6,7 +6,7 @@ public class CountExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new CountExpression(new EmptyExpression(), new DelegateExpression(_ => false));
+        var sut = new CountExpression(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => false));
 
         // Act
         var result = sut.Evaluate();
@@ -44,49 +44,7 @@ public class CountExpressionTests
         result.Value.Should().BeEquivalentTo(0);
     }
 
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
-    }
-
-    [Fact]
+        [Fact]
     public void Evaluate_Returns_Zero_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
@@ -168,48 +126,6 @@ public class CountExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(0);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Error_When_PredicateExpression_Returns_Error()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
-    {
-        // Arrange
-        var sut = new CountExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
     }
 
     [Fact]

@@ -4,5 +4,5 @@ public interface ICountExpression : IExpression, ITypedExpression<int>
 {
     [Required]
     IExpression Expression { get; }
-    IExpression? PredicateExpression { get; }
+    ITypedDelegateExpression<bool>? PredicateExpression { get; }
 }

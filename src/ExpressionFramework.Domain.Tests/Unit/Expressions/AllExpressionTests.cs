@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+﻿using ExpressionFramework.Domain.Expressions;
+
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class AllExpressionTests
 {
@@ -6,7 +8,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new EmptyExpression(), new DelegateExpression(_ => false));
+        var sut = new AllExpression(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => false));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,7 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(1), new DelegateExpression(_ => false));
+        var sut = new AllExpression(new ConstantExpression(1), new TypedDelegateExpression<bool>(_ => false));
 
         // Act
         var result = sut.Evaluate();
@@ -42,48 +44,6 @@ public class AllExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(true);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Error_When_PredicateExpression_Returns_Error()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
     }
 
     [Fact]
@@ -118,7 +78,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(new EmptyExpression(), new DelegateExpression(_ => false));
+        var sut = new AllExpression(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => false));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -132,7 +92,7 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new ConstantExpression(123), new TypedConstantExpression<bool>(false));
+        var sut = new AllExpression(new ConstantExpression(123), new TypedDelegateExpression<bool>(_ => false));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -154,48 +114,6 @@ public class AllExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(true);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Invalid()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Error_When_PredicateExpression_Returns_Error()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_PredicateExpression_Returns_Non_Boolean_Value()
-    {
-        // Arrange
-        var sut = new AllExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("None boolean value"));
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Predicate did not return a boolean value");
     }
 
     [Fact]
@@ -243,7 +161,7 @@ public class AllExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new AllExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new AllExpressionBase(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
