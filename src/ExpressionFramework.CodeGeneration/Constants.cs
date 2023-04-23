@@ -8,5 +8,6 @@ public static class Constants
     {
         public const string Domain = "ExpressionFramework.Domain";
         public const string DomainBuilders = "ExpressionFramework.Domain.Builders";
+        public const string DomainSpecific = "ExpressionFramework.Domain.Specific";
     }
 }

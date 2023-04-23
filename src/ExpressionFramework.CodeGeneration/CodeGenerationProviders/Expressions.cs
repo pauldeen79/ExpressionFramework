@@ -3,11 +3,12 @@
 [ExcludeFromCodeCoverage]
 public class Expressions : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.Domain}/Expressions";
+    public override string Path => $"{Constants.Namespaces.DomainSpecific}/{nameof(Expressions)}";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
+    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specific", string.Empty);
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
