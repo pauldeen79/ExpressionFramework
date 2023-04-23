@@ -22,7 +22,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("Evaluate")
                     .WithOverride()
-                    .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
+                    .AddParameter("context", typeof(object), isNullable: true)
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .AddNotImplementedException()
                 );
@@ -33,7 +33,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     result
                         .AddMethods(new ClassMethodBuilder()
                         .WithName("EvaluateTyped")
-                        .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
+                        .AddParameter("context", typeof(object), isNullable: true)
                         .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typedInterface.GetGenericArguments()}>")
                         .AddNotImplementedException()
                     );

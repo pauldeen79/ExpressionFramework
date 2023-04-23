@@ -74,7 +74,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                         .WithName("Evaluate")
                         .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<object?>")
                         .WithOverride()
-                        .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
+                        .AddParameter("context", typeof(object), isNullable: true)
                         .AddNotImplementedException()
                 );
             }

@@ -20,7 +20,7 @@ public class Evaluatables : ExpressionFrameworkCSharpClassBase
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("Evaluate")
                     .WithOverride()
-                    .AddParameters(new ParameterBuilder().WithName("context").WithType(typeof(object)).WithIsNullable())
+                    .AddParameter("context", typeof(object), isNullable: true)
                     .WithType(typeof(Result<bool>))
                     .AddNotImplementedException()
                 )

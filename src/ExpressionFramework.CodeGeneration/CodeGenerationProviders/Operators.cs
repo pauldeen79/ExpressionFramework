@@ -21,11 +21,8 @@ public class Operators : ExpressionFrameworkCSharpClassBase
                     .WithName("Evaluate")
                     .WithProtected()
                     .WithOverride()
-                    .AddParameters
-                    (
-                        new ParameterBuilder().WithName("leftValue").WithType(typeof(object)).WithIsNullable(),
-                        new ParameterBuilder().WithName("rightValue").WithType(typeof(object)).WithIsNullable()
-                    )
+                    .AddParameter("leftValue", typeof(object), isNullable: true)
+                    .AddParameter("rightValue", typeof(object), isNullable: true)
                     .WithType(typeof(Result<bool>))
                     .AddNotImplementedException()
                 )
