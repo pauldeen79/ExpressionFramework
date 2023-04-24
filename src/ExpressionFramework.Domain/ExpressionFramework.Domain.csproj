@@ -17,4 +17,8 @@
     <PackageReference Include="pauldeen79.CrossCutting.Common" Version="2.7.35" />
   </ItemGroup>
 
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="dotnet run --project $(SolutionDir)src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj" />
+  </Target>
+
 </Project>
