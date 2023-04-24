@@ -15,21 +15,6 @@ public partial record WhereExpression
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
-    private Result<object?> GetResult(Result<object?> itemResult)
-    {
-        if (!itemResult.IsSuccessful())
-        {
-            return itemResult;
-        }
-
-        if (itemResult.Value is not bool)
-        {
-            return Result<object?>.Invalid("PredicateExpression did not return a boolean value");
-        }
-
-        return itemResult;
-    }
-
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, Filter);
 
@@ -37,9 +22,9 @@ public partial record WhereExpression
     public WhereExpression(Func<object?, object?> expression, Func<object?, bool> predicateExpression) : this(new DelegateExpression(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 
     private IEnumerable<Result<object?>> Filter(IEnumerable<object?> e) => e
-        .Select(x => new { Item = x, Result = GetResult(PredicateExpression.Evaluate(x)) })
+        .Select(x => new { Item = x, Result = PredicateExpression.EvaluateTyped(x) })
         .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
         .Select(x => x.Result.IsSuccessful()
             ? Result<object?>.Success(x.Item)
-            : x.Result);
+            : Result<object?>.FromExistingResult(x.Result));
 }
