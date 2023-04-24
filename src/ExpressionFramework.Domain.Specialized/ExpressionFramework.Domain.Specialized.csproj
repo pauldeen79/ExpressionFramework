@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageId>pauldeen79.ExpressionFramework.Domain.Specific</PackageId>
+    <PackageId>pauldeen79.ExpressionFramework.Domain.Specialized</PackageId>
     <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
     <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>

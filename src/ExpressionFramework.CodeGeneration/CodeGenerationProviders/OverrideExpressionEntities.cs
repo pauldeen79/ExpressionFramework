@@ -3,11 +3,11 @@
 [ExcludeFromCodeCoverage]
 public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecific}/{nameof(Expressions)}";
+    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Expressions)}";
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specific", string.Empty);
+    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specialized", string.Empty);
     protected override IClass? BaseClass => CreateBaseclass(typeof(IExpression), Constants.Namespaces.Domain);
 
     public override object CreateModel()

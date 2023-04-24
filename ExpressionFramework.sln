@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Builders", "src\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj", "{7537166A-6351-4CFC-A20B-C94AA127248D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Specific", "src\ExpressionFramework.Domain.Specific\ExpressionFramework.Domain.Specific.csproj", "{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Specialized", "src\ExpressionFramework.Domain.Specialized\ExpressionFramework.Domain.Specialized.csproj", "{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

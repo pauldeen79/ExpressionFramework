@@ -3,12 +3,12 @@
 [ExcludeFromCodeCoverage]
 public class Aggregators : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecific}/{nameof(Aggregators)}";
+    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Aggregators)}";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
-    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specific", string.Empty);
+    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specialized", string.Empty);
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IAggregator))
