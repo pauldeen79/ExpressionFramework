@@ -19,6 +19,10 @@ jobs:
       - name: Fetch origin/main
         run: |
           git fetch --no-tags --prune --depth=1 origin main
+      - name: Restore
+        run: dotnet restore
+      - name: Force first-time run of code generation
+        run: dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.2.2
         with:
