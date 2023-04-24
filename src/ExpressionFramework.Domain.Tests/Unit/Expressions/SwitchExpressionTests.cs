@@ -63,6 +63,44 @@ public class SwitchExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Success_When_One_Case_Evaluates_To_True()
+    {
+        // Arrange
+        var switchExpression = new SwitchExpressionBuilder()
+            .AddCases(new CaseBuilder()
+                .WithExpression(new ContextExpressionBuilder())
+                .WithCondition(new SingleEvaluatableBuilder().WithLeftExpression(new ContextExpressionBuilder()).WithOperator(new EqualsOperatorBuilder()).WithRightExpression(new ConstantExpressionBuilder().WithValue("value")))
+            )
+            .Build();
+
+        // Act
+        var result = switchExpression.Evaluate("value");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("value");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Success_With_Default_Value_When_One_Case_Evaluates_To_False()
+    {
+        // Arrange
+        var switchExpression = new SwitchExpressionBuilder()
+            .AddCases(new CaseBuilder()
+                .WithExpression(new ContextExpressionBuilder())
+                .WithCondition(new SingleEvaluatableBuilder().WithLeftExpression(new ContextExpressionBuilder()).WithOperator(new EqualsOperatorBuilder()).WithRightExpression(new ConstantExpressionBuilder().WithValue("value")))
+            )
+            .Build();
+
+        // Act
+        var result = switchExpression.Evaluate("wrong value");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeNull();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
