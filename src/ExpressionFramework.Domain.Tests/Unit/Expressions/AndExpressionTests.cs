@@ -3,34 +3,6 @@
 public class AndExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new AndExpression(new ConstantExpression("not a boolean"), new TrueExpression());
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new AndExpression(new TrueExpression(), new EmptyExpression());
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
@@ -42,34 +14,6 @@ public class AndExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(false);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new AndExpression(new ConstantExpression("not a boolean"), new TrueExpression());
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new AndExpression(new ConstantExpression(true), new EmptyExpression());
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
     }
 
     [Fact]
@@ -103,7 +47,7 @@ public class AndExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new AndExpressionBase(new ConstantExpression(true), new ConstantExpression(true));
+        var expression = new AndExpressionBase(new TypedConstantExpression<bool>(true), new TypedConstantExpression<bool>(true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

@@ -4,17 +4,17 @@ public static class BooleanExpression
 {
     public static Result<bool> EvaluateBooleanCombination(
         object? context,
-        Expression firstExpression,
-        Expression secondExpression,
+        ITypedExpression<bool> firstExpression,
+        ITypedExpression<bool> secondExpression,
         Func<bool, bool, bool> @delegate)
     {
-        var firstExpressionResult = firstExpression.EvaluateTyped<bool>(context, "FirstExpression must be of type boolean");
+        var firstExpressionResult = firstExpression.EvaluateTyped(context);
         if (!firstExpressionResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(firstExpressionResult);
         }
 
-        var secondExpressionResult = secondExpression.EvaluateTyped<bool>(context, "SecondExpression must be of type boolean");
+        var secondExpressionResult = secondExpression.EvaluateTyped(context);
         if (!secondExpressionResult.IsSuccessful())
         {
             return Result<bool>.FromExistingResult(secondExpressionResult);

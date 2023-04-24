@@ -17,24 +17,10 @@ public class NotExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
-    {
-        // Arrange
-        var sut = new NotExpression(_ => null);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
-    }
-
-    [Fact]
     public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression(new ConstantExpression(true));
+        var sut = new NotExpression(new TypedConstantExpression<bool>(true));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -42,20 +28,6 @@ public class NotExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be(false);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
-    {
-        // Arrange
-        var sut = new NotExpression(new EmptyExpression());
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
     }
 
     [Fact]
@@ -75,7 +47,7 @@ public class NotExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new NotExpressionBase(new EmptyExpression());
+        var expression = new NotExpressionBase(new TypedConstantExpression<bool>(false));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -85,7 +57,7 @@ public class NotExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new NotExpression(new ConstantExpression(true));
+        var expression = new NotExpression(new TypedConstantExpression<bool>(true));
 
         // Act
         var result = expression.GetPrimaryExpression();

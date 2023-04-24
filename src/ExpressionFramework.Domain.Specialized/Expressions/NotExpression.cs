@@ -13,14 +13,14 @@ public partial record NotExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<bool> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<bool>(context, "Expression must be of type boolean").Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<bool>.Success(!result.Value!)
+                ? Result<bool>.Success(!result.Value)
                 : result);
 
-    public NotExpression(object? expression) : this(new ConstantExpression(expression)) { }
-    public NotExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
+    public NotExpression(bool expression) : this(new TypedConstantExpression<bool>(expression)) { }
+    public NotExpression(Func<object?, bool> expression) : this(new TypedDelegateExpression<bool>(expression)) { }
 }
