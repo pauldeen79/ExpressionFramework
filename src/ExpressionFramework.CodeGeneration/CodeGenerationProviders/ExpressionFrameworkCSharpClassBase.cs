@@ -42,58 +42,95 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
+        var typedInterface = GetTypedInterface(typeBaseBuilder);
         if (!string.IsNullOrEmpty(typedInterface))
         {
-            var key = typeBaseBuilder.GetFullName();
-            if (!TypedInterfaceMap.ContainsKey(key))
-            {
-                TypedInterfaceMap.Add(key, typedInterface);
-            }
+            RegisterTypedInterface(typeBaseBuilder, typedInterface);
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.Domain}.Expressions")
         {
-            var key = typeBaseBuilder.GetFullName();
-            if (TypedInterfaceMap.TryGetValue(key, out typedInterface))
-            {
-                typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpression<{typedInterface.GetGenericArguments()}>");
-                if (!typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
-                {
-                    typeBaseBuilder.AddMethods(
-                        new ClassMethodBuilder()
-                            .WithName("ToUntyped")
-                            .WithTypeName("Expression")
-                            .AddLiteralCodeStatements("return this;")
-                    );
-                }
-            }
-            else if (key.EndsWith("Base"))
-            {
-                typeBaseBuilder.AddMethods(
-                    new ClassMethodBuilder()
-                        .WithName("Evaluate")
-                        .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<object?>")
-                        .WithOverride()
-                        .AddParameter("context", typeof(object), isNullable: true)
-                        .AddNotImplementedException()
-                );
-            }
+            AddCodeForTypedExpressionToExpressions(typeBaseBuilder);
         }
         else if (typeBaseBuilder.Namespace.ToString() == $"{Constants.Namespaces.DomainBuilders}.Expressions")
         {
-            var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
-            if (TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
+            AddCodeForTypedExpressionToExpressionBuilders(typeBaseBuilder);
+        }
+    }
+
+    private static string? GetTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
+        where TEntity : ITypeBase
+    {
+        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
+
+        if (typedInterface == "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
+        {
+            typedInterface = "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object?>>";
+        }
+
+        return typedInterface;
+    }
+
+    private void RegisterTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, string typedInterface)
+        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
+        where TEntity : ITypeBase
+    {
+        var key = typeBaseBuilder.GetFullName();
+        if (!TypedInterfaceMap.ContainsKey(key))
+        {
+            TypedInterfaceMap.Add(key, typedInterface);
+        }
+    }
+
+    private void AddCodeForTypedExpressionToExpressions<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
+        where TEntity : ITypeBase
+    {
+        string? typedInterface;
+        var key = typeBaseBuilder.GetFullName();
+        if (TypedInterfaceMap.TryGetValue(key, out typedInterface))
+        {
+            typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpression<{typedInterface.GetGenericArguments()}>");
+            if (!typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
             {
-                typeBaseBuilder.AddMethods
-                (
+                typeBaseBuilder.AddMethods(
                     new ClassMethodBuilder()
-                        .WithName("Build")
-                        .WithTypeName($"{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>")
-                        .AddLiteralCodeStatements("return BuildTyped();")
-                        .WithExplicitInterfaceName($"{Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typedInterface.GetGenericArguments()}>")
-                )
-                .AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typedInterface.GetGenericArguments()}>");
+                        .WithName("ToUntyped")
+                        .WithTypeName("Expression")
+                        .AddLiteralCodeStatements("return this;")
+                );
             }
+        }
+        else if (key.EndsWith("Base"))
+        {
+            typeBaseBuilder.AddMethods(
+                new ClassMethodBuilder()
+                    .WithName("Evaluate")
+                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<object?>")
+                    .WithOverride()
+                    .AddParameter("context", typeof(object), isNullable: true)
+                    .AddNotImplementedException()
+            );
+        }
+    }
+
+    private void AddCodeForTypedExpressionToExpressionBuilders<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
+        where TEntity : ITypeBase
+    {
+        string? typedInterface;
+        var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
+        if (TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
+        {
+            typeBaseBuilder.AddMethods
+            (
+                new ClassMethodBuilder()
+                    .WithName("Build")
+                    .WithTypeName($"{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>")
+                    .AddLiteralCodeStatements("return BuildTyped();")
+                    .WithExplicitInterfaceName($"{Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typedInterface.GetGenericArguments()}>")
+            )
+            .AddInterfaces($"{Constants.Namespaces.Domain}.Contracts.ITypedExpressionBuilder<{typedInterface.GetGenericArguments()}>");
         }
     }
 
