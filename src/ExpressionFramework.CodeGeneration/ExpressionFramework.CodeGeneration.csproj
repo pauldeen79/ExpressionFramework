@@ -16,4 +16,8 @@
     <ItemGroup>
       <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.61" />
     </ItemGroup>
+
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="dotnet $(TargetDir)ExpressionFramework.CodeGeneration.dll" />
+    </Target>
 </Project>
