@@ -16,6 +16,20 @@ public class WhereExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var sut = new WhereExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new(x => x is string));
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange

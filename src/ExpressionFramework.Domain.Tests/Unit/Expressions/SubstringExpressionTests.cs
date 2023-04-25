@@ -85,6 +85,21 @@ public class SubstringExpressionTests
         actual.Value.Should().Be("e");
     }
 
+
+    [Fact]
+    public void EvaluateTyped_Returns_Substring_From_Expression_When_Expression_Is_NonEmptyString_No_Length()
+    {
+        // Arrange
+        var sut = new SubstringExpression("test", 1, null);
+
+        // Act
+        var actual = sut.EvaluateTyped();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().Be("est");
+    }
+
     [Fact]
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {

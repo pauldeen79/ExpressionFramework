@@ -38,7 +38,7 @@ public partial record SubstringExpression
 
         if (LengthExpression is null)
         {
-            Result<string>.Success(s.Substring(indexResult.Value));
+            return Result<string>.Success(s.Substring(indexResult.Value));
         }
 
         var lengthResult = LengthExpression!.EvaluateTyped(s);

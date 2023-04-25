@@ -36,6 +36,20 @@ public class StringConcatenateExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_One_Of_The_Expressions_Return_Error()
+    {
+        // Arrange
+        var sut = new StringConcatenateExpression(new[] { new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")) });
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void EvaluateTyped_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange

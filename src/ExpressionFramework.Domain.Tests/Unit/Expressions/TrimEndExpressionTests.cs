@@ -29,6 +29,19 @@ public class TrimEndExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_TrimChars_Is_Null()
+    {
+        // Arrange
+        var sut = new TrimEndExpression(new TypedConstantExpression<string>(" trim "), new TypedConstantExpression<char[]>(default(char[])!));
+
+        // Act
+        var actual = sut.Evaluate();
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeEquivalentTo(" trim");
+    }
+
+    [Fact]
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
