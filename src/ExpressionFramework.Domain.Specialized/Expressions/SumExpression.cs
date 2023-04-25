@@ -6,7 +6,7 @@ public partial record SumExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, Sum, SelectorExpression);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -51,6 +51,5 @@ public partial record SumExpression
         return Result<object?>.Invalid("Could only compute sum of numeric values");
     }
 
-    public SumExpression(object? expression, Func<object?, object?>? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
-    public SumExpression(Func<object?, object?> expression, Func<object?, object?>? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression == null ? null : new DelegateExpression(selectorExpression)) { }
+    public SumExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

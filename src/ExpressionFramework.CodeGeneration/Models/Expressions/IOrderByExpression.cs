@@ -3,7 +3,7 @@
 public interface IOrderByExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
     IReadOnlyCollection<IExpression> SortOrderExpressions { get; }
 }

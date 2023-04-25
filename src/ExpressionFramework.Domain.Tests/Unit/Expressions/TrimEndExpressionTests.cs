@@ -45,7 +45,7 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimEndExpression(_ => default);
+        var sut = new TrimEndExpression(default(object?));
 
         // Act
         var actual = sut.Evaluate();
@@ -86,7 +86,7 @@ public class TrimEndExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(_ => "0trim0", _ => new[] { '0' });
+        var sut = new TrimEndExpression("0trim0", new[] { '0' });
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -146,7 +146,7 @@ public class TrimEndExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new TrimEndExpression("Some text");
@@ -157,20 +157,6 @@ public class TrimEndExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new TrimEndExpression(_ => "Some text");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

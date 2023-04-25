@@ -6,20 +6,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(object?), new ToUpperCaseExpression(new ContextExpression()));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SelectExpression(_ => 1, new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.Evaluate();
@@ -32,7 +19,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -46,7 +33,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.Evaluate();
@@ -60,20 +47,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(object?), new ToUpperCaseExpression(new ContextExpression()));
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SelectExpression(_ => 1, new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -86,7 +60,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -100,7 +74,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -127,7 +101,7 @@ public class SelectExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new SelectExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new SelectExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new EmptyExpression());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -137,7 +111,7 @@ public class SelectExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SelectExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var expression = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
 
         // Act
         var result = expression.GetPrimaryExpression();

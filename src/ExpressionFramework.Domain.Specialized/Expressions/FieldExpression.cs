@@ -63,7 +63,4 @@ public partial record FieldExpression
 
         return Result<object?>.Success(returnValue);
     }
-
-    public FieldExpression(object? expression, object? fieldNameExpression) : this(new ConstantExpression(expression), new ConstantExpression(fieldNameExpression)) { }
-    public FieldExpression(Func<object?, object?> expression, Func<object?, object?> fieldNameExpression) : this(new DelegateExpression(expression), new DelegateExpression(fieldNameExpression)) { }
 }

@@ -6,7 +6,7 @@ public partial record MinExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, x => Result<object?>.Success(x.Min()), SelectorExpression);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -21,6 +21,5 @@ public partial record MinExpression
             resultValueType: typeof(object)
         );
 
-    public MinExpression(object? expression, Expression? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression) { }
-    public MinExpression(Func<object?, object?> expression, Expression? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression) { }
+    public MinExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

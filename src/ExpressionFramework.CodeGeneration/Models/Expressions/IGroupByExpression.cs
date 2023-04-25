@@ -3,7 +3,7 @@
 public interface IGroupByExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
     IExpression KeySelectorExpression { get; }
 }

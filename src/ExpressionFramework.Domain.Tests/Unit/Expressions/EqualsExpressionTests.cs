@@ -67,24 +67,10 @@ public class EqualsExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Correct_Value_On_Success_Using_Constants()
+    public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
         var expression = new EqualsExpression(1, 1);
-
-        // Act
-        var actual = expression.EvaluateTyped(null);
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be(true);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Correct_Value_On_Success_Using_Delegates()
-    {
-        // Arrange
-        var expression = new EqualsExpression(_ => 1, _ => 1);
 
         // Act
         var actual = expression.EvaluateTyped(null);

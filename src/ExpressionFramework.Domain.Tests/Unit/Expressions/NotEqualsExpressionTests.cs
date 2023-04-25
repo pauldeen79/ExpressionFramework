@@ -84,7 +84,7 @@ public class NotEqualsExpressionTests
     public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var expression = new NotEqualsExpression(_ => 1, _ => 1);
+        var expression = new NotEqualsExpression(1, 1);
 
         // Act
         var actual = expression.EvaluateTyped();

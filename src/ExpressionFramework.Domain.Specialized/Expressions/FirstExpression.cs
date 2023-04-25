@@ -13,7 +13,7 @@ public partial record FirstExpression
             results => Result<object?>.Success(results.First(x => x.Result.Value).Item)
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -27,7 +27,6 @@ public partial record FirstExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public FirstExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
-    public FirstExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
+        
+        public FirstExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

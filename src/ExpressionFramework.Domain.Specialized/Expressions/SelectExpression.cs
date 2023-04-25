@@ -10,15 +10,12 @@
 public partial record SelectExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new ConstantExpression(e), context, e => e
+        => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new TypedConstantExpression<IEnumerable>(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetTypedResultFromEnumerable(new ConstantExpression(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
-
-    public SelectExpression(object? expression, Expression selectorExpression) : this(new ConstantExpression(expression), selectorExpression) { }
-    public SelectExpression(Func<object?, object?> expression, Expression selectorExpression) : this(new DelegateExpression(expression), selectorExpression) { }
 }

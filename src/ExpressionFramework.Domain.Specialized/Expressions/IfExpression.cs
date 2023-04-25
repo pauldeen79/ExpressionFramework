@@ -36,6 +36,5 @@ public partial record IfExpression
         return Result<object?>.Success(null);
     }
 
-    public IfExpression(Evaluatable condition, object? resultExpression = null, object? defaultExpression = null) : this(condition, new ConstantExpression(resultExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
-    public IfExpression(Evaluatable condition, Func<object?, object?>? resultExpression = null, Func<object?, object?>? defaultExpression = null) : this(condition, resultExpression == null ? new EmptyExpression() : new DelegateExpression(resultExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
+    public IfExpression(Evaluatable condition, object? resultExpression) : this(condition, new ConstantExpression(resultExpression), null) { }
 }

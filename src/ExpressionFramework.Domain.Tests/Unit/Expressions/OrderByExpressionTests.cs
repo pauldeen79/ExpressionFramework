@@ -6,20 +6,7 @@ public class OrderByExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OrderByExpression(default(object?), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new OrderByExpression(_ => 1, new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -33,7 +20,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), Enumerable.Empty<Expression>());
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), Enumerable.Empty<Expression>());
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +35,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new ConstantExpression("no sort order") });
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new ConstantExpression("no sort order") });
 
         // Act
         var result = sut.Evaluate();
@@ -63,7 +50,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new SortOrder(new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -78,7 +65,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new InvalidExpression("Kaboom") });
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new InvalidExpression("Kaboom") });
 
         // Act
         var result = sut.Evaluate();
@@ -93,7 +80,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = Enumerable.Empty<object?>();
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -109,7 +96,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -125,7 +112,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) }.Select(x => new ConstantExpression(x)));
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Descending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -141,7 +128,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[]
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending))
@@ -161,7 +148,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[]
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Descending))
@@ -181,7 +168,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
-        var sut = new OrderByExpression(new ConstantExpression(data), new[]
+        var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending)),
             new ConstantExpression(new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending))
@@ -198,7 +185,7 @@ public class OrderByExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new OrderByExpressionBase(new EmptyExpression(), Enumerable.Empty<Expression>());
+        var expression = new OrderByExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), Enumerable.Empty<Expression>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -209,7 +196,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = Enumerable.Empty<object?>();
-        var expression = new OrderByExpression(new ConstantExpression(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
+        var expression = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new SortOrder(new ContextExpression(), SortOrderDirection.Ascending) }.Select(x => new ConstantExpression(x)));
 
         // Act
         var result = expression.GetPrimaryExpression();

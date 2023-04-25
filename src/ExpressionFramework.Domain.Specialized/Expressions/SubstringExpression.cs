@@ -56,7 +56,4 @@ public partial record SubstringExpression
             ? Result<string>.Success(s.Substring(index, length))
             : Result<string>.Invalid("Index and length must refer to a location within the string");
     }
-
-    public SubstringExpression(string expression, int indexExpression, int lengthExpression) : this(new TypedConstantExpression<string>(expression), new TypedConstantExpression<int>(indexExpression), new TypedConstantExpression<int>(lengthExpression)) { }
-    public SubstringExpression(Func<object?, string> expression, Func<object?, int> indexExpression, Func<object?, int> lengthExpression) : this(new TypedDelegateExpression<string>(expression), new TypedDelegateExpression<int>(indexExpression), new TypedDelegateExpression<int>(lengthExpression)) { }
 }

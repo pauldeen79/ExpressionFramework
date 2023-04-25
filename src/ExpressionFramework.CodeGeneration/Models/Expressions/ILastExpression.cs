@@ -3,6 +3,6 @@
 public interface ILastExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     ITypedDelegateExpression<bool>? PredicateExpression { get; }
 }

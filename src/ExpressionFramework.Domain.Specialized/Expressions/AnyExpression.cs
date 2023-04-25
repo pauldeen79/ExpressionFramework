@@ -13,7 +13,7 @@ public partial record AnyExpression
             results => Result<object?>.Success(results.Any(x => x.Result.Value))
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<bool> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
@@ -38,6 +38,5 @@ public partial record AnyExpression
             resultValueType: typeof(bool)
         );
 
-    public AnyExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
-    public AnyExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
-}
+        public AnyExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
+    }

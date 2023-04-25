@@ -31,7 +31,4 @@ public partial record StringFindExpression
                 ? Result<int>.Success(result.Value!.IndexOf(findExpressionResult.Value!))
                 : Result<int>.FromExistingResult(result));
     }
-
-    public StringFindExpression(object? expression, object? findExpression) : this(new ConstantExpression(expression), new ConstantExpression(findExpression)) { }
-    public StringFindExpression(Func<object?, object?> expression, Func<object?, object?> findExpression) : this(new DelegateExpression(expression), new DelegateExpression(findExpression)) { }
 }

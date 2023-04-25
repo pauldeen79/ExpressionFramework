@@ -11,7 +11,7 @@ public partial record GroupByExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var enumerableResult = Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
+        var enumerableResult = Expression.EvaluateTyped(context);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(enumerableResult);
@@ -26,10 +26,7 @@ public partial record GroupByExpression
         return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, enumerableResult.Value!.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
-
-    public GroupByExpression(object? expression, Func<object?, object?> keySelectorExpression) : this(new ConstantExpression(expression), new DelegateExpression(keySelectorExpression)) { }
-    public GroupByExpression(Func<object?, object?> expression, Func<object?, object?> keySelectorExpression) : this(new DelegateExpression(expression), new DelegateExpression(keySelectorExpression)) { }
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     private bool ItemSatisfiesKey(object? item, object? key)
     {

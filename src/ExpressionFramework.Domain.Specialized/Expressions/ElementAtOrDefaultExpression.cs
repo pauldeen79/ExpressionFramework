@@ -10,7 +10,7 @@ public partial record ElementAtOrDefaultExpression
             Expression,
             null,
             results => IndexExpression
-                .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
+                .EvaluateTyped(context)
                 .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => results.Count() >= index
                             ? Result<object?>.Success(results.ElementAt(index))
@@ -18,7 +18,7 @@ public partial record ElementAtOrDefaultExpression
                         : Result<object?>.FromExistingResult(indexResult))
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -33,6 +33,5 @@ public partial record ElementAtOrDefaultExpression
             resultValueType: typeof(object)
         );
 
-    public ElementAtOrDefaultExpression(IEnumerable expression, int indexExpression, object? defaultExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
-    public ElementAtOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
+        public ElementAtOrDefaultExpression(IEnumerable expression, int indexExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression), null) { }
 }

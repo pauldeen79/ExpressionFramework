@@ -122,7 +122,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             && typeBaseBuilder is ClassBuilder classBuilder
             && classBuilder.Constructors.Any()
             && BaseTypes.TryGetValue($"{typeBaseBuilder.GetFullName()}Base", out var baseType)
-            && baseType.Properties.Any(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"))
+            && baseType.Properties.Any(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression" || x.TypeName.ToString().GetClassName() == "Expression"))
         {
             // Add c'tor that uses T instead of ITypedExpression<T>, and calls the other overload.
             // This is needed pre .NET 7.0 because we can't use static implicit operators with generics.
@@ -132,18 +132,45 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     .AddParameters(
                         ctor.Parameters.Select(x => new ParameterBuilder()
                             .WithName(x.Name)
-                            .WithTypeName(x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"
-                                ? x.TypeName.ToString().GetGenericArguments()
-                                : x.TypeName.ToString())
+                            .WithTypeName(CreateTypeName(x))
                             .WithIsNullable(x.IsNullable)
                             .WithDefaultValue(x.DefaultValue)
                             )
                     )
-                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"
-                        ? $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name})"
-                        : x.Name.ToString())) + ")")
+                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(x => CreateParameterSelection(x))) + ")")
                 );
         }
+    }
+
+    private static string CreateParameterSelection(ParameterBuilder x)
+    {
+        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
+        {
+            return $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
+        }
+
+        if (x.TypeName.ToString().GetClassName() == "Expression")
+        {
+            return $"new ConstantExpression({x.Name.ToString().GetCsharpFriendlyName()})";
+        }
+
+        return x.Name.ToString().GetCsharpFriendlyName();
+    }
+
+    private static string CreateTypeName(ParameterBuilder x)
+    {
+        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
+        {
+            return x.TypeName.ToString().GetGenericArguments();
+        }
+
+        if (x.TypeName.ToString().GetClassName() == "Expression")
+        {
+            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
+            return "System.Object?";
+        }
+
+        return x.TypeName.ToString();
     }
 
     private void AddCodeForTypedExpressionToExpressionBuilders<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)

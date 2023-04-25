@@ -6,21 +6,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new EmptyExpression(), new TypedConstantExpression<int>(1), default);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(12345), new TypedConstantExpression<int>(1), default);
+        var sut = new ElementAtOrDefaultExpression(default!, 1);
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new InvalidExpression("Something bad happened"), default);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedConstantResultExpression<int>(Result<int>.Invalid("Something bad happened")), default);
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Error_When_IndexExpression_Returns_Error()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression("Something bad happened"), default);
+        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedConstantResultExpression<int>(Result<int>.Error("Something bad happened")), default);
 
         // Act
         var result = sut.Evaluate();
@@ -87,24 +73,10 @@ public class ElementAtOrDefaultExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new ElementAtOrDefaultExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("No integer value"), default);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("IndexExpression did not return an integer");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(_ => new[] { 1, 2, 3 }, _ => 10);
+        var sut = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 10);
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +90,7 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(_ => new[] { 1, 2, 3 }, _ => 10, _ => "default");
+        var sut = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 10, "default");
 
         // Act
         var result = sut.Evaluate();
@@ -146,14 +118,14 @@ public class ElementAtOrDefaultExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new ElementAtOrDefaultExpressionBase(new EmptyExpression(), new EmptyExpression(), default);
+        var expression = new ElementAtOrDefaultExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), new TypedConstantExpression<int>(1), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 1);
@@ -163,21 +135,7 @@ public class ElementAtOrDefaultExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new ElementAtOrDefaultExpression(_ => new[] { 1, 2, 3 }, _ => 1);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

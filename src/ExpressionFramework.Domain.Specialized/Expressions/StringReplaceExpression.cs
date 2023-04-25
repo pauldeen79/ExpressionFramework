@@ -35,7 +35,4 @@ public partial record StringReplaceExpression
                 ? Result<string>.Success(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
                 : Result<string>.FromExistingResult(result));
     }
-
-    public StringReplaceExpression(object? expression, object? findExpression, object? replaceExpression) : this(new ConstantExpression(expression), new ConstantExpression(findExpression), new ConstantExpression(replaceExpression)) { }
-    public StringReplaceExpression(Func<object?, object?> expression, Func<object?, object?> findExpression, Func<object?, object?> replaceExpression) : this(new DelegateExpression(expression), new DelegateExpression(findExpression), new DelegateExpression(replaceExpression)) { }
 }

@@ -10,11 +10,11 @@ public partial record ElementAtExpression
             Expression,
             null,
             results => IndexExpression
-                .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
+                .EvaluateTyped(context)
                 .Transform(indexResult => Result<object?>.Success(results.ElementAt(indexResult.Value))),
             selectorDelegate: items =>
                 IndexExpression
-                    .EvaluateTyped<int>(context, "IndexExpression did not return an integer")
+                    .EvaluateTyped(context)
                     .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => items.Count() >= index
                             ? Result<IEnumerable<object?>>.Success(items)
@@ -22,7 +22,7 @@ public partial record ElementAtExpression
                         : Result<IEnumerable<object?>>.FromExistingResult(indexResult))
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -36,7 +36,4 @@ public partial record ElementAtExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public ElementAtExpression(IEnumerable expression, int indexExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression)) { }
-    public ElementAtExpression(Func<object?, IEnumerable> expression, Func<object?, int> indexExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(indexExpression)) { }
 }

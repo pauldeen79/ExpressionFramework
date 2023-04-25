@@ -3,6 +3,6 @@
 public interface ISumExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     IExpression? SelectorExpression { get; }
 }

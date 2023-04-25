@@ -32,7 +32,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(_ => string.Empty);
+        var sut = new TrimStartExpression(string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -86,7 +86,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(_ => "0trim0", _ => new[] { '0' });
+        var sut = new TrimStartExpression("0trim0", new[] { '0' });
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -146,7 +146,7 @@ public class TrimStartExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new TrimStartExpression("Some text");
@@ -157,20 +157,6 @@ public class TrimStartExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new TrimStartExpression(_ => "Some text");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

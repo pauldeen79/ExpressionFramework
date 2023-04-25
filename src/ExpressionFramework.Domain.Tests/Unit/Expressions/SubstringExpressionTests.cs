@@ -19,7 +19,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new SubstringExpression(_ => string.Empty, _ => 1, _ => 1);
+        var sut = new SubstringExpression(string.Empty, 1, 1);
 
         // Act
         var actual = sut.Evaluate();
@@ -221,7 +221,7 @@ public class SubstringExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new SubstringExpression("Hello world", 1, 1);
@@ -231,21 +231,7 @@ public class SubstringExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<string>>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new SubstringExpression(_ => "Hello world", _ => 1, _ => 1);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedDelegateExpression<string>>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

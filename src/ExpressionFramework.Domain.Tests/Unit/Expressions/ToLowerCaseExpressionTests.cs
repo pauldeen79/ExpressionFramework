@@ -19,7 +19,7 @@ public class ToLowerCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToLowerCaseExpression(_ => string.Empty);
+        var sut = new ToLowerCaseExpression(string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -107,7 +107,7 @@ public class ToLowerCaseExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new ToLowerCaseExpression("Some text");
@@ -118,20 +118,6 @@ public class ToLowerCaseExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new ToLowerCaseExpression(_ => "Some text");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

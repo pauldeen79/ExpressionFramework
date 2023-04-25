@@ -34,7 +34,7 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression(_ => default, _ => "e");
+        var sut = new StringFindExpression(default, "e");
 
         // Act
         var result = sut.Evaluate();

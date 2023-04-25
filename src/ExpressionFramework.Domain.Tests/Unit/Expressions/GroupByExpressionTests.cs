@@ -6,20 +6,7 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new GroupByExpression(new EmptyExpression(), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new ConstantExpression(1), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
+        var sut = new GroupByExpression(default(IEnumerable)!, new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.Evaluate();
@@ -32,7 +19,7 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange
-        var sut = new GroupByExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new GroupByExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -46,35 +33,7 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new GroupByExpression(new ConstantExpression(new[] { "a", "b", "cc" }), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well_Using_Constant()
-    {
-        // Arrange
-        var sut = new GroupByExpression(new[] { "a", "b", "cc" }, x => x?.ToString()?.Length ?? 0);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Grouped_Sequence_When_All_Is_Well_Using_Delegate()
-    {
-        // Arrange
-        var sut = new GroupByExpression(_ => new[] { "a", "b", "cc" }, x => x?.ToString()?.Length ?? 0);
+        var sut = new GroupByExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "cc" }), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = sut.Evaluate();
@@ -88,7 +47,7 @@ public class GroupByExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new GroupByExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new GroupByExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), new EmptyExpression());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -98,7 +57,7 @@ public class GroupByExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new GroupByExpression(new ConstantExpression(new[] { "a", "b", "cc" }), new DelegateExpression(x => x?.ToString()?.Length ?? 0));
+        var expression = new GroupByExpression(new[] { "a", "b", "cc" }, new DelegateExpression(x => x?.ToString()?.Length ?? 0));
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -6,21 +6,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LastExpression(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => default));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new LastExpression(new ConstantExpression(12345), new TypedDelegateExpression<bool>(_ => default));
+        var sut = new LastExpression(default(IEnumerable)!, new TypedDelegateExpression<bool>(_ => default));
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +34,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new LastExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
+        var sut = new LastExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new LastExpression(_ => new[] { 1, 2, 3 });
+        var sut = new LastExpression(new[] { 1, 2, 3 });
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class LastExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new LastExpression(_ => new[] { 1, 2, 3 }, x => x is int i && i > 1);
+        var sut = new LastExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
 
         // Act
         var result = sut.Evaluate();
@@ -90,14 +76,14 @@ public class LastExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new LastExpressionBase(new EmptyExpression(), default);
+        var expression = new LastExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new LastExpression(new[] { "a", "b", "cc" });
@@ -107,21 +93,7 @@ public class LastExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new LastExpression(_ => new[] { "a", "b", "cc" });
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

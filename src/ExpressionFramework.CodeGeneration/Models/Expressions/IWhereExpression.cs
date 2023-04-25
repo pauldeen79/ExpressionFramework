@@ -3,7 +3,7 @@
 public interface IWhereExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
     ITypedDelegateExpression<bool> PredicateExpression { get; }
 }

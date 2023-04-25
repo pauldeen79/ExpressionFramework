@@ -3,7 +3,7 @@
 public interface ISelectExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
     IExpression SelectorExpression { get; }
 }

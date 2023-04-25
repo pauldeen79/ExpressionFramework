@@ -6,7 +6,7 @@ public partial record MaxExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, x => Result<object?>.Success(x.Max()), SelectorExpression);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -21,6 +21,5 @@ public partial record MaxExpression
             resultValueType: typeof(object)
         );
 
-    public MaxExpression(object? expression, Expression? selectorExpression = null) : this(new ConstantExpression(expression), selectorExpression) { }
-    public MaxExpression(Func<object?, object?> expression, Expression? selectorExpression = null) : this(new DelegateExpression(expression), selectorExpression) { }
+    public MaxExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

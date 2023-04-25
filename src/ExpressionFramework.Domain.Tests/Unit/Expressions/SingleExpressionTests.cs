@@ -6,21 +6,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SingleExpression(new EmptyExpression(), default);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SingleExpression(new ConstantExpression(12345), default);
+        var sut = new SingleExpression(default(IEnumerable)!, default);
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +34,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
+        var sut = new SingleExpression(new[] { 1, 2, 3 }, new(x => x is int i && i > 10));
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(_ => new[] { 1, 2, 3 });
+        var sut = new SingleExpression(new[] { 1, 2, 3 });
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(_ => new[] { 1, 2, 3 }, _ => true);
+        var sut = new SingleExpression(new[] { 1, 2, 3 }, new(_ => true));
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +90,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2 }, x => x is int i && i > 1);
+        var sut = new SingleExpression(new[] { 1, 2 }, new(x => x is int i && i > 1));
 
         // Act
         var result = sut.Evaluate();
@@ -118,14 +104,14 @@ public class SingleExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new SingleExpressionBase(new EmptyExpression(), default);
+        var expression = new SingleExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new SingleExpression(new[] { "a", "b", "c" });
@@ -135,21 +121,7 @@ public class SingleExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new SingleExpression(_ => new[] { "a", "b", "c" });
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

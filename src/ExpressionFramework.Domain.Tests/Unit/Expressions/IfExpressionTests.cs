@@ -62,7 +62,7 @@ public class IfExpressionTests
     public void Evaluate_Returns_Result_Using_Delegate_Expression_DefaultExpression()
     {
         // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), _ => "Correct", _ => "Incorrect");
+        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), new DelegateExpression(_ => "Correct"), new DelegateExpression(_ => "Incorrect"));
 
         // Act
         var result = expression.Evaluate();
@@ -90,7 +90,7 @@ public class IfExpressionTests
     public void Evaluate_Returns_Result_Using_Delegate_Expression()
     {
         // Arrange
-        var expression = new IfExpression(new SingleEvaluatable(_ => "A", new EqualsOperator(), _ => "A"), _ => "Correct");
+        var expression = new IfExpression(new SingleEvaluatable(_ => "A", new EqualsOperator(), _ => "A"), new DelegateExpression(_ => "Correct"), default);
 
         // Act
         var result = expression.Evaluate();

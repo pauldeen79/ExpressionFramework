@@ -14,16 +14,15 @@ public partial record OrderByExpression
 {
     public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable").Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
+                ? result.Transform(x => x.Value == null
+                    ? Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable")
+                    : GetSortedEnumerable(context, result.Value!.OfType<object?>()))
                 : Result<IEnumerable<object?>>.FromExistingResult(result));
-
-    public OrderByExpression(object? expression, IEnumerable<Expression> sortOrderExpressions) : this(new ConstantExpression(expression), sortOrderExpressions) { }
-    public OrderByExpression(Func<object?, object?> expression, IEnumerable<Expression> sortOrderExpressions) : this(new DelegateExpression(expression), sortOrderExpressions) { }
 
     private Result<IEnumerable<object?>> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {

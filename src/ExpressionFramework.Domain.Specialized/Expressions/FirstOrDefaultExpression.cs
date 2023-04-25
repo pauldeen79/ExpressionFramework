@@ -14,7 +14,7 @@ public partial record FirstOrDefaultExpression
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
@@ -28,7 +28,7 @@ public partial record FirstOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
-
-    public FirstOrDefaultExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null, object? defaultExpression = null) : this(new ConstantExpression(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new ConstantExpression(defaultExpression)) { }
-    public FirstOrDefaultExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null, Func<object?, object?>? defaultExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression), defaultExpression == null ? null : new DelegateExpression(defaultExpression)) { }
+        
+        public FirstOrDefaultExpression(IEnumerable expression, TypedDelegateExpression<bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression, null) { }
+        public FirstOrDefaultExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null, null) { }
 }

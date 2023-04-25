@@ -19,7 +19,7 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(_ => string.Empty, _ => 2);
+        var sut = new RightExpression(string.Empty, 2);
 
         // Act
         var actual = sut.Evaluate();

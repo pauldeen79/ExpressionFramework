@@ -25,7 +25,4 @@ public partial record ToPascalCaseExpression
         => value.Length > 0
             ? value.Substring(0, 1).ToLowerInvariant() + value.Substring(1)
             : value;
-
-    public ToPascalCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
-    public ToPascalCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }

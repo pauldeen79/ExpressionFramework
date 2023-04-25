@@ -13,7 +13,7 @@ public partial record CountExpression
             results => Result<object?>.Success(results.Count(x => x.Result.Value))
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<int> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
@@ -37,7 +37,6 @@ public partial record CountExpression
             hasDefaultExpression: false,
             resultValueType: typeof(int)
         );
-
-    public CountExpression(IEnumerable expression, Func<object?, bool>? predicateExpression = null) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
-    public CountExpression(Func<object?, IEnumerable> expression, Func<object?, bool>? predicateExpression = null) : this(new TypedDelegateExpression<IEnumerable>(expression), predicateExpression == null ? null : new TypedDelegateExpression<bool>(predicateExpression)) { }
+        
+        public CountExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

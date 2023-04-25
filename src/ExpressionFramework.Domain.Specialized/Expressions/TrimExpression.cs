@@ -38,6 +38,5 @@ public partial record TrimExpression
             "The trim start and end value of the expression",
             "This result will be returned when the expression is of type string");
 
-    public TrimExpression(object? expression, object? trimCharsExpression = null) : this(new ConstantExpression(expression), trimCharsExpression == null ? null : new ConstantExpression(trimCharsExpression)) { }
-    public TrimExpression(Func<object?, object?> expression, Func<object?, object?>? trimCharsExpression = null) : this(new DelegateExpression(expression), trimCharsExpression == null ? null : new DelegateExpression(trimCharsExpression)) { }
+    public TrimExpression(object? expression) : this(new ConstantExpression(expression), null) { }
 }

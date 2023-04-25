@@ -34,7 +34,4 @@ public partial record RightExpression
             "String to get the last characters for",
             "The last characters of the expression",
             "This result will be returned when the context is of type string");
-
-    public RightExpression(object? expression, object? lengthExpression) : this(new ConstantExpression(expression), new ConstantExpression(lengthExpression)) { }
-    public RightExpression(Func<object?, object?> expression, Func<object?, object?> lengthExpression) : this(new DelegateExpression(expression), new DelegateExpression(lengthExpression)) { }
 }

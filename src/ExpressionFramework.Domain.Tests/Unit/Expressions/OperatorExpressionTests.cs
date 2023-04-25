@@ -22,7 +22,7 @@ public class OperatorExpressionTests
     {
         // Arrange
         var @operator = new EqualsOperator();
-        var sut = new OperatorExpression(_ => "A", _ => "B", @operator);
+        var sut = new OperatorExpression("A", "B", @operator);
 
         // Act
         var result = sut.EvaluateTyped(null);

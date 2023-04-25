@@ -20,7 +20,4 @@ public partial record ToLowerCaseExpression
             result.IsSuccessful()
                 ? Result<string>.Success(result.Value!.ToLower())
                 : result);
-
-    public ToLowerCaseExpression(object? expression) : this(new ConstantExpression(expression)) { }
-    public ToLowerCaseExpression(Func<object?, object?> expression) : this(new DelegateExpression(expression)) { }
 }

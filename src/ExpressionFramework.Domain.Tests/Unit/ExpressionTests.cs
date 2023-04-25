@@ -130,7 +130,7 @@ public class ExpressionTests
     {
         // Arrange
         var value = "Hello world!";
-        var expression = new CountExpression(new ConstantExpression(value), null);
+        var expression = new CountExpression(value, null);
 
         // Act
         var result = expression.Evaluate(null);

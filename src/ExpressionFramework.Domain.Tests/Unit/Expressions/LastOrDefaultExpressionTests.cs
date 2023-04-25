@@ -6,21 +6,7 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new EmptyExpression(), default, default);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new LastOrDefaultExpression(new ConstantExpression(12345), default, default);
+        var sut = new LastOrDefaultExpression(default(IEnumerable)!, default, default);
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10);
+        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, x => x is int i && i > 10, "default");
+        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10), "default");
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +76,7 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(_ => new[] { 1, 2, 3 });
+        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 });
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +90,7 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(_ => new[] { 1, 2, 3 }, x => x is int i && i > 1);
+        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
 
         // Act
         var result = sut.Evaluate();
@@ -118,14 +104,14 @@ public class LastOrDefaultExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new LastOrDefaultExpressionBase(new EmptyExpression(), default, default);
+        var expression = new LastOrDefaultExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), default, default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new LastOrDefaultExpression(new[] { "a", "b", "cc" });
@@ -135,21 +121,7 @@ public class LastOrDefaultExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<IEnumerable>>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new LastOrDefaultExpression(_ => new[] { "a", "b", "cc" }, default, _ => "default value");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedDelegateExpression<IEnumerable>>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

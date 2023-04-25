@@ -6,21 +6,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MinExpression(default(object?));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new MinExpression(_ => 12345);
+        var sut = new MinExpression(default(IEnumerable)!);
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +20,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Error_When_SelectorExpression_Returns_Error()
     {
         // Arrange
-        var sut = new MinExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new MinExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +34,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Sum_Of_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new MinExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
+        var sut = new MinExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null);
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class MinExpressionTests
     public void Evaluate_Returns_Sum_Of_SelectorExpression_Result_When_SelectorExpression_Is_Not_Null()
     {
         // Arrange
-        var sut = new MinExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var sut = new MinExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class MinExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new MinExpressionBase(new EmptyExpression(), null);
+        var expression = new MinExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), null);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -86,7 +72,7 @@ public class MinExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new MinExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
+        var expression = new MinExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null);
 
         // Act
         var result = expression.GetPrimaryExpression();

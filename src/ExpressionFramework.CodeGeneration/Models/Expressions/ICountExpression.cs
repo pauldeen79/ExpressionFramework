@@ -3,6 +3,6 @@
 public interface ICountExpression : IExpression, ITypedExpression<int>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     ITypedDelegateExpression<bool>? PredicateExpression { get; }
 }

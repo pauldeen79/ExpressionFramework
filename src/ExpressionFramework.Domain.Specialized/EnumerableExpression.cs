@@ -3,17 +3,22 @@
 public static class EnumerableExpression
 {
     public static Result<object?> GetResultFromEnumerable(
-        Expression expression,
+        ITypedExpression<IEnumerable> expression,
         object? context,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        var enumerableResult = expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
+        var enumerableResult = expression.EvaluateTyped(context);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(enumerableResult);
         }
 
-        var results = @delegate(enumerableResult.Value!.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
+        if (enumerableResult.Value == null)
+        {
+            return Result<object?>.Invalid("Expression is not of type enumerable");
+        }
+
+        var results = @delegate(enumerableResult.Value.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
         {
             return results.Last();
@@ -33,7 +38,12 @@ public static class EnumerableExpression
             return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
         }
 
-        return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
+        if (enumerableResult.Value == null)
+        {
+            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
+        }
+
+        return GetTypedResultFromEnumerable(enumerableResult.Value, @delegate);
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
@@ -47,7 +57,12 @@ public static class EnumerableExpression
             return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
         }
 
-        return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
+        if (enumerableResult.Value == null)
+        {
+            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
+        }
+
+        return GetTypedResultFromEnumerable(enumerableResult.Value, @delegate);
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerableWithCount(
@@ -70,6 +85,11 @@ public static class EnumerableExpression
         IEnumerable enumerable,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
+        if (enumerable == null)
+        {
+            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
+        }
+
         var results = @delegate(enumerable.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results.Last().IsSuccessful())
         {
@@ -80,7 +100,7 @@ public static class EnumerableExpression
     }
 
     public static Result<T> GetRequiredScalarValue<T>(object? context,
-                                                      Expression enumerableExpression,
+                                                      ITypedExpression<IEnumerable> enumerableExpression,
                                                       TypedDelegateExpression<bool>? predicateExpression,
                                                       Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                       Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate = null,
@@ -101,7 +121,7 @@ public static class EnumerableExpression
 
 #pragma warning disable S107 // Methods should not have too many parameters
     public static Result<T> GetOptionalScalarValue<T>(object? context,
-                                                      Expression enumerableExpression,
+                                                      ITypedExpression<IEnumerable> enumerableExpression,
                                                       TypedDelegateExpression<bool>? predicateExpression,
                                                       Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                       Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate = null,
@@ -123,14 +143,16 @@ public static class EnumerableExpression
         );
 
     public static Result<T> GetAggregateValue<T>(object? context,
-                                                 Expression enumerableExpression,
+                                                 ITypedExpression<IEnumerable> enumerableExpression,
                                                  Func<IEnumerable<object?>, Result<T>> aggregateDelegate,
                                                  Expression? selectorExpression = null)
         => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
             .Select(y => selectorExpression is null
                 ? Result<object?>.Success(y)
                 : selectorExpression.Evaluate(y))).Transform(result => result.IsSuccessful()
-                    ? aggregateDelegate.Invoke(result.Value!)
+                    ? result.Transform(x => x.Value == null
+                        ? Result<T>.Invalid("Expression is not of type enumerable")
+                        : aggregateDelegate.Invoke(x.Value))
                     : Result<T>.FromExistingResult(result));
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
@@ -172,7 +194,7 @@ public static class EnumerableExpression
 
 #pragma warning disable S107 // Methods should not have too many parameters
     private static Result<T> GetScalarValue<T>(object? context,
-                                               Expression enumerableExpression,
+                                               ITypedExpression<IEnumerable> enumerableExpression,
                                                TypedDelegateExpression<bool>? predicateExpression,
                                                Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate,
@@ -182,7 +204,7 @@ public static class EnumerableExpression
                                                bool predicateIsRequired = false)
 #pragma warning restore S107 // Methods should not have too many parameters
     {
-        var enumerableResult = enumerableExpression.Evaluate(context).TryCast<IEnumerable>("Expression is not of type enumerable");
+        var enumerableResult = enumerableExpression.EvaluateTyped(context);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<T>.FromExistingResult(enumerableResult);
@@ -193,8 +215,12 @@ public static class EnumerableExpression
             return Result<T>.Invalid("Predicate is required");
         }
 
-        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
+        if (enumerableResult.Value == null)
+        {
+            return Result<T>.Invalid("Expression is not of type enumerable");
+        }
 
+        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
         var itemsResult = selectorDelegate.Invoke(enumerableResult.Value.OfType<object?>());
         if (!itemsResult.IsSuccessful())
         {

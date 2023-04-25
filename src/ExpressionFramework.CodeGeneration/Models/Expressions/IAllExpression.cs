@@ -3,7 +3,7 @@
 public interface IAllExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
     ITypedDelegateExpression<bool> PredicateExpression { get; }
 }

@@ -6,20 +6,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new WhereExpression(default(object?), x => x is string);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new WhereExpression(1, x => x is string);
+        var sut = new WhereExpression(default(IEnumerable)!, new(x => x is string));
 
         // Act
         var result = sut.Evaluate();
@@ -32,7 +19,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
+        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
 
         // Act
         var result = sut.Evaluate();
@@ -46,20 +33,7 @@ public class WhereExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new WhereExpression(default(object?), x => x is string);
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new WhereExpression(1, x => x is string);
+        var sut = new WhereExpression(default(IEnumerable)!, new(x => x is string));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -72,7 +46,7 @@ public class WhereExpressionTests
     public void EvaluateTyped_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
+        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -86,7 +60,7 @@ public class WhereExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new WhereExpression(new[] { 1, 2, 3 }, _ => true);
+        var sut = new WhereExpression(new[] { 1, 2, 3 }, new(_ => true));
 
         // Act
         var actual = sut.ToUntyped();
@@ -99,17 +73,17 @@ public class WhereExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new WhereExpressionBase(new EmptyExpression(), new TypedDelegateExpression<bool>(_ => true));
+        var expression = new WhereExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedDelegateExpression<bool>(_ => true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new WhereExpression(new object[] { "A", "B", 1, "C" }, x => x is string);
+        var expression = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -117,20 +91,6 @@ public class WhereExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new WhereExpression(_ => new object[] { "A", "B", 1, "C" }, x => x is string);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

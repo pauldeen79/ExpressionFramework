@@ -3,6 +3,6 @@
 public interface IMinExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     IExpression? SelectorExpression { get; }
 }

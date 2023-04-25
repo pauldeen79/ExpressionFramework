@@ -14,7 +14,7 @@ public partial record AllExpression
             predicateIsRequired: true
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<bool> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
@@ -40,7 +40,4 @@ public partial record AllExpression
             predicateIsRequired: true,
             resultValueType: typeof(bool)
         );
-
-    public AllExpression(IEnumerable expression, Func<object?, bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
-    public AllExpression(Func<object?, IEnumerable> expression, Func<object?, bool> predicateExpression) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 }

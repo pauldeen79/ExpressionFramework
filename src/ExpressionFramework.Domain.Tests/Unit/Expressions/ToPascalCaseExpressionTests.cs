@@ -19,7 +19,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(_ => string.Empty);
+        var sut = new ToPascalCaseExpression(string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -107,7 +107,7 @@ public class ToPascalCaseExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
         var expression = new ToPascalCaseExpression("Some string");
@@ -118,20 +118,6 @@ public class ToPascalCaseExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new ToPascalCaseExpression(_ => "Some string");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
     }
 
     [Fact]

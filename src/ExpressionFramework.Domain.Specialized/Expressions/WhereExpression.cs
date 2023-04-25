@@ -13,13 +13,10 @@ public partial record WhereExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetResultFromEnumerable(Expression, context, Filter);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, Filter);
-
-    public WhereExpression(object? expression, Func<object?, bool> predicateExpression) : this(new ConstantExpression(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
-    public WhereExpression(Func<object?, object?> expression, Func<object?, bool> predicateExpression) : this(new DelegateExpression(expression), new TypedDelegateExpression<bool>(predicateExpression)) { }
 
     private IEnumerable<Result<object?>> Filter(IEnumerable<object?> e) => e
         .Select(x => new { Item = x, Result = PredicateExpression.EvaluateTyped(x) })

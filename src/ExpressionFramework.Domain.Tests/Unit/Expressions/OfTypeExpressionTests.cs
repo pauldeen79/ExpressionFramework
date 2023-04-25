@@ -6,7 +6,7 @@ public class OfTypeExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new OfTypeExpression(default(object?), new ConstantExpression(typeof(string)));
+        var sut = new OfTypeExpression(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedConstantExpression<Type>(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
@@ -14,40 +14,13 @@ public class OfTypeExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new OfTypeExpression(_ => 1, new ConstantExpression(typeof(string)));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_TypeExpression_Is_Not_Of_Type_Type()
-    {
-        // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression("not a type"));
-
-        // Act
-        var result = sut.Evaluate();
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("TypeExpression is not of type Type");
     }
 
     [Fact]
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(new object?[] { "A", "B", 1, null, "C" }), new ConstantExpression(typeof(string)));
+        var sut = new OfTypeExpression(new TypedConstantExpression<IEnumerable>(new object?[] { "A", "B", 1, null, "C" }), new TypedConstantExpression<Type>(typeof(string)));
 
         // Act
         var result = sut.Evaluate();
@@ -61,7 +34,7 @@ public class OfTypeExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new OfTypeExpression(new ConstantExpression(new object?[] { "A", "B", 1, null, "C" }), new ConstantExpression(typeof(string)));
+        var sut = new OfTypeExpression(new TypedConstantExpression<IEnumerable>(new object?[] { "A", "B", 1, null, "C" }), new TypedConstantExpression<Type>(typeof(string)));
 
         // Act
         var actual = sut.ToUntyped();
@@ -74,7 +47,7 @@ public class OfTypeExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new OfTypeExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new OfTypeExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedConstantExpression<Type>(typeof(string)));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -84,7 +57,7 @@ public class OfTypeExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new OfTypeExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ConstantExpression(typeof(int)));
+        var expression = new OfTypeExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedConstantExpression<Type>(typeof(int)));
 
         // Act
         var result = expression.GetPrimaryExpression();

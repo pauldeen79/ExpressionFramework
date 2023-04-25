@@ -76,7 +76,7 @@ public class StringReplaceExpressionTests
     public void EvaluateTyped_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression(_ => "Hello world", _ => "e", _ => "f");
+        var sut = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = sut.EvaluateTyped();
