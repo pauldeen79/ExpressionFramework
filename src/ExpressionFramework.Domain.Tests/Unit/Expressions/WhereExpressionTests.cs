@@ -6,7 +6,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new WhereExpression(default(IEnumerable)!, new(x => x is string));
+        var sut = new WhereExpression(new DefaultExpression<IEnumerable>(), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = sut.Evaluate();
@@ -19,7 +19,21 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new WhereExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new(x => x is string));
+        var sut = new WhereExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new TypedDelegateExpression<bool>(x => x is string));
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_Predicate_Returns_Error()
+    {
+        // Arrange
+        var sut = new WhereExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedConstantResultExpression<bool>(Result<bool>.Error("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -33,7 +47,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
+        var sut = new WhereExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = sut.Evaluate();
@@ -47,7 +61,7 @@ public class WhereExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new WhereExpression(default(IEnumerable)!, new(x => x is string));
+        var sut = new WhereExpression(new DefaultExpression<IEnumerable>(), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -60,7 +74,7 @@ public class WhereExpressionTests
     public void EvaluateTyped_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
+        var sut = new WhereExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -74,7 +88,7 @@ public class WhereExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new WhereExpression(new[] { 1, 2, 3 }, new(_ => true));
+        var sut = new WhereExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedDelegateExpression<bool>(_ => true));
 
         // Act
         var actual = sut.ToUntyped();
@@ -97,7 +111,7 @@ public class WhereExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new WhereExpression(new object[] { "A", "B", 1, "C" }, new(x => x is string));
+        var expression = new WhereExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = expression.GetPrimaryExpression();

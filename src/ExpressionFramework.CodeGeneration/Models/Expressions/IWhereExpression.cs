@@ -5,5 +5,5 @@ public interface IWhereExpression : IExpression, ITypedExpression<IEnumerable<ob
     [Required]
     ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    ITypedDelegateExpression<bool> PredicateExpression { get; }
+    ITypedExpression<bool> PredicateExpression { get; }
 }
