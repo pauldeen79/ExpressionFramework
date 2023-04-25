@@ -65,7 +65,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         // This is a kind of hack for the fact that .net says the generic type argument of IEnumerable<T> is nullable.
         // ModelFramework is not extendable for this, so we are currently hacking this here.
-        //TODO: Maybe it's an idea to add some sort of formatting function to CodeGenerationSettings, or even try to do this in the type formatting delegate that's already there? 
+        // Maybe it's an idea to add some sort of formatting function to CodeGenerationSettings, or even try to do this in the type formatting delegate that's already there? 
         if (typedInterface == "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
         {
             typedInterface = "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object?>>";
