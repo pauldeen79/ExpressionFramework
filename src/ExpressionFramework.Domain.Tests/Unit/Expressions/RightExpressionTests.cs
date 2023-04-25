@@ -33,21 +33,21 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(new EmptyExpression(), new ConstantExpression(2));
+        var sut = new RightExpression(null!, 2);
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new RightExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -58,24 +58,10 @@ public class RightExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
-
-        // Act
-        var actual = sut.Evaluate();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
-    }
-
-    [Fact]
     public void EvaluateTyped_Returns_RightValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression(2));
+        var sut = new RightExpression("test", 2);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -89,7 +75,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression(string.Empty), new ConstantExpression(2));
+        var sut = new RightExpression(string.Empty, 2);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -103,21 +89,21 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(new EmptyExpression(), new ConstantExpression(2));
+        var sut = new RightExpression(default!, 2);
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
+        var sut = new RightExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -125,20 +111,6 @@ public class RightExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
         actual.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Evaluation_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new RightExpression(new ConstantExpression("test"), new ConstantExpression("no integer in here"));
-
-        // Act
-        var actual = sut.EvaluateTyped();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
     }
 
     [Fact]
@@ -158,17 +130,17 @@ public class RightExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new RightExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new RightExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<int>(1));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new RightExpression(new ConstantExpression("test"), new ConstantExpression(2));
+        var expression = new RightExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(2));
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -13,4 +13,10 @@ public static class EnumerableOfExpressionExtensions
             .Select(x => x.EvaluateTyped<T>(context, errorMessage))
             .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
             .ToArray();
+
+    public static Result<T>[] EvaluateTypedUntilFirstError<T>(this IEnumerable<ITypedExpression<T>> expressions, object? context)
+        => expressions
+            .Select(x => x.EvaluateTyped(context))
+            .TakeWhileWithFirstNonMatching(x => x.IsSuccessful())
+            .ToArray();
 }

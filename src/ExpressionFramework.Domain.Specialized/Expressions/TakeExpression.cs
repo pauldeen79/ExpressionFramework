@@ -17,5 +17,5 @@ public partial record TakeExpression
 
     private static IEnumerable<Result<object?>> Take(IEnumerable<object?> e, Result<int> countResult) => e
         .Take(countResult.Value)
-        .Select(x => Result<object?>.Success(x));
+        .Select(Result<object?>.Success);
 }

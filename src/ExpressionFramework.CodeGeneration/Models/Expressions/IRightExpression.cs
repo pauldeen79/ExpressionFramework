@@ -3,7 +3,7 @@
 public interface IRightExpression : IExpression, ITypedExpression<string>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
     [Required]
-    IExpression LengthExpression { get; }
+    ITypedExpression<int> LengthExpression { get; }
 }

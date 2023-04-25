@@ -3,9 +3,8 @@
 public interface ISubstringExpression : IExpression, ITypedExpression<string>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
     [Required]
-    IExpression IndexExpression { get; }
-    [Required]
-    IExpression LengthExpression { get; }
+    ITypedExpression<int> IndexExpression { get; }
+    ITypedExpression<int>? LengthExpression { get; }
 }

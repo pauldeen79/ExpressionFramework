@@ -14,7 +14,7 @@ public class InvalidExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions.Select(x => x.Evaluate().Value));
+        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions!.Expressions);
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new ErrorExpression("Kaboom"), Enumerable.Empty<Expression>());
+        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), new (Enumerable.Empty<ValidationError>()));
 
         // Act
         var result = sut.Evaluate();
@@ -44,42 +44,13 @@ public class InvalidExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Error_When_ValidationErrors_Returns_Error()
-    {
-        // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) });
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
-    {
-        // Assert
-        var sut = new InvalidExpression(new ConstantExpression(1), Enumerable.Empty<Expression>());
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().BeNull();
-        result.ValidationErrors.Should().BeEmpty();
     }
 
     [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new InvalidExpressionBase(new EmptyExpression(), Enumerable.Empty<Expression>());
+        var expression = new InvalidExpressionBase(new DefaultExpression<string>(), new MultipleTypedExpressions<ValidationError>(Enumerable.Empty<ValidationError>()));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

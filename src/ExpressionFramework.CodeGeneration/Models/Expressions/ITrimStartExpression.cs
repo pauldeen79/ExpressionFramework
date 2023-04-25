@@ -3,6 +3,6 @@
 public interface ITrimStartExpression : IExpression, ITypedExpression<string>
 {
     [Required]
-    IExpression Expression { get; }
-    IExpression? TrimCharsExpression { get; }
+    ITypedExpression<string> Expression { get; }
+    ITypedExpression<char[]>? TrimCharsExpression { get; }
 }

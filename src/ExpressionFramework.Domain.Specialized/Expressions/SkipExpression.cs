@@ -18,5 +18,5 @@ public partial record SkipExpression
 
     private static IEnumerable<Result<object?>> Skip(IEnumerable<object?> e, Result<int> countResult) => e
         .Skip(countResult.Value)
-        .Select(x => Result<object?>.Success(x));
+        .Select(Result<object?>.Success);
 }

@@ -6,28 +6,38 @@ public partial record TrimStartExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
                 ? TrimStart(context, result.Value!)
                 : result);
 
     private Result<string> TrimStart(object? context, string s)
     {
+        if (s is null)
+        {
+            return Result<string>.Invalid("Expression is not of type string");
+        }
+
         if (TrimCharsExpression is null)
         {
             return Result<string>.Success(s.TrimStart());
         }
 
-        var trimCharsResult = TrimCharsExpression.EvaluateTyped<char[]>(context, "TrimCharsExpression must be of type char[]");
+        var trimCharsResult = TrimCharsExpression.EvaluateTyped(context);
         if (!trimCharsResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(trimCharsResult);
         }
 
-        return Result<string>.Success(s.TrimStart(trimCharsResult.Value!));
+        if (trimCharsResult.Value is null)
+        {
+            return Result<string>.Success(s.TrimStart());
+        }
+
+        return Result<string>.Success(s.TrimStart(trimCharsResult.Value));
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()
@@ -38,5 +48,5 @@ public partial record TrimStartExpression
             "The trim start value of the expression",
             "This result will be returned when the expression is of type string");
 
-    public TrimStartExpression(object? expression) : this(new ConstantExpression(expression), null) { }
+    public TrimStartExpression(string expression) : this(new TypedConstantExpression<string>(expression), null) { }
 }

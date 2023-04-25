@@ -13,10 +13,10 @@ public partial record ToPascalCaseExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
                 ? Result<string>.Success(ToPascalCase(result.Value!))
                 : result);

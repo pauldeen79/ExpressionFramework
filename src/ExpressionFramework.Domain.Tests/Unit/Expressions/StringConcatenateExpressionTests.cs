@@ -6,7 +6,7 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<object?>());
+        var sut = new StringConcatenateExpression(Enumerable.Empty<string>());
 
         // Act
         var result = sut.Evaluate();
@@ -17,42 +17,14 @@ public class StringConcatenateExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expressions_Contains_Non_String_Value()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new Func<object?, object?>[] { _ => false });
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expressions must be of type string");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Error_When_Expressions_Returns_One_Item_With_Error_Result()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) });
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Concatated_String_When_All_Expressions_Contain_String_Value()
     {
         // Arrange
         var sut = new StringConcatenateExpression(new[]
         {
-            new ConstantExpression("a"),
-            new ConstantExpression("b"),
-            new ConstantExpression("c")
+            "a",
+            "b",
+            "c"
         });
 
         // Act
@@ -67,42 +39,14 @@ public class StringConcatenateExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<Expression>());
+        var sut = new StringConcatenateExpression(Enumerable.Empty<string>());
 
         // Act
-        var result = sut.EvaluateTyped(null);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("At least one expression is required");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expressions_Contains_Non_String_Value()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ConstantExpression(false) });
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expressions must be of type string");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Error_When_Expressions_Returns_One_Item_With_Error_Result()
-    {
-        // Arrange
-        var sut = new StringConcatenateExpression(new[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) });
-
-        // Act
-        var result = sut.EvaluateTyped(null);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
@@ -111,13 +55,13 @@ public class StringConcatenateExpressionTests
         // Arrange
         var sut = new StringConcatenateExpression(new[]
         {
-            new ConstantExpression("a"),
-            new ConstantExpression("b"),
-            new ConstantExpression("c")
+            "a",
+            "b",
+            "c"
         });
 
         // Act
-        var result = sut.EvaluateTyped(null);
+        var result = sut.EvaluateTyped();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -141,7 +85,7 @@ public class StringConcatenateExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new StringConcatenateExpressionBase(Enumerable.Empty<Expression>());
+        var expression = new StringConcatenateExpressionBase(new(Enumerable.Empty<string>()));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -151,7 +95,7 @@ public class StringConcatenateExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new StringConcatenateExpression(Enumerable.Empty<Expression>());
+        var expression = new StringConcatenateExpression(new MultipleTypedExpressions<string>(Enumerable.Empty<string>()));
 
         // Act
         var result = expression.GetPrimaryExpression();

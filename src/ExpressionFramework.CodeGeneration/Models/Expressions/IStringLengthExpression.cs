@@ -3,5 +3,5 @@
 public interface IStringLengthExpression : IExpression, ITypedExpression<int>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
 }

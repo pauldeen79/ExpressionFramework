@@ -1,12 +1,12 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class ChainedExpressionTests
+public class TypedChainedExpressionTests
 {
     [Fact]
     public void Evaluate_Returns_Error_When_First_ExpressionEvaluation_Fails()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder()
+        var expression = new TypedChainedExpressionBuilder<string>()
             .AddExpressions
             (
                 new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom")),
@@ -26,7 +26,7 @@ public class ChainedExpressionTests
     public void Evaluate_Returns_Error_When_Second_ExpressionEvaluation_Fails()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder()
+        var expression = new TypedChainedExpressionBuilder<string>()
             .AddExpressions
             (
                 new EmptyExpressionBuilder(),
@@ -46,28 +46,28 @@ public class ChainedExpressionTests
     public void Evaluate_Returns_Success_With_Context_As_Value_When_No_Expressions_Are_Provided()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder().BuildTyped();
+        var expression = new TypedChainedExpressionBuilder<string>().BuildTyped();
 
         // Act
         var actual = expression.Evaluate("test");
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("test");
+        actual.Value.Should().BeEquivalentTo("test");
     }
 
     [Fact]
     public void Evaluate_Returns_Last_Result_When_Multiple_Expressions_Are_Provided()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder().AddExpressions(new ContextExpressionBuilder(), new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>())).BuildTyped();
+        var expression = new TypedChainedExpressionBuilder<string>().AddExpressions(new TypedContextExpressionBuilder<string>(), new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>())).BuildTyped();
 
         // Act
-        var result = expression.Evaluate("hello");
+        var result = expression.EvaluateTyped("hello");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("HELLO");
+        result.Value.Should().Be("HELLO");
     }
 
     [Fact]
@@ -84,7 +84,7 @@ public class ChainedExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder().BuildTyped();
+        var expression = new TypedChainedExpressionBuilder<string>().BuildTyped();
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -97,14 +97,14 @@ public class ChainedExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(ChainedExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(TypedChainedExpression<string>));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ChainedExpression));
+        result.Name.Should().Be(nameof(TypedChainedExpression<string>));
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();

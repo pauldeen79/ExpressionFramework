@@ -18,7 +18,7 @@ public static class StringExpression
             "Number of characters to use",
             typeof(int),
             true,
-            "Expression must be of type string, LengthExpression did not return an integer, Length must refer to a location within the string");
+            "Length must refer to a location within the string");
 
     public static ExpressionDescriptor GetStringTrimDescriptor(
         Type type,
@@ -36,7 +36,7 @@ public static class StringExpression
             "Optional trim characters to use. When empty, space will be used",
             typeof(char[]),
             false,
-            "Expression must be of type string, TrimCharsExpression must be of type char[]");
+            "Expression must be of type string");
 
 #pragma warning disable S107 // Methods should not have too many parameters
     private static ExpressionDescriptor GetDescriptor(

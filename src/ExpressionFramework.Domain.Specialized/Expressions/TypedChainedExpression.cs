@@ -9,19 +9,22 @@
 [ParameterRequired(nameof(Expressions), true)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Result value of the last expression", "This will be returned in case the last expression returns success (Ok)")]
 [ReturnValue(ResultStatus.Error, "Empty", "This status (or any other status not equal to Ok) will be returned in case any expression returns something else than Ok, in which case subsequent expressions will not be executed anymore")]
-public partial record ChainedExpression
+public partial record TypedChainedExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
+        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
+
+    public Result<T> EvaluateTyped(object? context)
     {
         if (!Expressions.Any())
         {
-            return Result<object?>.Success(context);
+            return Result<T>.Success(context is T t ? t : default!);
         }
 
         var result = Expressions.First().Evaluate(context);
         if (!result.IsSuccessful())
         {
-            return result;
+            return Result<T>.FromExistingResult(result);
         }
 
         foreach (var expression in Expressions.Skip(1))
@@ -29,10 +32,11 @@ public partial record ChainedExpression
             result = expression.Evaluate(result.Value);
             if (!result.IsSuccessful())
             {
-                return result;
+                return Result<T>.FromExistingResult(result);
             }
         }
 
-        return result;
+        return result.TryCast<T>(ExpressionExtensions.CreateInvalidTypeErrorMessage<T>());
     }
 }
+

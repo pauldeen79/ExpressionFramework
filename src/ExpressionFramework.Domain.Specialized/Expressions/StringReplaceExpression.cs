@@ -18,19 +18,19 @@ public partial record StringReplaceExpression
 
     public Result<string> EvaluateTyped(object? context)
     {
-        var findExpressionResult = FindExpression.EvaluateTyped<string>(context, "FindExpression must be of type string");
+        var findExpressionResult = FindExpression.EvaluateTypedWithTypeCheck(context, "FindExpression is not of type string");
         if (!findExpressionResult.IsSuccessful())
         {
             return findExpressionResult;
         }
 
-        var replaceExpressionResult = ReplaceExpression.EvaluateTyped<string>(context, "ReplaceExpression must be of type string");
+        var replaceExpressionResult = ReplaceExpression.EvaluateTypedWithTypeCheck(context, "ReplaceExpression is not of type string");
         if (!replaceExpressionResult.IsSuccessful())
         {
             return replaceExpressionResult;
         }
 
-        return Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
                 ? Result<string>.Success(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
                 : Result<string>.FromExistingResult(result));

@@ -17,16 +17,17 @@ public partial record StringFindExpression
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
     
     public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression);
+        => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<int> EvaluateTyped(object? context)
     {
-        var findExpressionResult = FindExpression.EvaluateTyped<string>(context, "FindExpression must be of type string");
+        var findExpressionResult = FindExpression.EvaluateTypedWithTypeCheck(context, "FindExpression is not of type string");
         if (!findExpressionResult.IsSuccessful())
         {
             return Result<int>.FromExistingResult(findExpressionResult);
         }
-        return Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+
+        return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
                 ? Result<int>.Success(result.Value!.IndexOf(findExpressionResult.Value!))
                 : Result<int>.FromExistingResult(result));

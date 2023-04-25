@@ -3,9 +3,9 @@
 public interface IStringReplaceExpression : IExpression, ITypedExpression<string>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
     [Required]
-    IExpression FindExpression { get; }
+    ITypedExpression<string> FindExpression { get; }
     [Required]
-    IExpression ReplaceExpression { get; }
+    ITypedExpression<string> ReplaceExpression { get; }
 }

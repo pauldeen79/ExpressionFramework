@@ -20,40 +20,35 @@ public partial record SubstringExpression
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression);
+        => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
                 ? GetSubstringFromString(result.Value!)
                 : result);
 
     private Result<string> GetSubstringFromString(string s)
     {
-        var indexResult = IndexExpression.Evaluate(s);
+        var indexResult = IndexExpression.EvaluateTyped(s);
         if (!indexResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(indexResult);
         }
 
-        if (indexResult.Value is not int index)
+        if (LengthExpression is null)
         {
-            return Result<string>.Invalid("IndexExpression did not return an integer");
+            Result<string>.Success(s.Substring(indexResult.Value));
         }
 
-        var lengthResult = LengthExpression.Evaluate(s);
+        var lengthResult = LengthExpression!.EvaluateTyped(s);
         if (!lengthResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(lengthResult);
         }
 
-        if (lengthResult.Value is not int length)
-        {
-            return Result<string>.Invalid("LengthExpression did not return an integer");
-        }
-
-        return s.Length >= index + length
-            ? Result<string>.Success(s.Substring(index, length))
+        return s.Length >= indexResult.Value + lengthResult.Value
+            ? Result<string>.Success(s.Substring(indexResult.Value, lengthResult.Value))
             : Result<string>.Invalid("Index and length must refer to a location within the string");
     }
 }

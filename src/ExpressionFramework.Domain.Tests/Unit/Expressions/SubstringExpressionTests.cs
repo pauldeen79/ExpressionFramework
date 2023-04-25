@@ -33,21 +33,21 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(new EmptyExpression(), new DefaultExpression<int>(), new DefaultExpression<int>());
+        var sut = new SubstringExpression(new DefaultExpression<string>(), new DefaultExpression<int>(), new DefaultExpression<int>());
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression("Kaboom"), new ConstantExpression(1));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")), default);
 
         // Act
         var actual = sut.Evaluate();
@@ -55,27 +55,13 @@ public class SubstringExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
-    {
-        // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression("not an integer"), new ConstantExpression(1));
-
-        // Act
-        var actual = sut.Evaluate();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("IndexExpression did not return an integer");
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression("Kaboom"));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -83,20 +69,6 @@ public class SubstringExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Kaboom");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
-    {
-        // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new ConstantExpression("not an integer"));
-
-        // Act
-        var actual = sut.Evaluate();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
     }
 
     [Fact]
@@ -131,21 +103,21 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SubstringExpression(new EmptyExpression(), new DefaultExpression<int>(), new DefaultExpression<int>());
+        var sut = new SubstringExpression(new DefaultExpression<string>(), new DefaultExpression<int>(), new DefaultExpression<int>());
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new InvalidExpression("Kaboom"), new ConstantExpression(1));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -156,24 +128,10 @@ public class SubstringExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Value_Is_Not_An_Integer()
-    {
-        // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression("not an integer"), new ConstantExpression(1));
-
-        // Act
-        var actual = sut.EvaluateTyped();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("IndexExpression did not return an integer");
-    }
-
-    [Fact]
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new InvalidExpression("Something bad happened"));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Invalid("Something bad happened")));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -181,20 +139,6 @@ public class SubstringExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Something bad happened");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Value_Is_Not_An_Integer()
-    {
-        // Arrange
-        var sut = new SubstringExpression(new ConstantExpression("test"), new ConstantExpression(1), new ConstantExpression("not an integer"));
-
-        // Act
-        var actual = sut.EvaluateTyped();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("LengthExpression did not return an integer");
     }
 
     [Fact]
@@ -214,7 +158,7 @@ public class SubstringExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new SubstringExpressionBase(new EmptyExpression(), new EmptyExpression(), new EmptyExpression());
+        var expression = new SubstringExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<int>(1), new TypedConstantExpression<int>(1));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

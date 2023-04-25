@@ -17,11 +17,9 @@ public partial record OrderByExpression
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped(context).Transform(result =>
+        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? result.Transform(x => x.Value == null
-                    ? Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable")
-                    : GetSortedEnumerable(context, result.Value!.OfType<object?>()))
+                ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
                 : Result<IEnumerable<object?>>.FromExistingResult(result));
 
     private Result<IEnumerable<object?>> GetSortedEnumerable(object? context, IEnumerable<object?> e)
@@ -46,7 +44,7 @@ public partial record OrderByExpression
         IOrderedEnumerable<object?>? orderedEnumerable = null;
         foreach (var sortOrder in sortOrdersResult.Value!)
         {
-            var sortExpressionEvaluated = EnumerableExpression.GetTypedResultFromEnumerable(new ConstantExpression(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
+            var sortExpressionEvaluated = EnumerableExpression.GetTypedResultFromEnumerable(new TypedConstantExpression<IEnumerable>(e), context, x => x.Select(y => sortOrder.SortExpression.Evaluate(y)));
             if (!sortExpressionEvaluated.IsSuccessful())
             {
                 return sortExpressionEvaluated;
@@ -73,25 +71,10 @@ public partial record OrderByExpression
 
     private Result<IEnumerable<SortOrder>> GetSortOrdersResult(object? context)
     {
-        var items = new List<SortOrder>();
+        var result = SortOrderExpressions.EvaluateTypedWithTypeCheck(context, "SortOrderExpressions is not of type SortOrder");
 
-        var index = 0;
-        foreach (var sortOrderResult in SortOrderExpressions.Select(x => x.Evaluate(context)))
-        {
-            if (!sortOrderResult.IsSuccessful())
-            {
-                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
-            }
-
-            if (sortOrderResult.Value is not SortOrder sortOrder)
-            {
-                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions item with index {index} is not of type SortOrder");
-            }
-
-            items.Add(sortOrder);
-            index++;
-        }
-
-        return Result<IEnumerable<SortOrder>>.Success(items);
+        return !result.IsSuccessful()
+            ? Result<IEnumerable<SortOrder>>.FromExistingResult(result)
+            : Result<IEnumerable<SortOrder>>.Success(result.Value!);
     }
 }

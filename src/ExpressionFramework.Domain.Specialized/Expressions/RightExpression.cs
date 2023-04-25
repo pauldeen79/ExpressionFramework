@@ -6,17 +6,22 @@ public partial record RightExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? GetRightValueFromString(result.Value!)
+                ? GetRightValueFromString(result.Value)
                 : result);
 
-    private Result<string> GetRightValueFromString(string s)
+    private Result<string> GetRightValueFromString(string? s)
     {
-        var lengthResult = LengthExpression.EvaluateTyped<int>(s, "LengthExpression did not return an integer");
+        if (s is null)
+        {
+            return Result<string>.Invalid("Expression is not of type string");
+        }
+
+        var lengthResult = LengthExpression.EvaluateTyped(s);
         if (!lengthResult.IsSuccessful())
         {
             return Result<string>.FromExistingResult(lengthResult);

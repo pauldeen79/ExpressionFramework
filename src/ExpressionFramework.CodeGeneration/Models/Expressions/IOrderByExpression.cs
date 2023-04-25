@@ -5,5 +5,5 @@ public interface IOrderByExpression : IExpression, ITypedExpression<IEnumerable<
     [Required]
     ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    IReadOnlyCollection<IExpression> SortOrderExpressions { get; }
+    IMultipleTypedExpressions<ISortOrder> SortOrderExpressions { get; }
 }

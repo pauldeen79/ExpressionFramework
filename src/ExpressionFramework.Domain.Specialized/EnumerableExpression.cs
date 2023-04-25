@@ -2,20 +2,23 @@
 
 public static class EnumerableExpression
 {
+
     public static Result<object?> GetResultFromEnumerable(
         ITypedExpression<IEnumerable> expression,
         object? context,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
+        => GetResultFromEnumerable(expression, context, default, @delegate);
+
+    public static Result<object?> GetResultFromEnumerable(
+        ITypedExpression<IEnumerable> expression,
+        object? context,
+        string? errorMessage,
+        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        var enumerableResult = expression.EvaluateTyped(context);
+        var enumerableResult = expression.EvaluateTypedWithTypeCheck(context, errorMessage);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(enumerableResult);
-        }
-
-        if (enumerableResult.Value == null)
-        {
-            return Result<object?>.Invalid("Expression is not of type enumerable");
         }
 
         var results = @delegate(enumerableResult.Value.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
@@ -28,41 +31,17 @@ public static class EnumerableExpression
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
-        Expression expression,
-        object? context,
-        Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
-    {
-        var enumerableResult = expression.EvaluateTyped<IEnumerable>(context, "Expression is not of type enumerable");
-        if (!enumerableResult.IsSuccessful())
-        {
-            return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
-        }
-
-        if (enumerableResult.Value == null)
-        {
-            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
-        }
-
-        return GetTypedResultFromEnumerable(enumerableResult.Value, @delegate);
-    }
-
-    public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
         ITypedExpression<IEnumerable> expression,
         object? context,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        var enumerableResult = expression.EvaluateTyped(context);
+        var enumerableResult = expression.EvaluateTypedWithTypeCheck(context);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
         }
 
-        if (enumerableResult.Value == null)
-        {
-            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
-        }
-
-        return GetTypedResultFromEnumerable(enumerableResult.Value, @delegate);
+        return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerableWithCount(
@@ -85,7 +64,7 @@ public static class EnumerableExpression
         IEnumerable enumerable,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        if (enumerable == null)
+        if (enumerable is null)
         {
             return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
         }
@@ -149,10 +128,8 @@ public static class EnumerableExpression
         => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
             .Select(y => selectorExpression is null
                 ? Result<object?>.Success(y)
-                : selectorExpression.Evaluate(y))).Transform(result => result.IsSuccessful()
-                    ? result.Transform(x => x.Value == null
-                        ? Result<T>.Invalid("Expression is not of type enumerable")
-                        : aggregateDelegate.Invoke(x.Value))
+                : selectorExpression.EvaluateWithNullCheck(y))).Transform(result => result.IsSuccessful()
+                    ? aggregateDelegate.Invoke(result.Value!)
                     : Result<T>.FromExistingResult(result));
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
@@ -204,7 +181,7 @@ public static class EnumerableExpression
                                                bool predicateIsRequired = false)
 #pragma warning restore S107 // Methods should not have too many parameters
     {
-        var enumerableResult = enumerableExpression.EvaluateTyped(context);
+        var enumerableResult = enumerableExpression.EvaluateTypedWithTypeCheck(context);
         if (!enumerableResult.IsSuccessful())
         {
             return Result<T>.FromExistingResult(enumerableResult);
@@ -215,12 +192,7 @@ public static class EnumerableExpression
             return Result<T>.Invalid("Predicate is required");
         }
 
-        if (enumerableResult.Value == null)
-        {
-            return Result<T>.Invalid("Expression is not of type enumerable");
-        }
-
-        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(x => Result<IEnumerable<object?>>.Success(x));
+        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(Result<IEnumerable<object?>>.Success);
         var itemsResult = selectorDelegate.Invoke(enumerableResult.Value.OfType<object?>());
         if (!itemsResult.IsSuccessful())
         {

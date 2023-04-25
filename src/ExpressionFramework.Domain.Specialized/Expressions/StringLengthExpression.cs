@@ -14,10 +14,10 @@ public partial record StringLengthExpression
         => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
 
     public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression);
+        => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<int> EvaluateTyped(object? context)
-        => Expression.EvaluateTyped<string>(context, "Expression must be of type string").Transform(result =>
+        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
                 ? Result<int>.Success(result.Value!.Length)
                 : Result<int>.FromExistingResult(result));

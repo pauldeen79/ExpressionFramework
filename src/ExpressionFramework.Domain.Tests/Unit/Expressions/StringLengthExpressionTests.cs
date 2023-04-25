@@ -32,21 +32,21 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(default(object?)));
+        var sut = new StringLengthExpression(new DefaultExpression<string>());
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Length_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression("some"));
+        var sut = new StringLengthExpression(new TypedConstantExpression<string>("some"));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -59,7 +59,7 @@ public class StringLengthExpressionTests
     public void EvaluateTyped_Returns_0_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(string.Empty));
+        var sut = new StringLengthExpression(new TypedConstantExpression<string>(string.Empty));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -72,14 +72,14 @@ public class StringLengthExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new StringLengthExpression(new ConstantExpression(default(object?)));
+        var sut = new StringLengthExpression(new TypedConstantExpression<string>(default(string)!));
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
@@ -99,7 +99,7 @@ public class StringLengthExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new StringLengthExpressionBase(new EmptyExpression());
+        var expression = new StringLengthExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -109,7 +109,7 @@ public class StringLengthExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new StringLengthExpression(new ConstantExpression("Hello world"));
+        var expression = new StringLengthExpression("Hello world");
 
         // Act
         var result = expression.GetPrimaryExpression();

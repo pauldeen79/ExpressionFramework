@@ -3,5 +3,5 @@
 public interface IToPascalCaseExpression : IExpression, ITypedExpression<string>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
 }

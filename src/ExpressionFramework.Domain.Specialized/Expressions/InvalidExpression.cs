@@ -10,10 +10,10 @@ public partial record InvalidExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var errorMessageResult = ErrorMessageExpression.Evaluate(context);
+        var errorMessageResult = ErrorMessageExpression.EvaluateTyped(context);
         if (!errorMessageResult.IsSuccessful())
         {
-            return errorMessageResult;
+            return Result<object?>.FromExistingResult(errorMessageResult);
         }
         
         if (errorMessageResult.Value is not string errorMessage)
@@ -21,19 +21,21 @@ public partial record InvalidExpression
             return Result<object?>.Invalid();
         }
 
-        if (!ValidationErrorExpressions.Any())
+        if (ValidationErrorExpressions is null)
         {
             return Result<object?>.Invalid(errorMessage);
         }
 
-        var validationErrorResult = ValidationErrorExpressions.EvaluateTypedUntilFirstError<ValidationError>(context, "ValidationErrorExpressions must be a collection of type string");
-        if (!validationErrorResult.Last().IsSuccessful())
+        var validationErrorExpressionsResult = ValidationErrorExpressions.EvaluateTyped(context);
+        if (!validationErrorExpressionsResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(validationErrorResult.Last());
+            return Result<object?>.FromExistingResult(validationErrorExpressionsResult);
         }
 
-        return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));
+        return validationErrorExpressionsResult.Value is null || !validationErrorExpressionsResult.Value.Any()
+            ? Result<object?>.Invalid(errorMessage)
+            : Result<object?>.Invalid(errorMessage, validationErrorExpressionsResult.Value!);
     }
 
-    public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? Enumerable.Empty<Expression>() : validationErrorExpressions.Select(x => new ConstantExpression(x))) { }
+    public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? null : new MultipleTypedExpressions<ValidationError>(validationErrorExpressions)) { }
 }

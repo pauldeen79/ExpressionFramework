@@ -32,14 +32,14 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(default(object?));
+        var sut = new ToUpperCaseExpression(default(string)!);
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
@@ -73,14 +73,14 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(default(object?));
+        var sut = new ToUpperCaseExpression(default(string)!);
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
@@ -100,7 +100,7 @@ public class ToUpperCaseExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new ToUpperCaseExpressionBase(new EmptyExpression());
+        var expression = new ToUpperCaseExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

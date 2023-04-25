@@ -6,7 +6,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var result = sut.Evaluate();
@@ -33,7 +33,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var result = sut.Evaluate();
@@ -47,7 +47,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -74,7 +74,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -88,7 +88,7 @@ public class SelectExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new SelectExpression(new[] { "a", "b", "c" }, new ToUpperCaseExpression(new ContextExpression()));
+        var sut = new SelectExpression(new[] { "a", "b", "c" }, new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var actual = sut.ToUntyped();
@@ -111,7 +111,7 @@ public class SelectExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new ContextExpression()));
+        var expression = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>()));
 
         // Act
         var result = expression.GetPrimaryExpression();
