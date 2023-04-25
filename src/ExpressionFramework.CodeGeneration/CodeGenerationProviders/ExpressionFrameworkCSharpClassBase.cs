@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿using System.Xml.Schema;
+
+namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
@@ -146,7 +148,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
         {
-            return $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
+            return x.IsNullable
+                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})"
+                : $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
         }
 
         if (x.TypeName.ToString().GetClassName() == "Expression")
