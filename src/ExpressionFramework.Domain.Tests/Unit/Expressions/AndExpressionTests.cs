@@ -54,23 +54,10 @@ public class AndExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpressions()
+    public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
         var expression = new AndExpression(false, true);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpressions()
-    {
-        // Arrange
-        var expression = new AndExpression(_ => false, _ => true);
 
         // Act
         var result = expression.GetPrimaryExpression();

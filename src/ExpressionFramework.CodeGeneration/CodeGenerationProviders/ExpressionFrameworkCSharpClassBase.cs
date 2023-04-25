@@ -63,6 +63,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
 
+        // This is a kind of hack for the fact that .net says the generic type argument of IEnumerable<T> is nullable.
+        // ModelFramework is not extendable for this, so we are currently hacking this here.
+        //TODO: Maybe it's an idea to add some sort of formatting function to CodeGenerationSettings, or even try to do this in the type formatting delegate that's already there? 
         if (typedInterface == "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
         {
             typedInterface = "ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object?>>";
@@ -111,6 +114,35 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     .AddParameter("context", typeof(object), isNullable: true)
                     .AddNotImplementedException()
             );
+
+            BaseTypes.Add(typeBaseBuilder.GetFullName(), typeBaseBuilder);
+        }
+
+        if (!typeBaseBuilder.Name.ToString().EndsWith("Base")
+            && typeBaseBuilder is ClassBuilder classBuilder
+            && classBuilder.Constructors.Any()
+            && BaseTypes.TryGetValue($"{typeBaseBuilder.GetFullName()}Base", out var baseType)
+            && baseType.Properties.Any(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"))
+        {
+            // Add c'tor that uses T instead of ITypedExpression<T>, and calls the other overload.
+            // This is needed pre .NET 7.0 because we can't use static implicit operators with generics.
+            var ctor = classBuilder.Constructors.Last();
+            classBuilder.AddConstructors(
+                new ClassConstructorBuilder()
+                    .AddParameters(
+                        ctor.Parameters.Select(x => new ParameterBuilder()
+                            .WithName(x.Name)
+                            .WithTypeName(x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"
+                                ? x.TypeName.ToString().GetGenericArguments()
+                                : x.TypeName.ToString())
+                            .WithIsNullable(x.IsNullable)
+                            .WithDefaultValue(x.DefaultValue)
+                            )
+                    )
+                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression"
+                        ? $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name})"
+                        : x.Name.ToString())) + ")")
+                );
         }
     }
 
@@ -135,4 +167,5 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     }
 
     protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
+    protected Dictionary<string, TypeBaseBuilder> BaseTypes { get; } = new();
 }

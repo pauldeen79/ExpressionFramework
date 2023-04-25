@@ -54,23 +54,10 @@ public class OrExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpressions()
+    public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
         var expression = new OrExpression(true, false);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpressions()
-    {
-        // Arrange
-        var expression = new OrExpression(_ => true, _ => false);
 
         // Act
         var result = expression.GetPrimaryExpression();

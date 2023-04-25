@@ -16,9 +16,6 @@ public partial record SkipExpression
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Skip);
 
-    public SkipExpression(IEnumerable expression, int count) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(count)) { }
-    public SkipExpression(Func<object?, IEnumerable> expression, Func<object?, int> countDelegate) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(countDelegate)) { }
-
     private static IEnumerable<Result<object?>> Skip(IEnumerable<object?> e, Result<int> countResult) => e
         .Skip(countResult.Value)
         .Select(x => Result<object?>.Success(x));

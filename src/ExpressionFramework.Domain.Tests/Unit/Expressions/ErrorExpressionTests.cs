@@ -41,23 +41,10 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_ConstantExpression()
+    public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
         var expression = new ErrorExpression("Kaboom");
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_DelegateExpression()
-    {
-        // Arrange
-        var expression = new ErrorExpression(_ => "Kaboom");
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -71,14 +71,14 @@ public class TakeExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new TakeExpression(_ => new object[] { "A", "B", 1, "C" }, _ => 2);
+        var expression = new TakeExpression(new object[] { "A", "B", 1, "C" }, 2);
 
         // Act
         var result = expression.GetPrimaryExpression();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<DelegateExpression>();
+        result.Value.Should().BeOfType<ConstantExpression>();
     }
 
     [Fact]

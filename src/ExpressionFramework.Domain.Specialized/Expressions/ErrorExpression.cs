@@ -14,6 +14,5 @@ public partial record ErrorExpression
                 ? Result<object?>.Error(result.Value!)
                 : Result<object?>.FromExistingResult(result));
 
-    public ErrorExpression(string errorMessageExpression = "") : this(new TypedConstantExpression<string>(errorMessageExpression)) { }
-    public ErrorExpression(Func<object?, string> errorMessageExpression) : this(new TypedDelegateExpression<string>(errorMessageExpression)) { }
+    public ErrorExpression() : this(new TypedConstantExpression<string>(string.Empty)) { }
 }

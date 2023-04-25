@@ -19,7 +19,4 @@ public partial record OrExpression
             "FirstExpression must be of type boolean, SecondExpression must be of type boolean",
             "Boolean expression to perform OR combination on"
         );
-
-    public OrExpression(bool firstExpression, bool secondExpression) : this(new TypedConstantExpression<bool>(firstExpression), new TypedConstantExpression<bool>(secondExpression)) { }
-    public OrExpression(Func<object?, bool> firstExpression, Func<object?, bool> secondExpression) : this(new TypedDelegateExpression<bool>(firstExpression), new TypedDelegateExpression<bool>(secondExpression)) { }
 }

@@ -15,9 +15,6 @@ public partial record TakeExpression
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Take);
 
-    public TakeExpression(IEnumerable expression, int count) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(count)) { }
-    public TakeExpression(Func<object?, IEnumerable> expression, Func<object?, int> countDelegate) : this(new TypedDelegateExpression<IEnumerable>(expression), new TypedDelegateExpression<int>(countDelegate)) { }
-
     private static IEnumerable<Result<object?>> Take(IEnumerable<object?> e, Result<int> countResult) => e
         .Take(countResult.Value)
         .Select(x => Result<object?>.Success(x));
