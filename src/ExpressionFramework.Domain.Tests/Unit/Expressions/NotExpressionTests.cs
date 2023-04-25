@@ -17,6 +17,20 @@ public class NotExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var expression = new NotExpression(new TypedConstantResultExpression<bool>(Result<bool>.Error("Kaboom")));
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange

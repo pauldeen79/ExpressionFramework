@@ -16,6 +16,20 @@ public class GroupByExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_NonSuccessfulResult_From_Expression()
+    {
+        // Arrange
+        var sut = new GroupByExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new TypedConstantExpression<string>("Kaboom"));
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_NonSuccessfulResult_From_Selector()
     {
         // Arrange

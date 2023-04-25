@@ -31,6 +31,20 @@ public class OfTypeExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_TypeExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new OfTypeExpression(new TypedConstantExpression<IEnumerable>(new object?[] { "A", "B", 1, null, "C" }), new TypedConstantResultExpression<Type>(Result<Type>.Error("Kaboom")));
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void ToUntyped_Returns_Expression()
     {
         // Arrange

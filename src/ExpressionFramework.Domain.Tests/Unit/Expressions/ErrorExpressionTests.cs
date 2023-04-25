@@ -3,7 +3,7 @@
 public class ErrorExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_ErrorResult()
+    public void Evaluate_Returns_ErrorResult_With_Specified_ErrorMessage()
     {
         // Assert
         var sut = new ErrorExpression("Error message");
@@ -14,6 +14,20 @@ public class ErrorExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Error message");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_ErrorResult_With_Null_ErrorMessage()
+    {
+        // Assert
+        var sut = new ErrorExpression();
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().BeEmpty();
     }
 
     [Fact]

@@ -56,6 +56,20 @@ public class TrimEndExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var sut = new TrimEndExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), null);
+
+        // Act
+        var actual = sut.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Error_When_TrimCharsExpression_Returns_Error()
     {
         // Arrange
