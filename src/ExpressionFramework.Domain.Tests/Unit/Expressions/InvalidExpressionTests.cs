@@ -3,25 +3,10 @@
 public class InvalidExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors_Using_Constants()
+    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
     {
         // Assert
         var sut = new InvalidExpression("Error message", new[] { new ValidationError("Validation error message", new[] { "Member" }) });
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions.Select(x => x.Evaluate().Value));
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_Result_With_ValidationErrors_Using_Delegates()
-    {
-        // Assert
-        var sut = new InvalidExpression(_ => "Error message", new Func<object?, ValidationError>[] { _ => new ValidationError("Validation error message", new[] { "Member" }) });
 
         // Act
         var result = sut.Evaluate();
@@ -101,23 +86,10 @@ public class InvalidExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_With_ConstantExpression()
+    public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
         var expression = new InvalidExpression("Something went wrong", Enumerable.Empty<ValidationError>());
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_With_DelegateExpression()
-    {
-        // Arrange
-        var expression = new InvalidExpression(_ => "Something went wrong");
 
         // Act
         var result = expression.GetPrimaryExpression();

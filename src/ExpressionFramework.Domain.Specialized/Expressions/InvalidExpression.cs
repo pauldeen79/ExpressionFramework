@@ -36,5 +36,4 @@ public partial record InvalidExpression
     }
 
     public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? Enumerable.Empty<Expression>() : validationErrorExpressions.Select(x => new ConstantExpression(x))) { }
-    public InvalidExpression(Func<object?, string> errorMessageExpression, IEnumerable<Func<object?, ValidationError>>? validationErrorExpressions = null) : this(new TypedDelegateExpression<string>(errorMessageExpression), validationErrorExpressions == null ? Enumerable.Empty<Expression>() : validationErrorExpressions.Select(x => new TypedDelegateExpression<ValidationError>(x))) { }
 }

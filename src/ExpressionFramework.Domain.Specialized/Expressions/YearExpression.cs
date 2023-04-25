@@ -7,14 +7,11 @@
 public partial record YearExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Year);
+        => Result<object?>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Year);
 
     public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression);
+        => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<int> EvaluateTyped(object? context)
-        => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Year);
-
-    public YearExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
-    public YearExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
+        => Result<int>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Year);
 }

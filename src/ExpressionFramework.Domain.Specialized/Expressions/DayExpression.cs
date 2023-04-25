@@ -7,14 +7,11 @@
 public partial record DayExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Day);
+        => Result<object?>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Day);
 
     public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression);
+        => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<int> EvaluateTyped(object? context)
-        => Result<int>.FromExistingResult(Expression.Evaluate(context).TryCast<DateTime>("Expression is not of type DateTime"), x => x.Day);
-
-    public DayExpression(DateTime expression) : this(new TypedConstantExpression<DateTime>(expression)) { }
-    public DayExpression(Func<object?, DateTime> expression) : this(new TypedDelegateExpression<DateTime>(expression)) { }
+        => Result<int>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Day);
 }
