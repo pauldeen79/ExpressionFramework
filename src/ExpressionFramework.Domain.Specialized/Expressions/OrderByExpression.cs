@@ -17,9 +17,11 @@ public partial record OrderByExpression
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
-        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
+        => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? GetSortedEnumerable(context, result.Value!.OfType<object?>())
+                ? result.Transform(x => x.Value == null
+                    ? Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable")
+                    : GetSortedEnumerable(context, result.Value!.OfType<object?>()))
                 : Result<IEnumerable<object?>>.FromExistingResult(result));
 
     private Result<IEnumerable<object?>> GetSortedEnumerable(object? context, IEnumerable<object?> e)
@@ -71,10 +73,20 @@ public partial record OrderByExpression
 
     private Result<IEnumerable<SortOrder>> GetSortOrdersResult(object? context)
     {
-        var result = SortOrderExpressions.EvaluateTypedWithTypeCheck(context, "SortOrderExpressions is not of type SortOrder");
+        var items = new List<SortOrder>();
 
-        return !result.IsSuccessful()
-            ? Result<IEnumerable<SortOrder>>.FromExistingResult(result)
-            : Result<IEnumerable<SortOrder>>.Success(result.Value!);
+        var index = 0;
+        foreach (var sortOrderResult in SortOrderExpressions.Select(x => x.EvaluateTypedWithTypeCheck(context, $"SortOrderExpressions item with index {index} is not of type SortOrder")))
+        {
+            if (!sortOrderResult.IsSuccessful())
+            {
+                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
+            }
+
+            items.Add(sortOrderResult.Value!);
+            index++;
+        }
+
+        return Result<IEnumerable<SortOrder>>.Success(items);
     }
 }

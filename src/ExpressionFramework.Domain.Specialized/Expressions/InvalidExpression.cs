@@ -21,21 +21,19 @@ public partial record InvalidExpression
             return Result<object?>.Invalid();
         }
 
-        if (ValidationErrorExpressions is null)
+        if (ValidationErrorExpressions is null || !ValidationErrorExpressions.Any())
         {
             return Result<object?>.Invalid(errorMessage);
         }
 
-        var validationErrorExpressionsResult = ValidationErrorExpressions.EvaluateTyped(context);
-        if (!validationErrorExpressionsResult.IsSuccessful())
+        var validationErrorResult = ValidationErrorExpressions.EvaluateTypedUntilFirstError(context, "ValidationErrorExpressions must be a collection of type string");
+        if (!validationErrorResult.Last().IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(validationErrorExpressionsResult);
+            return Result<object?>.FromExistingResult(validationErrorResult.Last());
         }
 
-        return validationErrorExpressionsResult.Value is null || !validationErrorExpressionsResult.Value.Any()
-            ? Result<object?>.Invalid(errorMessage)
-            : Result<object?>.Invalid(errorMessage, validationErrorExpressionsResult.Value!);
+        return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));
     }
 
-    public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? null : new MultipleTypedExpressions<ValidationError>(validationErrorExpressions)) { }
+    public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? Enumerable.Empty<ITypedExpression<ValidationError>>() : validationErrorExpressions.Select(x => new TypedConstantExpression<ValidationError>(x))) { }
 }

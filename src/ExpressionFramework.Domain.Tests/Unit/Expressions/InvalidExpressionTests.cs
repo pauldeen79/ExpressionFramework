@@ -14,7 +14,7 @@ public class InvalidExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions!.Expressions);
+        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions!.Select(x => x.EvaluateTyped().Value));
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), new (Enumerable.Empty<ValidationError>()));
+        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act
         var result = sut.Evaluate();
@@ -65,7 +65,7 @@ public class InvalidExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new InvalidExpressionBase(new DefaultExpression<string>(), new MultipleTypedExpressions<ValidationError>(Enumerable.Empty<ValidationError>()));
+        var expression = new InvalidExpressionBase(new DefaultExpression<string>(), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

@@ -85,7 +85,7 @@ public class StringConcatenateExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new StringConcatenateExpressionBase(new(Enumerable.Empty<string>()));
+        var expression = new StringConcatenateExpressionBase(Enumerable.Empty<ITypedExpression<string>>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -95,7 +95,7 @@ public class StringConcatenateExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new StringConcatenateExpression(new MultipleTypedExpressions<string>(Enumerable.Empty<string>()));
+        var expression = new StringConcatenateExpression(Enumerable.Empty<ITypedExpression<string>>());
 
         // Act
         var result = expression.GetPrimaryExpression();

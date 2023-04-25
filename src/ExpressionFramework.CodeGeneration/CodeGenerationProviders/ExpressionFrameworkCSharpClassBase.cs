@@ -38,8 +38,24 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.Domain}.Expressions.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}!))"));
             }
         }
-
-        base.FixImmutableBuilderProperty(property, typeName);
+        else if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
+        {
+            // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
+            var init = $"{Constants.Namespaces.DomainBuilders}.ExpressionBuilderFactory.CreateTyped<{typeName.GetGenericArguments()}>(x)";
+            property.ConvertCollectionPropertyToBuilderOnBuilder
+            (
+                false,
+                RecordConcreteCollectionType.WithoutGenerics(),
+                $"System.Collections.Generic.IEnumerable<{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>>",
+                "{0} = source.{0}.Select(x => " + init + ").ToList()",
+                builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
+            );
+            property.WithTypeName($"System.Collections.Generic.IEnumerable<{Constants.Namespaces.Domain}.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
+        }
+        else
+        {
+            base.FixImmutableBuilderProperty(property, typeName);
+        }
     }
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
