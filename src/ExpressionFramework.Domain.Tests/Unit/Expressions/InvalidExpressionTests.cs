@@ -33,6 +33,21 @@ public class InvalidExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_Result_Without_ValidationErrors_And_ErrorMessage()
+    {
+        // Assert
+        var sut = new InvalidExpression(default(string)!);
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().BeNull();
+        result.ValidationErrors.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
