@@ -80,7 +80,7 @@ public partial record OrderByExpression
         {
             if (!sortOrderResult.IsSuccessful())
             {
-                return Result<IEnumerable<SortOrder>>.Invalid($"SortOrderExpressions returned an invalid result on item {index}. Error message: {sortOrderResult.ErrorMessage}");
+                return Result<IEnumerable<SortOrder>>.FromExistingResult(sortOrderResult);
             }
 
             items.Add(sortOrderResult.Value!);

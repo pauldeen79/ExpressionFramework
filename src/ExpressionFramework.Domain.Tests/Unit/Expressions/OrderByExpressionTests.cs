@@ -46,6 +46,39 @@ public class OrderByExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var expression = new OrderByExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new[]
+        {
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending)
+        }.Select(x => new TypedConstantExpression<SortOrder>(x)));
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_SortOrderExpression_Returns_Error()
+    {
+        // Arrange
+        var data = new[] { "B", "C", "A" };
+        var expression = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new TypedConstantResultExpression<SortOrder>(Result<SortOrder>.Error("Kaboom")) });
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Evaluate_Returns_Source_Sequence_When_Empty()
     {
         // Arrange
