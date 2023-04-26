@@ -17,18 +17,18 @@ public partial record StringConcatenateExpression
 
     public Result<string> EvaluateTyped(object? context)
     {
-        var values = Expressions.EvaluateTypedUntilFirstError(context, "Expressions must be of type string");
-        if (!values.Any())
+        var valueResults = Expressions.EvaluateTypedUntilFirstError(context, "Expressions must be of type string");
+        if (!valueResults.Any())
         {
             return Result<string>.Invalid("At least one expression is required");
         }
 
-        if (!values.Last().IsSuccessful())
+        if (!valueResults.Last().IsSuccessful())
         {
-            return Result<string>.FromExistingResult(values.Last());
+            return Result<string>.FromExistingResult(valueResults.Last());
         }
 
-        return Result<string>.Success(string.Concat(values.Select(x => x.Value)));
+        return Result<string>.Success(string.Concat(valueResults.Select(x => x.Value)));
     }
 
     public StringConcatenateExpression(IEnumerable<string> expressions) : this(expressions.Select(x => new TypedConstantExpression<string>(x))) { }
