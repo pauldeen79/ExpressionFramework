@@ -213,7 +213,7 @@ public static class EnumerableExpression
         (
             x,
             predicateExpression.EvaluateTyped<bool>(x)
-        )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful());
+        )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful()).ToArray();
 
         if (results.Any(x => !x.Result.IsSuccessful()))
         {
