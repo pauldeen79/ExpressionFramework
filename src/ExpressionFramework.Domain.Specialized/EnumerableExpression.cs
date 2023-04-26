@@ -80,7 +80,7 @@ public static class EnumerableExpression
 
     public static Result<T> GetRequiredScalarValue<T>(object? context,
                                                       ITypedExpression<IEnumerable> enumerableExpression,
-                                                      TypedDelegateExpression<bool>? predicateExpression,
+                                                      ITypedExpression<bool>? predicateExpression,
                                                       Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                       Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate = null,
                                                       Func<IEnumerable<object?>, Result<IEnumerable<object?>>>? selectorDelegate = null,
@@ -101,7 +101,7 @@ public static class EnumerableExpression
 #pragma warning disable S107 // Methods should not have too many parameters
     public static Result<T> GetOptionalScalarValue<T>(object? context,
                                                       ITypedExpression<IEnumerable> enumerableExpression,
-                                                      TypedDelegateExpression<bool>? predicateExpression,
+                                                      ITypedExpression<bool>? predicateExpression,
                                                       Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                       Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate = null,
                                                       Func<object?, Result<T>>? defaultValueDelegate = null,
@@ -172,7 +172,7 @@ public static class EnumerableExpression
 #pragma warning disable S107 // Methods should not have too many parameters
     private static Result<T> GetScalarValue<T>(object? context,
                                                ITypedExpression<IEnumerable> enumerableExpression,
-                                               TypedDelegateExpression<bool>? predicateExpression,
+                                               ITypedExpression<bool>? predicateExpression,
                                                Func<IEnumerable<object?>, Result<T>> delegateWithoutPredicate,
                                                Func<IEnumerable<ItemResult>, Result<T>>? delegateWithPredicate,
                                                Func<object?, Result<T>>? defaultValueDelegateWithoutPredicate,
@@ -212,7 +212,7 @@ public static class EnumerableExpression
         var results = itemsResult.Value.Select(x => new ItemResult
         (
             x,
-            predicateExpression.EvaluateTyped<bool>(x)
+            predicateExpression.EvaluateTyped(x)
         )).TakeWhileWithFirstNonMatching(x => x.Result.IsSuccessful()).ToArray();
 
         if (results.Any(x => !x.Result.IsSuccessful()))

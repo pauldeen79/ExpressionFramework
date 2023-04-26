@@ -4,6 +4,6 @@ public interface ILastOrDefaultExpression : IExpression
 {
     [Required]
     ITypedExpression<IEnumerable> Expression { get; }
-    ITypedDelegateExpression<bool>? PredicateExpression { get; }
+    ITypedExpression<bool>? PredicateExpression { get; }
     IExpression? DefaultExpression { get; }
 }

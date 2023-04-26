@@ -34,7 +34,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 }, new(x => x is int i && i > 10));
+        var sut = new SingleExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +62,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 }, new(_ => true));
+        var sut = new SingleExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(_ => true));
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +90,7 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2 }, new(x => x is int i && i > 1));
+        var sut = new SingleExpression(new[] { 1, 2 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
 
         // Act
         var result = sut.Evaluate();

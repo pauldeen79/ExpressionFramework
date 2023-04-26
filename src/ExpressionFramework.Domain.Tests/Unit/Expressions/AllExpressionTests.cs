@@ -133,7 +133,7 @@ public class AllExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new AllExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), new TypedDelegateExpression<bool>(_ => true));
+        var expression = new AllExpressionBase(new DefaultExpression<IEnumerable>(), new TypedDelegateExpression<bool>(_ => true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();

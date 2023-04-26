@@ -29,6 +29,6 @@ public partial record LastOrDefaultExpression
             resultValueType: typeof(object)
         );
 
-    public LastOrDefaultExpression(IEnumerable expression, TypedDelegateExpression<bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression, null) { }
+    public LastOrDefaultExpression(IEnumerable expression, ITypedExpression<bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression, null) { }
     public LastOrDefaultExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null, null) { }
 }

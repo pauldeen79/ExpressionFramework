@@ -154,48 +154,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                             .WithDefaultValue(x.DefaultValue)
                             )
                     )
-                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(x => CreateParameterSelection(x))) + ")")
+                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(CreateParameterSelection)) + ")")
                 );
         }
-    }
-
-    private static string CreateParameterSelection(ParameterBuilder x)
-    {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
-        {
-            // we need the Value propery of Nullable<T> for value types...
-            // for now, we only support int, long and boolean
-            var suffix = x.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
-                ? ".Value"
-                : string.Empty;
-
-            return x.IsNullable
-                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()}{suffix})"
-                : $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
-        }
-
-        if (x.TypeName.ToString().GetClassName() == "Expression")
-        {
-            return $"new ConstantExpression({x.Name.ToString().GetCsharpFriendlyName()})";
-        }
-
-        return x.Name.ToString().GetCsharpFriendlyName();
-    }
-
-    private static string CreateTypeName(ParameterBuilder x)
-    {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
-        {
-            return x.TypeName.ToString().GetGenericArguments();
-        }
-
-        if (x.TypeName.ToString().GetClassName() == "Expression")
-        {
-            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
-            return "System.Object?";
-        }
-
-        return x.TypeName.ToString();
     }
 
     private void AddCodeForTypedExpressionToExpressionBuilders<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
@@ -220,4 +181,51 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
     protected Dictionary<string, TypeBaseBuilder> BaseTypes { get; } = new();
+
+    private static string CreateParameterSelection(ParameterBuilder x)
+    {
+        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression" && x.Name.ToString() != "predicateExpression")
+        {
+            // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
+            // for now, we only support int, long and boolean
+            var suffix = x.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
+                ? ".Value"
+                : string.Empty;
+
+            return x.IsNullable
+                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()}{suffix})"
+                : $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
+        }
+
+        if (x.TypeName.ToString().GetClassName() == "Expression")
+        {
+            return $"new ConstantExpression({x.Name.ToString().GetCsharpFriendlyName()})";
+        }
+
+        return x.Name.ToString().GetCsharpFriendlyName();
+    }
+
+    private static string CreateTypeName(ParameterBuilder x)
+    {
+        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
+        {
+            if (x.Name.ToString() == "predicateExpression")
+            {
+                // hacking here... we only want to allow to inject the typed expression
+                return x.TypeName.ToString();
+            }
+            else
+            {
+                return x.TypeName.ToString().GetGenericArguments();
+            }
+        }
+
+        if (x.TypeName.ToString().GetClassName() == "Expression")
+        {
+            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
+            return "System.Object?";
+        }
+
+        return x.TypeName.ToString();
+    }
 }
