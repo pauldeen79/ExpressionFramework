@@ -12,7 +12,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override bool EnableNullableContext => true;
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override Type RecordConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
-    protected override string FileNameSuffix => Constants.TemplateGenerated;
     protected override string ProjectName => Constants.ProjectName;
     protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
     protected override bool AddBackingFieldsForCollectionProperties => true;

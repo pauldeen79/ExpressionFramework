@@ -3,7 +3,6 @@
 public static class Constants
 {
     public const string ProjectName = "ExpressionFramework";
-    public const string TemplateGenerated = ".template.generated";
     public static class Namespaces
     {
         public const string Domain = "ExpressionFramework.Domain";
