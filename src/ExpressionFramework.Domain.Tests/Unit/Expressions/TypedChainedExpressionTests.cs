@@ -57,6 +57,20 @@ public class TypedChainedExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Success_With_Default_Value_When_No_Expressions_Are_Provided_And_Context_Is_Of_Wrong_Type()
+    {
+        // Arrange
+        var expression = new TypedChainedExpressionBuilder<string>().BuildTyped();
+
+        // Act
+        var actual = expression.Evaluate(1);
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Ok);
+        actual.Value.Should().BeNull();
+    }
+
+    [Fact]
     public void Evaluate_Returns_Last_Result_When_Multiple_Expressions_Are_Provided()
     {
         // Arrange
