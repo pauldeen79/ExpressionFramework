@@ -7,7 +7,7 @@ public class AggregatorBuilderFactory : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => CreateBuilderFactoryModels(
-            GetOverrideModels(typeof(IAggregator)),
+            GetOverrideModels(typeof(Models.IAggregator)),
             new(
                 Constants.Namespaces.DomainBuilders,
                 nameof(AggregatorBuilderFactory),

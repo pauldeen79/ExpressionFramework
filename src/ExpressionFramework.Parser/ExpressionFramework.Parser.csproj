@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>11.0</LangVersion>
     <Nullable>enable</Nullable>
-    <PackageId>pauldeen79.ExpressionFramework.Domain</PackageId>
+    <PackageId>pauldeen79.ExpressionFramework.Domain.Parser</PackageId>
     <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
     <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -14,7 +14,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="2.7.39" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.39" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FunctionResultParsers\" />
   </ItemGroup>
 
 </Project>

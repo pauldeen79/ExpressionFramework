@@ -11,7 +11,7 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
     protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specialized", string.Empty);
 
     public override object CreateModel()
-        => GetOverrideModels(typeof(IAggregator))
+        => GetOverrideModels(typeof(Models.IAggregator))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)

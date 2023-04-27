@@ -23,6 +23,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Specialized", "src\ExpressionFramework.Domain.Specialized\ExpressionFramework.Domain.Specialized.csproj", "{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser", "src\ExpressionFramework.Parser\ExpressionFramework.Parser.csproj", "{855297B8-4EEE-46FE-AE25-73A696E7E985}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser.Tests", "src\ExpressionFramework.Parser.Tests\ExpressionFramework.Parser.Tests.csproj", "{27EB4107-7085-49CC-8834-58D706E3A00D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +53,14 @@ Global
 		{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A784F69-7CB5-4AC3-BBE6-45766E2FF2B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{855297B8-4EEE-46FE-AE25-73A696E7E985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{855297B8-4EEE-46FE-AE25-73A696E7E985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{855297B8-4EEE-46FE-AE25-73A696E7E985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{855297B8-4EEE-46FE-AE25-73A696E7E985}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27EB4107-7085-49CC-8834-58D706E3A00D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27EB4107-7085-49CC-8834-58D706E3A00D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27EB4107-7085-49CC-8834-58D706E3A00D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27EB4107-7085-49CC-8834-58D706E3A00D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
