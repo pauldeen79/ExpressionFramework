@@ -1,20 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Globalization;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+namespace ExpressionFramework.Parser.FunctionResultParsers;
+
+public class LeftExpressionParser : IFunctionResultParser
 {
-    public class LeftExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser
+    public Result<object?> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult)
+        if (functionParseResult.FunctionName.ToUpperInvariant() != "LEFT")
         {
-            if (functionParseResult.FunctionName.ToUpperInvariant() != "LEFT")
-            {
-                return CrossCutting.Common.Results.Result<object?>.Continue();
-            }
-            throw new System.NotImplementedException();
+            return Result<object?>.Continue();
         }
+
+        var expressionResult = functionParseResult.GetArgumentValueString(0, nameof(LeftExpression.Expression), evaluator);
+        if (!expressionResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(expressionResult);
+        }
+
+        var lengthResult = functionParseResult.GetArgumentValueInt32(1, nameof(LeftExpression.LengthExpression), evaluator);
+        if (!lengthResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(lengthResult);
+        }
+
+        return new LeftExpression(expressionResult.Value!, lengthResult.Value).Evaluate(functionParseResult.Context);
     }
 }
 

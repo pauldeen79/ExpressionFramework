@@ -2,7 +2,7 @@
 
 public class ContextExpressionParser : IFunctionResultParser
 {
-    public Result<object?> Parse(FunctionParseResult functionParseResult)
+    public Result<object?> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
     {
         if (functionParseResult.FunctionName.ToUpperInvariant() != "CONTEXT")
         {

@@ -7,7 +7,7 @@ namespace ExpressionFramework.Parser.FunctionResultParsers
 {
     public class OrderByExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult)
+        public Result<object?> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
         {
             if (functionParseResult.FunctionName.ToUpperInvariant() != "ORDERBY")
             {

@@ -21,6 +21,8 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
                         .WithName(nameof(IFunctionResultParser.Parse))
                         .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                         .AddParameter("functionParseResult", typeof(FunctionParseResult))
+                        //.AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
+                        .AddParameter("evaluator", "CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator")
                         .AddLiteralCodeStatements(
                             $"if (functionParseResult.{nameof(FunctionParseResult.FunctionName)}.ToUpperInvariant() != \"{x.Name[..^10].ToUpperInvariant()}\")",
                             "{",

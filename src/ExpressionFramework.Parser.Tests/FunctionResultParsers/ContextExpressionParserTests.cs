@@ -13,7 +13,7 @@ public class ContextExpressionParserTests
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
         // Act
-        var result = parser.Parse(functionParseResult);
+        var result = parser.Parse(functionParseResult, default);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -28,7 +28,7 @@ public class ContextExpressionParserTests
         var functionParseResult = new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
         // Act
-        var result = parser.Parse(functionParseResult);
+        var result = parser.Parse(functionParseResult, default);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
