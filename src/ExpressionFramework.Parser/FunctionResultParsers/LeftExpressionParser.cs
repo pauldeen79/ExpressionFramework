@@ -17,18 +17,12 @@ public class LeftExpressionParser : IFunctionResultParser
         }
 
         var expressionResult = functionParseResult.GetArgumentStringValue(0, nameof(LeftExpression.Expression), evaluator);
-        if (!expressionResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(expressionResult);
-        }
-
         var lengthResult = functionParseResult.GetArgumentInt32Value(1, nameof(LeftExpression.LengthExpression), evaluator, _parser);
-        if (!lengthResult.IsSuccessful())
-        {
-            return Result<object?>.FromExistingResult(lengthResult);
-        }
 
-        return new LeftExpression(expressionResult.Value!, lengthResult.Value).Evaluate(functionParseResult.Context);
+        return new LeftExpression(
+            new TypedConstantResultExpression<string>(expressionResult),
+            new TypedConstantResultExpression<int>(lengthResult)
+        ).Evaluate(functionParseResult.Context);
     }
 }
 
