@@ -1,22 +1,26 @@
 ﻿namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
 
-public class LeftExpressionParserTests
+public sealed class LeftExpressionParserTests : IDisposable
 {
+    private readonly ServiceProvider _provider;
     private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
 
     public LeftExpressionParserTests()
     {
+        _provider = new ServiceCollection().AddParsers().AddExpressionParsers().BuildServiceProvider();
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>()))
                       .Returns<FunctionParseResult>(result => result.FunctionName == "MyFunction"
                         ? Result<object?>.Success("4")
                         : Result<object?>.NotSupported("Only Parsed result function is supported"));
     }
 
+    public void Dispose() => _provider.Dispose();
+
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
-        var parser = new LeftExpressionParser();
+        var parser = new LeftExpressionParser(_provider.GetRequiredService<IExpressionParser>());
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, default);
 
         // Act
@@ -30,7 +34,7 @@ public class LeftExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
-        var parser = new LeftExpressionParser();
+        var parser = new LeftExpressionParser(_provider.GetRequiredService<IExpressionParser>());
         var functionParseResult = new FunctionParseResult("Left", new FunctionParseResultArgument[] { new LiteralArgument("expression"), new LiteralArgument("4") }, CultureInfo.InvariantCulture, default);
 
         // Act
@@ -45,7 +49,7 @@ public class LeftExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName_With_Function()
     {
         // Arrange
-        var parser = new LeftExpressionParser();
+        var parser = new LeftExpressionParser(_provider.GetRequiredService<IExpressionParser>());
         var functionParseResult = new FunctionParseResult("Left", new FunctionParseResultArgument[] { new LiteralArgument("expression"), new FunctionArgument(new FunctionParseResult("MyFunction", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, default)) }, CultureInfo.InvariantCulture, default);
 
         // Act
