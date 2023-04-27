@@ -14,10 +14,23 @@ public sealed class IntegrationTests : IDisposable
     {
         // Act
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
-        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, this);
+        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("Hello world");
+    }
+
+    [Fact]
+    public void Can_Parse_Function_With_Nested_Expression()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Hello");
     }
 
     [Fact]
