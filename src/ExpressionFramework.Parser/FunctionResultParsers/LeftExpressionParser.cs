@@ -16,12 +16,9 @@ public class LeftExpressionParser : IFunctionResultParser
             return Result<object?>.Continue();
         }
 
-        var expressionResult = functionParseResult.GetArgumentStringValue(0, nameof(LeftExpression.Expression), evaluator);
-        var lengthResult = functionParseResult.GetArgumentInt32Value(1, nameof(LeftExpression.LengthExpression), evaluator, _parser);
-
         return new LeftExpression(
-            new TypedConstantResultExpression<string>(expressionResult),
-            new TypedConstantResultExpression<int>(lengthResult)
+            new TypedDelegateResultExpression<string>(_ => functionParseResult.GetArgumentStringValue(0, nameof(LeftExpression.Expression), evaluator)),
+            new TypedDelegateResultExpression<int>(_ => functionParseResult.GetArgumentInt32Value(1, nameof(LeftExpression.LengthExpression), evaluator, _parser))
         ).Evaluate(functionParseResult.Context);
     }
 }
