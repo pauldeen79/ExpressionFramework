@@ -8,10 +8,13 @@ public class OperatorBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IOperator)),
-            new(Constants.Namespaces.DomainBuilders,
-            nameof(OperatorBuilderFactory),
-            $"{Constants.Namespaces.Domain}.Operator",
-            $"{Constants.Namespaces.DomainBuilders}.Operators",
-            "OperatorBuilder",
-            $"{Constants.Namespaces.Domain}.Operators"));
+            new(
+                Constants.Namespaces.DomainBuilders,
+                nameof(OperatorBuilderFactory),
+                Constants.TypeNames.Operator,
+                Constants.Namespaces.DomainBuildersOperators,
+                Constants.Types.OperatorBuilder,
+                Constants.Namespaces.DomainOperators
+            )
+        );
 }

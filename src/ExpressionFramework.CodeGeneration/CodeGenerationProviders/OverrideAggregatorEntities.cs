@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideAggregatorEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Aggregators)}";
+    public override string Path => Constants.Paths.Aggregators;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;

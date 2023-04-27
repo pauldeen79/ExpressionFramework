@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainBuilders}/Expressions";
+    public override string Path => Constants.Paths.ExpressionBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
@@ -13,6 +13,6 @@ public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetOverrideModels(typeof(IExpression)),
-            $"{Constants.Namespaces.Domain}.Expressions",
+            Constants.Namespaces.DomainExpressions,
             CurrentNamespace);
 }

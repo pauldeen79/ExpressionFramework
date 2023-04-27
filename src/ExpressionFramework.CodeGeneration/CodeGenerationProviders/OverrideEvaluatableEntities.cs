@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideEvaluatableEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Evaluatables)}";
+    public override string Path => Constants.Paths.Evaluatables;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;

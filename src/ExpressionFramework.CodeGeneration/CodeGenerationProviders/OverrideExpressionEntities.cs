@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideExpressionEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Expressions)}";
+    public override string Path => Constants.Paths.Expressions;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;

@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideEvaluatableBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainBuilders}/Evaluatables";
+    public override string Path => Constants.Paths.EvaluatableBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
@@ -13,6 +13,6 @@ public class OverrideEvaluatableBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetOverrideModels(typeof(IEvaluatable)),
-            $"{Constants.Namespaces.Domain}.Evaluatables",
+            Constants.Namespaces.DomainEvaluatables,
             CurrentNamespace);
 }

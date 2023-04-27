@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideAggregatorBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainBuilders}/Aggregators";
+    public override string Path => Constants.Paths.AggregatorBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
@@ -14,6 +14,6 @@ public class OverrideAggregatorBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetOverrideModels(typeof(IAggregator)),
-            $"{Constants.Namespaces.Domain}.Aggregators",
+            Constants.Namespaces.DomainAggregators,
             CurrentNamespace);
 }

@@ -8,11 +8,14 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IExpression)),
-            new(Constants.Namespaces.DomainBuilders,
-            nameof(ExpressionBuilderFactory),
-            $"{Constants.Namespaces.Domain}.Expression",
-            $"{Constants.Namespaces.DomainBuilders}.Expressions",
-            "ExpressionBuilder",
-            $"{Constants.Namespaces.Domain}.Expressions"),
-            $"if (instance is {Constants.Namespaces.Domain}.Contracts.{nameof(IUntypedExpressionProvider)} provider) instance = provider.ToUntyped();");
+            new(
+                Constants.Namespaces.DomainBuilders,
+                nameof(ExpressionBuilderFactory),
+                Constants.TypeNames.Expression,
+                Constants.Namespaces.DomainBuildersExpressions,
+                Constants.Types.ExpressionBuilder,
+                Constants.Namespaces.DomainExpressions
+            ),
+            $"if (instance is {Constants.Namespaces.DomainContracts}.{nameof(IUntypedExpressionProvider)} provider) instance = provider.ToUntyped();"
+        );
 }

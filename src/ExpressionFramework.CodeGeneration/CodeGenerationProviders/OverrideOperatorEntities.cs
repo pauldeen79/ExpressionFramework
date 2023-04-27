@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideOperatorEntities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Operators)}";
+    public override string Path => Constants.Paths.Operators;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;

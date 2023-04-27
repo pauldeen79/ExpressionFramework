@@ -8,10 +8,13 @@ public class EvaluatableBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => CreateBuilderFactoryModels(
             GetOverrideModels(typeof(IEvaluatable)),
-            new(Constants.Namespaces.DomainBuilders,
-            nameof(EvaluatableBuilderFactory),
-            $"{Constants.Namespaces.Domain}.Evaluatable",
-            $"{Constants.Namespaces.DomainBuilders}.Evaluatables",
-            "EvaluatableBuilder",
-            $"{Constants.Namespaces.Domain}.Evaluatables"));
+            new(
+                Constants.Namespaces.DomainBuilders,
+                nameof(EvaluatableBuilderFactory),
+                Constants.TypeNames.Evaluatable,
+                Constants.Namespaces.DomainBuildersEvaluatables,
+                Constants.Types.EvaluatableBuilder,
+                Constants.Namespaces.DomainEvaluatables
+            )
+        );
 }

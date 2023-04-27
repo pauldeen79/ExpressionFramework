@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class OverrideOperatorBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainBuilders}/Operators";
+    public override string Path => Constants.Paths.OperatorBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
@@ -14,6 +14,6 @@ public class OverrideOperatorBuilders : ExpressionFrameworkCSharpClassBase
     public override object CreateModel()
         => GetImmutableBuilderClasses(
             GetOverrideModels(typeof(IOperator)),
-            $"{Constants.Namespaces.Domain}.Operators",
+            Constants.Namespaces.DomainOperators,
             CurrentNamespace);
 }

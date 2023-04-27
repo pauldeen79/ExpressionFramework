@@ -27,7 +27,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     .AddNotImplementedException()
                 );
             
-                var typedInterface = x.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics())?.FixTypeName();
+                var typedInterface = x.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics()).FixTypeName();
                 if (!string.IsNullOrEmpty(typedInterface))
                 {
                     result
