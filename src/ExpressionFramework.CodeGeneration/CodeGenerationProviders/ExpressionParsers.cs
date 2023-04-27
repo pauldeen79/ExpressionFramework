@@ -11,7 +11,7 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !x.GenericTypeArguments.Any())
+            .Where(x => !x.Name.StartsWith("TypedDelegate"))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
