@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+public class ContextExpressionParser : IFunctionResultParser
 {
-    public class ContextExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser
+    public Result<object?> Parse(FunctionParseResult functionParseResult)
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult)
+        if (functionParseResult.FunctionName.ToUpperInvariant() != "CONTEXT")
         {
-            throw new System.NotImplementedException();
+            return Result<object?>.Continue();
         }
+
+        return new ContextExpression().Evaluate(functionParseResult.Context);
     }
 }
 

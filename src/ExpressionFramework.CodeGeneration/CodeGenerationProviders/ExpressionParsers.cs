@@ -21,6 +21,12 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
                         .WithName(nameof(IFunctionResultParser.Parse))
                         .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                         .AddParameter("functionParseResult", typeof(FunctionParseResult))
+                        .AddLiteralCodeStatements(
+                            $"if (functionParseResult.{nameof(FunctionParseResult.FunctionName)}.ToUpperInvariant() != \"{x.Name[..^10].ToUpperInvariant()}\")",
+                            "{",
+                            $"    return {typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName!.GetCsharpFriendlyTypeName()}?>.Continue();",
+                            "}"
+                        )
                         .AddNotImplementedException()
                 )
                 .Build()

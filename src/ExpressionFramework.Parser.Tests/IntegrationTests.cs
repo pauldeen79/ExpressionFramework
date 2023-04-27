@@ -25,7 +25,7 @@ public sealed class IntegrationTests : IDisposable
     {
         // Act
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
-        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, this);
+        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);

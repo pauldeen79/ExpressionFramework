@@ -9,6 +9,10 @@ namespace ExpressionFramework.Parser.FunctionResultParsers
     {
         public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult)
         {
+            if (functionParseResult.FunctionName.ToUpperInvariant() != "WHERE")
+            {
+                return CrossCutting.Common.Results.Result<object?>.Continue();
+            }
             throw new System.NotImplementedException();
         }
     }
