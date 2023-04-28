@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Domain.Expressions;
-
-namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
+﻿namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
 
 public sealed class LeftExpressionParserTests : IDisposable
 {
@@ -9,7 +7,7 @@ public sealed class LeftExpressionParserTests : IDisposable
 
     public LeftExpressionParserTests()
     {
-        _provider = new ServiceCollection().AddParsers().AddExpressionParsers().BuildServiceProvider();
+        _provider = new ServiceCollection().AddParsers().AddExpressionParser().BuildServiceProvider();
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<object?>()))
                       .Returns<FunctionParseResult, object?>((result, context) => result.FunctionName switch
                        {

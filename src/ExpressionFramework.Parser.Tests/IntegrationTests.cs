@@ -6,7 +6,7 @@ public sealed class IntegrationTests : IDisposable
 
     public IntegrationTests()
     {
-        _provider = new ServiceCollection().AddParsers().AddExpressionParsers().BuildServiceProvider();
+        _provider = new ServiceCollection().AddParsers().AddExpressionParser().BuildServiceProvider();
     }
     
     [Fact]

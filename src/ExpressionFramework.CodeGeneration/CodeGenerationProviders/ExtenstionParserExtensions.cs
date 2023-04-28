@@ -9,11 +9,13 @@ public class ExtenstionParserExtensions : ExpressionFrameworkCSharpClassBase
         => new[]
         {
             new ClassBuilder()
+                .WithPartial()
                 .WithStatic()
                 .WithNamespace(Constants.Namespaces.Parser)
                 .WithName("ServiceCollectionExtensions")
                 .AddMethods(
                     new ClassMethodBuilder()
+                        .WithVisibility(Visibility.Private)
                         .WithStatic()
                         .WithExtensionMethod()
                         .WithName("AddExpressionParsers")
