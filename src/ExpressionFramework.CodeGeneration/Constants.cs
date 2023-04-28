@@ -37,6 +37,7 @@ public static class Constants
         public const string OperatorBuilder = "OperatorBuilder";
     }
 
+    [ExcludeFromCodeCoverage]
     public static class TypeNames
     {
         public const string Aggregator = $"{Namespaces.Domain}.Aggregator";
@@ -45,6 +46,7 @@ public static class Constants
         public const string Operator = $"{Namespaces.Domain}.Operator";
     }
 
+    [ExcludeFromCodeCoverage]
     public static class Paths
     {
         public const string Aggregators = $"{Namespaces.DomainSpecialized}/{nameof(Aggregators)}";
