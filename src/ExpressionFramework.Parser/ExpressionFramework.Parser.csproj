@@ -15,10 +15,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.40" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\CrossCutting\src\CrossCutting.Utilities.Parsers\CrossCutting.Utilities.Parsers.csproj" />
     <ProjectReference Include="..\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj" />
   </ItemGroup>
 

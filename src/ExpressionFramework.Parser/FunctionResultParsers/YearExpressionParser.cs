@@ -5,16 +5,33 @@ using System.Text;
 
 namespace ExpressionFramework.Parser.FunctionResultParsers
 {
-    public class YearExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser
+    public class YearExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.Contracts.IExpressionParser
     {
-        public Result<object?> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, object? context, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        {
+            var result = Parse(functionParseResult, evaluator);
+            if (!result.IsSuccessful() || result.Status == CrossCutting.Common.Results.ResultStatus.Continue)
+            {
+                return Result<object?>.FromExistingResult(result);
+            }
+            return result.Value!.Evaluate(context);
+        }
+
+        public CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
         {
             if (functionParseResult.FunctionName.ToUpperInvariant() != "YEAR")
             {
-                return CrossCutting.Common.Results.Result<object?>.Continue();
+                return CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression>.Continue();
             }
             throw new System.NotImplementedException();
         }
+
+        public YearExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        {
+            _parser = parser;
+        }
+
+        private readonly CrossCutting.Utilities.Parsers.Contracts.IExpressionParser _parser;
     }
 }
 

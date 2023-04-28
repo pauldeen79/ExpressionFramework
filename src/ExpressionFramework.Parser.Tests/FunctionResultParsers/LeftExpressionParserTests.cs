@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
+﻿using ExpressionFramework.Domain.Expressions;
+
+namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
 
 public sealed class LeftExpressionParserTests : IDisposable
 {
@@ -8,11 +10,11 @@ public sealed class LeftExpressionParserTests : IDisposable
     public LeftExpressionParserTests()
     {
         _provider = new ServiceCollection().AddParsers().AddExpressionParsers().BuildServiceProvider();
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>()))
-                      .Returns<FunctionParseResult>(result => result.FunctionName switch
+        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<object?>()))
+                      .Returns<FunctionParseResult, object?>((result, context) => result.FunctionName switch
                        {
                            "MyFunction" => Result<object?>.Success("4"),
-                           "Context" => Result<object?>.Success(result.Context),
+                           "Context" => Result<object?>.Success(context),
                            _ => Result<object?>.NotSupported("Only Parsed result function is supported")
                        });
     }
@@ -41,7 +43,7 @@ public sealed class LeftExpressionParserTests : IDisposable
         var functionParseResult = new FunctionParseResult("Left", new FunctionParseResultArgument[] { new LiteralArgument("expression"), new LiteralArgument("4") }, CultureInfo.InvariantCulture, default);
 
         // Act
-        var result = parser.Parse(functionParseResult, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -56,7 +58,7 @@ public sealed class LeftExpressionParserTests : IDisposable
         var functionParseResult = new FunctionParseResult("Left", new FunctionParseResultArgument[] { new LiteralArgument("expression"), new FunctionArgument(new FunctionParseResult("MyFunction", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, default)) }, CultureInfo.InvariantCulture, default);
 
         // Act
-        var result = parser.Parse(functionParseResult, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -71,12 +73,12 @@ public sealed class LeftExpressionParserTests : IDisposable
         var context = "context expression";
         var functionParseResult = new FunctionParseResult("Left", new FunctionParseResultArgument[]
         { 
-            new FunctionArgument(new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, context)),
-            new FunctionArgument(new FunctionParseResult("MyFunction", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, context))
+            new FunctionArgument(new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)),
+            new FunctionArgument(new FunctionParseResult("MyFunction", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null))
         }, CultureInfo.InvariantCulture, context);
 
         // Act
-        var result = parser.Parse(functionParseResult, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, context, _evaluatorMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

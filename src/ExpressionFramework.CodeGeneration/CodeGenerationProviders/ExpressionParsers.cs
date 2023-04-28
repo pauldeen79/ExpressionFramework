@@ -16,21 +16,47 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
                 .AddInterfaces(typeof(IFunctionResultParser))
+                .AddInterfaces($"{Constants.Namespaces.Parser}.Contracts.IExpressionParser")
                 .AddMethods(
                     new ClassMethodBuilder()
                         .WithName(nameof(IFunctionResultParser.Parse))
                         .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                         .AddParameter("functionParseResult", typeof(FunctionParseResult))
-                        //.AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-                        .AddParameter("evaluator", "CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator")
+                        .AddParameter("context", typeof(object), isNullable: true)
+                        .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
+                        .AddLiteralCodeStatements
+                        (
+                            "var result = Parse(functionParseResult, evaluator);",
+                            $"if (!result.IsSuccessful() || result.Status == {typeof(ResultStatus).FullName}.Continue)",
+                            "{",
+                            "    return Result<object?>.FromExistingResult(result);",
+                            "}",
+                            "return result.Value!.Evaluate(context);"
+                        ),
+                    new ClassMethodBuilder()
+                        .WithName("Parse")
+                        .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Expression>")
+                        .AddParameter("functionParseResult", typeof(FunctionParseResult))
+                        .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
                         .AddLiteralCodeStatements(
                             $"if (functionParseResult.{nameof(FunctionParseResult.FunctionName)}.ToUpperInvariant() != \"{x.Name[..^10].ToUpperInvariant()}\")",
                             "{",
-                            $"    return {typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName!.GetCsharpFriendlyTypeName()}?>.Continue();",
+                            $"    return {typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Expression>.Continue();",
                             "}"
                         )
                         .AddNotImplementedException()
                 )
-                .Build()
+            .AddFields(
+                new ClassFieldBuilder()
+                    .WithName("_parser")
+                    .WithType(typeof(IExpressionParser))
+                    .WithReadOnly()
+            )
+            .AddConstructors(
+                new ClassConstructorBuilder()
+                    .AddParameter("parser", typeof(IExpressionParser))
+                    .AddLiteralCodeStatements("_parser = parser;")
+            )
+            .Build()
             );
 }

@@ -1,25 +1,34 @@
 ﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-public class LeftExpressionParser : IFunctionResultParser
+public class LeftExpressionParser : IFunctionResultParser, Contracts.IExpressionParser
 {
-    private readonly IExpressionParser _parser;
+    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
+    {
+        var result = Parse(functionParseResult, evaluator);
+        if (!result.IsSuccessful() || result.Status == ResultStatus.Continue)
+        {
+            return Result<object?>.FromExistingResult(result);
+        }
+        return result.Value!.Evaluate(context);
+    }
 
-    public LeftExpressionParser(IExpressionParser parser)
+    public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    {
+        if (functionParseResult.FunctionName.ToUpperInvariant() != "LEFT")
+        {
+            return Result<Expression>.Continue();
+        }
+        return Result<Expression>.Success(new LeftExpression(
+            new TypedDelegateResultExpression<string>(context => functionParseResult.GetArgumentStringValue(0, nameof(LeftExpression.Expression), context, evaluator)),
+            new TypedDelegateResultExpression<int>(context => functionParseResult.GetArgumentInt32Value(1, nameof(LeftExpression.LengthExpression), context, evaluator, _parser))
+        ));
+    }
+
+    public LeftExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
     {
         _parser = parser;
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
-    {
-        if (functionParseResult.FunctionName.ToUpperInvariant() != "LEFT")
-        {
-            return Result<object?>.Continue();
-        }
-
-        return new LeftExpression(
-            new TypedDelegateResultExpression<string>(_ => functionParseResult.GetArgumentStringValue(0, nameof(LeftExpression.Expression), evaluator)),
-            new TypedDelegateResultExpression<int>(_ => functionParseResult.GetArgumentInt32Value(1, nameof(LeftExpression.LengthExpression), evaluator, _parser))
-        ).Evaluate(functionParseResult.Context);
-    }
+    private readonly CrossCutting.Utilities.Parsers.Contracts.IExpressionParser _parser;
 }
 
