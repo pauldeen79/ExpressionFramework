@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Parser.Contracts;
 
-public interface IExpressionParser
+public interface IExpressionResolver
 {
     Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);
 }

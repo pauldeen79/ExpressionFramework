@@ -16,7 +16,7 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
                 .AddInterfaces(typeof(IFunctionResultParser))
-                .AddInterfaces($"{Constants.Namespaces.Parser}.Contracts.IExpressionParser")
+                .AddInterfaces($"{Constants.Namespaces.Parser}.Contracts.IExpressionResolver")
                 .AddMethods(
                     new ClassMethodBuilder()
                         .WithName(nameof(IFunctionResultParser.Parse))

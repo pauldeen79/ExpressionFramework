@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-public class ContextExpressionParser : IFunctionResultParser, Contracts.IExpressionParser
+public class ContextExpressionParser : IFunctionResultParser, IExpressionResolver
 {
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
     {
@@ -11,13 +11,8 @@ public class ContextExpressionParser : IFunctionResultParser, Contracts.IExpress
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
-    {
-        if (functionParseResult.FunctionName.ToUpperInvariant() != "CONTEXT")
-        {
-            return Result<Expression>.Continue();
-        }
-
-        return Result<Expression>.Success(new ContextExpression());
-    }
+        => functionParseResult.FunctionName.ToUpperInvariant() == "CONTEXT"
+            ? Result<Expression>.Success(new ContextExpression())
+            : Result<Expression>.Continue();
 }
 
