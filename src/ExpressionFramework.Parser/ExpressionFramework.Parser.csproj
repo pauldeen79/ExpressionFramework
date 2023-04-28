@@ -22,8 +22,4 @@
     <ProjectReference Include="..\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FunctionResultParsers\" />
-  </ItemGroup>
-
 </Project>

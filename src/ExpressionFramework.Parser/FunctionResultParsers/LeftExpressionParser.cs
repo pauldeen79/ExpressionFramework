@@ -12,11 +12,9 @@ public class LeftExpressionParser : IFunctionResultParser, IExpressionResolver
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
     {
         var result = Parse(functionParseResult, evaluator);
-        if (!result.IsSuccessful() || result.Status == ResultStatus.Continue)
-        {
-            return Result<object?>.FromExistingResult(result);
-        }
-        return result.Value!.Evaluate(context);
+        return result.IsSuccessful() && result.Status != ResultStatus.Continue
+            ? result.Value!.Evaluate(context)
+            : Result<object?>.FromExistingResult(result);
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)

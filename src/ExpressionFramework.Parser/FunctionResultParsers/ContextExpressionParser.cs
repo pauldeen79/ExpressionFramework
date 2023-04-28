@@ -5,9 +5,9 @@ public class ContextExpressionParser : IFunctionResultParser, IExpressionResolve
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
     {
         var result = Parse(functionParseResult, evaluator);
-        return !result.IsSuccessful() || result.Status == ResultStatus.Continue
-            ? Result<object?>.FromExistingResult(result)
-            : result.Value!.Evaluate(context);
+        return result.IsSuccessful() && result.Status != ResultStatus.Continue
+            ? result.Value!.Evaluate(context)
+            : Result<object?>.FromExistingResult(result);
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)

@@ -1,37 +1,34 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+public class DelegateExpressionParser : IFunctionResultParser, IExpressionResolver
 {
-    public class DelegateExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.Contracts.IExpressionResolver
+    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, object? context, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        var result = Parse(functionParseResult, evaluator);
+        return result.IsSuccessful() && result.Status != ResultStatus.Continue
+            ? result.Value!.Evaluate(context)
+            : Result<object?>.FromExistingResult(result);
+    }
+
+    public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    {
+        if (functionParseResult.FunctionName.ToUpperInvariant() != "DELEGATE")
         {
-            var result = Parse(functionParseResult, evaluator);
-            if (!result.IsSuccessful() || result.Status == CrossCutting.Common.Results.ResultStatus.Continue)
-            {
-                return Result<object?>.FromExistingResult(result);
-            }
-            return result.Value!.Evaluate(context);
+            return Result<Expression>.Continue();
         }
 
-        public CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        var delegateValueResult = functionParseResult.GetArgumentValue(0, nameof(DelegateExpression.Value), functionParseResult.Context, evaluator);
+        if (!delegateValueResult.IsSuccessful())
         {
-            if (functionParseResult.FunctionName.ToUpperInvariant() != "DELEGATE")
-            {
-                return CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression>.Continue();
-            }
-            throw new System.NotImplementedException();
+            return Result<Expression>.FromExistingResult(delegateValueResult);
         }
 
-        public DelegateExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        if (delegateValueResult.Value is not Func<object?, object?> dlg)
         {
-            _parser = parser;
+            return Result<Expression>.Invalid("Value is not of type delegate (Func<object?, object?>)");
         }
 
-        private readonly CrossCutting.Utilities.Parsers.Contracts.IExpressionParser _parser;
+        return Result<Expression>.Success(new DelegateExpression(dlg));
     }
 }
 

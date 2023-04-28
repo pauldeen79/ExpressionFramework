@@ -22,6 +22,18 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
+    public void Can_Parse_Function_With_Expression_And_Using_FormattableStrings_As_Well()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("Hello world");
+    }
+
+    [Fact]
     public void Can_Parse_Function_With_Nested_Expression()
     {
         // Act
