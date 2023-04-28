@@ -1,22 +1,13 @@
 ﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-public class DelegateExpressionParser : IFunctionResultParser, IExpressionResolver
+public class DelegateExpressionParser : ExpressionParserBase
 {
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
+    public DelegateExpressionParser(IExpressionParser parser) : base(parser, "Delegate")
     {
-        var result = Parse(functionParseResult, evaluator);
-        return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value!.Evaluate(context)
-            : Result<object?>.FromExistingResult(result);
     }
 
-    public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
     {
-        if (functionParseResult.FunctionName.ToUpperInvariant() != "DELEGATE")
-        {
-            return Result<Expression>.Continue();
-        }
-
         var delegateValueResult = functionParseResult.GetArgumentValue(0, nameof(DelegateExpression.Value), functionParseResult.Context, evaluator);
         if (!delegateValueResult.IsSuccessful())
         {

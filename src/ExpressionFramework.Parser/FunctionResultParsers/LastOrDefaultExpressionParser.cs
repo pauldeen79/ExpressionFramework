@@ -5,33 +5,16 @@ using System.Text;
 
 namespace ExpressionFramework.Parser.FunctionResultParsers
 {
-    public class LastOrDefaultExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.Contracts.IExpressionResolver
+    public class LastOrDefaultExpressionParser : ExpressionParserBase
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, object? context, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
         {
-            var result = Parse(functionParseResult, evaluator);
-            if (!result.IsSuccessful() || result.Status == CrossCutting.Common.Results.ResultStatus.Continue)
-            {
-                return Result<object?>.FromExistingResult(result);
-            }
-            return result.Value!.Evaluate(context);
-        }
-
-        public CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
-        {
-            if (functionParseResult.FunctionName.ToUpperInvariant() != "LASTORDEFAULT")
-            {
-                return CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression>.Continue();
-            }
             throw new System.NotImplementedException();
         }
 
-        public LastOrDefaultExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        public LastOrDefaultExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"LastOrDefault")
         {
-            _parser = parser;
         }
-
-        private readonly CrossCutting.Utilities.Parsers.Contracts.IExpressionParser _parser;
     }
 }
 

@@ -3,6 +3,7 @@
 public class ConstantExpressionParserTests
 {
     private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
+    private readonly Mock<IExpressionParser> _parserMock = new();
 
     public ConstantExpressionParserTests()
     {
@@ -13,7 +14,7 @@ public class ConstantExpressionParserTests
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
-        var parser = new ConstantExpressionParser();
+        var parser = new ConstantExpressionParser(_parserMock.Object);
         var contextValue = "the context value";
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
@@ -28,7 +29,7 @@ public class ConstantExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
-        var parser = new ConstantExpressionParser();
+        var parser = new ConstantExpressionParser(_parserMock.Object);
         var functionParseResult = new FunctionParseResult("Constant", new[] { new LiteralArgument("some value") }, CultureInfo.InvariantCulture, null);
 
         // Act
@@ -43,7 +44,7 @@ public class ConstantExpressionParserTests
     public void Parse_Returns_Error_When_ArgumentParsing_Fails()
     {
         // Arrange
-        var parser = new ConstantExpressionParser();
+        var parser = new ConstantExpressionParser(_parserMock.Object);
         var functionParseResult = new FunctionParseResult("Constant", new[] { new FunctionArgument(new FunctionParseResult("UNKNOWN_FUNCTION", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act

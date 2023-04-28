@@ -5,33 +5,16 @@ using System.Text;
 
 namespace ExpressionFramework.Parser.FunctionResultParsers
 {
-    public class FirstExpressionParser : CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.Contracts.IExpressionResolver
+    public class FirstExpressionParser : ExpressionParserBase
     {
-        public CrossCutting.Common.Results.Result<object?> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, object? context, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
         {
-            var result = Parse(functionParseResult, evaluator);
-            if (!result.IsSuccessful() || result.Status == CrossCutting.Common.Results.ResultStatus.Continue)
-            {
-                return Result<object?>.FromExistingResult(result);
-            }
-            return result.Value!.Evaluate(context);
-        }
-
-        public CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> Parse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
-        {
-            if (functionParseResult.FunctionName.ToUpperInvariant() != "FIRST")
-            {
-                return CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression>.Continue();
-            }
             throw new System.NotImplementedException();
         }
 
-        public FirstExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        public FirstExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"First")
         {
-            _parser = parser;
         }
-
-        private readonly CrossCutting.Utilities.Parsers.Contracts.IExpressionParser _parser;
     }
 }
 

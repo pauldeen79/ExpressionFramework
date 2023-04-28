@@ -3,6 +3,7 @@
 public class DelegateExpressionParserTests
 {
     private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
+    private readonly Mock<IExpressionParser> _parserMock = new();
 
     public DelegateExpressionParserTests()
     {
@@ -19,7 +20,7 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
-        var parser = new DelegateExpressionParser();
+        var parser = new DelegateExpressionParser(_parserMock.Object);
         var contextValue = "the context value";
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
@@ -34,7 +35,7 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
-        var parser = new DelegateExpressionParser();
+        var parser = new DelegateExpressionParser(_parserMock.Object);
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("MyDelegate", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
@@ -49,7 +50,7 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Success_For_Wrong_FunctionResult()
     {
         // Arrange
-        var parser = new DelegateExpressionParser();
+        var parser = new DelegateExpressionParser(_parserMock.Object);
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("MyString", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
@@ -64,7 +65,7 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Error_When_ArgumentParsing_Fails()
     {
         // Arrange
-        var parser = new DelegateExpressionParser();
+        var parser = new DelegateExpressionParser(_parserMock.Object);
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("UNKNOWN_FUNCTION", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
