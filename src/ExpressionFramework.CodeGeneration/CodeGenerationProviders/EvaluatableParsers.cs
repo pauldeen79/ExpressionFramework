@@ -14,7 +14,7 @@ public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
             .Select(x => CreateParserClass
             (
                 x,
-                "Evaluatable",
+                Constants.Types.Evaluatable,
                 x.Name,
                 true,
                 m => m.AddNotImplementedException()

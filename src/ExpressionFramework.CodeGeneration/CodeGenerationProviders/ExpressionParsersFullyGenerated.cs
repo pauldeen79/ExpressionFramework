@@ -13,10 +13,10 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
             .Select(x => CreateParserClass
             (
                 x,
-                "Expression",
-                x.Name.ReplaceSuffix("Expression", string.Empty, StringComparison.InvariantCulture),
+                Constants.Types.Expression,
+                x.Name.ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
                 true,
-                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Expression>.Success(new {Constants.Namespaces.DomainExpressions}.{x.Name}({CreateArguments(x)}));")
+                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>.Success(new {Constants.Namespaces.DomainExpressions}.{x.Name}({CreateArguments(x)}));")
             ).Build());
 
     private static string CreateArguments(ITypeBase x)

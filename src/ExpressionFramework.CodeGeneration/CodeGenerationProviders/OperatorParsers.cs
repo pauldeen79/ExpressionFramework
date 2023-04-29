@@ -12,9 +12,9 @@ public class OperatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
             .Select(x => CreateParserClass
             (
                 x,
-                "Operator",
+                Constants.Types.Operator,
                 x.Name,
                 false,
-                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Operator>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
+                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Operator}>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
             ).Build());
 }

@@ -15,8 +15,8 @@ public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
             .Select(x => CreateParserClass
             (
                 x,
-                "Expression",
-                x.Name.ReplaceSuffix("Expression", string.Empty, StringComparison.InvariantCulture),
+                Constants.Types.Expression,
+                x.Name.ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
                 true,
                 m => m.AddNotImplementedException()
             ).Build());

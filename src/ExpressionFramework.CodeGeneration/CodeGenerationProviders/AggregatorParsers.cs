@@ -12,9 +12,9 @@ public class AggregatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
             .Select(x => CreateParserClass
             (
                 x,
-                "Aggregator",
+                Constants.Types.Aggregator,
                 x.Name,
                 false,
-                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Aggregator>.Success(new {Constants.Namespaces.DomainAggregators}.{x.Name}());")
+                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Aggregator}>.Success(new {Constants.Namespaces.DomainAggregators}.{x.Name}());")
             ).Build());
 }
