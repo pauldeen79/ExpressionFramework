@@ -15,4 +15,5 @@ expressions:
 
 general:
 - Review if we want to add validation for parameters?
-
+- Generate OperatorResultParsers, EvaluatableResultParsers and AggregatorResultParsers.
+  They can al be simply "newed", so you just have to register them as functions

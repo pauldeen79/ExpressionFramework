@@ -7,12 +7,12 @@ namespace ExpressionFramework.Parser.FunctionResultParsers
 {
     public class DelegateResultExpressionParser : ExpressionParserBase
     {
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
-        public DelegateResultExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"DelegateResult")
+        public DelegateResultExpressionParser(IExpressionParser parser) : base(parser, @"DelegateResult")
         {
         }
     }

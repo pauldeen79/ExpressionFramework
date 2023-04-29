@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+public class AggregateExpressionParser : ExpressionParserBase
 {
-    public class AggregateExpressionParser : ExpressionParserBase
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
     {
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
-        {
-            throw new System.NotImplementedException();
-        }
+        var aggregator = GetArgumentValue<Aggregator>(functionParseResult, 1, nameof(AggregateExpression.Aggregator), evaluator);
+        var result = aggregator.Value.Invoke(functionParseResult.Context);
+        return result.IsSuccessful()
+            ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValue(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator), result.Value!))
+            : Result<Expression>.FromExistingResult(result);
+    }
 
-        public AggregateExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"Aggregate")
-        {
-        }
+    public AggregateExpressionParser(IExpressionParser parser) : base(parser, @"Aggregate")
+    {
     }
 }
 
