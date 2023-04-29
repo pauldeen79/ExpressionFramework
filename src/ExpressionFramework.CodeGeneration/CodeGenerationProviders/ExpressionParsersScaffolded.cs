@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => Constants.Paths.ParserFunctionResultParsers;
+    public override string Path => Constants.Paths.ParserExpressionResultParsers;
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;

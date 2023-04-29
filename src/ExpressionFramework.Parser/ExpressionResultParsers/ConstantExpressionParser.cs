@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
+﻿namespace ExpressionFramework.Parser.ExpressionResultParsers;
 
 public class ConstantExpressionParser : ExpressionParserBase
 {

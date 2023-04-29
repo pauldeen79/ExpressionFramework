@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
-    public class TypedDelegateResultExpressionParser : ExpressionParserBase
+    public class InvalidExpressionParser : ExpressionParserBase
     {
         protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
         {
             throw new NotImplementedException();
         }
 
-        public TypedDelegateResultExpressionParser(IExpressionParser parser) : base(parser, @"TypedDelegateResult")
+        public InvalidExpressionParser(IExpressionParser parser) : base(parser, @"Invalid")
         {
         }
     }

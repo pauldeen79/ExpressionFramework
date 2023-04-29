@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => Constants.Paths.ParserFunctionResultParsers;
+    public override string Path => Constants.Paths.ParserExpressionResultParsers;
 
     protected override bool CreateCodeGenerationHeader => false;
 

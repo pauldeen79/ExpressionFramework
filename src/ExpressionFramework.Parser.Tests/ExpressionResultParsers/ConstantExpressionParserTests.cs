@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Parser.Tests.FunctionResultParsers;
+﻿namespace ExpressionFramework.Parser.Tests.ExpressionResultParsers;
 
 public class ConstantExpressionParserTests
 {
