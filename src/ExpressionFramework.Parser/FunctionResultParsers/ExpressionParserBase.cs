@@ -1,4 +1,7 @@
-﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
+﻿using CrossCutting.Utilities.Parsers;
+using ExpressionFramework.Domain.Expressions;
+
+namespace ExpressionFramework.Parser.FunctionResultParsers;
 
 public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionResolver
 {
@@ -25,4 +28,20 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             : Result<Expression>.Continue();
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);
+
+    protected TypedDelegateResultExpression<T> GetArgumentValue<T>(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
+    {
+        var delegateValueResult = functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator);
+        if (!delegateValueResult.IsSuccessful())
+        {
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.FromExistingResult(delegateValueResult));
+        }
+
+        if (delegateValueResult.Value is not T t)
+        {
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type{typeof(T).FullName}"));
+        }
+
+        return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
+    }
 }

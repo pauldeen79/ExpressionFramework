@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
+public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserFunctionResultParsers;
     public override string LastGeneratedFilesFileName => string.Empty;
@@ -11,7 +11,7 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !x.Name.StartsWith("TypedDelegate"))
+            .Where(x => !x.Name.StartsWith("TypedDelegate") && !(!x.GenericTypeArguments.Any() || !x.Properties.All(x => IsSupported(x.TypeName))))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
@@ -31,4 +31,7 @@ public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
                 )
             .Build()
             );
+
+    private static bool IsSupported(string typeName)
+        => typeName.WithoutProcessedGenerics().GetClassName().In("Expression", "ITypedExpression") && !typeName.GetGenericArguments().GetClassName().StartsWith("IEnumerable");
 }

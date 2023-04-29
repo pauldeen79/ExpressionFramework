@@ -3,10 +3,6 @@
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
 {
-    public GenerationType GenerationType => string.IsNullOrEmpty(LastGeneratedFilesFileName)
-        ? GenerationType.Scaffold
-        : GenerationType.Generate;
-
     public override bool RecurseOnDeleteGeneratedFiles => false;
     public override string DefaultFileName => string.Empty; // not used because we're using multiple files, but it's abstract so we need to fill ilt
 
@@ -233,4 +229,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         return x.TypeName.ToString();
     }
+
+    public CodeGenerationSettings GetSettings(CodeGenerationSettings settings)
+        => string.IsNullOrEmpty(LastGeneratedFilesFileName)
+            ? settings.ForScaffolding()
+            : settings.ForGeneration();
 }

@@ -21,8 +21,7 @@ internal static class Program
 
         // Generate code
         var generators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase)).ToArray();
-        _ = generators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Where(x => x.GenerationType == GenerationType.Generate).Select(x => GenerateCode.For(settings.ForGeneration(), multipleContentBuilder, x)).ToArray();
-        _ = generators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Where(x => x.GenerationType == GenerationType.Scaffold).Select(x => GenerateCode.For(settings.ForScaffolding(), multipleContentBuilder, x)).ToArray();
+        _ = generators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(x.GetSettings(settings), multipleContentBuilder, x)).ToArray();
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
