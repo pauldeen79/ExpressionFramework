@@ -25,7 +25,7 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
                     .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
                     .WithProtected()
                     .WithOverride()
-                    .AddLiteralCodeStatements($"return Result<Expression>.Success(new {Constants.Namespaces.DomainExpressions}.{x.Name}({CreateArguments(x)}));")
+                    .AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Expression>.Success(new {Constants.Namespaces.DomainExpressions}.{x.Name}({CreateArguments(x)}));")
                 )
             .Build()
             );
