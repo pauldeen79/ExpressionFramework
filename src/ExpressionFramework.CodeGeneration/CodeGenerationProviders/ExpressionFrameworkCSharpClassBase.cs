@@ -190,7 +190,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     private static bool IsSupported(IClassProperty p)
         => p.TypeName.WithoutProcessedGenerics().GetClassName().In("Expression", "ITypedExpression")
-        && !p.TypeName.GetGenericArguments().GetClassName().StartsWith("IEnumerable");
+        //|| p.TypeName.GetGenericArguments().GetClassName() == "Expression"
+        || p.TypeName == "ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>"
+        || p.TypeName == "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>";
 
     private static string CreateParameterSelection(ParameterBuilder x)
     {

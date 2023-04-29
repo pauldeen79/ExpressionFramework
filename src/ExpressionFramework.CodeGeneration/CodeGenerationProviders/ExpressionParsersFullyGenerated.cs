@@ -33,17 +33,25 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
     private static string CreateArguments(ITypeBase x)
     {
         var builder = new StringBuilder();
-        builder.AppendLine().Append("            ");
+        builder.AppendLine().Append("    ");
         var index = 0;
         foreach (var prop in x.Properties)
         {
             if (index > 0)
             {
-                builder.AppendLine(",").Append("            ");
+                builder.AppendLine(",").Append("    ");
             }
             if (prop.TypeName.GetClassName() == "Expression")
             {
                 builder.Append($"new TypedDelegateResultExpression<object>(_ => functionParseResult.GetArgumentValue({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator))");
+            }
+            else if (prop.TypeName == "ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>")
+            {
+                builder.Append($"GetTypedExpressionsArgumentValue(functionParseResult, {index}, {prop.Name.CsharpFormat()}, evaluator)");
+            }
+            else if (prop.TypeName == "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>")
+            {
+                builder.Append($"GetExpressionsArgumentValue(functionParseResult, {index}, {prop.Name.CsharpFormat()}, evaluator)");
             }
             else if (prop.TypeName.WithoutProcessedGenerics().GetClassName() == "ITypedExpression")
             {

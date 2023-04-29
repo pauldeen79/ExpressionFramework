@@ -1,7 +1,4 @@
-﻿using CrossCutting.Utilities.Parsers;
-using ExpressionFramework.Domain.Expressions;
-
-namespace ExpressionFramework.Parser.FunctionResultParsers;
+﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
 public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionResolver
 {
@@ -43,6 +40,15 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         }
 
         return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
+    }
+
+    protected ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValue(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
+    {
+        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, 0, nameof(ChainedExpression.Expressions), evaluator).Value.Invoke(functionParseResult.Context);
+
+        return new TypedDelegateExpression<IEnumerable>(_ => expressions.IsSuccessful()
+            ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
+            : new Expression[] { new DelegateResultExpression(_ => Result<object?>.FromExistingResult(expressions)) });
     }
 
     protected IEnumerable<Expression> GetExpressionsArgumentValue(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
