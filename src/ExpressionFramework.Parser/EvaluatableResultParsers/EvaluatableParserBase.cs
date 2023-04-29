@@ -3,9 +3,11 @@
 public abstract class EvaluatableParserBase : IFunctionResultParser
 {
     private readonly string _functionName;
+    protected IExpressionParser Parser { get; }
 
-    protected EvaluatableParserBase(string functionName)
+    protected EvaluatableParserBase(IExpressionParser parser, string functionName)
     {
+        Parser = parser;
         _functionName = functionName;
     }
 

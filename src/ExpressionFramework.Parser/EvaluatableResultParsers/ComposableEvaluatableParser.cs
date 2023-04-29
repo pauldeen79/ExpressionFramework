@@ -1,14 +1,20 @@
-﻿namespace ExpressionFramework.Parser.EvaluatableResultParsers;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
-public class ComposableEvaluatableParser : EvaluatableParserBase
+namespace ExpressionFramework.Parser.EvaluatableResultParsers
 {
-    protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    public class ComposableEvaluatableParser : EvaluatableParserBase
     {
-        throw new NotImplementedException();
-    }
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
+        {
+            throw new System.NotImplementedException();
+        }
 
-    public ComposableEvaluatableParser() : base(@"ComposableEvaluatable")
-    {
+        public ComposableEvaluatableParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"ComposableEvaluatable")
+        {
+        }
     }
 }
 
