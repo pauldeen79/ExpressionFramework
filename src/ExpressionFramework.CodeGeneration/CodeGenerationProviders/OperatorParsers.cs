@@ -9,22 +9,12 @@ public class OperatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IOperator))
-            .Select(x => new ClassBuilder()
-                .WithNamespace(CurrentNamespace)
-                .WithName($"{x.Name}Parser")
-                .WithBaseClass("OperatorParserBase")
-                .AddConstructors(new ClassConstructorBuilder()
-                    .WithChainCall($"base({x.Name.CsharpFormat()})")
-                )
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("DoParse")
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Operator>")
-                    .AddParameter("functionParseResult", typeof(FunctionParseResult))
-                    .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-                    .WithProtected()
-                    .WithOverride()
-                    .AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Operator>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
-                )
-            .Build()
-            );
+            .Select(x => CreateParserClass
+            (
+                x,
+                "Operator",
+                x.Name,
+                false,
+                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Operator>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
+            ).Build());
 }

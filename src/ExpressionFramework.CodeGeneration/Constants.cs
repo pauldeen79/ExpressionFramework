@@ -33,6 +33,7 @@ public static class Constants
         public const string Aggregator = "Aggregator";
         public const string Evaluatable = "Evaluatable";
         public const string Expression = "Expression";
+        public const string ITypedExpression = "ITypedExpression";
         public const string Operator = "Operator";
 
         public const string AggregatorBuilder = "AggregatorBuilder";

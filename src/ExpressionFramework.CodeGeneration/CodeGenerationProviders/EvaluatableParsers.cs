@@ -11,23 +11,12 @@ public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IEvaluatable))
-            .Select(x => new ClassBuilder()
-                .WithNamespace(CurrentNamespace)
-                .WithName($"{x.Name}Parser")
-                .WithBaseClass("EvaluatableParserBase")
-                .AddConstructors(new ClassConstructorBuilder()
-                    .AddParameter("parser", typeof(IExpressionParser))
-                    .WithChainCall($"base(parser, {x.Name.CsharpFormat()})")
-                )
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("DoParse")
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Evaluatable>")
-                    .AddParameter("functionParseResult", typeof(FunctionParseResult))
-                    .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-                    .WithProtected()
-                    .WithOverride()
-                    .AddNotImplementedException()
-                )
-            .Build()
-            );
+            .Select(x => CreateParserClass
+            (
+                x,
+                "Evaluatable",
+                x.Name,
+                true,
+                m => m.AddNotImplementedException()
+            ).Build());
 }

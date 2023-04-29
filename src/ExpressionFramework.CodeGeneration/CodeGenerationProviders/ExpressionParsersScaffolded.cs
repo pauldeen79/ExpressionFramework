@@ -11,24 +11,13 @@ public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !IsSupported(x))
-            .Select(x => new ClassBuilder()
-                .WithNamespace(CurrentNamespace)
-                .WithName($"{x.Name}Parser")
-                .WithBaseClass("ExpressionParserBase")
-                .AddConstructors(new ClassConstructorBuilder()
-                    .AddParameter("parser", typeof(IExpressionParser))
-                    .WithChainCall($"base(parser, {x.Name.ReplaceSuffix("Expression", string.Empty, StringComparison.InvariantCulture).CsharpFormat()})")
-                )
-                .AddMethods(new ClassMethodBuilder()
-                    .WithName("DoParse")
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Expression>")
-                    .AddParameter("functionParseResult", typeof(FunctionParseResult))
-                    .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-                    .WithProtected()
-                    .WithOverride()
-                    .AddNotImplementedException()
-                )
-            .Build()
-            );
+            .Where(x => !IsSupportedExpressionForGeneratedParser(x))
+            .Select(x => CreateParserClass
+            (
+                x,
+                "Expression",
+                x.Name.ReplaceSuffix("Expression", string.Empty, StringComparison.InvariantCulture),
+                true,
+                m => m.AddNotImplementedException()
+            ).Build());
 }

@@ -9,7 +9,7 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(IsSupported)
+            .Where(IsSupportedExpressionForGeneratedParser)
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")

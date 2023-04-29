@@ -183,16 +183,42 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
     protected Dictionary<string, TypeBaseBuilder> BaseTypes { get; } = new();
 
-    protected static bool IsSupported(ITypeBase t)
+    protected static bool IsSupportedExpressionForGeneratedParser(ITypeBase t)
         => !t.Name.StartsWith("TypedDelegate")
         && !t.GenericTypeArguments.Any()
         && t.Properties.All(IsSupported);
 
+    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, bool addParser, Action<ClassMethodBuilder> methodDelegate)
+        => new ClassBuilder()
+            .WithNamespace(CurrentNamespace)
+            .WithName($"{typeBase.Name}Parser")
+            .WithBaseClass($"{type}ParserBase")
+            .AddConstructors(new[]
+            {
+                new ClassConstructorBuilder()
+                    .AddParameter("parser", typeof(IExpressionParser))
+                    .WithChainCall($"base(parser, {name.CsharpFormat()})")
+            }.Where(_ => addParser))
+            .AddConstructors(new[]
+            {
+                new ClassConstructorBuilder()
+                    .WithChainCall($"base({name.CsharpFormat()})")
+            }.Where(_ => !addParser))
+
+            .AddMethods(new ClassMethodBuilder()
+                .WithName("DoParse")
+                .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
+                .AddParameter("functionParseResult", typeof(FunctionParseResult))
+                .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
+                .WithProtected()
+                .WithOverride()
+                .With(methodDelegate)
+            );
+
     private static bool IsSupported(IClassProperty p)
-        => p.TypeName.WithoutProcessedGenerics().GetClassName().In("Expression", "ITypedExpression")
-        //|| p.TypeName.GetGenericArguments().GetClassName() == "Expression"
-        || p.TypeName == "ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>"
-        || p.TypeName == "System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>";
+        => p.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
+        || p.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
+        || p.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>";
 
     private static string CreateParameterSelection(ParameterBuilder x)
     {
