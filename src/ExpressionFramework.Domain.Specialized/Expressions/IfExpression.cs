@@ -17,7 +17,7 @@ public partial record IfExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        var result = new EvaluatableExpression(Condition).EvaluateTyped(context);
+        var result = new EvaluatableExpression(Condition, ResultExpression).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(result);

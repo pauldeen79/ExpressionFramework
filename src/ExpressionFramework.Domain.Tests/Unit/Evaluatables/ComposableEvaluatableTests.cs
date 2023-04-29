@@ -246,5 +246,5 @@ public class ComposableEvaluatableTests
     }
 
     private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)
-        => new EvaluatableExpression(new ComposedEvaluatable(conditions)).EvaluateTyped();
+        => new EvaluatableExpression(new ComposedEvaluatable(conditions), new EmptyExpression()).EvaluateTyped();
 }

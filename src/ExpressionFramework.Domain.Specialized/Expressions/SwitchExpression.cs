@@ -38,7 +38,7 @@ public partial record SwitchExpression
 
     private Result<(bool ConditionResult, Result<object?> ExpressionResult)> EvaluateWithConditionResult(Case @case, object? context)
     {
-        var result = new EvaluatableExpression(@case.Condition).EvaluateTyped(context);
+        var result = new EvaluatableExpression(@case.Condition, @case.Expression).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
             return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.FromExistingResult(result);
