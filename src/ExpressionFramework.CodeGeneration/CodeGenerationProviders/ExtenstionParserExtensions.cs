@@ -35,6 +35,9 @@ public class ExtenstionParserExtensions : ExpressionFrameworkCSharpClassBase
                         .AddLiteralCodeStatements(GetOverrideModels(typeof(IOperator))
                             .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.Name}Parser>();")
                         )
+                        .AddLiteralCodeStatements(GetOverrideModels(typeof(IEvaluatable))
+                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.Name}Parser>();")
+                        )
                         .AddLiteralCodeStatements("return services;")
                 ).Build()
         };

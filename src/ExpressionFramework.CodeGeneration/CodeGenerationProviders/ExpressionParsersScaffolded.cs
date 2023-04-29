@@ -18,7 +18,7 @@ public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 .WithBaseClass("ExpressionParserBase")
                 .AddConstructors(new ClassConstructorBuilder()
                     .AddParameter("parser", typeof(IExpressionParser))
-                    .WithChainCall($"base(parser, {x.Name[..^10].CsharpFormat()})")
+                    .WithChainCall($"base(parser, {x.Name.ReplaceSuffix("Expression", string.Empty, StringComparison.InvariantCulture).CsharpFormat()})")
                 )
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("DoParse")

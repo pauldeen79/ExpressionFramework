@@ -1,29 +1,31 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class OperatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
+public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => Constants.Paths.ParserOperatorResultParsers;
+    public override string Path => Constants.Paths.ParserEvaluatableResultParsers;
+    public override string LastGeneratedFilesFileName => string.Empty;
 
+    protected override string FileNameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
-        => GetOverrideModels(typeof(IOperator))
+        => GetOverrideModels(typeof(IEvaluatable))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
-                .WithBaseClass("OperatorParserBase")
+                .WithBaseClass("EvaluatableParserBase")
                 .AddConstructors(new ClassConstructorBuilder()
                     .WithChainCall($"base({x.Name.CsharpFormat()})")
                 )
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("DoParse")
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Operator>")
+                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.Evaluatable>")
                     .AddParameter("functionParseResult", typeof(FunctionParseResult))
                     .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
                     .WithProtected()
                     .WithOverride()
-                    .AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.Operator>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
+                    .AddNotImplementedException()
                 )
             .Build()
             );

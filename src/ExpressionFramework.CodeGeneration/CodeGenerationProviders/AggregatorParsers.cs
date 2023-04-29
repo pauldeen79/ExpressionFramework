@@ -14,7 +14,7 @@ public class AggregatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 .WithName($"{x.Name}Parser")
                 .WithBaseClass("AggregatorParserBase")
                 .AddConstructors(new ClassConstructorBuilder()
-                    .WithChainCall($"base({x.Name[..^10].CsharpFormat()})")
+                    .WithChainCall($"base({x.Name.CsharpFormat()})")
                 )
                 .AddMethods(new ClassMethodBuilder()
                     .WithName("DoParse")
