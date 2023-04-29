@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.FunctionResultParsers;
 
-namespace ExpressionFramework.Parser.FunctionResultParsers
+public class ChainedExpressionParser : ExpressionParserBase
 {
-    public class ChainedExpressionParser : ExpressionParserBase
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
     {
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator)
-        {
-            throw new System.NotImplementedException();
-        }
+        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, 0, nameof(ChainedExpression.Expressions), evaluator).Value.Invoke(functionParseResult.Context);
 
-        public ChainedExpressionParser(CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser) : base(parser, @"Chained")
-        {
-        }
+        return Result<Expression>.Success(new ChainedExpression(
+            expressions.IsSuccessful()
+                ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
+                : new Expression[] { new DelegateResultExpression(_ => Result<object?>.FromExistingResult(expressions)) } ));
+    }
+
+    public ChainedExpressionParser(IExpressionParser parser) : base(parser, @"Chained")
+    {
     }
 }
 
