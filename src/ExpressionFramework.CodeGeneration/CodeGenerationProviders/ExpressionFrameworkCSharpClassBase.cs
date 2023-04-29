@@ -183,6 +183,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
     protected Dictionary<string, TypeBaseBuilder> BaseTypes { get; } = new();
 
+    protected static bool IsSupported(ITypeBase t)
+        => !t.Name.StartsWith("TypedDelegate")
+        && !t.GenericTypeArguments.Any()
+        && t.Properties.All(IsSupported);
+
+    private static bool IsSupported(IClassProperty p)
+        => p.TypeName.WithoutProcessedGenerics().GetClassName().In("Expression", "ITypedExpression")
+        && !p.TypeName.GetGenericArguments().GetClassName().StartsWith("IEnumerable");
+
     private static string CreateParameterSelection(ParameterBuilder x)
     {
         if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName() && x.Name.ToString() != "predicateExpression")

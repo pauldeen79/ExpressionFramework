@@ -9,7 +9,7 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !x.Name.StartsWith("TypedDelegate") && !x.GenericTypeArguments.Any() && x.Properties.All(x => IsSupported(x.TypeName)))
+            .Where(IsSupported)
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName($"{x.Name}Parser")
@@ -29,9 +29,6 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
                 )
             .Build()
             );
-
-    private static bool IsSupported(string typeName)
-        => typeName.WithoutProcessedGenerics().GetClassName().In("Expression", "ITypedExpression") && !typeName.GetGenericArguments().GetClassName().StartsWith("IEnumerable");
 
     private static string CreateArguments(ITypeBase x)
     {
