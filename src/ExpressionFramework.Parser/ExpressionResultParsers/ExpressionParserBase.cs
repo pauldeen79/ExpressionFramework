@@ -44,7 +44,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValue(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
     {
-        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, 0, nameof(ChainedExpression.Expressions), evaluator).Value.Invoke(functionParseResult.Context);
+        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, index, argumentName, evaluator).Value.Invoke(functionParseResult.Context);
 
         return new TypedDelegateExpression<IEnumerable>(_ => expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
@@ -53,7 +53,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected IEnumerable<Expression> GetExpressionsArgumentValue(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
     {
-        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, 0, nameof(ChainedExpression.Expressions), evaluator).Value.Invoke(functionParseResult.Context);
+        var expressions = GetArgumentValue<IEnumerable>(functionParseResult, index, argumentName, evaluator).Value.Invoke(functionParseResult.Context);
 
         return expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
