@@ -67,28 +67,6 @@ public sealed class IntegrationTests : IDisposable
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
     }
-
-    [Theory(Skip = "Not seeing code coverage if build fails"), MemberData(nameof(AllParsers))]
-    public void All_Resolvers_Should_Return_An_Expression(IExpressionResolver resolver)
-    {
-        // Act
-        var result = (Result<Expression>)resolver.GetType()
-            .GetMethod("DoParse", BindingFlags.Instance | BindingFlags.NonPublic)!
-            .Invoke(resolver, new object[]
-            {
-                new FunctionParseResult("SomeFunction", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null),
-                _provider.GetRequiredService<IFunctionParseResultEvaluator>()
-            })!;
-
-        // Assert
-        result.Should().NotBeNull();
-    }
-
-
-    public static IEnumerable<object[]> AllParsers()
-        => typeof(ExpressionFrameworkParser).Assembly.GetExportedTypes()
-            .Where(t => !t.IsAbstract && typeof(IExpressionResolver).IsAssignableFrom(t))
-            .Select(t => new object[] { (IExpressionResolver)Activator.CreateInstance(t, new Mock<IExpressionParser>().Object)! });
-
+   
     public void Dispose() => _provider.Dispose();
 }
