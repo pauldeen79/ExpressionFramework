@@ -33,6 +33,20 @@ public sealed class AggregateExpressionParserTests : IDisposable
         result.Value.Should().BeEquivalentTo(3);
     }
 
+    [Fact]
+    public void Parse_Returns_Success_When_GetArgumentValue_Succeeds_With_Context()
+    {
+        // Arrange
+        var functionParseResult = _provider.GetRequiredService<IFunctionParser>().Parse("Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+
+        // Act
+        var result = CreateSut().Parse(functionParseResult.GetValueOrThrow(), null, _provider.GetRequiredService<IFunctionParseResultEvaluator>());
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(3);
+    }
+
     private AggregateExpressionParser CreateSut()
         => new AggregateExpressionParser(_provider.GetRequiredService<IExpressionParser>());
 
