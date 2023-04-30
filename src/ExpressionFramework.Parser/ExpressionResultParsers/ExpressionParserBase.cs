@@ -28,13 +28,13 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected TypedDelegateResultExpression<T> GetArgumentValue<T>(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
     {
-        var delegateValueResult = functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator);
-        if (!delegateValueResult.IsSuccessful())
+        var argumentValueResult = functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator);
+        if (!argumentValueResult.IsSuccessful())
         {
-            return new TypedDelegateResultExpression<T>(_ => Result<T>.FromExistingResult(delegateValueResult));
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.FromExistingResult(argumentValueResult));
         }
 
-        if (delegateValueResult.Value is not T t)
+        if (argumentValueResult.Value is not T t)
         {
             return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type{typeof(T).FullName}"));
         }

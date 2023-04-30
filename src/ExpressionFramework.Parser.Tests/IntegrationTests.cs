@@ -46,6 +46,18 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
+    public void Can_Parse_Function_Without_Nested_Expression()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Hello");
+    }
+
+    [Fact]
     public void Unknown_Expression_Gives_NotSupported()
     {
         // Act
