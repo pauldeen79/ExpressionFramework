@@ -13,7 +13,7 @@ public abstract class EvaluatableParserBase : IFunctionResultParser
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
         => functionParseResult.FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
-            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator))
+            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator), value => value)
             : Result<object?>.Continue();
 
     protected abstract Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);

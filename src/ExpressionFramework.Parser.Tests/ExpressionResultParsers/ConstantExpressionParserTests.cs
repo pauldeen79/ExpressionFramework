@@ -10,6 +10,7 @@ public class ConstantExpressionParserTests
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<object?>()))
                       .Returns(Result<object?>.Error("Kaboom"));
     }
+
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {

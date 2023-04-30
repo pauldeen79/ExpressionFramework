@@ -17,8 +17,6 @@ public sealed class LeftExpressionParserTests : IDisposable
                        });
     }
 
-    public void Dispose() => _provider.Dispose();
-
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
@@ -82,4 +80,6 @@ public sealed class LeftExpressionParserTests : IDisposable
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("cont");
     }
+
+    public void Dispose() => _provider.Dispose();
 }
