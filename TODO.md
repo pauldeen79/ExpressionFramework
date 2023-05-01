@@ -12,8 +12,6 @@ expressions:
 - Add TypedSequenceExpression<T>
 - Add FormattableStringExpression, with a formattable string (you might also used the generic ConstantExpression, but it seems logical to have a special cased one for this in the front-end so you can recognize it)
 - Add TypedSwitchExpression<T>, TypedCase<T> and TypedEvaluatable<T> as a kind of switch expression
-- Add overloads for common operators like ==, !=, <, <=, >, >= so they can be used in string expressions i.e. =Function1() == Function2().
-  Split by the sign/operator using escape double quote and leave the double quote. When split count is 2, then it's valid else just continue.
 
 general:
 - Review if we want to add validation for parameters?
