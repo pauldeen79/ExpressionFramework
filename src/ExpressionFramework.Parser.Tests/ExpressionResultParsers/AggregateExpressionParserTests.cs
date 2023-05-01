@@ -40,7 +40,7 @@ public sealed class AggregateExpressionParserTests : IDisposable
         var functionParseResult = _provider.GetRequiredService<IFunctionParser>().Parse("Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Act
-        var result = CreateSut().Parse(functionParseResult.GetValueOrThrow(), null, _provider.GetRequiredService<IFunctionParseResultEvaluator>());
+        var result = CreateSut().Parse(functionParseResult.GetValueOrThrow(), _provider.GetRequiredService<IFunctionParseResultEvaluator>()).GetValueOrThrow().Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
