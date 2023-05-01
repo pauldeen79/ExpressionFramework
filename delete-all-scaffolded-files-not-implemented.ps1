@@ -1,0 +1,1 @@
+foreach ($file in Get-ChildItem -Path ./src/ExpressionFramework.Parser -File -Recurse -Filter "*.cs" | Select-String -pattern "NotImplementedException" | Select-Object -Unique path) { Remove-Item $file.path}
