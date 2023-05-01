@@ -9,8 +9,17 @@
 public partial record IsSmallerOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
-        => Result<bool>.Success(leftValue != null
-        && rightValue != null
-        && leftValue is IComparable c
-        && c.CompareTo(rightValue) < 0);
+    {
+        try
+        {
+            return Result<bool>.Success(leftValue != null
+                && rightValue != null
+                && leftValue is IComparable c
+                && c.CompareTo(rightValue) < 0);
+        }
+        catch (ArgumentException ex)
+        {
+            return Result<bool>.Invalid(ex.Message);
+        }
+    }
 }
