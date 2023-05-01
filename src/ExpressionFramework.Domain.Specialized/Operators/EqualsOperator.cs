@@ -24,10 +24,9 @@ public partial record EqualsOperator
         }
 
         if (leftValue is string leftString
-            && rightValue is string rightString
-            && leftString.Equals(rightString, StringComparison.CurrentCultureIgnoreCase))
+            && rightValue is string rightString)
         {
-            return true;
+            return leftString.Equals(rightString, StringComparison.CurrentCultureIgnoreCase);
         }
 
         return leftValue.Equals(rightValue);
