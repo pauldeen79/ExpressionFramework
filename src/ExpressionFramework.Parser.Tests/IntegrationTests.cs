@@ -70,6 +70,18 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
+    public void Can_Parse_Function_With_Context_And()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo(true);
+    }
+
+    [Fact]
     public void Unknown_Expression_Gives_NotSupported()
     {
         // Act
