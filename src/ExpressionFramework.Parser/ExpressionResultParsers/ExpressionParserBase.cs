@@ -28,20 +28,10 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);
 
     protected TypedDelegateResultExpression<T> GetArgumentValue<T>(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
-    {
-        var argumentValueResult = functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator);
-        if (!argumentValueResult.IsSuccessful())
-        {
-            return new TypedDelegateResultExpression<T>(_ => Result<T>.FromExistingResult(argumentValueResult));
-        }
+        => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator));
 
-        if (argumentValueResult.Value is not T t)
-        {
-            return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type{typeof(T).FullName}"));
-        }
-
-        return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
-    }
+    protected TypedDelegateResultExpression<T> GetArgumentValue<T>(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, T defaultValue)
+        => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValue(index, argumentName, functionParseResult.Context, evaluator, defaultValue));
 
     protected ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValue(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator)
     {
@@ -59,5 +49,20 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         return expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
             : new Expression[] { new DelegateResultExpression(_ => Result<object?>.FromExistingResult(expressions)) };
+    }
+
+    private static TypedDelegateResultExpression<T> ProcessArgumentResult<T>(string argumentName, Result<object?> argumentValueResult)
+    {
+        if (!argumentValueResult.IsSuccessful())
+        {
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.FromExistingResult(argumentValueResult));
+        }
+
+        if (argumentValueResult.Value is not T t)
+        {
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type{typeof(T).FullName}"));
+        }
+
+        return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
     }
 }

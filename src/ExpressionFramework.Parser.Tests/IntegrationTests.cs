@@ -3,10 +3,20 @@
 public sealed class IntegrationTests : IDisposable
 {
     private readonly ServiceProvider _provider;
+    private readonly Mock<IFunctionResultParser> _functionResultParserMock = new();
 
     public IntegrationTests()
     {
-        _provider = new ServiceCollection().AddParsers().AddExpressionParser().BuildServiceProvider();
+        _functionResultParserMock.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<object?>(), It.IsAny<IFunctionParseResultEvaluator>()))
+            .Returns<FunctionParseResult, object?, IFunctionParseResultEvaluator>((result, context, evaluator) => result.FunctionName == "MyPredicate"
+            ? Result<object?>.Success(context is int i && i > 2)
+            : Result<object?>.Continue());
+
+        _provider = new ServiceCollection()
+            .AddParsers()
+            .AddExpressionParser()
+            .AddSingleton(_functionResultParserMock.Object)
+            .BuildServiceProvider();
     }
     
     [Fact]
@@ -79,6 +89,30 @@ public sealed class IntegrationTests : IDisposable
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo(true);
+    }
+
+    [Fact]
+    public void Can_Parse_Function_With_Generated_DefaultValue_On_Nullable_Property()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public void Can_Parse_Function_With_Supplied_DefaultValue_On_Nullable_Property()
+    {
+        // Act
+        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("13");
     }
 
     [Fact]

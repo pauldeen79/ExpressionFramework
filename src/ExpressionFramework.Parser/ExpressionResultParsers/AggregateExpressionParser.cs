@@ -11,9 +11,7 @@ public class AggregateExpressionParser : ExpressionParserBase
             return Result<Expression>.FromExistingResult(aggregatorResult);
         }
 
-        var formatProviderArgumentResult = functionParseResult.Arguments.Count() >= 3
-            ? GetArgumentValue<IFormatProvider>(functionParseResult, 2, nameof(AggregateExpression.FormatProviderExpression), evaluator)
-            : new TypedDelegateResultExpression<IFormatProvider>(_ => Result<IFormatProvider>.Success(CultureInfo.InvariantCulture));
+        var formatProviderArgumentResult = GetArgumentValue<IFormatProvider>(functionParseResult, 2, nameof(AggregateExpression.FormatProviderExpression), evaluator, CultureInfo.InvariantCulture);
         var formatProviderResult = formatProviderArgumentResult.Value.Invoke(functionParseResult.Context);
         return formatProviderResult.IsSuccessful()
             ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValue(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator), aggregatorResult.Value!, formatProviderResult.Value!))
