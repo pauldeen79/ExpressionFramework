@@ -58,7 +58,7 @@ public class DelegateExpressionParserTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().BeEquivalentTo("Value is not of type delegate (Func<object?, object?>)");
+        result.ErrorMessage.Should().BeEquivalentTo("Value is not of type System.Func`2[[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]");
     }
 
     [Fact]

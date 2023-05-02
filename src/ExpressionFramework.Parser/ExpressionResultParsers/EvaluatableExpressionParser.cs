@@ -5,7 +5,7 @@ public class EvaluatableExpressionParser : ExpressionParserBase
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var evaluatableArgumentResult = GetArgumentValueResult<Evaluatable>(functionParseResult, 1, nameof(EvaluatableExpression.Condition), evaluator, parser);
-        var result = evaluatableArgumentResult.Value.Invoke(functionParseResult.Context);
+        var result = evaluatableArgumentResult.EvaluateTyped(functionParseResult.Context);
         return result.IsSuccessful()
             ? Result<Expression>.Success(new EvaluatableExpression(
                 result.Value!,

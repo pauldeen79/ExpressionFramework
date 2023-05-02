@@ -9,14 +9,14 @@ public class AggregateExpressionParser : ExpressionParserBase
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var aggregatorArgumentResult = GetArgumentValueResult<Aggregator>(functionParseResult, 1, nameof(AggregateExpression.Aggregator), evaluator, parser);
-        var aggregatorResult = aggregatorArgumentResult.Value.Invoke(functionParseResult.Context);
+        var aggregatorResult = aggregatorArgumentResult.EvaluateTyped(functionParseResult.Context);
         if (!aggregatorResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(aggregatorResult);
         }
 
         var formatProviderArgumentResult = GetArgumentValueResult<IFormatProvider>(functionParseResult, 2, nameof(AggregateExpression.FormatProviderExpression), evaluator, parser, CultureInfo.InvariantCulture);
-        var formatProviderResult = formatProviderArgumentResult.Value.Invoke(functionParseResult.Context);
+        var formatProviderResult = formatProviderArgumentResult.EvaluateTyped(functionParseResult.Context);
         return formatProviderResult.IsSuccessful()
             ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValueResult(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator, parser), aggregatorResult.Value!, formatProviderResult.Value!))
             : Result<Expression>.FromExistingResult(formatProviderResult);

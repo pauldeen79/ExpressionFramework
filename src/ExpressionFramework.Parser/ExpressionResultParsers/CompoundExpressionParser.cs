@@ -9,7 +9,7 @@ public class CompoundExpressionParser : ExpressionParserBase
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var aggregatorArgumentResult = GetArgumentValueResult<Aggregator>(functionParseResult, 2, nameof(CompoundExpression.Aggregator), evaluator, parser);
-        var aggregatorResult = aggregatorArgumentResult.Value.Invoke(functionParseResult.Context);
+        var aggregatorResult = aggregatorArgumentResult.EvaluateTyped(functionParseResult.Context);
         if (!aggregatorResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(aggregatorResult);

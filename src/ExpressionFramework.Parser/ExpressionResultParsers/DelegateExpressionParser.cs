@@ -8,18 +8,12 @@ public class DelegateExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var delegateValueResult = functionParseResult.GetArgumentValueResult(0, nameof(DelegateExpression.Value), functionParseResult.Context, evaluator, parser);
-        if (!delegateValueResult.IsSuccessful())
-        {
-            return Result<Expression>.FromExistingResult(delegateValueResult);
-        }
+        var valueArgumentResult = GetArgumentValueResult<Func<object?, object?>>(functionParseResult, 0, nameof(DelegateExpression.Value), evaluator, parser);
+        var valueResult = valueArgumentResult.EvaluateTyped(functionParseResult.Context);
 
-        if (delegateValueResult.Value is not Func<object?, object?> dlg)
-        {
-            return Result<Expression>.Invalid("Value is not of type delegate (Func<object?, object?>)");
-        }
-
-        return Result<Expression>.Success(new DelegateExpression(dlg));
+        return valueResult.IsSuccessful()
+            ? Result<Expression>.Success(new DelegateExpression(valueResult.Value!))
+            : Result<Expression>.FromExistingResult(valueResult);
     }
 }
 

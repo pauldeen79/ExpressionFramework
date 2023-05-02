@@ -36,7 +36,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).Value.Invoke(functionParseResult.Context);
+        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return new TypedDelegateExpression<IEnumerable>(_ => expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
@@ -45,7 +45,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected Expression GetExpressionArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressionResult = GetArgumentValueResult<object?>(functionParseResult, index, argumentName, evaluator, parser).Value.Invoke(functionParseResult.Context);
+        var expressionResult = GetArgumentValueResult<object?>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressionResult.IsSuccessful()
             ? new DelegateExpression(_ => expressionResult.Value)
@@ -54,7 +54,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected IEnumerable<Expression> GetExpressionsArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).Value.Invoke(functionParseResult.Context);
+        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
@@ -70,7 +70,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
         if (argumentValueResult.Value is not T t)
         {
-            return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type{typeof(T).FullName}"));
+            return new TypedDelegateResultExpression<T>(_ => Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
         }
 
         return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
