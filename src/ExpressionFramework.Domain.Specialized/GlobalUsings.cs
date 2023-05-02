@@ -15,4 +15,3 @@ global using ExpressionFramework.Domain.Attributes;
 global using ExpressionFramework.Domain.Contracts;
 global using ExpressionFramework.Domain.Domains;
 global using ExpressionFramework.Domain.Expressions;
-global using ExpressionFramework.Domain.NumericAggregators;

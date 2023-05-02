@@ -18,7 +18,6 @@ global using ExpressionFramework.Domain.EvaluatableDescriptorProviders;
 global using ExpressionFramework.Domain.Evaluatables;
 global using ExpressionFramework.Domain.ExpressionDescriptorProviders;
 global using ExpressionFramework.Domain.Expressions;
-global using ExpressionFramework.Domain.NumericAggregators;
 global using ExpressionFramework.Domain.OperatorDescriptorProviders;
 global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.SpecFlow.Tests.Support;
