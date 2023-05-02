@@ -16,7 +16,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var result = Parse(functionParseResult, evaluator);
 
         return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value!.Evaluate(context)
+            ? result.Value?.Evaluate(context) ?? Result<object?>.Success(null)
             : Result<object?>.FromExistingResult(result);
     }
 

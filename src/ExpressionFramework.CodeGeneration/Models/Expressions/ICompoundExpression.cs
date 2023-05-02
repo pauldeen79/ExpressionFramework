@@ -8,4 +8,5 @@ public interface ICompoundExpression : IExpression
     IExpression SecondExpression { get; }
     [Required]
     IAggregator Aggregator { get; }
+    ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
 }

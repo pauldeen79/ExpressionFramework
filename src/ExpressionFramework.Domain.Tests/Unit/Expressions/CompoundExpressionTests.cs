@@ -6,7 +6,7 @@ public class CompoundExpressionTests
     public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression_Using_Constant_Values()
     {
         // Arrange
-        var sut = new CompoundExpression(1, 2, new AddAggregator());
+        var sut = new CompoundExpression(1, 2, new AddAggregator(), default);
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class CompoundExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new CompoundExpressionBase(new EmptyExpression(), new EmptyExpression(), new AddAggregator());
+        var expression = new CompoundExpressionBase(new EmptyExpression(), new EmptyExpression(), new AddAggregator(), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -30,7 +30,7 @@ public class CompoundExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator());
+        var expression = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator(), default);
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -51,7 +51,7 @@ public class CompoundExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(CompoundExpression));
-        result.Parameters.Should().HaveCount(3);
+        result.Parameters.Should().HaveCount(4);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

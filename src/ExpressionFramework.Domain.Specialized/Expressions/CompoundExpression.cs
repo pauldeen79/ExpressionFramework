@@ -14,5 +14,5 @@
 public partial record CompoundExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Aggregator.Aggregate(context, FirstExpression, SecondExpression);
+        => Aggregator.Aggregate(context, FirstExpression, SecondExpression, FormatProviderExpression);
 }

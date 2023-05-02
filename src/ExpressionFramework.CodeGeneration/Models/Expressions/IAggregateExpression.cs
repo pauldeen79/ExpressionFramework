@@ -6,4 +6,5 @@ public interface IAggregateExpression : IExpression
     IReadOnlyCollection<IExpression> Expressions { get; }
     [Required]
     IAggregator Aggregator { get; }
+    ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
 }

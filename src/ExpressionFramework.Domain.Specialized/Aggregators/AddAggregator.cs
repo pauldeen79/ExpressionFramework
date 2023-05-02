@@ -6,7 +6,7 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "Could not convert FirstExpression to [Type]. Error message: [Error message], Could not convert SecondExpression to [Type]. Error message: [Error message]")]
 public partial record AddAggregator
 {
-    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
-        => AggregatorBase.Aggregate(context, firstExpression, secondExpression, CultureInfo.InvariantCulture, Add.Evaluate);
+    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression)
+        => AggregatorBase.Aggregate(context, firstExpression, secondExpression, formatProviderExpression, Add.Evaluate);
 }
 

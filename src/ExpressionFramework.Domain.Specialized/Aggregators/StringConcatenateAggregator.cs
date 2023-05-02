@@ -6,7 +6,7 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "First expression is not of type string, Second expression is not of type string")]
 public partial record StringConcatenateAggregator
 {
-    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
+    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression)
     {
         var result1 = firstExpression.EvaluateTyped<string>(context, "First expression is not of type string");
         if (!result1.IsSuccessful())

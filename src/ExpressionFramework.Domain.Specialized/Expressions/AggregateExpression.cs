@@ -30,7 +30,7 @@ public partial record AggregateExpression
 
         foreach (var expression in Expressions.Skip(1))
         {
-            result = Aggregator.Aggregate(context, new ConstantExpression(result.Value), expression);
+            result = Aggregator.Aggregate(context, new ConstantExpression(result.Value), expression, FormatProviderExpression);
             if (!result.IsSuccessful())
             {
                 return result;
@@ -40,6 +40,6 @@ public partial record AggregateExpression
         return result;
     }
 
-    public AggregateExpression(IEnumerable<object?> expressions, Aggregator aggregator) : this(expressions.Select(x => new ConstantExpression(x)), aggregator) { }
-    public AggregateExpression(IEnumerable<Func<object?, object?>> expressions, Aggregator aggregator) : this(expressions.Select(x => new DelegateExpression(x)), aggregator) {}
+    public AggregateExpression(IEnumerable<object?> expressions, Aggregator aggregator, IFormatProvider? formatProvider = null) : this(expressions.Select(x => new ConstantExpression(x)), aggregator, formatProvider) { }
+    public AggregateExpression(IEnumerable<Func<object?, object?>> expressions, Aggregator aggregator, IFormatProvider? formatProvider = null) : this(expressions.Select(x => new DelegateExpression(x)), aggregator, formatProvider) {}
 }

@@ -2,7 +2,7 @@
 
 public static class AggregatorBase
 {
-    public static Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, IFormatProvider formatProvider, Func<object?, object?, IFormatProvider, Result<object?>> aggregateDelegate)
+    public static Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression, Func<object?, object?, IFormatProvider, Result<object?>> aggregateDelegate)
     {
         var firstExpressionResult = firstExpression.Evaluate(context);
         if (!firstExpressionResult.IsSuccessful())
@@ -16,6 +16,15 @@ public static class AggregatorBase
             return secondExpressionResult;
         }
 
-        return aggregateDelegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value, formatProvider);
+        var formatProviderExpressionResult = formatProviderExpression == null
+            ? Result<IFormatProvider>.Success(CultureInfo.InvariantCulture)
+            : formatProviderExpression.EvaluateTyped(context);
+
+        if (!formatProviderExpressionResult.IsSuccessful())
+        {
+            return Result<object?>.FromExistingResult(formatProviderExpressionResult);
+        }
+
+        return aggregateDelegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value, formatProviderExpressionResult.Value!);
     }
 }

@@ -5,7 +5,7 @@
 [ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Concatenation of two enumerable values", "This will be returned in case the execution returns success (Ok)")]
 public partial record EnumerableConcatenateAggregator
 {
-    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression)
+    public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression)
     {
         var result1 = firstExpression.EvaluateTyped<IEnumerable>(context, "First expression is not of type enumerable");
         if (!result1.IsSuccessful())

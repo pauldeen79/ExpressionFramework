@@ -62,7 +62,7 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Error_When_FirstExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AggregateExpression(new Expression[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new ConstantExpression(1) }, new AddAggregator());
+        var sut = new AggregateExpression(new Expression[] { new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new ConstantExpression(1) }, new AddAggregator(), default(IFormatProvider));
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +76,7 @@ public class AggregateExpressionTests
     public void Evaluate_Returns_Error_When_SecondExpression_Returns_Error()
     {
         // Arrange
-        var sut = new AggregateExpression(new Expression[] { new ConstantExpression(1), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) }, new AddAggregator());
+        var sut = new AggregateExpression(new Expression[] { new ConstantExpression(1), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")) }, new AddAggregator(), default(IFormatProvider));
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +90,7 @@ public class AggregateExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new AggregateExpressionBase(Enumerable.Empty<Expression>(), new AddAggregator());
+        var expression = new AggregateExpressionBase(Enumerable.Empty<Expression>(), new AddAggregator(), default);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -121,7 +121,7 @@ public class AggregateExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(AggregateExpression));
-        result.Parameters.Should().HaveCount(2);
+        result.Parameters.Should().HaveCount(3);
         result.ReturnValues.Should().HaveCount(3);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();
