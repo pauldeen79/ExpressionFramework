@@ -10,7 +10,7 @@ public partial record NotEqualsExpression
         var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? nonSuccessfulResult
-            : Result<object?>.Success(!EqualsOperator.IsValid(results[0], results[1]));
+            : Result<object?>.FromExistingResult(NotEqual.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase), value => value);
     }
 
     public Result<bool> EvaluateTyped(object? context)
@@ -20,7 +20,7 @@ public partial record NotEqualsExpression
         var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? Result<bool>.FromExistingResult(nonSuccessfulResult)
-            : Result<bool>.Success(!EqualsOperator.IsValid(results[0], results[1]));
+            : NotEqual.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase);
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()

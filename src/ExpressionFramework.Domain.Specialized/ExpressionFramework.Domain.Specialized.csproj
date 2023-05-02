@@ -14,6 +14,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="2.7.44" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="2.7.44" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
   </ItemGroup>
 
