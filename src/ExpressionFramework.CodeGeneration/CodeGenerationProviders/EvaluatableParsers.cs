@@ -16,7 +16,6 @@ public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Evaluatable,
                 x.Name,
-                true,
                 m => m.AddNotImplementedException()
             ).Build());
 }

@@ -17,7 +17,6 @@ public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Expression,
                 x.Name.ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
-                true,
                 m => m.AddNotImplementedException()
             ).Build());
 }

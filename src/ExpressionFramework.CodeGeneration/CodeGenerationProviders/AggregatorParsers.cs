@@ -14,7 +14,6 @@ public class AggregatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Aggregator,
                 x.Name,
-                false,
                 m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Aggregator}>.Success(new {Constants.Namespaces.DomainAggregators}.{x.Name}());")
             ).Build());
 }

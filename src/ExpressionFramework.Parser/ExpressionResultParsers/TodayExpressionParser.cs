@@ -7,12 +7,12 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
     public class TodayExpressionParser : ExpressionParserBase
     {
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         {
             throw new NotImplementedException();
         }
 
-        public TodayExpressionParser(IExpressionParser parser) : base(parser, @"Today")
+        public TodayExpressionParser() : base(@"Today")
         {
         }
     }

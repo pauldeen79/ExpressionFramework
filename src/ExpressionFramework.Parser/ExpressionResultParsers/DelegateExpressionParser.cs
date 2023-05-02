@@ -2,13 +2,13 @@
 
 public class DelegateExpressionParser : ExpressionParserBase
 {
-    public DelegateExpressionParser(IExpressionParser parser) : base(parser, "Delegate")
+    public DelegateExpressionParser() : base("Delegate")
     {
     }
 
-    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var delegateValueResult = functionParseResult.GetArgumentValue(0, nameof(DelegateExpression.Value), functionParseResult.Context, evaluator);
+        var delegateValueResult = functionParseResult.GetArgumentValueResult(0, nameof(DelegateExpression.Value), functionParseResult.Context, evaluator, parser);
         if (!delegateValueResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(delegateValueResult);

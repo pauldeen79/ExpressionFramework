@@ -7,12 +7,12 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
     public class StringConcatenateExpressionParser : ExpressionParserBase
     {
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         {
             throw new NotImplementedException();
         }
 
-        public StringConcatenateExpressionParser(IExpressionParser parser) : base(parser, @"StringConcatenate")
+        public StringConcatenateExpressionParser() : base(@"StringConcatenate")
         {
         }
     }

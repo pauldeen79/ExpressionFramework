@@ -7,12 +7,12 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
     public class CompoundExpressionParser : ExpressionParserBase
     {
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         {
             throw new NotImplementedException();
         }
 
-        public CompoundExpressionParser(IExpressionParser parser) : base(parser, @"Compound")
+        public CompoundExpressionParser() : base(@"Compound")
         {
         }
     }

@@ -2,23 +2,23 @@
 
 public class AggregateExpressionParser : ExpressionParserBase
 {
-    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var aggregatorArgumentResult = GetArgumentValue<Aggregator>(functionParseResult, 1, nameof(AggregateExpression.Aggregator), evaluator);
+        var aggregatorArgumentResult = GetArgumentValueResult<Aggregator>(functionParseResult, 1, nameof(AggregateExpression.Aggregator), evaluator, parser);
         var aggregatorResult = aggregatorArgumentResult.Value.Invoke(functionParseResult.Context);
         if (!aggregatorResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(aggregatorResult);
         }
 
-        var formatProviderArgumentResult = GetArgumentValue<IFormatProvider>(functionParseResult, 2, nameof(AggregateExpression.FormatProviderExpression), evaluator, CultureInfo.InvariantCulture);
+        var formatProviderArgumentResult = GetArgumentValueResult<IFormatProvider>(functionParseResult, 2, nameof(AggregateExpression.FormatProviderExpression), evaluator, parser, CultureInfo.InvariantCulture);
         var formatProviderResult = formatProviderArgumentResult.Value.Invoke(functionParseResult.Context);
         return formatProviderResult.IsSuccessful()
-            ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValue(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator), aggregatorResult.Value!, formatProviderResult.Value!))
+            ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValueResult(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator, parser), aggregatorResult.Value!, formatProviderResult.Value!))
             : Result<Expression>.FromExistingResult(formatProviderResult);
     }
 
-    public AggregateExpressionParser(IExpressionParser parser) : base(parser, @"Aggregate")
+    public AggregateExpressionParser() : base(@"Aggregate")
     {
     }
 }

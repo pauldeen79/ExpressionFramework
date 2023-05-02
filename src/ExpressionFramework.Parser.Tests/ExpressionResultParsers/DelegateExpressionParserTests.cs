@@ -7,8 +7,8 @@ public class DelegateExpressionParserTests
 
     public DelegateExpressionParserTests()
     {
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<object?>()))
-                      .Returns<FunctionParseResult, object?>((result, context) => result.FunctionName switch
+        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
+                      .Returns<FunctionParseResult, IExpressionParser, object?>((result, parser, context) => result.FunctionName switch
                         {
                             "MyDelegate" => Result<object?>.Success(new Func<object?, object?>(_ => "some value")),
                             "MyString" => Result<object?>.Success("literal"),
@@ -20,12 +20,12 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
-        var parser = new DelegateExpressionParser(_parserMock.Object);
+        var parser = new DelegateExpressionParser();
         var contextValue = "the context value";
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -35,11 +35,11 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
-        var parser = new DelegateExpressionParser(_parserMock.Object);
+        var parser = new DelegateExpressionParser();
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("MyDelegate", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -50,11 +50,11 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Success_For_Wrong_FunctionResult()
     {
         // Arrange
-        var parser = new DelegateExpressionParser(_parserMock.Object);
+        var parser = new DelegateExpressionParser();
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("MyString", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -65,11 +65,11 @@ public class DelegateExpressionParserTests
     public void Parse_Returns_Error_When_ArgumentParsing_Fails()
     {
         // Arrange
-        var parser = new DelegateExpressionParser(_parserMock.Object);
+        var parser = new DelegateExpressionParser();
         var functionParseResult = new FunctionParseResult("Delegate", new[] { new FunctionArgument(new FunctionParseResult("UNKNOWN_FUNCTION", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null)) }, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

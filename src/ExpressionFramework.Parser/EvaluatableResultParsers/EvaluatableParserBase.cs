@@ -3,18 +3,16 @@
 public abstract class EvaluatableParserBase : IFunctionResultParser
 {
     private readonly string _functionName;
-    protected IExpressionParser Parser { get; }
 
-    protected EvaluatableParserBase(IExpressionParser parser, string functionName)
+    protected EvaluatableParserBase(string functionName)
     {
-        Parser = parser;
         _functionName = functionName;
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
+    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         => functionParseResult.FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
-            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator), value => value)
+            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator, parser), value => value)
             : Result<object?>.Continue();
 
-    protected abstract Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);
+    protected abstract Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 }

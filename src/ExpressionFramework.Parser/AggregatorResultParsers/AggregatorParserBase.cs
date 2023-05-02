@@ -9,10 +9,10 @@ public abstract class AggregatorParserBase : IFunctionResultParser
         _functionName = functionName;
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator)
+    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         => functionParseResult.FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
-            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator), value => value)
+            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator, parser), value => value)
             : Result<object?>.Continue();
 
-    protected abstract Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator);
+    protected abstract Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 }

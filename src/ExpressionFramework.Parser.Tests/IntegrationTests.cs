@@ -7,8 +7,8 @@ public sealed class IntegrationTests : IDisposable
 
     public IntegrationTests()
     {
-        _functionResultParserMock.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<object?>(), It.IsAny<IFunctionParseResultEvaluator>()))
-            .Returns<FunctionParseResult, object?, IFunctionParseResultEvaluator>((result, context, evaluator) => result.FunctionName == "MyPredicate"
+        _functionResultParserMock.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<object?>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
+            .Returns<FunctionParseResult, object?, IFunctionParseResultEvaluator, IExpressionParser>((result, context, evaluator, parser) => result.FunctionName == "MyPredicate"
             ? Result<object?>.Success(context is int i && i > 2)
             : Result<object?>.Continue());
 

@@ -9,12 +9,12 @@ public class ContextExpressionParserTests
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
-        var parser = new ContextExpressionParser(_parserMock.Object);
+        var parser = new ContextExpressionParser();
         var contextValue = "the context value";
         var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -24,12 +24,12 @@ public class ContextExpressionParserTests
     public void Parse_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
-        var parser = new ContextExpressionParser(_parserMock.Object);
+        var parser = new ContextExpressionParser();
         var contextValue = "the context value";
         var functionParseResult = new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = parser.Parse(functionParseResult, contextValue, _evaluatorMock.Object);
+        var result = parser.Parse(functionParseResult, contextValue, _evaluatorMock.Object, _parserMock.Object);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

@@ -7,12 +7,12 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
     public class TypedConstantResultExpressionParser : ExpressionParserBase
     {
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         {
             throw new NotImplementedException();
         }
 
-        public TypedConstantResultExpressionParser(IExpressionParser parser) : base(parser, @"TypedConstantResult")
+        public TypedConstantResultExpressionParser() : base(@"TypedConstantResult")
         {
         }
     }

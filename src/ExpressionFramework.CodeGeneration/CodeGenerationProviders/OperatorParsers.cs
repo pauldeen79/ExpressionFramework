@@ -14,7 +14,6 @@ public class OperatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Operator,
                 x.Name,
-                false,
                 m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Operator}>.Success(new {Constants.Namespaces.DomainOperators}.{x.Name}());")
             ).Build());
 }

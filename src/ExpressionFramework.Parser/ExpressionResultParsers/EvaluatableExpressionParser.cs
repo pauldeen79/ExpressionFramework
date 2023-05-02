@@ -2,19 +2,19 @@
 
 public class EvaluatableExpressionParser : ExpressionParserBase
 {
-    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator)
+    protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var evaluatableArgumentResult = GetArgumentValue<Evaluatable>(functionParseResult, 1, nameof(EvaluatableExpression.Condition), evaluator);
+        var evaluatableArgumentResult = GetArgumentValueResult<Evaluatable>(functionParseResult, 1, nameof(EvaluatableExpression.Condition), evaluator, parser);
         var result = evaluatableArgumentResult.Value.Invoke(functionParseResult.Context);
         return result.IsSuccessful()
             ? Result<Expression>.Success(new EvaluatableExpression(
                 result.Value!,
-                new DelegateResultExpression(_ => functionParseResult.GetArgumentValue(0, @"Expression", functionParseResult.Context, evaluator))
+                new DelegateResultExpression(_ => functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser))
                 ))
             : Result<Expression>.FromExistingResult(result);
     }
 
-    public EvaluatableExpressionParser(IExpressionParser parser) : base(parser, @"Evaluatable")
+    public EvaluatableExpressionParser() : base(@"Evaluatable")
     {
     }
 }

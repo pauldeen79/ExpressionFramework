@@ -188,28 +188,21 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         && !t.GenericTypeArguments.Any()
         && t.Properties.All(IsSupported);
 
-    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, bool addParser, Action<ClassMethodBuilder> methodDelegate)
+    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, Action<ClassMethodBuilder> methodDelegate)
         => new ClassBuilder()
             .WithNamespace(CurrentNamespace)
             .WithName($"{typeBase.Name}Parser")
             .WithBaseClass($"{type}ParserBase")
-            .AddConstructors(new[]
-            {
-                new ClassConstructorBuilder()
-                    .AddParameter("parser", typeof(IExpressionParser))
-                    .WithChainCall($"base(parser, {name.CsharpFormat()})")
-            }.Where(_ => addParser))
-            .AddConstructors(new[]
-            {
+            .AddConstructors(
                 new ClassConstructorBuilder()
                     .WithChainCall($"base({name.CsharpFormat()})")
-            }.Where(_ => !addParser))
-
+            )
             .AddMethods(new ClassMethodBuilder()
                 .WithName("DoParse")
                 .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
                 .AddParameter("functionParseResult", typeof(FunctionParseResult))
                 .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
+                .AddParameter("parser", typeof(IExpressionParser))
                 .WithProtected()
                 .WithOverride()
                 .With(methodDelegate)
