@@ -47,6 +47,20 @@ public sealed class AggregateExpressionParserTests : IDisposable
         result.Value.Should().BeEquivalentTo(3);
     }
 
+    [Fact]
+    public void Parse_Returns_Failure_When_ArgumentParsing_Fails()
+    {
+        // Arrange
+        var functionParseResult = _provider.GetRequiredService<IFunctionParser>().Parse("Aggregate(MyArray(),UnknownAggregator())", CultureInfo.InvariantCulture);
+
+        // Act
+        var result = CreateSut().Parse(functionParseResult.GetValueOrThrow(), null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+        result.ErrorMessage.Should().Be("Unknown function found: UnknownAggregator");
+    }
+
     private static AggregateExpressionParser CreateSut() => new AggregateExpressionParser();
 
     public void Dispose() => _provider.Dispose();

@@ -12,7 +12,7 @@ public sealed class CompoundExpressionParserTests : IDisposable
               {
                   "MyFunction" => Result<object?>.Success(new AddAggregator()),
                   "Context" => Result<object?>.Success(context),
-                  _ => Result<object?>.NotSupported("Only Parsed result function is supported")
+                  _ => Result<object?>.NotSupported()
               });
 
         _provider = new ServiceCollection()
@@ -50,6 +50,18 @@ public sealed class CompoundExpressionParserTests : IDisposable
         result.Value.Should().BeEquivalentTo(3);
     }
 
+    [Fact]
+    public void Parse_Returns_Failure_When_ArgumentParsing_Fails()
+    {
+        // Arrange
+        var functionParseResult = _provider.GetRequiredService<IFunctionParser>().Parse("Compound(1,2,UnknownAggregator())", CultureInfo.InvariantCulture);
+
+        // Act
+        var result = CreateSut().Parse(functionParseResult.GetValueOrThrow(), null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.NotSupported);
+    }
     private static CompoundExpressionParser CreateSut() => new CompoundExpressionParser();
 
     public void Dispose() => _provider.Dispose();
