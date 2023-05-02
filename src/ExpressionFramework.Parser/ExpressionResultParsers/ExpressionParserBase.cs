@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.Parser.ExpressionResultParsers;
+﻿using CrossCutting.Utilities.Parsers;
+
+namespace ExpressionFramework.Parser.ExpressionResultParsers;
 
 public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionResolver
 {
@@ -59,6 +61,23 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         return expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
             : new Expression[] { new TypedConstantResultExpression<object?>(Result<object?>.FromExistingResult(expressions)) };
+    }
+
+    protected static Result<Type> GetGenericType(string functionName)
+    {
+        var typeName = functionName.GetGenericArguments();
+        if (string.IsNullOrEmpty(typeName))
+        {
+            return Result<Type>.Invalid("No type defined");
+        }
+
+        var type = Type.GetType(typeName);
+        if (type == null)
+        {
+            return Result<Type>.Invalid($"Unknown type: {typeName}");
+        }
+
+        return Result<Type>.Success(type);
     }
 
     private static ITypedExpression<T> ProcessArgumentResult<T>(string argumentName, Result<object?> argumentValueResult)

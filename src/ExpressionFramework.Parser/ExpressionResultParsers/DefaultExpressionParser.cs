@@ -10,19 +10,12 @@ public class DefaultExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var typeName = functionParseResult.FunctionName.GetGenericArguments();
-        if (string.IsNullOrEmpty(typeName))
+        var typeResult = GetGenericType(functionParseResult.FunctionName);
+        if (!typeResult.IsSuccessful())
         {
-            return Result<Expression>.Invalid("No type defined");
+            return Result<Expression>.FromExistingResult(typeResult);
         }
 
-        var type = Type.GetType(typeName);
-        if (type == null)
-        {
-            return Result<Expression>.Invalid($"Unknown type: {typeName}");
-        }
-
-        var expression = (Expression)Activator.CreateInstance(typeof(DefaultExpression<>).MakeGenericType(type));
-        return Result<Expression>.Success(expression);
+        return Result<Expression>.Success((Expression)Activator.CreateInstance(typeof(DefaultExpression<>).MakeGenericType(typeResult.Value!)));
     }
 }
