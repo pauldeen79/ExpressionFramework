@@ -39,8 +39,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return new TypedConstantExpression<IEnumerable>(expressions.IsSuccessful()
-            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x)).Cast<Expression>()
-            : new Expression[] { new TypedConstantResultExpression<object?>(Result<object?>.FromExistingResult(expressions)) });
+            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x))
+            : new Expression[] { new ConstantResultExpression(expressions) });
     }
 
     protected Expression GetExpressionArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -49,7 +49,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
         return expressionResult.IsSuccessful()
             ? new ConstantExpression(expressionResult.Value)
-            : new TypedConstantResultExpression<object?>(expressionResult);
+            : new ConstantResultExpression(expressionResult);
     }
 
     protected IEnumerable<Expression> GetExpressionsArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -57,8 +57,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressions.IsSuccessful()
-            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x)).Cast<Expression>()
-            : new Expression[] { new TypedConstantResultExpression<object?>(Result<object?>.FromExistingResult(expressions)) };
+            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x))
+            : new Expression[] { new ConstantResultExpression(expressions) };
     }
 
     protected static Result<Type> GetGenericType(string functionName)
@@ -70,12 +70,9 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         }
 
         var type = Type.GetType(typeName);
-        if (type == null)
-        {
-            return Result<Type>.Invalid($"Unknown type: {typeName}");
-        }
-
-        return Result<Type>.Success(type);
+        return type != null
+            ? Result<Type>.Success(type)
+            : Result<Type>.Invalid($"Unknown type: {typeName}");
     }
 
     private static ITypedExpression<T> ProcessArgumentResult<T>(string argumentName, Result<object?> argumentValueResult)
@@ -85,11 +82,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             return new TypedConstantResultExpression<T>(Result<T>.FromExistingResult(argumentValueResult));
         }
 
-        if (argumentValueResult.Value is not T t)
-        {
-            return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
-        }
-
-        return new TypedConstantResultExpression<T>(Result<T>.Success(t));
+        return argumentValueResult.Value is T t
+            ? new TypedConstantResultExpression<T>(Result<T>.Success(t))
+            : (ITypedExpression<T>)new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
     }
 }

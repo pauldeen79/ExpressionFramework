@@ -4,14 +4,15 @@ public class EvaluatableExpressionParser : ExpressionParserBase
 {
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var evaluatableArgumentResult = GetArgumentValueResult<Evaluatable>(functionParseResult, 1, nameof(EvaluatableExpression.Condition), evaluator, parser);
-        var result = evaluatableArgumentResult.EvaluateTyped(functionParseResult.Context);
-        return result.IsSuccessful()
+        var evaluatableResult = GetArgumentValueResult<Evaluatable>(functionParseResult, 1, nameof(EvaluatableExpression.Condition), evaluator, parser)
+            .EvaluateTyped(functionParseResult.Context);
+
+        return evaluatableResult.IsSuccessful()
             ? Result<Expression>.Success(new EvaluatableExpression(
-                result.Value!,
-                new DelegateResultExpression(_ => functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser))
+                evaluatableResult.Value!,
+                new ConstantResultExpression(functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser))
                 ))
-            : Result<Expression>.FromExistingResult(result);
+            : Result<Expression>.FromExistingResult(evaluatableResult);
     }
 
     public EvaluatableExpressionParser() : base(@"Evaluatable")
