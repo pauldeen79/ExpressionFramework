@@ -1,6 +1,4 @@
-﻿using CrossCutting.Utilities.Parsers;
-
-namespace ExpressionFramework.Parser.ExpressionResultParsers;
+﻿namespace ExpressionFramework.Parser.ExpressionResultParsers;
 
 public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionResolver
 {
@@ -40,8 +38,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     {
         var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
-        return new TypedDelegateExpression<IEnumerable>(_ => expressions.IsSuccessful()
-            ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
+        return new TypedConstantExpression<IEnumerable>(expressions.IsSuccessful()
+            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x)).Cast<Expression>()
             : new Expression[] { new TypedConstantResultExpression<object?>(Result<object?>.FromExistingResult(expressions)) });
     }
 
@@ -50,7 +48,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var expressionResult = GetArgumentValueResult<object?>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressionResult.IsSuccessful()
-            ? new DelegateExpression(_ => expressionResult.Value)
+            ? new ConstantExpression(expressionResult.Value)
             : new TypedConstantResultExpression<object?>(expressionResult);
     }
 
@@ -59,7 +57,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressions.IsSuccessful()
-            ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
+            ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x)).Cast<Expression>()
             : new Expression[] { new TypedConstantResultExpression<object?>(Result<object?>.FromExistingResult(expressions)) };
     }
 
@@ -92,6 +90,6 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
         }
 
-        return new TypedDelegateResultExpression<T>(_ => Result<T>.Success(t));
+        return new TypedConstantResultExpression<T>(Result<T>.Success(t));
     }
 }

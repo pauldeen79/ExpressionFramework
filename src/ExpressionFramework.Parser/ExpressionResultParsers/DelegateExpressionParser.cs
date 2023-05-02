@@ -8,8 +8,8 @@ public class DelegateExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var valueArgumentResult = GetArgumentValueResult<Func<object?, object?>>(functionParseResult, 0, nameof(DelegateExpression.Value), evaluator, parser);
-        var valueResult = valueArgumentResult.EvaluateTyped(functionParseResult.Context);
+        var valueResult = GetArgumentValueResult<Func<object?, object?>>(functionParseResult, 0, nameof(DelegateExpression.Value), evaluator, parser)
+            .EvaluateTyped(functionParseResult.Context);
 
         return valueResult.IsSuccessful()
             ? Result<Expression>.Success(new DelegateExpression(valueResult.Value!))

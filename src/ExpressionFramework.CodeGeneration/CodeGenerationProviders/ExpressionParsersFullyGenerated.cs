@@ -40,7 +40,7 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
         if (prop.TypeName.GetClassName() == Constants.Types.Expression)
         {
             var defaultValueSuffix = prop.IsNullable ? ", default" : string.Empty;
-            builder.Append($"new TypedDelegateResultExpression<object>(_ => functionParseResult.GetArgumentValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
+            builder.Append($"new TypedConstantResultExpression<object>(functionParseResult.GetArgumentValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
         }
         else if (prop.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>")
         {
@@ -59,7 +59,7 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
             }
             else
             {
-                builder.Append($"new TypedDelegateResultExpression<{genericType.ClrType}>(_ => functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser))");
+                builder.Append($"new TypedConstantResultExpression<{genericType.ClrType}>(functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser))");
             }
         }
         else
