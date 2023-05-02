@@ -3,10 +3,10 @@
 public static class StringExtensions
 {
     /// <summary>
-    /// Removes generics from a processed (fixed) typename. (<)
+    /// Gets generic type from a type string in this format: TypeName&lt;arguments&gt;
     /// </summary>
-    /// <param name="typeName">Typename with or without generics</param>
-    /// <returns>Typename without generics (<)</returns>
+    /// <param name="instance"></param>
+    /// <returns>TypeName</returns>
     public static string WithoutGenerics(this string instance)
     {
         var index = instance.IndexOf('<');
@@ -15,13 +15,17 @@ public static class StringExtensions
             : instance.Substring(0, index);
     }
 
+    /// <summary>
+    /// Gets generic type argument from a type string in this format: TypeName&lt;arguments&gt;
+    /// </summary>
+    /// <param name="value">Full typename, i.e. TypeName&lt;arguments&gt;</param>
+    /// <returns>arguments</returns>
     public static string GetGenericArguments(this string value)
     {
         if (string.IsNullOrEmpty(value))
         {
             return string.Empty;
         }
-        //Bla<GenericArg1,...>
 
         var open = value.IndexOf("<");
         if (open == -1)
@@ -29,17 +33,13 @@ public static class StringExtensions
             return string.Empty;
         }
 
-        var comma = value.LastIndexOf(",");
-        if (comma == -1)
-        {
-            comma = value.LastIndexOf(">");
-        }
+        var close = value.LastIndexOf(">");
 
-        if (comma == -1)
+        if (close == -1)
         {
             return string.Empty;
         }
 
-        return value.Substring(open + 1, comma - open - 1);
+        return value.Substring(open + 1, close - open - 1);
     }
 }
