@@ -14,4 +14,3 @@ public class ConstantExpressionParser : ExpressionParserBase
             : Result<Expression>.FromExistingResult(constantValueResult);
     }
 }
-

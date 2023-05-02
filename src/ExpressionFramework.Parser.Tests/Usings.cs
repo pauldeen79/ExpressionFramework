@@ -3,6 +3,7 @@ global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using CrossCutting.Utilities.Parsers.Extensions;
+global using ExpressionFramework.Domain.Aggregators;
 global using ExpressionFramework.Domain.Expressions;
 global using ExpressionFramework.Parser.Contracts;
 global using ExpressionFramework.Parser.ExpressionResultParsers;

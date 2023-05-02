@@ -11,4 +11,5 @@ global using ExpressionFramework.Domain.Contracts;
 global using ExpressionFramework.Domain.Evaluatables;
 global using ExpressionFramework.Domain.Expressions;
 global using ExpressionFramework.Parser.Contracts;
+global using ExpressionFramework.Parser.Extensions;
 global using Microsoft.Extensions.DependencyInjection;

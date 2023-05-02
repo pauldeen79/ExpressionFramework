@@ -19,9 +19,12 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => functionParseResult.FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
+        => IsNameValid(functionParseResult.FunctionName)
             ? DoParse(functionParseResult, evaluator, parser)
             : Result<Expression>.Continue();
+
+    protected virtual bool IsNameValid(string functionName)
+        => functionName.ToUpperInvariant() == _functionName.ToUpperInvariant();
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
@@ -38,6 +41,15 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         return new TypedDelegateExpression<IEnumerable>(_ => expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new DelegateExpression(_ => x)).Cast<Expression>()
             : new Expression[] { new DelegateResultExpression(_ => Result<object?>.FromExistingResult(expressions)) });
+    }
+
+    protected Expression GetExpressionArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    {
+        var expressionResult = GetArgumentValueResult<object?>(functionParseResult, index, argumentName, evaluator, parser).Value.Invoke(functionParseResult.Context);
+
+        return expressionResult.IsSuccessful()
+            ? new DelegateExpression(_ => expressionResult.Value)
+            : new DelegateResultExpression(_ => expressionResult);
     }
 
     protected IEnumerable<Expression> GetExpressionsArgumentValueResult(FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)

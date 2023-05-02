@@ -2,6 +2,10 @@
 
 public class AggregateExpressionParser : ExpressionParserBase
 {
+    public AggregateExpressionParser() : base(@"Aggregate")
+    {
+    }
+
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var aggregatorArgumentResult = GetArgumentValueResult<Aggregator>(functionParseResult, 1, nameof(AggregateExpression.Aggregator), evaluator, parser);
@@ -17,9 +21,4 @@ public class AggregateExpressionParser : ExpressionParserBase
             ? Result<Expression>.Success(new AggregateExpression(GetExpressionsArgumentValueResult(functionParseResult, 0, nameof(AggregateExpression.Expressions), evaluator, parser), aggregatorResult.Value!, formatProviderResult.Value!))
             : Result<Expression>.FromExistingResult(formatProviderResult);
     }
-
-    public AggregateExpressionParser() : base(@"Aggregate")
-    {
-    }
 }
-
