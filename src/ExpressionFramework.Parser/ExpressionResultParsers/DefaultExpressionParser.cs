@@ -10,7 +10,7 @@ public class DefaultExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var typeResult = GetGenericType(functionParseResult.FunctionName);
+        var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         return typeResult.IsSuccessful()
             ? Result<Expression>.Success((Expression)Activator.CreateInstance(typeof(DefaultExpression<>).MakeGenericType(typeResult.Value!)))
             : Result<Expression>.FromExistingResult(typeResult);

@@ -42,4 +42,18 @@ public static class StringExtensions
 
         return value.Substring(open + 1, close - open - 1);
     }
+
+    public static Result<Type> GetGenericTypeResult(this string functionName)
+    {
+        var typeName = functionName.GetGenericArguments();
+        if (string.IsNullOrEmpty(typeName))
+        {
+            return Result<Type>.Invalid("No type defined");
+        }
+
+        var type = Type.GetType(typeName);
+        return type != null
+            ? Result<Type>.Success(type)
+            : Result<Type>.Invalid($"Unknown type: {typeName}");
+    }
 }

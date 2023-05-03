@@ -44,18 +44,18 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
         }
         else if (prop.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>")
         {
-            builder.Append($"GetTypedExpressionsArgumentValueResult(functionParseResult, {index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
+            builder.Append($"functionParseResult.GetTypedExpressionsArgumentValueResult({index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
         }
         else if (prop.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
         {
-            builder.Append($"GetExpressionsArgumentValueResult(functionParseResult, {index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
+            builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
         }
         else if (prop.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
             var genericType = GetGenericType(prop.TypeName.GetGenericArguments());
             if (string.IsNullOrEmpty(genericType.ClrType))
             {
-                builder.Append($"GetArgumentValueResult<{prop.TypeName.GetGenericArguments()}>(functionParseResult, {index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
+                builder.Append($"functionParseResult.GetArgumentValueResult<{prop.TypeName.GetGenericArguments()}>({index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
             }
             else
             {

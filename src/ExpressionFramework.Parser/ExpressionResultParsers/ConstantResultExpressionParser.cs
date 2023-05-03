@@ -8,7 +8,7 @@ public class ConstantResultExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var constantValueResult = GetArgumentValueResult<Result>(functionParseResult, 0, nameof(ConstantExpression.Value), evaluator, parser)
+        var constantValueResult = functionParseResult.GetArgumentValueResult<Result>(0, nameof(ConstantExpression.Value), evaluator, parser)
             .EvaluateTyped(functionParseResult.Context);
         
         return constantValueResult.IsSuccessful()

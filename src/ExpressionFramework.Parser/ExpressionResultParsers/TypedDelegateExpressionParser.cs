@@ -10,7 +10,7 @@ public class TypedDelegateExpressionParser : ExpressionParserBase
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var typeResult = GetGenericType(functionParseResult.FunctionName);
+        var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(typeResult);
