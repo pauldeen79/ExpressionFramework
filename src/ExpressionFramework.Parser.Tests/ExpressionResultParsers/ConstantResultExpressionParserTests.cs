@@ -45,7 +45,7 @@ public class ConstantResultExpressionParserTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull(); // you might expect that the function is copied, but the untyped result does not have a Value property so we can't copy it...
+        result.Value.Should().Be("My value");
     }
 
     [Fact]

@@ -10,7 +10,7 @@ public partial record EqualsExpression
         var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? nonSuccessfulResult
-            : Result<object?>.FromExistingResult(Equal.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase), value => value);
+            : Result<object?>.FromExistingResult(Equal.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase));
     }
 
     public Result<bool> EvaluateTyped(object? context)

@@ -13,7 +13,7 @@
 public partial record StringConcatenateExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
+        => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
     {

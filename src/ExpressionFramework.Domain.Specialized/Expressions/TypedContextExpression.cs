@@ -10,7 +10,7 @@
 public partial record TypedContextExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context), value => value);
+        => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
     public Result<T> EvaluateTyped(object? context)
         => context is T t
