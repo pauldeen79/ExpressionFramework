@@ -2,7 +2,6 @@
 
 public sealed class ConstantEvaluatableParserTests : IDisposable
 {
-
     private readonly ServiceProvider _provider;
 
     public ConstantEvaluatableParserTests()
