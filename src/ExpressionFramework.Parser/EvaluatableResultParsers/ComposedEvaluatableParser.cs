@@ -1,20 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.EvaluatableResultParsers;
 
-namespace ExpressionFramework.Parser.EvaluatableResultParsers
+public class ComposedEvaluatableParser : EvaluatableParserBase
 {
-    public class ComposedEvaluatableParser : EvaluatableParserBase
+    public ComposedEvaluatableParser() : base(@"ComposedEvaluatable")
     {
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        {
-            throw new System.NotImplementedException();
-        }
+    }
 
-        public ComposedEvaluatableParser() : base(@"ComposedEvaluatable")
-        {
-        }
+    protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    {
+        var valueResult = functionParseResult.GetArgumentExpressionResult<IEnumerable<ComposableEvaluatable>>(0, nameof(ComposedEvaluatable.Conditions), functionParseResult.Context, evaluator, parser);
+
+        return valueResult.IsSuccessful()
+            ? Result<Evaluatable>.Success(new ComposedEvaluatable(valueResult.Value!))
+            : Result<Evaluatable>.FromExistingResult(valueResult);
     }
 }
 

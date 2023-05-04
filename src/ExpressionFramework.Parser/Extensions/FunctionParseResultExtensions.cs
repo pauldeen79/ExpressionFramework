@@ -2,24 +2,30 @@
 
 public static class FunctionParseResultExtensions
 {
-    public static ITypedExpression<T> GetArgumentValueResult<T>(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    public static ITypedExpression<T> GetArgumentValueExpression<T>(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser));
 
-    public static ITypedExpression<T> GetArgumentValueResult<T>(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser, T defaultValue)
+    public static ITypedExpression<T> GetArgumentValueExpression<T>(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser, T defaultValue)
         => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser, defaultValue));
 
-    public static ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValueResult(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    public static Result<T> GetArgumentExpressionResult<T>(this FunctionParseResult functionParseResult, int index, string argumentName, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        => GetArgumentValueExpression<T>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(context);
+
+    public static Result<T> GetArgumentExpressionResult<T>(this FunctionParseResult functionParseResult, int index, string argumentName, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser, T defaultValue)
+        => GetArgumentValueExpression(functionParseResult, index, argumentName, evaluator, parser, defaultValue).EvaluateTyped(context);
+
+    public static ITypedExpression<IEnumerable> GetTypedExpressionsArgumentValueExpression(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
+        var expressions = GetArgumentValueExpression<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return new TypedConstantExpression<IEnumerable>(expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x))
             : new Expression[] { new ConstantResultExpression(expressions) });
     }
 
-    public static Expression GetExpressionArgumentValueResult(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    public static Expression GetExpressionArgumentValueExpression(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressionResult = GetArgumentValueResult<object?>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
+        var expressionResult = GetArgumentValueExpression<object?>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressionResult.IsSuccessful()
             ? new ConstantExpression(expressionResult.Value)
@@ -28,7 +34,7 @@ public static class FunctionParseResultExtensions
 
     public static IEnumerable<Expression> GetExpressionsArgumentValueResult(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        var expressions = GetArgumentValueResult<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
+        var expressions = GetArgumentValueExpression<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
 
         return expressions.IsSuccessful()
             ? expressions.Value!.OfType<object>().Select(x => new ConstantExpression(x))
