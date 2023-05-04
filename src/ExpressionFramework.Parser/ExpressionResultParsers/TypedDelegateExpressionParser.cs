@@ -17,7 +17,6 @@ public class TypedDelegateExpressionParser : ExpressionParserBase
         }
 
         var valueResult = functionParseResult.GetArgumentValueResult(0, nameof(TypedDelegateExpression<string>.Value), functionParseResult.Context, evaluator, parser);
-
         if (!valueResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(valueResult);

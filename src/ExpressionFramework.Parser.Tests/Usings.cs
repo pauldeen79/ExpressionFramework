@@ -1,4 +1,5 @@
 ﻿global using System.Globalization;
+global using CrossCutting.Common.Abstractions;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
