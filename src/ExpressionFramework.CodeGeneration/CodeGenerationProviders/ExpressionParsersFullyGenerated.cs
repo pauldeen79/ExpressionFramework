@@ -33,13 +33,13 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
 
     private static void CreateArgument(StringBuilder builder, int index, IClassProperty prop)
     {
+        var defaultValueSuffix = prop.IsNullable ? ", default" : string.Empty;
         if (index > 0)
         {
             builder.AppendLine(",").Append("    ");
         }
         if (prop.TypeName.GetClassName() == Constants.Types.Expression)
         {
-            var defaultValueSuffix = prop.IsNullable ? ", default" : string.Empty;
             builder.Append($"new TypedConstantResultExpression<object>(functionParseResult.GetArgumentValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
         }
         else if (prop.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>")
@@ -55,11 +55,11 @@ public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBas
             var genericType = GetGenericType(prop.TypeName.GetGenericArguments());
             if (string.IsNullOrEmpty(genericType.ClrType))
             {
-                builder.Append($"functionParseResult.GetArgumentValueResult<{prop.TypeName.GetGenericArguments()}>({index}, {prop.Name.CsharpFormat()}, evaluator, parser)");
+                builder.Append($"functionParseResult.GetArgumentValueResult<{prop.TypeName.GetGenericArguments()}>({index}, {prop.Name.CsharpFormat()}, evaluator, parser{defaultValueSuffix})");
             }
             else
             {
-                builder.Append($"new TypedConstantResultExpression<{genericType.ClrType}>(functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser))");
+                builder.Append($"new TypedConstantResultExpression<{genericType.ClrType}>(functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
             }
         }
         else

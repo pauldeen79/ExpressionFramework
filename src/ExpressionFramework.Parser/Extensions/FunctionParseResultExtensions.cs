@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Domain.Expressions;
-
-namespace ExpressionFramework.Parser.Extensions;
+﻿namespace ExpressionFramework.Parser.Extensions;
 
 public static class FunctionParseResultExtensions
 {
