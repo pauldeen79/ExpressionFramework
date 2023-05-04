@@ -1,20 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Parser.EvaluatableResultParsers;
 
-namespace ExpressionFramework.Parser.EvaluatableResultParsers
+public class SingleEvaluatableParser : EvaluatableParserBase
 {
-    public class SingleEvaluatableParser : EvaluatableParserBase
+    public SingleEvaluatableParser() : base(@"SingleEvaluatable")
     {
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    }
+
+    protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    {
+        var operatorResult = functionParseResult.GetArgumentExpressionResult<Operator>(1, nameof(SingleEvaluatable.Operator), functionParseResult.Context, evaluator, parser);
+        if (!operatorResult.IsSuccessful())
         {
-            throw new System.NotImplementedException();
+            return Result<Evaluatable>.FromExistingResult(operatorResult);
         }
 
-        public SingleEvaluatableParser() : base(@"SingleEvaluatable")
-        {
-        }
+        var leftExpression = functionParseResult.GetExpressionArgumentValueExpression(0, nameof(SingleEvaluatable.LeftExpression), evaluator, parser);
+        var rightExpression = functionParseResult.GetExpressionArgumentValueExpression(2, nameof(SingleEvaluatable.RightExpression), evaluator, parser);
+
+        return Result<Evaluatable>.Success(new SingleEvaluatable(
+            leftExpression,
+            operatorResult.Value!,
+            rightExpression));
     }
 }
 
