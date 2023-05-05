@@ -20,7 +20,13 @@ public class DelegateResultExpressionParserTests
             .WithContext(CreateContext())
             .WithFunctionName("DelegateResult")
             .WithFormatProvider(CultureInfo.InvariantCulture)
-            .AddArguments(new FunctionArgument(new FunctionParseResultBuilder().WithFunctionName("Context").WithFormatProvider(CultureInfo.InvariantCulture).WithContext(CreateContext()).Build()));
+            .AddArguments(new FunctionArgumentBuilder()
+                .WithFunction(new FunctionParseResultBuilder()
+                    .WithFunctionName("Context")
+                    .WithFormatProvider(CultureInfo.InvariantCulture)
+                    .WithContext(CreateContext())
+                )
+            );
     }
 
     [Fact]

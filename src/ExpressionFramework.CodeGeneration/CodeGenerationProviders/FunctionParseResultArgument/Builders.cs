@@ -25,11 +25,14 @@ public class Builders : CSharpClassBase
     {
         if (typeName == $"{RecordConcreteCollectionType.WithoutGenerics()}<{typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument).FullName}>")
         {
+            var init = $"{CurrentNamespace}.{nameof(FunctionParseResultArgumentBuilderFactory)}.Create(x)";
             property.ConvertCollectionPropertyToBuilderOnBuilder
             (
                 false,
                 RecordConcreteCollectionType.WithoutGenerics(),
-                ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
+                ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture),
+                "{0} = source.{0}.Select(x => " + init + ").ToList()",
+                builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
             );
         }
         else
