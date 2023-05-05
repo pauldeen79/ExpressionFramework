@@ -117,6 +117,34 @@ public class AddAggregatorTests
     }
 
     [Fact]
+    public void Aggregate_Returns_Failure_From_First_Result_When_Not_Succesful()
+    {
+        // Arrange
+        var sut = new AddAggregator();
+
+        // Act
+        var result = sut.Aggregate(new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")), new TypedConstantExpression<int>(2));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Aggregate_Returns_Failure_From_Second_Result_When_Not_Succesful()
+    {
+        // Arrange
+        var sut = new AddAggregator();
+
+        // Act
+        var result = sut.Aggregate(new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
