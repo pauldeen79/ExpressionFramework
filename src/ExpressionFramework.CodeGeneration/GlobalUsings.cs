@@ -11,6 +11,7 @@ global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+global using ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArguments;
 global using ExpressionFramework.CodeGeneration.Models;
 global using ExpressionFramework.CodeGeneration.Models.Contracts;
 global using ExpressionFramework.CodeGeneration.Models.Domains;
