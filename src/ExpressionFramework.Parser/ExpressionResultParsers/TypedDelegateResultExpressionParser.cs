@@ -9,7 +9,5 @@ public class TypedDelegateResultExpressionParser : ExpressionParserBase
     protected override bool IsNameValid(string functionName) => base.IsNameValid(functionName.WithoutGenerics());
 
     protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-    {
-        throw new NotImplementedException();
-    }
+        => ParseTypedExpression(typeof(TypedDelegateExpression<>), nameof(TypedDelegateExpression<object>.Value), functionParseResult, evaluator, parser);
 }

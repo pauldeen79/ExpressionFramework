@@ -58,7 +58,7 @@ public class TypedTypedDelegateExpressionParserTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().BeEquivalentTo("Could not create typed delegate expression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedDelegateExpression`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
+        result.ErrorMessage.Should().BeEquivalentTo("Could not create TypedDelegateExpression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedDelegateExpression`1[[System.String, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
     }
 
     [Fact]
