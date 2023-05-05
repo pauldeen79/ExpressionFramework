@@ -25,16 +25,13 @@ public class ComposableEvaluatableParser : EvaluatableParserBase
             return Result<Evaluatable>.FromExistingResult(error);
         }
 
-        var leftExpression = functionParseResult.GetExpressionArgumentValueExpression(0, nameof(ComposableEvaluatable.LeftExpression), evaluator, parser);
-        var rightExpression = functionParseResult.GetExpressionArgumentValueExpression(2, nameof(ComposableEvaluatable.RightExpression), evaluator, parser);
-
         return Result<Evaluatable>.Success(new ComposableEvaluatable(
             startGroupResult.Value,
             endGroupResult.Value,
             combinationResult.Value,
-            leftExpression,
+            functionParseResult.GetExpressionArgumentValueExpression(0, nameof(ComposableEvaluatable.LeftExpression), evaluator, parser),
             operatorResult.Value!,
-            rightExpression));
+            functionParseResult.GetExpressionArgumentValueExpression(2, nameof(ComposableEvaluatable.RightExpression), evaluator, parser)));
     }
 }
 

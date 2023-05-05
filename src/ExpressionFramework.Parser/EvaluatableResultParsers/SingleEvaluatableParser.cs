@@ -14,13 +14,10 @@ public class SingleEvaluatableParser : EvaluatableParserBase
             return Result<Evaluatable>.FromExistingResult(operatorResult);
         }
 
-        var leftExpression = functionParseResult.GetExpressionArgumentValueExpression(0, nameof(SingleEvaluatable.LeftExpression), evaluator, parser);
-        var rightExpression = functionParseResult.GetExpressionArgumentValueExpression(2, nameof(SingleEvaluatable.RightExpression), evaluator, parser);
-
         return Result<Evaluatable>.Success(new SingleEvaluatable(
-            leftExpression,
+            functionParseResult.GetExpressionArgumentValueExpression(0, nameof(SingleEvaluatable.LeftExpression), evaluator, parser),
             operatorResult.Value!,
-            rightExpression));
+            functionParseResult.GetExpressionArgumentValueExpression(2, nameof(SingleEvaluatable.RightExpression), evaluator, parser)));
     }
 }
 

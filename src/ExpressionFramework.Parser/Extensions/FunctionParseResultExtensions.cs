@@ -6,7 +6,7 @@ public static class FunctionParseResultExtensions
         => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser));
 
     public static ITypedExpression<T> GetArgumentValueExpression<T>(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser, T defaultValue)
-        => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser, defaultValue));
+        => ProcessArgumentResult<T>(argumentName, functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser, defaultValue), true, defaultValue);
 
     public static Result<T> GetArgumentExpressionResult<T>(this FunctionParseResult functionParseResult, int index, string argumentName, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         => GetArgumentValueExpression<T>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(context);
@@ -41,7 +41,7 @@ public static class FunctionParseResultExtensions
             : new Expression[] { new ConstantResultExpression(expressions) };
     }
 
-    private static ITypedExpression<T> ProcessArgumentResult<T>(string argumentName, Result<object?> argumentValueResult)
+    private static ITypedExpression<T> ProcessArgumentResult<T>(string argumentName, Result<object?> argumentValueResult, bool useDefaultValue = false, T? defaultValue = default)
     {
         if (!argumentValueResult.IsSuccessful())
         {
@@ -51,6 +51,11 @@ public static class FunctionParseResultExtensions
         if (argumentValueResult.Value is T t)
         {
             return new TypedConstantResultExpression<T>(Result<T>.Success(t));
+        }
+
+        if (argumentValueResult.Value == null && useDefaultValue)
+        {
+            return new TypedConstantResultExpression<T>(Result<T>.Success(defaultValue!));
         }
 
         if (typeof(T).IsEnum && argumentValueResult.Value is string s)

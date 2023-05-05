@@ -186,9 +186,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected static bool IsSupportedExpressionForGeneratedParser(ITypeBase t)
         => !t.Name.StartsWith("TypedDelegate")
         && !t.GenericTypeArguments.Any()
-        && t.Properties.All(IsSupported);
+        && t.Properties.All(IsSupportedPropertyForGeneratedParser);
 
-    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, Action<ClassMethodBuilder> methodDelegate)
+    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, Action<ClassMethodBuilder> parseMethodDelegate, Action<ClassBuilder>? classDelegate = null)
         => new ClassBuilder()
             .WithNamespace(CurrentNamespace)
             .WithName($"{typeBase.Name}Parser")
@@ -205,10 +205,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .AddParameter("parser", typeof(IExpressionParser))
                 .WithProtected()
                 .WithOverride()
-                .With(methodDelegate)
-            );
+                .With(parseMethodDelegate)
+            )
+        .Chain(x => classDelegate?.Invoke(x));
 
-    private static bool IsSupported(IClassProperty p)
+    protected static bool IsSupportedPropertyForGeneratedParser(IClassProperty p)
         => p.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
         || p.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
         || p.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>";

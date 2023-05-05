@@ -17,7 +17,7 @@ public sealed class EvaluatableExpressionParserTests : IDisposable
     {
         // Arrange
         var parser = new EvaluatableExpressionParser();
-        var contextValue = new SingleEvaluatable(new ContextExpression(), new EqualsOperator(), "some value");
+        var contextValue = new SingleEvaluatable(new ContextExpression(), new EqualsOperator(), new ConstantExpression("some value"));
         var functionParseResult = new FunctionParseResult("Evaluatable", new FunctionParseResultArgument[]
         {
             new FunctionArgument(new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue)),
@@ -30,9 +30,9 @@ public sealed class EvaluatableExpressionParserTests : IDisposable
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<EvaluatableExpression>();
-        ((EvaluatableExpression)result.Value!).Expression.Should().BeOfType<ConstantResultExpression>();
-        ((ConstantResultExpression)((EvaluatableExpression)result.Value!).Expression).Value.Should().BeOfType<Result<object?>>();
-        ((Result<object?>)((ConstantResultExpression)((EvaluatableExpression)result.Value!).Expression).Value).Value.Should().BeEquivalentTo("some value");
+        ((EvaluatableExpression)result.Value!).Expression.Should().BeOfType<TypedConstantResultExpression<object?>>();
+        ((TypedConstantResultExpression<object?>)((EvaluatableExpression)result.Value!).Expression).Value.Should().BeOfType<Result<object?>>();
+        ((Result<object?>)((TypedConstantResultExpression<object?>)((EvaluatableExpression)result.Value!).Expression).Value).Value.Should().BeEquivalentTo("some value");
         ((EvaluatableExpression)result.Value!).Condition.Should().BeSameAs(contextValue);
     }
 

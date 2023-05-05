@@ -11,7 +11,7 @@ public class ExpressionParsersScaffolded : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !IsSupportedExpressionForGeneratedParser(x))
+            .Where(x => x.Name.StartsWithAny("TypedConstant", "TypedDelegate", "Delegate"))
             .Select(x => CreateParserClass
             (
                 x,
