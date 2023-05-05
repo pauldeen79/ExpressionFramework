@@ -32,7 +32,7 @@ public sealed class EvaluatableExpressionParserTests : IDisposable
         result.Value.Should().BeOfType<EvaluatableExpression>();
         ((EvaluatableExpression)result.Value!).Expression.Should().BeOfType<TypedConstantResultExpression<object?>>();
         ((TypedConstantResultExpression<object?>)((EvaluatableExpression)result.Value!).Expression).Value.Should().BeOfType<Result<object?>>();
-        ((Result<object?>)((TypedConstantResultExpression<object?>)((EvaluatableExpression)result.Value!).Expression).Value).Value.Should().BeEquivalentTo("some value");
+        ((TypedConstantResultExpression<object?>)((EvaluatableExpression)result.Value!).Expression).Value.Value.Should().BeEquivalentTo("some value");
         ((EvaluatableExpression)result.Value!).Condition.Should().BeSameAs(contextValue);
     }
 

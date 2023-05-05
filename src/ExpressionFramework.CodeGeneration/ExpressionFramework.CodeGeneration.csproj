@@ -15,7 +15,7 @@
 
     <ItemGroup>
       <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.50" />
-      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.66" />
+      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.67" />
     </ItemGroup>
 
     <Target Name="PostBuild" AfterTargets="PostBuildEvent">

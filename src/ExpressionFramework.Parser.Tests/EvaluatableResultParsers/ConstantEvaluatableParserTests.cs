@@ -56,7 +56,7 @@ public sealed class ConstantEvaluatableParserTests : IDisposable
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Value is not of type boolean");
+        result.ErrorMessage.Should().Be("Value is not of type System.Boolean");
     }
 
     public void Dispose() => _provider.Dispose();

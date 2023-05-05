@@ -4,10 +4,6 @@
 public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserEvaluatableResultParsers;
-    public override string LastGeneratedFilesFileName => string.Empty;
-
-    protected override string FileNameSuffix => string.Empty;
-    protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IEvaluatable))
@@ -16,6 +12,6 @@ public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Evaluatable,
                 x.Name,
-                m => m.AddNotImplementedException()
+                Constants.Namespaces.DomainEvaluatables
             ).Build());
 }

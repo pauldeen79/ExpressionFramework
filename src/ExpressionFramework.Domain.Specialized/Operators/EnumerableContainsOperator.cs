@@ -14,4 +14,3 @@ public partial record EnumerableContainsOperator
             ? Result<bool>.Success(enumerableLeft.OfType<object>().Contains(rightValue))
             : Result<bool>.Invalid("Left value is not of type IEnumerable");
 }
-

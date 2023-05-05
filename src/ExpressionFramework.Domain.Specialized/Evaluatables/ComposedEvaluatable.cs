@@ -22,11 +22,11 @@ public partial record ComposedEvaluatable : IValidatableObject
         var index = 0;
         foreach (var evaluatable in Conditions)
         {
-            if (evaluatable.StartGroup)
+            if (evaluatable.StartGroup ?? false)
             {
                 groupCounter++;
             }
-            if (evaluatable.EndGroup)
+            if (evaluatable.EndGroup ?? false)
             {
                 groupCounter--;
             }
@@ -50,7 +50,11 @@ public partial record ComposedEvaluatable : IValidatableObject
     }
 
     private bool CanEvaluateSimpleConditions(IEnumerable<ComposableEvaluatable> conditions)
-        => !conditions.Any(x => x.Combination == Combination.Or || x.StartGroup || x.EndGroup);
+        => !conditions.Any(x =>
+            (x.Combination ?? Combination.And) == Combination.Or
+            || (x.StartGroup ?? false)
+            || (x.EndGroup ?? false)
+        );
 
     private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
@@ -81,8 +85,8 @@ public partial record ComposedEvaluatable : IValidatableObject
                 builder.Append(evaluatable.Combination == Combination.And ? "&" : "|");
             }
 
-            var prefix = evaluatable.StartGroup ? "(" : string.Empty;
-            var suffix = evaluatable.EndGroup ? ")" : string.Empty;
+            var prefix = evaluatable.StartGroup ?? false ? "(" : string.Empty;
+            var suffix = evaluatable.EndGroup ?? false ? ")" : string.Empty;
             var itemResult = IsItemValid(context, evaluatable);
             if (!itemResult.IsSuccessful())
             {

@@ -2,14 +2,14 @@
 
 public interface IComposableEvaluatable : IEvaluatable
 {
-    bool StartGroup { get; }
-    bool EndGroup { get; }
-    Combination Combination { get; }
-
     [Required]
     IExpression LeftExpression { get; }
     [Required]
     IOperator Operator { get; }
     [Required]
     IExpression RightExpression { get; }
+
+    Combination? Combination { get; }
+    bool? StartGroup { get; }
+    bool? EndGroup { get; }
 }

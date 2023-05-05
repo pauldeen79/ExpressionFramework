@@ -1,11 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class AggregatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
+public class AggregatorParsers : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserAggregatorResultParsers;
-
-    protected override bool CreateCodeGenerationHeader => false;
 
     public override object CreateModel()
         => GetOverrideModels(typeof(Models.IAggregator))
@@ -14,6 +12,6 @@ public class AggregatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
                 x,
                 Constants.Types.Aggregator,
                 x.Name,
-                m => m.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{Constants.Types.Aggregator}>.Success(new {Constants.Namespaces.DomainAggregators}.{x.Name}());")
+                Constants.Namespaces.DomainAggregators
             ).Build());
 }

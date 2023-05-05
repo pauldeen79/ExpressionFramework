@@ -45,17 +45,16 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
-            false,
-            false,
-            Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression(new TypedConstantExpression<string>("Kaboom"))
+            new ErrorExpression(new TypedConstantExpression<string>("Kaboom")),
+            Combination.And,
+            false,
+            false
         );
 
         // Act
         var actual = Evaluate(new[] { evaluatable });
-
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -68,12 +67,12 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
-            true,
-            true,
-            Combination.And,
             new ConstantExpression(new[] { "1", "2", "3" }),
             new EnumerableContainsOperator(),
-            new ErrorExpression(new TypedConstantExpression<string>("Kaboom"))
+            new ErrorExpression(new TypedConstantExpression<string>("Kaboom")),
+            Combination.And,
+            true,
+            true
         );
 
         // Act
@@ -231,12 +230,12 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatableBase
         (
-            false,
-            false,
-            Combination.And,
             new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
             new EqualsOperator(),
-            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }))
+            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
+            Combination.And,
+            false,
+            false
         );
 
         // Act & Assert

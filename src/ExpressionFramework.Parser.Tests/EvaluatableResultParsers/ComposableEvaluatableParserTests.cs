@@ -33,10 +33,10 @@ public sealed class ComposableEvaluatableParserTests : IDisposable
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ComposableEvaluatable>();
         var composableEvaluatable = (ComposableEvaluatable)result.Value!;
-        composableEvaluatable.LeftExpression.Should().BeOfType<ConstantExpression>();
-        ((ConstantExpression)composableEvaluatable.LeftExpression).Value.Should().BeEquivalentTo(1);
-        composableEvaluatable.RightExpression.Should().BeOfType<ConstantExpression>();
-        ((ConstantExpression)composableEvaluatable.RightExpression).Value.Should().BeEquivalentTo(2);
+        composableEvaluatable.LeftExpression.Should().BeOfType<TypedConstantResultExpression<object>>();
+        ((TypedConstantResultExpression<object>)composableEvaluatable.LeftExpression).Value.GetValueOrThrow().Should().BeEquivalentTo(1);
+        composableEvaluatable.RightExpression.Should().BeOfType<TypedConstantResultExpression<object>>();
+        ((TypedConstantResultExpression<object>)composableEvaluatable.RightExpression).Value.GetValueOrThrow().Should().BeEquivalentTo(2);
         composableEvaluatable.Operator.Should().BeOfType<EqualsOperator>();
         composableEvaluatable.Combination.Should().Be(Combination.Or);
         composableEvaluatable.StartGroup.Should().BeFalse();
