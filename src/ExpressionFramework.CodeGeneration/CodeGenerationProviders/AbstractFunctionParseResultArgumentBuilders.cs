@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class FunctionParseResultBuilder : CSharpClassBase
+public class AbstractFunctionParseResultArgumentBuilders : CSharpClassBase
 {
     //##
     public override string Path => "ExpressionFramework.Parser.Tests";
@@ -21,23 +21,12 @@ public class FunctionParseResultBuilder : CSharpClassBase
     }
     //##
 
-    protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
-    {
-        if (typeName == $"{RecordConcreteCollectionType.WithoutGenerics()}<{typeof(FunctionParseResultArgument).FullName}>")
-        {
-            property.ConvertCollectionPropertyToBuilderOnBuilder
-            (
-                false,
-                RecordConcreteCollectionType.WithoutGenerics(),
-                ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
-            );
-        }
-        else
-        {
-            base.FixImmutableBuilderProperty(property, typeName);
-        }
-    }
+    protected override bool EnableEntityInheritance => true;
+    protected override bool EnableBuilderInhericance => true;
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(new[] { typeof(FunctionParseResult) }, ProjectName, Path);
+        => GetImmutableBuilderClasses(
+            new[] { typeof(FunctionParseResultArgument) },
+            ProjectName,
+            Path);
 }
