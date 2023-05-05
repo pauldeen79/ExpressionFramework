@@ -145,6 +145,20 @@ public class AddAggregatorTests
     }
 
     [Fact]
+    public void Aggregate_Returns_Failure_From_FormatProviderExpression_When_not_Successful()
+    {
+        // Arrange
+        var sut = new AddAggregator();
+
+        // Act
+        var result = sut.Aggregate(new ConstantExpression(1), new TypedConstantExpression<int>(2), new TypedConstantResultExpression<IFormatProvider>(Result<IFormatProvider>.Error("Kaboom")));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
