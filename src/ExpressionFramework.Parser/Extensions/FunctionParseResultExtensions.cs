@@ -59,15 +59,6 @@ public static class FunctionParseResultExtensions
             : new Expression[] { new ConstantResultExpression(expressions) });
     }
 
-    public static Expression GetExpressionArgumentValueExpression(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-    {
-        var expressionResult = GetArgumentValueExpression<object?>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
-
-        return expressionResult.IsSuccessful()
-            ? new ConstantExpression(expressionResult.Value)
-            : new ConstantResultExpression(expressionResult);
-    }
-
     public static IEnumerable<Expression> GetExpressionsArgumentValueResult(this FunctionParseResult functionParseResult, int index, string argumentName, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var expressions = GetArgumentValueExpression<IEnumerable>(functionParseResult, index, argumentName, evaluator, parser).EvaluateTyped(functionParseResult.Context);
