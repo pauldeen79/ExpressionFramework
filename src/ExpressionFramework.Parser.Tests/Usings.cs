@@ -13,6 +13,7 @@ global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.Parser.Contracts;
 global using ExpressionFramework.Parser.EvaluatableResultParsers;
 global using ExpressionFramework.Parser.ExpressionResultParsers;
+global using ExpressionFramework.Parser.Extensions;
 global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;
 global using Moq;
