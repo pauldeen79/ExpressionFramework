@@ -1,13 +1,12 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionParsersFullyGenerated : ExpressionFrameworkCSharpClassBase
+public class ExpressionParsers : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserExpressionResultParsers;
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Where(x => !x.Name.StartsWithAny("TypedConstant", "TypedDelegate", "Delegate"))
             .Select(model => CreateParserClass
             (
                 model,

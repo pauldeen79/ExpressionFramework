@@ -63,7 +63,7 @@ public class DelegateResultExpressionParserTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().StartWith("Value is not of type System.Func`2[[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[CrossCutting.Common.Results.Result`1[[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], CrossCutting.Common");
+        result.ErrorMessage.Should().StartWith("Result is not of type System.Func`2[[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[CrossCutting.Common.Results.Result`1[[System.Object, System.Private.CoreLib, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], CrossCutting.Common, Version=");
     }
 
     private static Func<object?, Result<object?>> CreateContext() => new Func<object?, Result<object?>>(_ => Result<object?>.Success("Hello world"));

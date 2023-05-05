@@ -92,7 +92,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .AddParameter("parser", typeof(IExpressionParser))
                 .WithProtected()
                 .WithOverride()
-                .With(parseMethod => AddCodeStatements(typeBase, parseMethod, entityNamespace, type))
+                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type))
             )
             .With(x => AddIsSupportedOverride(typeBase, x));
 
@@ -271,16 +271,17 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
     }
 
-    private static void AddCodeStatements(ITypeBase typeBase, ClassMethodBuilder parseMethod, string entityNamespace, string type)
+    private static void AddParseCodeStatements(ITypeBase typeBase, ClassMethodBuilder parseMethod, string entityNamespace, string type)
     {
-        if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.Name.StartsWithAny("TypedConstant", "TypedDelegate", "Delegate"))
+        if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.Name.StartsWithAny("TypedConstant", "TypedDelegate"))
         {
-            // these methods need to be generated manually. (will be called from scaffolding generator)
-            parseMethod.AddNotImplementedException();
+            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), nameof({typeBase.Name}<{typeof(object).FullName}>.Value), functionParseResult, evaluator, parser);");
+            return;
         }
-        else if (typeBase.Properties.Any(x => !IsSupportedPropertyForGeneratedParser(x)))
+
+        if (typeBase.Properties.Any(x => !IsSupportedPropertyForGeneratedParser(x)))
         {
-            parseMethod.AddLiteralCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateResultVariable(x.Item, x.Index)));
+            parseMethod.AddLiteralCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateParseResultVariable(x.Item, x.Index)));
             parseMethod.AddLiteralCodeStatements
             (
                 "var error = new Result[]",
@@ -311,7 +312,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         var initializer = typeBase.GenericTypeArguments.Count switch
         {
-            0 => $"new {entityNamespace}.{typeBase.Name}({CreateArguments(typeBase, type)})",
+            0 => $"new {entityNamespace}.{typeBase.Name}({CreateParseArguments(typeBase, type)})",
             1 => $"({Constants.Namespaces.Domain}.{type})Activator.CreateInstance(typeof({entityNamespace}.{typeBase.Name}<>).MakeGenericType(typeResult.Value!))",
             _ => throw new NotSupportedException("Expressions with multiple generic type arguments are not supported")
         };
@@ -321,7 +322,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         parseMethod.AddLiteralCodeStatements("#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
     }
 
-    private static string CreateResultVariable(IClassProperty prop, int index)
+    private static string CreateParseResultVariable(IClassProperty prop, int index)
     {
         var defaultValueSuffix = prop.IsNullable
             ? ", default"
@@ -353,21 +354,21 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
     }
 
-    private static string CreateArguments(ITypeBase typeBase, string type)
+    private static string CreateParseArguments(ITypeBase typeBase, string type)
     {
         var builder = new StringBuilder();
         builder.AppendLine().Append("    ");
         var index = 0;
         foreach (var property in typeBase.Properties)
         {
-            CreateArgument(builder, index, property, type);
+            CreateParseArgument(builder, index, property, type);
             index++;
         }
 
         return builder.ToString();
     }
 
-    private static void CreateArgument(StringBuilder builder, int index, IClassProperty property, string type)
+    private static void CreateParseArgument(StringBuilder builder, int index, IClassProperty property, string type)
     {
         var defaultValueSuffix = property.IsNullable
             ? ", default"
