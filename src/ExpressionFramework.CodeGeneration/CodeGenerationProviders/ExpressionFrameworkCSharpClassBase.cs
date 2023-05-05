@@ -424,6 +424,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             "System.Boolean" or "bool" => ("bool", "Boolean"),
             "System.DateTime" or "DateTime" => ("System.DateTime", "DateTime"),
             "System.Decimal" or "decimal" => ("decimal", "Decimal"),
+            "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
 
