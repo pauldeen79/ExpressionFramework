@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Expressions;
 
 [ExcludeFromCodeCoverage]
-public class OverrideExpressionBuilders : ExpressionFrameworkCSharpClassBase
+public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ExpressionBuilders;
 

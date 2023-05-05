@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArgument;
 
 [ExcludeFromCodeCoverage]
-public class FunctionParseResultArgumentBuilderFactory : CSharpClassBase
+public class Builders : CSharpClassBase
 {
     //##
     public override string Path => "ExpressionFramework.Parser.Tests";
@@ -21,16 +21,23 @@ public class FunctionParseResultArgumentBuilderFactory : CSharpClassBase
     }
     //##
 
+    protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
+    {
+        if (typeName == $"{RecordConcreteCollectionType.WithoutGenerics()}<{typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument).FullName}>")
+        {
+            property.ConvertCollectionPropertyToBuilderOnBuilder
+            (
+                false,
+                RecordConcreteCollectionType.WithoutGenerics(),
+                ReplaceWithBuilderNamespaces(typeName).ReplaceSuffix(">", "Builder>", StringComparison.InvariantCulture)
+            );
+        }
+        else
+        {
+            base.FixImmutableBuilderProperty(property, typeName);
+        }
+    }
+
     public override object CreateModel()
-        => CreateBuilderFactoryModels(
-            new[] { typeof(LiteralArgument).ToClass(CreateClassSettings()), typeof(FunctionArgument).ToClass(CreateClassSettings()) },
-            new(
-                CurrentNamespace,
-                nameof(FunctionParseResultArgumentBuilderFactory),
-                typeof(FunctionParseResultArgument).FullName!,
-                Path,
-                "FunctionParseResultArgumentBuilder",
-                ProjectName
-            )
-        );
+        => GetImmutableBuilderClasses(new[] { typeof(FunctionParseResult) }, ProjectName, CurrentNamespace);
 }

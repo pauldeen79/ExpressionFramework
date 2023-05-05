@@ -1,9 +1,9 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Evaluatables;
 
 [ExcludeFromCodeCoverage]
-public class Aggregators : ExpressionFrameworkCSharpClassBase
+public class Entities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Aggregators)}";
+    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Evaluatables)}";
     public override string LastGeneratedFilesFileName => string.Empty;
 
     protected override string FileNameSuffix => string.Empty;
@@ -11,20 +11,18 @@ public class Aggregators : ExpressionFrameworkCSharpClassBase
     protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specialized", string.Empty);
 
     public override object CreateModel()
-        => GetOverrideModels(typeof(Models.IAggregator))
+        => GetOverrideModels(typeof(IEvaluatable))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName(x.Name)
                 .WithPartial()
                 .WithRecord()
                 .AddMethods(new ClassMethodBuilder()
-                    .WithName("Aggregate")
+                    .WithName("Evaluate")
                     .WithOverride()
                     .AddParameter("context", typeof(object), isNullable: true)
-                    .AddParameter("secondExpression", GetModelTypeName(typeof(IExpression)))
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
+                    .WithType(typeof(Result<bool>))
                     .AddNotImplementedException()
                 )
                 .Build());
-
 }

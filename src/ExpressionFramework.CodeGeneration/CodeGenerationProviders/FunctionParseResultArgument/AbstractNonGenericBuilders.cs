@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArgument;
 
 [ExcludeFromCodeCoverage]
-public class AbstractFunctionParseResultArgumentBuilders : CSharpClassBase
+public class AbstractNonGenericBuilders : CSharpClassBase
 {
     //##
     public override string Path => "ExpressionFramework.Parser.Tests";
@@ -23,10 +23,11 @@ public class AbstractFunctionParseResultArgumentBuilders : CSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
+    protected override string FileNameSuffix => ".nongeneric.template.generated";
 
     public override object CreateModel()
-        => GetImmutableBuilderClasses(
-            new[] { typeof(FunctionParseResultArgument) },
+        => GetImmutableNonGenericBuilderClasses(
+            new[] { typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument) },
             ProjectName,
-            Path);
+            CurrentNamespace);
 }

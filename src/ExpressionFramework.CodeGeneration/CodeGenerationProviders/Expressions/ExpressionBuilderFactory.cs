@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Expressions;
 
 [ExcludeFromCodeCoverage]
 public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase

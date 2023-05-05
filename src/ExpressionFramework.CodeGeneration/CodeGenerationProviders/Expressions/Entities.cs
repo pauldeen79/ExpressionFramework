@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Expressions;
 
 [ExcludeFromCodeCoverage]
-public class Expressions : ExpressionFrameworkCSharpClassBase
+public class Entities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Expressions)}";
     public override string LastGeneratedFilesFileName => string.Empty;
@@ -26,7 +26,7 @@ public class Expressions : ExpressionFrameworkCSharpClassBase
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .AddNotImplementedException()
                 );
-            
+
                 var typedInterface = x.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics()).FixTypeName();
                 if (!string.IsNullOrEmpty(typedInterface))
                 {

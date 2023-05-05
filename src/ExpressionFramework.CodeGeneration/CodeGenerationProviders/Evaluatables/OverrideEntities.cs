@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Evaluatables;
 
 [ExcludeFromCodeCoverage]
-public class OverrideEvaluatableEntities : ExpressionFrameworkCSharpClassBase
+public class OverrideEntities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.Evaluatables;
 

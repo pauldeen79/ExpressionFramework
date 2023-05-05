@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Evaluatables;
 
 [ExcludeFromCodeCoverage]
-public class EvaluatableParsers : ExpressionFrameworkCSharpClassBase
+public class Parsers : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserEvaluatableResultParsers;
 

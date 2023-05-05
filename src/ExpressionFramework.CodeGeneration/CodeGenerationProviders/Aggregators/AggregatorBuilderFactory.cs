@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Aggregators;
 
 [ExcludeFromCodeCoverage]
 public class AggregatorBuilderFactory : ExpressionFrameworkCSharpClassBase

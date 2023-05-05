@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Operators;
 
 [ExcludeFromCodeCoverage]
-public class Operators : ExpressionFrameworkCSharpClassBase
+public class Entities : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Operators)}";
     public override string LastGeneratedFilesFileName => string.Empty;

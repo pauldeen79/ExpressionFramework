@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Aggregators;
 
 [ExcludeFromCodeCoverage]
-public class OverrideAggregatorBuilders : ExpressionFrameworkCSharpClassBase
+public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.AggregatorBuilders;
 

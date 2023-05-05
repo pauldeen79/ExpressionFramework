@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Operators;
 
 [ExcludeFromCodeCoverage]
-public class OperatorParsersScaffolded : ExpressionFrameworkCSharpClassBase
+public class Parsers : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.ParserOperatorResultParsers;
 
