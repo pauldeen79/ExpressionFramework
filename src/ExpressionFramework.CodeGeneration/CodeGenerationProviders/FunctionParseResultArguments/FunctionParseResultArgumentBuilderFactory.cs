@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArgument;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArguments;
 
 [ExcludeFromCodeCoverage]
 public class FunctionParseResultArgumentBuilderFactory : CSharpClassBase
@@ -27,7 +27,7 @@ public class FunctionParseResultArgumentBuilderFactory : CSharpClassBase
             new(
                 CurrentNamespace,
                 nameof(FunctionParseResultArgumentBuilderFactory),
-                typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument).FullName!,
+                typeof(FunctionParseResultArgument).FullName!,
                 CurrentNamespace,
                 "FunctionParseResultArgumentBuilder",
                 ProjectName

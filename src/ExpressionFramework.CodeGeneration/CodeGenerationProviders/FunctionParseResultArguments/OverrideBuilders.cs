@@ -1,7 +1,7 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArgument;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArguments;
 
 [ExcludeFromCodeCoverage]
-public class AbstractBuilders : CSharpClassBase
+public class OverrideBuilders : CSharpClassBase
 {
     //##
     public override string Path => "ExpressionFramework.Parser.Tests";
@@ -23,10 +23,20 @@ public class AbstractBuilders : CSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
+    protected override IClass? BaseClass => CreateBaseclass(typeof(FunctionParseResultArgument), ProjectName);
+    protected override string BaseClassBuilderNamespace => CurrentNamespace;
 
     public override object CreateModel()
         => GetImmutableBuilderClasses(
-            new[] { typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument) },
+            new[] { typeof(LiteralArgument), typeof(FunctionArgument) },
             ProjectName,
-            CurrentNamespace);
+            base.CurrentNamespace);
+
+    protected override bool IsMemberValid(IParentTypeContainer parent, ITypeBase typeBase)
+        => parent is not null
+        && typeBase is not null
+        && (string.IsNullOrEmpty(parent.ParentTypeFullName)
+            || parent.ParentTypeFullName.GetClassName() == typeBase.Name
+            || GetModelAbstractBaseTyped().Any(x => x == parent.ParentTypeFullName.GetClassName())
+            || (BaseClass is not null && typeBase.Name == BaseClass.Name));
 }

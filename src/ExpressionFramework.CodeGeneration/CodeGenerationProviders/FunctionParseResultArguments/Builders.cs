@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArgument;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.FunctionParseResultArguments;
 
 [ExcludeFromCodeCoverage]
 public class Builders : CSharpClassBase
@@ -23,7 +23,7 @@ public class Builders : CSharpClassBase
 
     protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
     {
-        if (typeName == $"{RecordConcreteCollectionType.WithoutGenerics()}<{typeof(CrossCutting.Utilities.Parsers.FunctionParseResultArgument).FullName}>")
+        if (typeName == $"{RecordConcreteCollectionType.WithoutGenerics()}<{typeof(FunctionParseResultArgument).FullName}>")
         {
             var init = $"{CurrentNamespace}.{nameof(FunctionParseResultArgumentBuilderFactory)}.Create(x)";
             property.ConvertCollectionPropertyToBuilderOnBuilder
