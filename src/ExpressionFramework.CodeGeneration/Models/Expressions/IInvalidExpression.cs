@@ -3,7 +3,7 @@
 public interface IInvalidExpression : IExpression
 {
     [Required]
-    IExpression ErrorMessageExpression { get; }
+    ITypedExpression<string> ErrorMessageExpression { get; }
     [Required]
-    IReadOnlyCollection<IExpression> ValidationErrorExpressions { get; }
+    IMultipleTypedExpressions<ValidationError> ValidationErrorExpressions { get; }
 }

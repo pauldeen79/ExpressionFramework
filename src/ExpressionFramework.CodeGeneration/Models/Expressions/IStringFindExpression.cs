@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IStringFindExpression : IExpression
+public interface IStringFindExpression : IExpression, ITypedExpression<int>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<string> Expression { get; }
     [Required]
-    IExpression FindExpression { get; }
+    ITypedExpression<string> FindExpression { get; }
 }

@@ -7,21 +7,24 @@ internal static class Program
     {
         // Setup code generation
         var currentDirectory = Directory.GetCurrentDirectory();
-        var basePath = currentDirectory.EndsWith(Constants.ProjectName)
-            ? Path.Combine(currentDirectory, @"src/")
-            : Path.Combine(currentDirectory, @"../../../../");
+        var basePath = currentDirectory switch
+        {
+            var x when x.EndsWith(Constants.ProjectName) => Path.Combine(currentDirectory, @"src/"),
+            var x when x.EndsWith(Constants.Namespaces.Domain) => Path.Combine(currentDirectory, @"../"),
+            var x when x.EndsWith($"{Constants.ProjectName}.CodeGeneration") => Path.Combine(currentDirectory, @"../"),
+            _ => Path.Combine(currentDirectory, @"../../../../")
+        };
         var generateMultipleFiles = true;
         var dryRun = false;
         var multipleContentBuilder = new MultipleContentBuilder { BasePath = basePath };
-        var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, false, dryRun);
+        var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
 
         // Generate code
-        var generationTypeNames = new[] { "Entities", "Builders", "BuilderFactory" };
-        var generators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase)).ToArray();
-        var generationTypes = generators.Where(x => x.Name.EndsWithAny(generationTypeNames));
-        var scaffoldingTypes = generators.Where(x => !x.Name.EndsWithAny(generationTypeNames));
-        _ = generationTypes.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings.ForGeneration(), multipleContentBuilder, x)).ToArray();
-        _ = scaffoldingTypes.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings.ForScaffolding(), multipleContentBuilder, x)).ToArray();
+        var expressionFrameworkGenerators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase) && !x.IsAbstract).ToArray();
+        _ = expressionFrameworkGenerators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(x.GetSettings(settings), multipleContentBuilder, x)).ToArray();
+
+        var modelFrameworkGenerators = typeof(FunctionParseResultArgumentsBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(FunctionParseResultArgumentsBase) && !x.IsAbstract).ToArray();
+        _ = modelFrameworkGenerators.Select(x => (FunctionParseResultArgumentsBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings, multipleContentBuilder, x)).ToArray();
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
@@ -32,10 +35,6 @@ internal static class Program
         {
             Console.WriteLine($"Code generation completed, check the output in {basePath}");
             Console.WriteLine($"Generated files: {multipleContentBuilder.Contents.Count()}");
-            foreach (var content in multipleContentBuilder.Contents)
-            {
-                Console.WriteLine(content.FileName);
-            }
         }
     }
 }

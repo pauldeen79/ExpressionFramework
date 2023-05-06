@@ -7,9 +7,7 @@ public class OperatorExpressionTests
     {
         // Arrange
         var @operator = new EqualsOperator();
-        var leftExpression = new ConstantExpression("A");
-        var rightExpression = new ConstantExpression("B");
-        var sut = new OperatorExpression(leftExpression, rightExpression, @operator);
+        var sut = new OperatorExpression("A", "B", @operator);
 
         // Act
         var result = sut.Evaluate();
@@ -24,9 +22,7 @@ public class OperatorExpressionTests
     {
         // Arrange
         var @operator = new EqualsOperator();
-        var leftExpression = new ConstantExpression("A");
-        var rightExpression = new ConstantExpression("B");
-        var sut = new OperatorExpression(leftExpression, rightExpression, @operator);
+        var sut = new OperatorExpression("A", "B", @operator);
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -34,6 +30,19 @@ public class OperatorExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeFalse();
+    }
+
+    [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new OperatorExpression(false, true, new EqualsOperator());
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<OperatorExpression>();
     }
 
     [Fact]

@@ -3,38 +3,10 @@
 public class OrExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
+    public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Successful()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new ConstantExpression(true), new EmptyExpression());
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new OrExpression(false, true);
 
         // Act
         var result = sut.Evaluate();
@@ -45,38 +17,10 @@ public class OrExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_FirstExpression_Is_Not_Of_Type_Boolean()
+    public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Successful()
     {
         // Arrange
-        var sut = new OrExpression(new ConstantExpression("not a boolean"), new TrueExpression());
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FirstExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_SecondExpression_Is_Not_Of_Type_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new ConstantExpression(true), new EmptyExpression());
-
-        // Act
-        var result = sut.EvaluateTyped();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SecondExpression must be of type boolean");
-    }
-
-    [Fact]
-    public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
-    {
-        // Arrange
-        var sut = new OrExpression(new ConstantExpression(false), new TrueExpression());
+        var sut = new OrExpression(false, true);
 
         // Act
         var result = sut.EvaluateTyped();
@@ -87,10 +31,23 @@ public class OrExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new OrExpression(true, false);
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<OrExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new OrExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new OrExpressionBase(new TypedConstantExpression<bool>(false), new TypedConstantExpression<bool>(true));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -100,7 +57,7 @@ public class OrExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new OrExpression(new TrueExpression(), new FalseExpression());
+        var expression = new OrExpression(true, false);
 
         // Act
         var result = expression.GetPrimaryExpression();

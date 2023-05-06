@@ -4,6 +4,9 @@
     <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="6.10.0" />
+    <PackageReference Include="FluentAssertions" Version="6.11.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -30,7 +33,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ExpressionFramework.Domain.Builders\ExpressionFramework.Domain.Builders.csproj" />
-    <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,9 +11,9 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Setup .NET
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v3
         with:
           dotnet-version: 7.0.x
       - name: Fetch origin/main
@@ -21,10 +21,8 @@ jobs:
           git fetch --no-tags --prune --depth=1 origin main
       - name: Restore
         run: dotnet restore
-      - name: Build code generation
-        run: dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj -c Release --no-restore
-      - name: Run code generation
-        run: dotnet src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/ExpressionFramework.CodeGeneration.dll
+      - name: Force first-time run of code generation
+        run: dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.2.2
         with:

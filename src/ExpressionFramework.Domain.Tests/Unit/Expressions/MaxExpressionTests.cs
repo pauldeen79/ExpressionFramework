@@ -6,21 +6,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MaxExpression(default(object?));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new MaxExpression(_ => 12345);
+        var sut = new MaxExpression(default(IEnumerable)!);
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +20,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Error_When_SelectorExpression_Returns_Error()
     {
         // Arrange
-        var sut = new MaxExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new MaxExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +34,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Sum_Of_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new MaxExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
+        var sut = new MaxExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null);
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Sum_Of_SelectorExpression_Result_When_SelectorExpression_Is_Not_Null()
     {
         // Arrange
-        var sut = new MaxExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var sut = new MaxExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class MaxExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new MaxExpressionBase(new EmptyExpression(), null);
+        var expression = new MaxExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), null);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -86,7 +72,7 @@ public class MaxExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new MaxExpression(new ConstantExpression(new[] { 1, 2, 3 }), null);
+        var expression = new MaxExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null);
 
         // Act
         var result = expression.GetPrimaryExpression();

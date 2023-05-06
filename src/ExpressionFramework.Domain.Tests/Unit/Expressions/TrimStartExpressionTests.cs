@@ -6,7 +6,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(" trim "));
+        var sut = new TrimStartExpression(" trim ");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ConstantExpression(new[] { '0' }));
+        var sut = new TrimStartExpression("0trim0", new[] { '0' });
 
         // Act
         var actual = sut.Evaluate();
@@ -29,10 +29,23 @@ public class TrimStartExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_TrimChars_Is_Null()
+    {
+        // Arrange
+        var sut = new TrimStartExpression(new TypedConstantExpression<string>(" trim "), new TypedConstantExpression<char[]>(default(char[])!));
+
+        // Act
+        var actual = sut.Evaluate();
+
+        // Assert
+        actual.GetValueOrThrow().Should().BeEquivalentTo("trim ");
+    }
+
+    [Fact]
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(string.Empty));
+        var sut = new TrimStartExpression(string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -45,21 +58,34 @@ public class TrimStartExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
+        var sut = new TrimStartExpression(default(string)!);
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
+    [Fact]
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
+    {
+        // Arrange
+        var sut = new TrimStartExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), null);
+
+        // Act
+        var actual = sut.Evaluate();
+
+        // Assert
+        actual.Status.Should().Be(ResultStatus.Error);
+        actual.ErrorMessage.Should().Be("Kaboom");
+    }
     [Fact]
     public void Evaluate_Returns_Error_When_TrimCharsExpression_Returns_Error()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new TrimStartExpression(new TypedConstantExpression<string>("0trim0"), new TypedConstantResultExpression<char[]>(Result<char[]>.Error("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -73,7 +99,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(" trim "));
+        var sut = new TrimStartExpression(" trim ");
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -86,7 +112,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression("0trim0"), new ConstantExpression(new[] { '0' }));
+        var sut = new TrimStartExpression("0trim0", new[] { '0' });
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -99,7 +125,7 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(string.Empty));
+        var sut = new TrimStartExpression(string.Empty);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -112,31 +138,44 @@ public class TrimStartExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimStartExpression(new ConstantExpression(default(object?)));
+        var sut = new TrimStartExpression(default(string)!);
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
+    }
+
+    [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new TrimStartExpression("A");
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<TrimStartExpression>();
     }
 
     [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new TrimStartExpressionBase(new EmptyExpression(), null);
+        var expression = new TrimStartExpressionBase(new TypedConstantExpression<string>(string.Empty), null);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new TrimStartExpression(new ConstantExpression("Some text"));
+        var expression = new TrimStartExpression("Some text");
 
         // Act
         var result = expression.GetPrimaryExpression();

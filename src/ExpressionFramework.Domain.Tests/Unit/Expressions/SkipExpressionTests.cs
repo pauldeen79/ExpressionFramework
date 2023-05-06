@@ -3,50 +3,24 @@
 public class SkipExpressionTests
 {
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SkipExpression(default(object?), 1);
+        var sut = new SkipExpression(new TypedDelegateResultExpression<IEnumerable>(_ => Result<IEnumerable>.Error("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SkipExpression(_ => 1, _ => 1);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_CountExpression_Returns_Non_Integer_Value()
-    {
-        // Arrange
-        var sut = new SkipExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ConstantExpression("non integer value"));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("CountExpression is not of type integer");
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
     public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new SkipExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -60,7 +34,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SkipExpression(new ConstantExpression(new object[] { "A", "B", 1, "C" }), new TypedConstantExpression<int>(1));
+        var sut = new SkipExpression(new object[] { "A", "B", 1, "C" }, 1);
 
         // Act
         var result = sut.Evaluate();
@@ -71,10 +45,23 @@ public class SkipExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new SkipExpression(new object[] { "A", "B", 1, "C" }, 1);
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<SkipExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new SkipExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new SkipExpressionBase(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedConstantExpression<int>(1));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -84,7 +71,7 @@ public class SkipExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SkipExpression(new ConstantExpression(new[] { "a", "b", "c" }), new ConstantExpression(1));
+        var expression = new SkipExpression(new[] { "a", "b", "c" }, 1);
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -6,7 +6,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_PascalCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression("Pascal"));
+        var sut = new ToPascalCaseExpression("Pascal");
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToPascalCaseExpression(string.Empty);
 
         // Act
         var actual = sut.Evaluate();
@@ -32,21 +32,21 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToPascalCaseExpression(default(string)!);
 
         // Act
         var actual = sut.Evaluate();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_PascalCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression("Pascal"));
+        var sut = new ToPascalCaseExpression("Pascal");
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -60,7 +60,7 @@ public class ToPascalCaseExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression(string.Empty));
+        var sut = new ToPascalCaseExpression(string.Empty);
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -73,31 +73,44 @@ public class ToPascalCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(new ConstantExpression(default(object?)));
+        var sut = new ToPascalCaseExpression(default(string)!);
 
         // Act
         var actual = sut.EvaluateTyped();
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression must be of type string");
+        actual.ErrorMessage.Should().Be("Expression is not of type string");
+    }
+
+    [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new ToPascalCaseExpression("A");
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<ToPascalCaseExpression>();
     }
 
     [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new ToPascalCaseExpressionBase(new EmptyExpression());
+        var expression = new ToPascalCaseExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
+    public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new ToPascalCaseExpression(new ConstantExpression("Some string"));
+        var expression = new ToPascalCaseExpression("Some string");
 
         // Act
         var result = expression.GetPrimaryExpression();

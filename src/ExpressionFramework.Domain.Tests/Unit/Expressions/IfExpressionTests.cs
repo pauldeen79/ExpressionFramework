@@ -6,7 +6,7 @@ public class IfExpressionTests
     public void Evaluate_Returns_Error_From_Expression_Evaluation()
     {
         // Arrange
-        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new ConstantExpression("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
+        var sut = new IfExpression(new SingleEvaluatable(new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act
         var result = sut.Evaluate();
@@ -14,6 +14,90 @@ public class IfExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Kaboom");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Constant_Expression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), "Correct");
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Correct");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Constant_Expression_No_Value_Provided()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), default(object?));
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Constant_Expression_DefaultExpression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), "Correct", "Incorrect");
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Incorrect");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Delegate_Expression_DefaultExpression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), new DelegateExpression(_ => "Correct"), new DelegateExpression(_ => "Incorrect"));
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Incorrect");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Delegate_Expression_No_Value_Provided()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), default(Func<object?, object?>));
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeNull();
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Result_Using_Delegate_Expression()
+    {
+        // Arrange
+        var expression = new IfExpression(new SingleEvaluatable(_ => "A", new EqualsOperator(), _ => "A"), new DelegateExpression(_ => "Correct"), default);
+
+        // Act
+        var result = expression.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().Be("Correct");
     }
 
     [Fact]

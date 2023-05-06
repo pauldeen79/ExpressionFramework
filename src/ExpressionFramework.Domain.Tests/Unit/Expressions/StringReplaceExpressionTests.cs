@@ -6,7 +6,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Error_When_FindExpression_Returns_Error()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ErrorExpression(new ConstantExpression("Kaboom")), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), new TypedConstantExpression<string>("f"));
 
         // Act
         var result = sut.Evaluate();
@@ -20,49 +20,63 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression(default(object?)), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression("Hello world", default!, "f");
 
         // Act
         var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FindExpression must be of type string");
+        result.ErrorMessage.Should().Be("FindExpression is not of type string");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Error_When_ReplaceExpression_Returns_Error()
+    {
+        // Arrange
+        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantExpression<string>("f"), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_When_ReplaceExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression(default(object?)));
+        var sut = new StringReplaceExpression("Hello world", "e", default!);
 
         // Act
         var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("ReplaceExpression must be of type string");
+        result.ErrorMessage.Should().Be("ReplaceExpression is not of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression(default(object?)), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression(default!, "e", "f");
 
         // Act
         var result = sut.Evaluate();
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type string");
+        result.ErrorMessage.Should().Be("Expression is not of type string");
     }
 
     [Fact]
     public void Evaluate_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +90,7 @@ public class StringReplaceExpressionTests
     public void EvaluateTyped_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var sut = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = sut.EvaluateTyped();
@@ -87,10 +101,23 @@ public class StringReplaceExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new StringReplaceExpression("A", "B", "C");
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<StringReplaceExpression>();
+    }
+
+    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new StringReplaceExpressionBase(new EmptyExpression(), new EmptyExpression(), new EmptyExpression());
+        var expression = new StringReplaceExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -100,7 +127,7 @@ public class StringReplaceExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new StringReplaceExpression(new ConstantExpression("Hello world"), new ConstantExpression("e"), new ConstantExpression("f"));
+        var expression = new StringReplaceExpression("Hello world", "e", "f");
 
         // Act
         var result = expression.GetPrimaryExpression();

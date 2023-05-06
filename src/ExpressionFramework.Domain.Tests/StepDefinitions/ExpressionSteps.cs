@@ -64,15 +64,15 @@ public sealed class ExpressionSteps
 
     [Given(@"I chain a to upper case expression to it")]
     public void GivenIChainAToUpperCaseExpressionToIt()
-        => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder().WithExpression(new ContextExpressionBuilder()));
+        => ChainedExpressionBuilder.AddExpressions(new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()));
 
     [Given(@"I chain a to lower case expression to it")]
     public void GivenIChainAToLowerCaseExpressionToIt()
-        => ChainedExpressionBuilder.AddExpressions(new ToLowerCaseExpressionBuilder().WithExpression(new ContextExpressionBuilder()));
+        => ChainedExpressionBuilder.AddExpressions(new ToLowerCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()));
 
     [Given(@"I chain a to pascal case expression to it")]
     public void GivenIChainAToPascalCaseExpressionToIt()
-        => ChainedExpressionBuilder.AddExpressions(new ToPascalCaseExpressionBuilder().WithExpression(new ContextExpressionBuilder()));
+        => ChainedExpressionBuilder.AddExpressions(new ToPascalCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()));
 
     [Given(@"I use a constant expression '([^']*)' as result expression")]
     public void GivenIUseAConstantExpressionAsResultExpression(string expression)

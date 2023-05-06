@@ -3,8 +3,8 @@
 public interface IElementAtOrDefaultExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    IExpression IndexExpression { get; }
+    ITypedExpression<int> IndexExpression { get; }
     IExpression? DefaultExpression { get; }
 }

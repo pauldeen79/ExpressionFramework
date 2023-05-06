@@ -7,7 +7,7 @@ public class ExpressionTests
     {
         // Arrange
         var value = new { Name = "Hello world!" };
-        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("Name"));
+        var expression = new FieldExpression(new ConstantExpression(value), new TypedConstantExpression<string>("Name"));
 
         // Act
         var result = expression.Evaluate();
@@ -22,7 +22,7 @@ public class ExpressionTests
     {
         // Arrange
         var value = new { InnerProperty = new { Name = "Hello world" } };
-        var expression = new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty.Name"));
+        var expression = new FieldExpression(new ConstantExpression(value), new TypedConstantExpression<string>("InnerProperty.Name"));
 
         // Act
         var result = expression.Evaluate(null);
@@ -39,8 +39,8 @@ public class ExpressionTests
         var value = new { InnerProperty = new { Name = "Hello world" } };
         var expression = new ChainedExpression(new[]
         {
-            new FieldExpression(new ConstantExpression(value), new ConstantExpression("InnerProperty")),
-            new FieldExpression(new ContextExpression(), new ConstantExpression("Name"))
+            new FieldExpression(new ConstantExpression(value), new TypedConstantExpression<string>("InnerProperty")),
+            new FieldExpression(new ContextExpression(), new TypedConstantExpression<string>("Name"))
         });
 
         // Act
@@ -57,8 +57,8 @@ public class ExpressionTests
         // Arrange
         var expression = new ChainedExpression(new Expression[]
         {
-            new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator()),
-            new CompoundExpression(new ContextExpression(), new ConstantExpression(3), new AddAggregator())
+            new CompoundExpression(new ConstantExpression(1), new TypedConstantExpression<int>(2), new AddAggregator(), default),
+            new CompoundExpression(new ContextExpression(), new TypedConstantExpression<int>(3), new AddAggregator(), default)
         });
 
         // Act
@@ -77,20 +77,20 @@ public class ExpressionTests
         var expression = new ChainedExpressionBuilder().AddExpressions(
             new ContextExpressionBuilder(),
             new SubstringExpressionBuilder()
-                .WithExpression(new ConstantExpressionBuilder().WithValue(input))
-                .WithIndexExpression(new ChainedExpressionBuilder().AddExpressions(
+                .WithExpression(new TypedContextExpressionBuilder<string>())
+                .WithIndexExpression(new TypedChainedExpressionBuilder<int>().AddExpressions(
                     new StringLengthExpressionBuilder()
-                        .WithExpression(new ContextExpressionBuilder()),
+                        .WithExpression(new TypedContextExpressionBuilder<string>()),
                     new CompoundExpressionBuilder()
                         .WithAggregator(new SubtractAggregatorBuilder())
                         .WithFirstExpression(new ContextExpressionBuilder())
                         .WithSecondExpression(new ConstantExpressionBuilder().WithValue(6)))
                 )
-                .WithLengthExpression(new ConstantExpressionBuilder().WithValue(6))
+                .WithLengthExpression(new TypedConstantExpressionBuilder<int>().WithValue(6))
         ).BuildTyped();
 
         // Act
-        var result = expression.Evaluate();
+        var result = expression.Evaluate(input);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -101,7 +101,7 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_CompoundExpression()
     {
         // Arrange
-        var aggregator = new CompoundExpression(new ConstantExpression("a"), new ConstantExpression("b"), new StringConcatenateAggregator());
+        var aggregator = new CompoundExpression(new ConstantExpression("a"), new TypedConstantExpression<string>("b"), new StringConcatenateAggregator(), default);
 
         // Act
         var result = aggregator.Evaluate(null);
@@ -115,7 +115,7 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
     {
         // Arrange
-        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator());
+        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator(), default(IFormatProvider));
 
         // Act
         var result = aggregator.Evaluate(null);
@@ -130,7 +130,7 @@ public class ExpressionTests
     {
         // Arrange
         var value = "Hello world!";
-        var expression = new CountExpression(new ConstantExpression(value), null);
+        var expression = new CountExpression(value, null);
 
         // Act
         var result = expression.Evaluate(null);
@@ -144,7 +144,7 @@ public class ExpressionTests
     public void Can_Get_String_Length_Using_StringLengthExpression()
     {
         // Arrange
-        var expression = new StringLengthExpression(new ConstantExpression("Hello world!"));
+        var expression = new StringLengthExpression(new TypedConstantExpression<string>("Hello world!"));
 
         // Act
         var result = expression.Evaluate();
@@ -164,7 +164,7 @@ public class ExpressionTests
         var currentMonthExpression = new ChainedExpression(new Expression[]
         {
             new TodayExpression(dateTimeProvider.Object),
-            new FieldExpression(new ContextExpression(), new ConstantExpression("Month"))
+            new FieldExpression(new ContextExpression(), new TypedConstantExpression<string>("Month"))
         });
 
         // Act

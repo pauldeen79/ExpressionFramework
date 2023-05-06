@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IOrderByExpression : IExpression
+public interface IOrderByExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    IReadOnlyCollection<IExpression> SortOrderExpressions { get; }
+    IMultipleTypedExpressions<ISortOrder> SortOrderExpressions { get; }
 }

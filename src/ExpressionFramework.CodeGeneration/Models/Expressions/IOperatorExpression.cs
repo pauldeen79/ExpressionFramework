@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IOperatorExpression : IExpression
+public interface IOperatorExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
     IExpression LeftExpression { get; }

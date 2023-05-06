@@ -1,0 +1,17 @@
+﻿global using System;
+global using System.Collections;
+global using System.Collections.Generic;
+global using System.Globalization;
+global using System.Linq;
+global using CrossCutting.Common.Abstractions;
+global using CrossCutting.Common.Results;
+global using CrossCutting.Utilities.Parsers;
+global using CrossCutting.Utilities.Parsers.Contracts;
+global using ExpressionFramework.Domain;
+global using ExpressionFramework.Domain.Contracts;
+global using ExpressionFramework.Domain.Domains;
+global using ExpressionFramework.Domain.Evaluatables;
+global using ExpressionFramework.Domain.Expressions;
+global using ExpressionFramework.Parser.Contracts;
+global using ExpressionFramework.Parser.Extensions;
+global using Microsoft.Extensions.DependencyInjection;

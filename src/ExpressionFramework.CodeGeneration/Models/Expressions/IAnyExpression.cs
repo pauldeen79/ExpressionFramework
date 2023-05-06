@@ -1,8 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IAnyExpression : IExpression
+public interface IAnyExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
-    IExpression Expression { get; }
-    IExpression? PredicateExpression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
+    ITypedExpression<bool>? PredicateExpression { get; }
 }

@@ -6,21 +6,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new EmptyExpression(), null);
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Not_Of_Type_Enumerable()
-    {
-        // Arrange
-        var sut = new SumExpression(new ConstantExpression(12345), null);
+        var sut = new SumExpression(default(IEnumerable)!);
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +20,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Error_When_SelectorExpression_Returns_Error()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2, 3 }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new SumExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +34,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Enumerable_Values_Are_Not_All_Numeric()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { "A", "B", "C" }), null);
+        var sut = new SumExpression(new[] { "A", "B", "C" });
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +48,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Byte_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (byte)1, (byte)2 }), null);
+        var sut = new SumExpression(new byte[] { 1, 2 });
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +62,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Short_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (short)1, (short)2 }), null);
+        var sut = new SumExpression(new[] { (short)1, (short)2 });
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +76,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Int_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2 }), null);
+        var sut = new SumExpression(new[] { 1, 2 });
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +90,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Long_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (long)1, (long)2 }), null);
+        var sut = new SumExpression(new[] { (long)1, (long)2 });
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +104,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Float_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (float)1.5, (float)2.25 }), null);
+        var sut = new SumExpression(new[] { (float)1.5, (float)2.25 });
 
         // Act
         var result = sut.Evaluate();
@@ -132,7 +118,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Double_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { 1.5, 2.25 }), null);
+        var sut = new SumExpression(new[] { 1.5, 2.25 });
 
         // Act
         var result = sut.Evaluate();
@@ -146,7 +132,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Decimal_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { (decimal)1.5, (decimal)2.25 }), null);
+        var sut = new SumExpression(new[] { (decimal)1.5, (decimal)2.25 });
 
         // Act
         var result = sut.Evaluate();
@@ -160,7 +146,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_SelectorExpression_Result_When_SelectorExpression_Is_Not_Null()
     {
         // Arrange
-        var sut = new SumExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var sut = new SumExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
 
         // Act
         var result = sut.Evaluate();
@@ -174,7 +160,7 @@ public class SumExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new SumExpressionBase(new EmptyExpression(), null);
+        var expression = new SumExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), null);
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -184,7 +170,7 @@ public class SumExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SumExpression(new ConstantExpression(new[] { 1, 2 }), new DelegateExpression(x => Convert.ToInt32(x)));
+        var expression = new SumExpression(new[] { 1, 2 }, new DelegateExpression(x => Convert.ToInt32(x)));
 
         // Act
         var result = expression.GetPrimaryExpression();

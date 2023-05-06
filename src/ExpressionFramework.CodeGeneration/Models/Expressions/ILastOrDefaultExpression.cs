@@ -3,7 +3,7 @@
 public interface ILastOrDefaultExpression : IExpression
 {
     [Required]
-    IExpression Expression { get; }
-    IExpression? PredicateExpression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
+    ITypedExpression<bool>? PredicateExpression { get; }
     IExpression? DefaultExpression { get; }
 }

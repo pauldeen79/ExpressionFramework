@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface INotExpression : IExpression
+public interface INotExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<bool> Expression { get; }
 }

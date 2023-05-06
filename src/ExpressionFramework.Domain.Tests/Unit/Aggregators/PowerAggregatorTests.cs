@@ -21,14 +21,14 @@ public class PowerAggregatorTests
     {
         // Arrange
         var sut = new PowerAggregator();
-        byte input = 1;
+        byte input = 2;
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(4));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1 ^ 2);
+        result.Value.Should().BeEquivalentTo(16);
     }
 
     [Fact]
@@ -36,14 +36,14 @@ public class PowerAggregatorTests
     {
         // Arrange
         var sut = new PowerAggregator();
-        short input = 1;
+        short input = 2;
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(8));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1 ^ 2);
+        result.Value.Should().BeEquivalentTo(256);
     }
 
     [Fact]
@@ -53,11 +53,11 @@ public class PowerAggregatorTests
         var sut = new PowerAggregator();
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(1), new ConstantExpression(2));
+        var result = sut.Aggregate(new ConstantExpression(2), new ConstantExpression(8));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1 ^ 2);
+        result.Value.Should().BeEquivalentTo(256);
     }
 
     [Fact]
@@ -67,11 +67,11 @@ public class PowerAggregatorTests
         var sut = new PowerAggregator();
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(1L), new ConstantExpression(2L));
+        var result = sut.Aggregate(new ConstantExpression(2L), new ConstantExpression(8L));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1L ^ 2L);
+        result.Value.Should().BeEquivalentTo(256L);
     }
 
     [Fact]

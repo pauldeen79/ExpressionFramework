@@ -51,6 +51,19 @@ public class TodayExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new TodayExpression();
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<TodayExpression>();
+    }
+
+    [Fact]
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange

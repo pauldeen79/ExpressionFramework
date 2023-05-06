@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IOfTypeExpression : IExpression
+public interface IOfTypeExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<IEnumerable> Expression { get; }
     [Required]
-    IExpression TypeExpression { get; }
+    ITypedExpression<Type> TypeExpression { get; }
 }

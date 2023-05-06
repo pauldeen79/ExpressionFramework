@@ -21,4 +21,18 @@ public class IsSmallerOperatorTests
         result.RightValueTypeName.Should().NotBeEmpty();
         result.ReturnValues.Should().ContainSingle();
     }
+
+    [Fact]
+    public void Different_Types_Returns_Invalid()
+    {
+        // Arrange
+        var sut = new IsSmallerOperator();
+
+        // Act
+        var result = sut.Evaluate(null, new ConstantExpression("string value"), new ConstantExpression(1));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Object must be of type String.");
+    }
 }

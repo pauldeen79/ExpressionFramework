@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>11.0</LangVersion>
+    <Nullable>enable</Nullable>
+    <PackageId>pauldeen79.ExpressionFramework.Domain.Specialized</PackageId>
+    <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
+    <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\pauldeen79_expressionframework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="2.7.52" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="2.7.52" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

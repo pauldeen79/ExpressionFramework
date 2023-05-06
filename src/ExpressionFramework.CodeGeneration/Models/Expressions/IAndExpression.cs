@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IAndExpression : IExpression
+public interface IAndExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
-    IExpression FirstExpression { get; }
+    ITypedExpression<bool> FirstExpression { get; }
     [Required]
-    IExpression SecondExpression { get; }
+    ITypedExpression<bool> SecondExpression { get; }
 }

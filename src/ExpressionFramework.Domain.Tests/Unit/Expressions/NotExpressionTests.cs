@@ -6,7 +6,7 @@ public class NotExpressionTests
     public void Evaluate_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression(new ConstantExpression(false));
+        var sut = new NotExpression(false);
 
         // Act
         var result = sut.Evaluate();
@@ -17,24 +17,24 @@ public class NotExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
+    public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new NotExpression(new EmptyExpression());
+        var expression = new NotExpression(new TypedConstantResultExpression<bool>(Result<bool>.Error("Kaboom")));
 
         // Act
-        var result = sut.Evaluate();
+        var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
+        result.Status.Should().Be(ResultStatus.Error);
+        result.ErrorMessage.Should().Be("Kaboom");
     }
 
     [Fact]
     public void EvaluateTyped_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression(new ConstantExpression(true));
+        var sut = new NotExpression(new TypedConstantExpression<bool>(true));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -45,24 +45,23 @@ public class NotExpressionTests
     }
 
     [Fact]
-    public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Of_Wrong_Type()
+    public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new NotExpression(new EmptyExpression());
+        var sut = new NotExpression(new TrueExpression());
 
         // Act
-        var result = sut.EvaluateTyped();
+        var actual = sut.ToUntyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression must be of type boolean");
+        actual.Should().BeOfType<NotExpression>();
     }
 
     [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new NotExpressionBase(new EmptyExpression());
+        var expression = new NotExpressionBase(new TypedConstantExpression<bool>(false));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -72,7 +71,7 @@ public class NotExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new NotExpression(new ConstantExpression(true));
+        var expression = new NotExpression(new TypedConstantExpression<bool>(true));
 
         // Act
         var result = expression.GetPrimaryExpression();

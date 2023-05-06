@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IEqualsExpression : IExpression
+public interface IEqualsExpression : IExpression, ITypedExpression<bool>
 {
     [Required]
     IExpression FirstExpression { get; }

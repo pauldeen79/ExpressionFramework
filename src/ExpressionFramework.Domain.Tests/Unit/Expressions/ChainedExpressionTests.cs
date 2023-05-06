@@ -9,7 +9,7 @@ public class ChainedExpressionTests
         var expression = new ChainedExpressionBuilder()
             .AddExpressions
             (
-                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")),
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom")),
                 new EmptyExpressionBuilder()
             )
             .Build();
@@ -30,7 +30,7 @@ public class ChainedExpressionTests
             .AddExpressions
             (
                 new EmptyExpressionBuilder(),
-                new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom"))
+                new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom"))
             )
             .Build();
 
@@ -49,11 +49,25 @@ public class ChainedExpressionTests
         var expression = new ChainedExpressionBuilder().BuildTyped();
 
         // Act
-        var actual = expression.Evaluate(default);
+        var actual = expression.Evaluate("test");
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeNull();
+        actual.Value.Should().Be("test");
+    }
+
+    [Fact]
+    public void Evaluate_Returns_Last_Result_When_Multiple_Expressions_Are_Provided()
+    {
+        // Arrange
+        var expression = new ChainedExpressionBuilder().AddExpressions(new ContextExpressionBuilder(), new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>())).BuildTyped();
+
+        // Act
+        var result = expression.Evaluate("hello");
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("HELLO");
     }
 
     [Fact]

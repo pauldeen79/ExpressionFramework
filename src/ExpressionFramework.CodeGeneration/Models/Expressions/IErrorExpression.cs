@@ -3,5 +3,5 @@
 public interface IErrorExpression : IExpression
 {
     [Required]
-    IExpression ErrorMessageExpression { get; }
+    ITypedExpression<string> ErrorMessageExpression { get; }
 }

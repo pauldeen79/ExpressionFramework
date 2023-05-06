@@ -6,7 +6,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ValidationError("Validation error message", new[] { "Member" }) }.Select(x => new ConstantExpression(x)));
+        var sut = new InvalidExpression("Error message", new[] { new ValidationError("Validation error message", new[] { "Member" }) });
 
         // Act
         var result = sut.Evaluate();
@@ -14,14 +14,14 @@ public class InvalidExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions.Select(x => x.Evaluate().Value));
+        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions!.Select(x => x.EvaluateTyped().Value));
     }
 
     [Fact]
     public void Evaluate_Returns_Invalid_Result_Without_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"));
+        var sut = new InvalidExpression("Error message");
 
         // Act
         var result = sut.Evaluate();
@@ -33,10 +33,25 @@ public class InvalidExpressionTests
     }
 
     [Fact]
+    public void Evaluate_Returns_Invalid_Result_Without_ValidationErrors_And_ErrorMessage()
+    {
+        // Assert
+        var sut = new InvalidExpression(default(string)!);
+
+        // Act
+        var result = sut.Evaluate();
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().BeNull();
+        result.ValidationErrors.Should().BeEmpty();
+    }
+
+    [Fact]
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new ErrorExpression(new ConstantExpression("Kaboom")));
+        var sut = new InvalidExpression(new TypedConstantExpression<string>("Ignored"), new[] { new TypedConstantResultExpression<ValidationError>(Result<ValidationError>.Error("Kaboom")) });
 
         // Act
         var result = sut.Evaluate();
@@ -50,7 +65,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ValidationErrors_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new ConstantExpression("Error message"), new[] { new ErrorExpression(new ConstantExpression("Kaboom")) });
+        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act
         var result = sut.Evaluate();
@@ -61,25 +76,10 @@ public class InvalidExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_ErrorMessageExpression_Returns_Non_String_Value()
-    {
-        // Assert
-        var sut = new InvalidExpression(new ConstantExpression(1));
-
-        // Act
-        var result = sut.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().BeNull();
-        result.ValidationErrors.Should().BeEmpty();
-    }
-
-    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new InvalidExpressionBase(new EmptyExpression(), Enumerable.Empty<Expression>());
+        var expression = new InvalidExpressionBase(new DefaultExpression<string>(), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -89,7 +89,7 @@ public class InvalidExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new InvalidExpression(new ConstantExpression("Something went wrong"), Enumerable.Empty<Expression>());
+        var expression = new InvalidExpression("Something went wrong", Enumerable.Empty<ValidationError>());
 
         // Act
         var result = expression.GetPrimaryExpression();

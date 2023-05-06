@@ -6,7 +6,7 @@ public class EqualsExpressionTests
     public void Evaluate_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
-        var firstExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var firstExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var secondExpression = new ConstantExpression("2");
         var sut = new EqualsExpression(firstExpression, secondExpression);
 
@@ -23,7 +23,7 @@ public class EqualsExpressionTests
     {
         // Arrange
         var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var secondExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var expression = new EqualsExpression(firstExpression, secondExpression);
 
         // Act
@@ -38,7 +38,7 @@ public class EqualsExpressionTests
     public void EvaluateTyped_Returns_Error_When_Evaluation_Of_FirstExpression_Fails()
     {
         // Arrange
-        var firstExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var firstExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var secondExpression = new ConstantExpression("2");
         var sut = new EqualsExpression(firstExpression, secondExpression);
 
@@ -55,7 +55,7 @@ public class EqualsExpressionTests
     {
         // Arrange
         var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ErrorExpression(new ConstantExpression("Kaboom"));
+        var secondExpression = new ErrorExpression(new TypedConstantExpression<string>("Kaboom"));
         var expression = new EqualsExpression(firstExpression, secondExpression);
 
         // Act
@@ -70,9 +70,7 @@ public class EqualsExpressionTests
     public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var firstExpression = new ConstantExpression("1");
-        var secondExpression = new ConstantExpression("1");
-        var expression = new EqualsExpression(firstExpression, secondExpression);
+        var expression = new EqualsExpression(1, 1);
 
         // Act
         var actual = expression.EvaluateTyped(null);
@@ -80,6 +78,19 @@ public class EqualsExpressionTests
         // Assert
         actual.Status.Should().Be(ResultStatus.Ok);
         actual.Value.Should().Be(true);
+    }
+
+    [Fact]
+    public void ToUntyped_Returns_Expression()
+    {
+        // Arrange
+        var sut = new EqualsExpression(true, true);
+
+        // Act
+        var actual = sut.ToUntyped();
+
+        // Assert
+        actual.Should().BeOfType<EqualsExpression>();
     }
 
     [Fact]

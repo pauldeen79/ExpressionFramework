@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-public interface IMonthExpression : IExpression
+public interface IMonthExpression : IExpression, ITypedExpression<int>
 {
     [Required]
-    IExpression Expression { get; }
+    ITypedExpression<DateTime> Expression { get; }
 }

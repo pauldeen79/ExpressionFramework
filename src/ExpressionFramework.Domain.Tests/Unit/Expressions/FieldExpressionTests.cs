@@ -7,7 +7,7 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
+            .WithFieldNameExpression(new TypedConstantExpressionBuilder<string>().WithValue(nameof(MyClass.MyProperty)))
             .WithExpression(new ConstantExpressionBuilder().WithValue(new MyClass { MyProperty = "Test" }))
             .Build();
 
@@ -25,7 +25,7 @@ public class FieldExpressionTests
         // Arrange
         var expression = new FieldExpressionBuilder()
             .WithExpression(new ConstantExpressionBuilder().WithValue(new MyClass { MyProperty = "Test" }))
-            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue("WrongPropertyName"))
+            .WithFieldNameExpression(new TypedConstantExpressionBuilder<string>().WithValue("WrongPropertyName"))
             .Build();
 
         // Act
@@ -42,7 +42,7 @@ public class FieldExpressionTests
         // Arrange
         var expression = new FieldExpressionBuilder()
             .WithExpression(new EmptyExpressionBuilder())
-            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
+            .WithFieldNameExpression(new TypedConstantExpressionBuilder<string>().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -58,8 +58,8 @@ public class FieldExpressionTests
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
-            .WithExpression(new ErrorExpressionBuilder().WithErrorMessageExpression(new ConstantExpressionBuilder().WithValue("Kaboom")))
-            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
+            .WithExpression(new ErrorExpressionBuilder().WithErrorMessageExpression(new TypedConstantExpressionBuilder<string>().WithValue("Kaboom")))
+            .WithFieldNameExpression(new TypedConstantExpressionBuilder<string>().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -74,7 +74,7 @@ public class FieldExpressionTests
     public void Evaluate_Returns_Invalid_When_FieldNameExpression_Returns_Empty_String()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new ConstantExpression(string.Empty));
+        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantExpression<string>(string.Empty));
 
         // Act
         var actual = expression.Evaluate();
@@ -88,7 +88,7 @@ public class FieldExpressionTests
     public void Evaluate_Returns_Error_When_FieldNameExpression_Returns_Error()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new ErrorExpression(new ConstantExpression("Kaboom")));
+        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
 
         // Act
         var actual = expression.Evaluate();
@@ -99,26 +99,12 @@ public class FieldExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Invalid_When_FieldNameExpression_Returns_Non_String_Value()
-    {
-        // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new ConstantExpression(1));
-
-        // Act
-        var actual = expression.Evaluate();
-
-        // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("FieldNameExpression must be of type string");
-    }
-
-    [Fact]
     public void Evaluate_Returns_Success_With_DefaultValue_When_Property_Value_Is_Null()
     {
         // Arrange
         var expression = new FieldExpressionBuilder()
             .WithExpression(new ConstantExpressionBuilder().WithValue(new MyClass { MyProperty = null }))
-            .WithFieldNameExpression(new ConstantExpressionBuilder().WithValue(nameof(MyClass.MyProperty)))
+            .WithFieldNameExpression(new TypedConstantExpressionBuilder<string>().WithValue(nameof(MyClass.MyProperty)))
             .Build();
 
         // Act
@@ -133,7 +119,7 @@ public class FieldExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new FieldExpressionBase(new EmptyExpression(), new EmptyExpression());
+        var expression = new FieldExpressionBase(new EmptyExpression(), new DefaultExpression<string>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -143,7 +129,7 @@ public class FieldExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass()), new ConstantExpression(nameof(MyClass.MyProperty)));
+        var expression = new FieldExpression(new ConstantExpression(new MyClass()), new TypedConstantExpression<string>(nameof(MyClass.MyProperty)));
 
         // Act
         var result = expression.GetPrimaryExpression();
