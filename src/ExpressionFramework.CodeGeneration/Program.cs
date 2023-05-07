@@ -4,7 +4,7 @@
 internal static class Program
 {
     [ExcludeFromCodeCoverage]
-    private class LineCountInfo
+    private sealed class LineCountInfo
     {
         public string? Directory { get; set; }
         public long LineCountGenerated { get; set; }
