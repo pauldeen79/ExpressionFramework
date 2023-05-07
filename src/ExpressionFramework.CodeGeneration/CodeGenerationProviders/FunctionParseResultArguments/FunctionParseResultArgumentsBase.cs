@@ -18,4 +18,13 @@ public abstract class FunctionParseResultArgumentsBase : CSharpClassBase
     {
         yield return new KeyValuePair<string, string>(ProjectName, CurrentNamespace);
     }
+
+    protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
+    {
+        if (typeName == typeof(IFormatProvider).FullName)
+        {
+            property.SetDefaultValueForBuilderClassConstructor(new Literal($"{typeof(CultureInfo).FullName}.{nameof(CultureInfo.InvariantCulture)}"));
+        }
+        base.FixImmutableBuilderProperty(property, typeName);
+    }
 }
