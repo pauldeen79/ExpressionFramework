@@ -3,28 +3,36 @@
 public sealed class ExpressionFrameworkParserTests : IDisposable
 {
     private readonly ServiceProvider _provider;
-
+    
     public ExpressionFrameworkParserTests()
     {
-        _provider = new ServiceCollection().AddParsers().AddExpressionParser().BuildServiceProvider();
+        _provider = new ServiceCollection()
+            .AddParsers()
+            .AddExpressionParser()
+            .BuildServiceProvider();
     }
 
     [Fact]
     public void Parse_Returns_NotSupported_When_Expression_Is_Unknown()
     {
+        // Arrange
+        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Unknown").Build();
+
         // Act
-        var result = _provider.GetRequiredService<IExpressionFrameworkParser>().Parse(new FunctionParseResult("Unknown", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null), _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
     }
 
-    
     [Fact]
     public void Parse_Returns_Success_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Alright()
     {
+        // Arrange
+        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Context").Build();
+
         // Act
-        var result = _provider.GetRequiredService<IExpressionFrameworkParser>().Parse(new FunctionParseResult("Context", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null), _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -34,8 +42,11 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     [Fact]
     public void Parse_Returns_Invalid_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Not_Alright()
     {
+        // Arrange
+        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Delegate").Build();
+
         // Act
-        var result = _provider.GetRequiredService<IExpressionFrameworkParser>().Parse(new FunctionParseResult("Delegate", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, null), _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -43,4 +54,11 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     }
 
     public void Dispose() => _provider.Dispose();
+
+    private Result<Expression> Parse(FunctionParseResult functionParseResult) => _provider
+        .GetRequiredService<IExpressionFrameworkParser>()
+        .Parse(
+            functionParseResult,
+            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _provider.GetRequiredService<IExpressionParser>());
 }

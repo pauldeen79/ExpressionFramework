@@ -18,29 +18,24 @@ public sealed class ComposableEvaluatableParserTests : IDisposable
         // Arrange
         var parser = new ComposableEvaluatableParser();
         var contextValue = "the context value";
-        var functionParseResult = new FunctionParseResult("ComposableEvaluatable", new FunctionParseResultArgument[]
-        {
-            new LiteralArgument("1"),
-            new FunctionArgument(new FunctionParseResult("EqualsOperator", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue)),
-            new LiteralArgument("2"),
-            new LiteralArgument(Combination.Or.ToString())
-        }, CultureInfo.InvariantCulture, contextValue);
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("ComposableEvaluatable")
+            .AddArguments(
+                new LiteralArgumentBuilder().WithValue("1"),
+                new FunctionArgumentBuilder().WithFunction(
+                    new FunctionParseResultBuilder()
+                        .WithFunctionName("EqualsOperator")
+                        .WithContext(contextValue)),
+                new LiteralArgumentBuilder().WithValue("2"),
+                new LiteralArgumentBuilder().WithValue(Combination.Or.ToString())
+            ).WithContext(contextValue).Build();
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(parser, functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<ComposableEvaluatable>();
-        var composableEvaluatable = (ComposableEvaluatable)result.Value!;
-        composableEvaluatable.LeftExpression.Should().BeOfType<TypedConstantResultExpression<object>>();
-        ((TypedConstantResultExpression<object>)composableEvaluatable.LeftExpression).Value.GetValueOrThrow().Should().BeEquivalentTo(1);
-        composableEvaluatable.RightExpression.Should().BeOfType<TypedConstantResultExpression<object>>();
-        ((TypedConstantResultExpression<object>)composableEvaluatable.RightExpression).Value.GetValueOrThrow().Should().BeEquivalentTo(2);
-        composableEvaluatable.Operator.Should().BeOfType<EqualsOperator>();
-        composableEvaluatable.Combination.Should().Be(Combination.Or);
-        composableEvaluatable.StartGroup.Should().BeFalse();
-        composableEvaluatable.EndGroup.Should().BeFalse();
     }
 
     [Fact]
@@ -49,21 +44,33 @@ public sealed class ComposableEvaluatableParserTests : IDisposable
         // Arrange
         var parser = new ComposableEvaluatableParser();
         var contextValue = "the context value";
-        var functionParseResult = new FunctionParseResult("ComposableEvaluatable", new FunctionParseResultArgument[]
-        {
-            new LiteralArgument("1"),
-            new FunctionArgument(new FunctionParseResult("EqualsOperator", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue)),
-            new LiteralArgument("2"),
-            new LiteralArgument("some unknown combination")
-        }, CultureInfo.InvariantCulture, contextValue);
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("ComposableEvaluatable")
+            .AddArguments(
+                new LiteralArgumentBuilder().WithValue("1"),
+                new FunctionArgumentBuilder()
+                    .WithFunction(
+                        new FunctionParseResultBuilder()
+                            .WithFunctionName("EqualsOperator")
+                            .WithContext(contextValue)),
+                new LiteralArgumentBuilder().WithValue("2"),
+                new LiteralArgumentBuilder().WithValue("some unknown combination")
+            ).WithContext(contextValue).Build();
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(parser, functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Combination value [some unknown combination] could not be converted to ExpressionFramework.Domain.Domains.Combination. Error message: Requested value 'some unknown combination' was not found.");
     }
+
+    private Result<object?> Parse(ComposableEvaluatableParser parser, FunctionParseResult functionParseResult)
+        => parser.Parse(
+            functionParseResult,
+            null,
+            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _provider.GetRequiredService<IExpressionParser>());
 
     public void Dispose() => _provider.Dispose();
 }

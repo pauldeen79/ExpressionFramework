@@ -9,8 +9,8 @@ public sealed class IntegrationTests : IDisposable
     {
         _functionResultParserMock.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<object?>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
             .Returns<FunctionParseResult, object?, IFunctionParseResultEvaluator, IExpressionParser>((result, context, evaluator, parser) => result.FunctionName == "MyPredicate"
-            ? Result<object?>.Success(context is int i && i > 2)
-            : Result<object?>.Continue());
+                ? Result<object?>.Success(context is int i && i > 2)
+                : Result<object?>.Continue());
 
         _provider = new ServiceCollection()
             .AddParsers()
@@ -90,7 +90,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Context_And()
+    public void Can_Parse_Function_With_Context_And_Operator()
     {
         // Arrange
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
