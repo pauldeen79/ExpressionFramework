@@ -18,10 +18,10 @@ public sealed class ConstantEvaluatableParserTests : IDisposable
         // Arrange
         var parser = new ConstantEvaluatableParser();
         var contextValue = "the context value";
-        var functionParseResult = new FunctionParseResult("Wrong", Enumerable.Empty<FunctionParseResultArgument>(), CultureInfo.InvariantCulture, contextValue);
+        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Wrong").WithContext(contextValue).Build();
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(parser, functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -33,10 +33,14 @@ public sealed class ConstantEvaluatableParserTests : IDisposable
         // Arrange
         var parser = new ConstantEvaluatableParser();
         var contextValue = "the context value";
-        var functionParseResult = new FunctionParseResult("ConstantEvaluatable", new FunctionParseResultArgument[] { new LiteralArgument("true") }, CultureInfo.InvariantCulture, contextValue);
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("ConstantEvaluatable")
+            .AddArguments(new LiteralArgumentBuilder().WithValue("true"))
+            .WithContext(contextValue)
+            .Build();
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(parser, functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -49,10 +53,14 @@ public sealed class ConstantEvaluatableParserTests : IDisposable
         // Arrange
         var parser = new ConstantEvaluatableParser();
         var contextValue = "the context value";
-        var functionParseResult = new FunctionParseResult("ConstantEvaluatable", new FunctionParseResultArgument[] { new LiteralArgument("12") }, CultureInfo.InvariantCulture, contextValue);
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("ConstantEvaluatable")
+            .AddArguments(new LiteralArgumentBuilder().WithValue("12"))
+            .WithContext(contextValue)
+            .Build();
 
         // Act
-        var result = parser.Parse(functionParseResult, null, _provider.GetRequiredService<IFunctionParseResultEvaluator>(), _provider.GetRequiredService<IExpressionParser>());
+        var result = Parse(parser, functionParseResult);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -60,4 +68,13 @@ public sealed class ConstantEvaluatableParserTests : IDisposable
     }
 
     public void Dispose() => _provider.Dispose();
+
+    private Result<object?> Parse(ConstantEvaluatableParser parser, FunctionParseResult functionParseResult)
+        => parser.Parse
+        (
+            functionParseResult,
+            null,
+            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _provider.GetRequiredService<IExpressionParser>()
+        );
 }
