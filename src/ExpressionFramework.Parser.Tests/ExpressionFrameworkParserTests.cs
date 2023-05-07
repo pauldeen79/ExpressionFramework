@@ -53,11 +53,35 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         result.ErrorMessage.Should().Be("Missing argument: Value");
     }
 
+    [Fact]
+    public void Can_Parse_Typed_Expression()
+    {
+        // Arrange
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("TypedConstant<System.String>")
+            .AddArguments(new LiteralArgumentBuilder().WithValue("Test"))
+            .Build();
+
+        // Act
+        var result = Parse<string>(functionParseResult);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeAssignableTo<ITypedExpression<string>>();
+    }
+
     public void Dispose() => _provider.Dispose();
 
     private Result<Expression> Parse(FunctionParseResult functionParseResult) => _provider
         .GetRequiredService<IExpressionFrameworkParser>()
         .Parse(
+            functionParseResult,
+            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _provider.GetRequiredService<IExpressionParser>());
+
+    private Result<ITypedExpression<T>> Parse<T>(FunctionParseResult functionParseResult) => _provider
+        .GetRequiredService<IExpressionFrameworkParser>()
+        .Parse<T>(
             functionParseResult,
             _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
             _provider.GetRequiredService<IExpressionParser>());
