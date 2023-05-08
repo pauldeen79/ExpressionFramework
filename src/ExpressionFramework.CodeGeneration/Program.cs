@@ -23,9 +23,6 @@ internal static class Program
         var expressionFrameworkGenerators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase) && !x.IsAbstract).ToArray();
         _ = expressionFrameworkGenerators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(x.GetSettings(settings), multipleContentBuilder, x)).ToArray();
 
-        var modelFrameworkGenerators = typeof(FunctionParseResultArgumentsBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(FunctionParseResultArgumentsBase) && !x.IsAbstract).ToArray();
-        _ = modelFrameworkGenerators.Select(x => (FunctionParseResultArgumentsBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(settings, multipleContentBuilder, x)).ToArray();
-
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
         {

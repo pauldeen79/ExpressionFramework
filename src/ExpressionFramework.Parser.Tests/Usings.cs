@@ -1,6 +1,8 @@
 ﻿global using System.Globalization;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
+global using CrossCutting.Utilities.Parsers.Builders;
+global using CrossCutting.Utilities.Parsers.Builders.FunctionParseResultArguments;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using CrossCutting.Utilities.Parsers.Extensions;
 global using ExpressionFramework.Domain;
@@ -12,7 +14,6 @@ global using ExpressionFramework.Parser.EvaluatableResultParsers;
 global using ExpressionFramework.Parser.ExpressionResultParsers;
 global using ExpressionFramework.Parser.Extensions;
 global using ExpressionFramework.Parser.OperatorResultParsers;
-global using ExpressionFramework.Parser.Tests.Builders;
 global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;
 global using Moq;
