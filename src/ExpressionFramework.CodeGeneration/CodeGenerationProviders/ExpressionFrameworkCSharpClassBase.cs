@@ -73,7 +73,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     private static void AddSingleTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
     {
         // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
-        // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
+        // we need the Value propery of Nullable<T> for value types...
         // for now, we only support int, long and boolean
         var suffix = property.IsNullable && property.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
             ? ".Value"
@@ -84,6 +84,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .WithInitializeExpression(property.IsNullable
                     ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
                     : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                ).Build()
+            );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object)?.FullName}?, {CreateTypeName(property)}>", property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
                 ).Build()
             );
     }
