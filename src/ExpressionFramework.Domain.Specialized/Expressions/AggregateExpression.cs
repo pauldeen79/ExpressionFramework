@@ -39,7 +39,4 @@ public partial record AggregateExpression
 
         return result;
     }
-
-    public AggregateExpression(IEnumerable<object?> expressions, Aggregator aggregator, IFormatProvider? formatProvider = null) : this(expressions.Select(x => new ConstantExpression(x)), aggregator, formatProvider) { }
-    public AggregateExpression(IEnumerable<Func<object?, object?>> expressions, Aggregator aggregator, IFormatProvider? formatProvider = null) : this(expressions.Select(x => new DelegateExpression(x)), aggregator, formatProvider) {}
 }

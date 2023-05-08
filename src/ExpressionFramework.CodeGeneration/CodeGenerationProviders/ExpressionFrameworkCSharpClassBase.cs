@@ -34,6 +34,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     : "_{1}Delegate = new (() => " + init + ")"
             );
 
+            AddSinglePropertyBuilderOverload(property);
+
             if (!property.IsNullable)
             {
                 // Allow a default value which implements ITypedExpression<T>, using a default constant value
@@ -53,11 +55,41 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
             );
             property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
+
+            AddEnumerablePropertyBuilderOverload(property);
         }
         else
         {
             base.FixImmutableBuilderProperty(property, typeName);
         }
+    }
+
+    private static void AddSinglePropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
+        // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
+        // for now, we only support int, long and boolean
+        var suffix = property.IsNullable && property.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
+            ? ".Value"
+            : string.Empty;
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter("value", CreateTypeName(property), property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = value == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue(value{suffix});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue(value{suffix});"
+                ).Build()
+            );
+    }
+
+    private static void AddEnumerablePropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter("value", CreateTypeName(property))
+                .WithInitializeExpression($"Add{{4}}(new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(value));")
+                .Build()
+        );
     }
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
@@ -266,6 +298,35 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
+
+    private static string CreateTypeName(ClassPropertyBuilder builder)
+    {
+        if (builder.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
+        {
+            if (builder.Name.ToString() == Constants.ArgumentNames.PredicateExpression)
+            {
+                // hacking here... we only want to allow to inject the typed expression
+                return builder.TypeName.ToString();
+            }
+            else
+            {
+                return builder.TypeName.ToString().GetGenericArguments();
+            }
+        }
+
+        if (builder.TypeName.ToString().GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.ITypedExpression"))
+        {
+            return builder.TypeName.ToString().GetGenericArguments().GetGenericArguments();
+        }
+
+        if (builder.TypeName.ToString().GetClassName() == Constants.Types.Expression)
+        {
+            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
+            return $"{typeof(object).FullName}?";
+        }
+
+        return builder.TypeName.ToString();
+    }
 
     private static readonly VisitorContext _context = new();
 

@@ -46,7 +46,7 @@ public class ExpressionBuilderFactoryTests
     public void CreateTyped_Returns_Correct_Result_On_Default_Generated_Expression()
     {
         // Act
-        var result = ExpressionBuilderFactory.CreateTyped(new StringLengthExpression("test"));
+        var result = ExpressionBuilderFactory.CreateTyped(new StringLengthExpressionBuilder().WithExpression("test").BuildTyped());
 
         // Assert
         result.Should().BeOfType<StringLengthExpressionBuilder>();

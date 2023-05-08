@@ -31,7 +31,4 @@ public partial record SingleOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
-
-    public SingleOrDefaultExpression(IEnumerable expression, ITypedExpression<bool> predicateExpression) : this(new TypedConstantExpression<IEnumerable>(expression), predicateExpression, null) { }
-    public SingleOrDefaultExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null, null) { }
 }

@@ -11,8 +11,4 @@ public partial record TodayExpression
         => Result<DateTime>.Success(DateTimeProvider is null
             ? DateTime.Today
             : DateTimeProvider.GetCurrentDateTime().Date);
-
-    public TodayExpression() : this(default(IDateTimeProvider))
-    {
-    }
 }

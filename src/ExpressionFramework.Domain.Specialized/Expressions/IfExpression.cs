@@ -35,6 +35,4 @@ public partial record IfExpression
 
         return Result<object?>.Success(null);
     }
-
-    public IfExpression(Evaluatable condition, object? resultExpression) : this(condition, new ConstantExpression(resultExpression), null) { }
 }

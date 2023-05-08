@@ -34,6 +34,4 @@ public partial record InvalidExpression
 
         return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));
     }
-
-    public InvalidExpression(string errorMessageExpression = "", IEnumerable<ValidationError>? validationErrorExpressions = null) : this(new TypedConstantExpression<string>(errorMessageExpression), validationErrorExpressions == null ? Enumerable.Empty<ITypedExpression<ValidationError>>() : validationErrorExpressions.Select(x => new TypedConstantExpression<ValidationError>(x))) { }
 }

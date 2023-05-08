@@ -13,6 +13,4 @@ public partial record ErrorExpression
             result.IsSuccessful()
                 ? Result<object?>.Error(result.Value!)
                 : Result<object?>.FromExistingResult(result));
-
-    public ErrorExpression() : this(new TypedConstantExpression<string>(string.Empty)) { }
 }

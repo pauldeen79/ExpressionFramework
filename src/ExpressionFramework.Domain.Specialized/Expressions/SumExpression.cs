@@ -50,6 +50,4 @@ public partial record SumExpression
 
         return Result<object?>.Invalid("Could only compute sum of numeric values");
     }
-
-    public SumExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

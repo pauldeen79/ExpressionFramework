@@ -30,6 +30,4 @@ public partial record SingleExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public SingleExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

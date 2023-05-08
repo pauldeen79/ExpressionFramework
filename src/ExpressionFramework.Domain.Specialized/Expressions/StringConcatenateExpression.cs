@@ -30,6 +30,4 @@ public partial record StringConcatenateExpression
 
         return Result<string>.Success(string.Concat(valueResults.Select(x => x.Value)));
     }
-
-    public StringConcatenateExpression(IEnumerable<string> expressions) : this(expressions.Select(x => new TypedConstantExpression<string>(x))) { }
 }

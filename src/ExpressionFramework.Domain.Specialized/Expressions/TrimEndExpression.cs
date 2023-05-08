@@ -47,6 +47,4 @@ public partial record TrimEndExpression
             "String to get the trimmed value for",
             "The trim end value of the expression",
             "This result will be returned when the expression is of type string");
-
-    public TrimEndExpression(string expression) : this(new TypedConstantExpression<string>(expression), null) { }
 }
