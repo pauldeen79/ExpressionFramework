@@ -9,18 +9,18 @@
     <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
-    <ItemGroup>
-        <AdditionalFiles Include="..\..\.sonarlint\pauldeen79_expressionframework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\pauldeen79_expressionframework\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="2.7.52" />
-      <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.52" />
-      <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.68" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="2.7.52" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.52" />
+    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.68" />
+  </ItemGroup>
 
-    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-      <Exec Command="dotnet $(TargetDir)ExpressionFramework.CodeGeneration.dll" />
-    </Target>
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="dotnet $(TargetDir)ExpressionFramework.CodeGeneration.dll" />
+  </Target>
 
 </Project>
