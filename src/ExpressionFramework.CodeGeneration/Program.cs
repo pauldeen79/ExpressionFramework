@@ -3,15 +3,6 @@
 [ExcludeFromCodeCoverage]
 internal static class Program
 {
-    [ExcludeFromCodeCoverage]
-    private sealed class LineCountInfo
-    {
-        public string? Directory { get; set; }
-        public long LineCountGenerated { get; set; }
-        public long LineCountNotGenerated { get; set; }
-        public long LineCountTotal { get; set; }
-    }
-
     private static void Main(string[] args)
     {
         // Setup code generation
@@ -44,32 +35,6 @@ internal static class Program
         {
             Console.WriteLine($"Code generation completed, check the output in {basePath}");
             Console.WriteLine($"Generated files: {multipleContentBuilder.Contents.Count()}");
-            var statistics = Directory.EnumerateDirectories(basePath)
-                .Select(x => new LineCountInfo
-                {
-                    Directory = x.Split('/').Last(),
-                    LineCountGenerated = ComputeLineCount(x, true),
-                    LineCountNotGenerated = ComputeLineCount(x, false),
-                    LineCountTotal = ComputeLineCount(x, null)
-                })
-                .ToArray();
-            Console.WriteLine("Statistics:");
-            var dumper = new DataTableDumper<LineCountInfo>(new ColumnNameProvider(), new ColumnDataProvider<LineCountInfo>());
-            Console.WriteLine(dumper.Dump(statistics));
         }
     }
-
-    private static long ComputeLineCount(string directory, bool? generated)
-        => Directory.GetFiles(directory, "*.cs", SearchOption.AllDirectories)
-            .Where(x => IsGeneratedValid(x, generated))
-            .Select(x => File.ReadAllLines(x).Length)
-            .Sum();
-
-    private static bool IsGeneratedValid(string fileName, bool? generated)
-        => generated switch
-        {
-            true => fileName.EndsWith(".template.generated.cs"),
-            false => !fileName.EndsWith(".template.generated.cs"),
-            null => true
-        };
 }
