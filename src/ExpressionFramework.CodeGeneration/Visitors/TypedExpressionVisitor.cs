@@ -74,7 +74,7 @@ public static class TypedExpressionVisitor
 
     private static string CreateParameterSelection(ParameterBuilder x)
     {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName() && x.Name.ToString() != "predicateExpression")
+        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName() && x.Name.ToString() != Constants.ArgumentNames.PredicateExpression)
         {
             // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
             // for now, we only support int, long and boolean
@@ -83,39 +83,39 @@ public static class TypedExpressionVisitor
                 : string.Empty;
 
             return x.IsNullable
-                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()}{suffix})"
-                : $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
+                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()}{suffix})"
+                : $"new {Constants.TypeNames.Expressions.TypedConstantExpression}<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
         }
 
         if (x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
         {
-            return $"new ConstantExpression({x.Name.ToString().GetCsharpFriendlyName()})";
+            return $"new {Constants.TypeNames.Expressions.ConstantExpression}({x.Name.ToString().GetCsharpFriendlyName()})";
         }
 
         return x.Name.ToString().GetCsharpFriendlyName();
     }
 
-    private static string CreateTypeName(ParameterBuilder x)
+    private static string CreateTypeName(ParameterBuilder builder)
     {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
+        if (builder.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
         {
-            if (x.Name.ToString() == "predicateExpression")
+            if (builder.Name.ToString() == Constants.ArgumentNames.PredicateExpression)
             {
                 // hacking here... we only want to allow to inject the typed expression
-                return x.TypeName.ToString();
+                return builder.TypeName.ToString();
             }
             else
             {
-                return x.TypeName.ToString().GetGenericArguments();
+                return builder.TypeName.ToString().GetGenericArguments();
             }
         }
 
-        if (x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
+        if (builder.TypeName.ToString().GetClassName() == Constants.Types.Expression)
         {
             // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
             return $"{typeof(object).FullName}?";
         }
 
-        return x.TypeName.ToString();
+        return builder.TypeName.ToString();
     }
 }

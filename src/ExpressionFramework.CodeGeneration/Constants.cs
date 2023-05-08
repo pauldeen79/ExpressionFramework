@@ -50,6 +50,12 @@ public static class Constants
         public const string Evaluatable = $"{Namespaces.Domain}.Evaluatable";
         public const string Expression = $"{Namespaces.Domain}.Expression";
         public const string Operator = $"{Namespaces.Domain}.Operator";
+
+        public static class Expressions
+        {
+            public const string ConstantExpression = "ConstantExpression";
+            public const string TypedConstantExpression = "TypedConstantExpression";
+        }
     }
 
     [ExcludeFromCodeCoverage]
@@ -70,5 +76,10 @@ public static class Constants
         public const string ParserExpressionResultParsers = $"{Namespaces.Parser}/ExpressionResultParsers";
         public const string ParserOperatorResultParsers = $"{Namespaces.Parser}/OperatorResultParsers";
         public const string Parser = Namespaces.Parser;
+    }
+
+    public static class ArgumentNames
+    {
+        public const string PredicateExpression = "predicateExpression";
     }
 }
