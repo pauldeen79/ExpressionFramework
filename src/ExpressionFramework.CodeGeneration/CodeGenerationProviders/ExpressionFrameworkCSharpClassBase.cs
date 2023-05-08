@@ -34,7 +34,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     : "_{1}Delegate = new (() => " + init + ")"
             );
 
-            AddSinglePropertyBuilderOverload(property);
+            AddSingleTypedExpressionPropertyBuilderOverload(property);
 
             if (!property.IsNullable)
             {
@@ -56,15 +56,21 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             );
             property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
 
-            AddEnumerablePropertyBuilderOverload(property);
+            AddEnumerableTypedExpressionPropertyBuilderOverload(property);
         }
-        else
+        else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
         {
-            base.FixImmutableBuilderProperty(property, typeName);
+            // add overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantEvaluatableBuilder().WithValue(value))
         }
+        else if (typeName.GetClassName() == Constants.Types.Expression)
+        {
+            // add overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
+        }
+
+        base.FixImmutableBuilderProperty(property, typeName);
     }
 
-    private static void AddSinglePropertyBuilderOverload(ClassPropertyBuilder property)
+    private static void AddSingleTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
     {
         // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
         // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
@@ -74,20 +80,27 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             : string.Empty;
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter("value", CreateTypeName(property), property.IsNullable)
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), CreateTypeName(property), property.IsNullable)
                 .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = value == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue(value{suffix});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue(value{suffix});"
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
                 ).Build()
             );
     }
 
-    private static void AddEnumerablePropertyBuilderOverload(ClassPropertyBuilder property)
+    private static void AddEnumerableTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
     {
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter("value", CreateTypeName(property))
-                .WithInitializeExpression($"Add{{4}}(new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(value));")
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));")
+                .Build()
+        );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>"))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
                 .Build()
         );
     }
