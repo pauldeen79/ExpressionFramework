@@ -1,36 +1,35 @@
 $list = New-Object Collections.Generic.List[LineCountInfo]
 foreach ($directory in Get-ChildItem -Path ./src -Directory)
 {
-    [long]$totalCount = 0;
-    [long]$generatedCount = 0;
-    [long]$notGeneratedCount = 0;
+    [long]$totalLines = 0;
+    [long]$generatedLines = 0;
+    [long]$notGeneratedLines = 0;
     foreach ($file in Get-ChildItem -Path $directory -File -Filter *.cs -Recurse)
     {
-        $length = (Get-Content $file).Length
-        $totalCount += $length
+        $lineCount = (Get-Content $file).Length
+        $totalLines += $lineCount
         if ($file.FullName.EndsWith(".template.generated.cs"))
         {
-            $generatedCount += $length
+            $generatedLines += $lineCount
         }
         else
         {
-            $notGeneratedCount += $length
+            $notGeneratedLines += $lineCount
         }
     }
     $item = [LineCountInfo]::new()
     $item.Directory = $directory.Name
-    $item.GeneratedCount = $generatedCount
-    $item.NotGeneratedCount = $notGeneratedCount
-    $item.TotalCount = $totalCount
+    $item.GeneratedLines = $generatedLines
+    $item.NotGeneratedLines = $notGeneratedLines
+    $item.TotalLines = $totalLines
     $list.Add($item)
 }
 
-Write-Host "Statistics:"
-$list | Format-Table -Property Directory, GeneratedCount, NotGeneratedCount, TotalCount
+$list | Format-Table -AutoSize -Property Directory, GeneratedLines, NotGeneratedLines, TotalLines
 
 class LineCountInfo {
     [string]$Directory;
-    [long]$GeneratedCount;
-    [long]$NotGeneratedCount;
-    [long]$TotalCount;
+    [long]$GeneratedLines;
+    [long]$NotGeneratedLines;
+    [long]$TotalLines;
 }
