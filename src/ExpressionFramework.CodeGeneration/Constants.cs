@@ -3,7 +3,8 @@
 public static class Constants
 {
     public const string ProjectName = "ExpressionFramework";
-    
+    public const string CodeGenerationRootNamespace = $"{ProjectName}.CodeGeneration";
+
     public static class Namespaces
     {
         public const string Domain = "ExpressionFramework.Domain";
