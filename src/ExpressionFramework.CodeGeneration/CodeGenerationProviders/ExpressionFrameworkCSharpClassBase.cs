@@ -275,7 +275,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.Name.StartsWithAny("TypedConstant", "TypedDelegate"))
         {
-            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), nameof({typeBase.Name}<{typeof(object).FullName}>.Value), functionParseResult, evaluator, parser);");
+            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), 0, nameof({typeBase.Name}<{typeof(object).FullName}>.Value), functionParseResult, evaluator, parser);");
             return;
         }
 
