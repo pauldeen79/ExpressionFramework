@@ -1,16 +1,22 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Visitors;
 
 [ExcludeFromCodeCoverage]
-public static class TypedInterfaceVisitor
+public class TypedInterfaceVisitor : IVisitor
 {
-    public static void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+    public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
     {
         var typedInterface = GetTypedInterface(typeBaseBuilder);
-        if (!string.IsNullOrEmpty(typedInterface))
+        if (string.IsNullOrEmpty(typedInterface))
         {
-            RegisterTypedInterface(typeBaseBuilder, typedInterface);
+            return;
+        }
+
+        var key = typeBaseBuilder.GetFullName();
+        if (!context.TypedInterfaceMap.ContainsKey(key))
+        {
+            context.TypedInterfaceMap.Add(key, typedInterface);
         }
     }
 
@@ -29,16 +35,5 @@ public static class TypedInterfaceVisitor
         }
 
         return typedInterface;
-    }
-
-    private static void RegisterTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, string typedInterface)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
-        var key = typeBaseBuilder.GetFullName();
-        if (!VisitorState.TypedInterfaceMap.ContainsKey(key))
-        {
-            VisitorState.TypedInterfaceMap.Add(key, typedInterface);
-        }
     }
 }

@@ -1,23 +1,18 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Visitors;
 
-public static class TypedExpressionBuilderVisitor
+public class TypedExpressionBuilderVisitor : IVisitor
 {
-    internal static void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+    public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
     {
-        if (typeBaseBuilder.Namespace.ToString() == Constants.Namespaces.DomainBuildersExpressions)
+        if (typeBaseBuilder.Namespace.ToString() != Constants.Namespaces.DomainBuildersExpressions)
         {
-            AddCodeForTypedExpressionToExpressionBuilders(typeBaseBuilder);
+            return;
         }
-    }
 
-    private static void AddCodeForTypedExpressionToExpressionBuilders<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
         var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
-        if (!VisitorState.TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out var typedInterface))
+        if (!context.TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out var typedInterface))
         {
             return;
         }

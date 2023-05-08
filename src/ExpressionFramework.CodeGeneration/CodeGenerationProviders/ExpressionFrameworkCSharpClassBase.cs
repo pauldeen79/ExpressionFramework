@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.CodeGeneration.Visitors;
-
-namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
@@ -64,9 +62,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        TypedInterfaceVisitor.Visit(typeBaseBuilder);
-        TypedExpressionVisitor.Visit(typeBaseBuilder);
-        TypedExpressionBuilderVisitor.Visit(typeBaseBuilder);
+        foreach (var visitor in Visitors)
+        {
+            visitor.Visit(typeBaseBuilder, _context);
+        }
     }
 
     protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, string entityNamespace)
@@ -267,4 +266,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
+
+    private static readonly VisitorContext _context = new();
+
+    private static readonly IVisitor[] Visitors = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(t => typeof(IVisitor).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+        .Select(Activator.CreateInstance)
+        .Cast<IVisitor>()
+        .ToArray();
 }

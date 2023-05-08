@@ -1,24 +1,19 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Visitors;
 
 [ExcludeFromCodeCoverage]
-public static class TypedExpressionVisitor
+public class TypedExpressionVisitor : IVisitor
 {
-    public static void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
+    public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
     {
-        if (typeBaseBuilder.Namespace.ToString() == Constants.Namespaces.DomainExpressions)
+        if (typeBaseBuilder.Namespace.ToString() != Constants.Namespaces.DomainExpressions)
         {
-            AddCodeForTypedExpressionToExpressions(typeBaseBuilder);
+            return;
         }
-    }
 
-    private static void AddCodeForTypedExpressionToExpressions<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-    where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-    where TEntity : ITypeBase
-    {
         var key = typeBaseBuilder.GetFullName();
-        if (VisitorState.TypedInterfaceMap.TryGetValue(key, out var typedInterface))
+        if (context.TypedInterfaceMap.TryGetValue(key, out var typedInterface))
         {
             typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>");
             if (!typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
@@ -42,13 +37,13 @@ public static class TypedExpressionVisitor
                     .AddNotImplementedException()
             );
 
-            VisitorState.BaseTypes.Add(typeBaseBuilder.GetFullName(), typeBaseBuilder);
+            context.BaseTypes.Add(typeBaseBuilder.GetFullName(), typeBaseBuilder);
         }
 
         if (!typeBaseBuilder.Name.ToString().EndsWith("Base")
             && typeBaseBuilder is ClassBuilder classBuilder
             && classBuilder.Constructors.Any()
-            && VisitorState.BaseTypes.TryGetValue($"{typeBaseBuilder.GetFullName()}Base", out var baseType)
+            && context.BaseTypes.TryGetValue($"{typeBaseBuilder.GetFullName()}Base", out var baseType)
             && baseType.Properties.Any(
                 x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName()
                   || x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
