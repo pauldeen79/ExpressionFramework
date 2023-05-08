@@ -54,6 +54,7 @@ public static class Constants
         public static class Expressions
         {
             public const string ConstantExpression = "ConstantExpression";
+            public const string DelegateExpression = "DelegateExpression";
             public const string TypedConstantExpression = "TypedConstantExpression";
             public const string TypedDelegateExpression = "TypedDelegateExpression";
         }
