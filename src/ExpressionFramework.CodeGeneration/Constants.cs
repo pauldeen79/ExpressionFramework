@@ -59,10 +59,10 @@ public static class Constants
         public const string Expressions = $"{Namespaces.DomainSpecialized}/{nameof(Expressions)}";
         public const string Operators = $"{Namespaces.DomainSpecialized}/{nameof(Operators)}";
 
-        public const string AggregatorBuilders = $"{Namespaces.DomainBuilders}/Aggregators";
-        public const string EvaluatableBuilders = $"{Namespaces.DomainBuilders}/Evaluatables";
-        public const string ExpressionBuilders = $"{Namespaces.DomainBuilders}/Expressions";
-        public const string OperatorBuilders = $"{Namespaces.DomainBuilders}/Operators";
+        public const string AggregatorBuilders = $"{Namespaces.DomainBuilders}/{nameof(Aggregators)}";
+        public const string EvaluatableBuilders = $"{Namespaces.DomainBuilders}/{nameof(Evaluatables)}";
+        public const string ExpressionBuilders = $"{Namespaces.DomainBuilders}/{nameof(Expressions)}";
+        public const string OperatorBuilders = $"{Namespaces.DomainBuilders}/{nameof(Operators)}";
 
         public const string ParserAggregatorResultParsers = $"{Namespaces.Parser}/AggregatorResultParsers";
         public const string ParserEvaluatableResultParsers = $"{Namespaces.Parser}/EvaluatableResultParsers";
