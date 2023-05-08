@@ -64,7 +64,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
         else if (typeName.GetClassName() == Constants.Types.Expression)
         {
-            // add overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
+            AddSingleExpressionPropertyBuilderOverload(property);
         }
 
         base.FixImmutableBuilderProperty(property, typeName);
@@ -103,6 +103,19 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
                 .Build()
         );
+    }
+
+    private static void AddSingleExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), typeof(object), property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                ).Build()
+            );
     }
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
