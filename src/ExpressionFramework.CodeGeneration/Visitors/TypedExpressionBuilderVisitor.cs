@@ -1,5 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Visitors;
 
+[ExcludeFromCodeCoverage]
 public class TypedExpressionBuilderVisitor : IVisitor
 {
     public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
