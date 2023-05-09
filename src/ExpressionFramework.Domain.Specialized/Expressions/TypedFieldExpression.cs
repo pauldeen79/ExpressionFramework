@@ -12,6 +12,8 @@ public partial record TypedFieldExpression<T>
 
     public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
 
+    public Expression ToUntyped() => new FieldExpression(Expression, FieldNameExpression);
+
     public Result<T> EvaluateTyped(object? context)
     {
         var untypedResult = FieldExpression.Evaluate(context, Expression, FieldNameExpression);

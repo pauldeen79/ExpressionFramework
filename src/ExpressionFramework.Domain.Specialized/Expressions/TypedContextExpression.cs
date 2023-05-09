@@ -12,6 +12,8 @@ public partial record TypedContextExpression<T>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
+    public Expression ToUntyped() => new ContextExpression();
+
     public Result<T> EvaluateTyped(object? context)
         => context is T t
             ? Result<T>.Success(t)

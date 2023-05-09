@@ -14,6 +14,8 @@ public partial record TypedChainedExpression<T>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
+    public Expression ToUntyped() => new ChainedExpression(Expressions);
+
     public Result<T> EvaluateTyped(object? context)
     {
         if (!Expressions.Any())
