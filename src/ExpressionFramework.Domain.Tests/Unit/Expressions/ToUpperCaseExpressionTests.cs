@@ -6,7 +6,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_UpperCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression("Upper");
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression("Upper").Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(string.Empty);
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression(string.Empty).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -32,7 +32,7 @@ public class ToUpperCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(default(string)!);
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression(default(string)!).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -46,7 +46,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_UpperCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression("Upper");
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression("Upper").BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -60,7 +60,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(string.Empty);
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression(string.Empty).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -73,7 +73,7 @@ public class ToUpperCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression(default(string)!);
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression(default(string)!).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -87,7 +87,7 @@ public class ToUpperCaseExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new ToUpperCaseExpression("A");
+        var sut = new ToUpperCaseExpressionBuilder().WithExpression("A").BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -110,7 +110,7 @@ public class ToUpperCaseExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new ToUpperCaseExpression("Some text");
+        var expression = new ToUpperCaseExpressionBuilder().WithExpression("Some text").Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

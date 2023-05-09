@@ -6,7 +6,10 @@ public class LeftExpressionTests
     public void Evaluate_Returns_LeftValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new LeftExpression("test", 2);
+        var sut = new LeftExpressionBuilder()
+            .WithExpression("test")
+            .WithLengthExpression(2)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +22,10 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new LeftExpression(string.Empty, 2);
+        var sut = new LeftExpressionBuilder()
+            .WithExpression(string.Empty)
+            .WithLengthExpression(2)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -28,7 +34,6 @@ public class LeftExpressionTests
         actual.Status.Should().Be(ResultStatus.Invalid);
         actual.ErrorMessage.Should().Be("Length must refer to a location within the string");
     }
-
 
     [Fact]
     public void Evaluate_Returns_Error_When_Expression_Evaluation_Returns_Error()
@@ -104,7 +109,10 @@ public class LeftExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new LeftExpression("test", 1);
+        var sut = new LeftExpressionBuilder()
+            .WithExpression("test")
+            .WithLengthExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

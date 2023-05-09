@@ -3,6 +3,11 @@
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
 {
+    public CodeGenerationSettings GetSettings(CodeGenerationSettings settings)
+        => string.IsNullOrEmpty(LastGeneratedFilesFileName)
+            ? settings.ForScaffolding()
+            : settings.ForGeneration();
+
     public override bool RecurseOnDeleteGeneratedFiles => false;
     public override string DefaultFileName => string.Empty; // not used because we're using multiple files, but it's abstract so we need to fill ilt
 
@@ -29,6 +34,8 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     : "_{1}Delegate = new (() => " + init + ")"
             );
 
+            AddSingleTypedExpressionPropertyBuilderOverload(property);
+
             if (!property.IsNullable)
             {
                 // Allow a default value which implements ITypedExpression<T>, using a default constant value
@@ -48,32 +55,113 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
             );
             property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
+
+            AddEnumerableTypedExpressionPropertyBuilderOverload(property);
         }
-        else
+        else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
         {
-            base.FixImmutableBuilderProperty(property, typeName);
+            AddEnumerableExpressionPropertyBuilderOverload(property);
         }
+        else if (typeName.GetClassName() == Constants.Types.Expression)
+        {
+            AddSingleExpressionPropertyBuilderOverload(property);
+        }
+
+        base.FixImmutableBuilderProperty(property, typeName);
+    }
+
+    private static void AddSingleTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
+        // we need the Value propery of Nullable<T> for value types...
+        // for now, we only support int, long and boolean
+        var suffix = property.IsNullable && property.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
+            ? ".Value"
+            : string.Empty;
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), CreateTypeName(property), property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                ).Build()
+            );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object).FullName}?, {CreateTypeName(property)}>", property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                ).Build()
+            );
+    }
+
+    private static void AddEnumerableTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload for IEnumerable<T> and T[], that maps to value.Select(x => new ConstantTypedExpression<T>().WithValue(x)) and value.Select(x => new ConstantDelegateExpression<T>().WithValue(x))
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));")
+                .Build()
+        );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>"))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
+                .Build()
+        );
+    }
+
+    private static void AddSingleExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), typeof(object), property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                ).Build()
+            );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object).FullName}?, {typeof(object).FullName}>", property.IsNullable)
+                .WithInitializeExpression(property.IsNullable
+                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                ).Build()
+            );
+    }
+
+    private static void AddEnumerableExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantExpressionBuilder().WithValue(value))
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(object[])).WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));")
+                .Build()
+        );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(IEnumerable<object>)))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
+                .Build()
+        );
     }
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
     {
-        var typedInterface = GetTypedInterface(typeBaseBuilder);
-        if (!string.IsNullOrEmpty(typedInterface))
+        foreach (var visitor in Visitors)
         {
-            RegisterTypedInterface(typeBaseBuilder, typedInterface);
-        }
-        else if (typeBaseBuilder.Namespace.ToString() == Constants.Namespaces.DomainExpressions)
-        {
-            AddCodeForTypedExpressionToExpressions(typeBaseBuilder);
-        }
-        else if (typeBaseBuilder.Namespace.ToString() == Constants.Namespaces.DomainBuildersExpressions)
-        {
-            AddCodeForTypedExpressionToExpressionBuilders(typeBaseBuilder);
+            visitor.Visit(typeBaseBuilder, _context);
         }
     }
-
-    protected Dictionary<string, string> TypedInterfaceMap { get; } = new();
-    protected Dictionary<string, TypeBaseBuilder> BaseTypes { get; } = new();
 
     protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, string entityNamespace)
         => new ClassBuilder()
@@ -101,161 +189,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         || parserProperty.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
         || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>";
 
-    private string? GetTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
-        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
-
-        // This is a kind of hack for the fact that .net says the generic type argument of IEnumerable<T> is nullable.
-        // ModelFramework is not extendable for this, so we are currently hacking this here.
-        // Maybe it's an idea to add some sort of formatting function to CodeGenerationSettings, or even try to do this in the type formatting delegate that's already there? 
-        if (typedInterface == $"{CodeGenerationRootNamespace}.Models.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeof(IEnumerable<>).WithoutGenerics()}<{typeof(object).FullName}>>")
-        {
-            typedInterface = $"{CodeGenerationRootNamespace}.Models.Contracts.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeof(IEnumerable<>).WithoutGenerics()}<{typeof(object).FullName}?>>";
-        }
-
-        return typedInterface;
-    }
-
-    private void RegisterTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, string typedInterface)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
-        var key = typeBaseBuilder.GetFullName();
-        if (!TypedInterfaceMap.ContainsKey(key))
-        {
-            TypedInterfaceMap.Add(key, typedInterface);
-        }
-    }
-
-    private void AddCodeForTypedExpressionToExpressions<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
-        string? typedInterface;
-        var key = typeBaseBuilder.GetFullName();
-        if (TypedInterfaceMap.TryGetValue(key, out typedInterface))
-        {
-            typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>");
-            if (!typeBaseBuilder.Name.ToString().StartsWithAny("TypedConstant", "TypedDelegate"))
-            {
-                typeBaseBuilder.AddMethods(
-                    new ClassMethodBuilder()
-                        .WithName("ToUntyped")
-                        .WithTypeName(Constants.Types.Expression)
-                        .AddLiteralCodeStatements("return this;")
-                );
-            }
-        }
-        else if (key.EndsWith("Base"))
-        {
-            typeBaseBuilder.AddMethods(
-                new ClassMethodBuilder()
-                    .WithName("Evaluate")
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
-                    .WithOverride()
-                    .AddParameter("context", typeof(object), isNullable: true)
-                    .AddNotImplementedException()
-            );
-
-            BaseTypes.Add(typeBaseBuilder.GetFullName(), typeBaseBuilder);
-        }
-
-        if (!typeBaseBuilder.Name.ToString().EndsWith("Base")
-            && typeBaseBuilder is ClassBuilder classBuilder
-            && classBuilder.Constructors.Any()
-            && BaseTypes.TryGetValue($"{typeBaseBuilder.GetFullName()}Base", out var baseType)
-            && baseType.Properties.Any(
-                x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName()
-                  || x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
-            )
-        {
-            // Add c'tor that uses T instead of ITypedExpression<T>, and calls the other overload.
-            // This is needed pre .NET 7.0 because we can't use static implicit operators with generics.
-            var ctor = classBuilder.Constructors.Last();
-            classBuilder.AddConstructors(
-                new ClassConstructorBuilder()
-                    .AddParameters(
-                        ctor.Parameters.Select(x => new ParameterBuilder()
-                            .WithName(x.Name)
-                            .WithTypeName(CreateTypeName(x))
-                            .WithIsNullable(x.IsNullable)
-                            .WithDefaultValue(x.DefaultValue)
-                            )
-                    )
-                    .WithChainCall("this(" + string.Join(", ", ctor.Parameters.Select(CreateParameterSelection)) + ")")
-                );
-        }
-    }
-
-    private void AddCodeForTypedExpressionToExpressionBuilders<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-        where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-        where TEntity : ITypeBase
-    {
-        string? typedInterface;
-        var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == "BuildTyped");
-        if (TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out typedInterface))
-        {
-            typeBaseBuilder.AddMethods
-            (
-                new ClassMethodBuilder()
-                    .WithName("Build")
-                    .WithTypeName($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>")
-                    .AddLiteralCodeStatements("return BuildTyped();")
-                    .WithExplicitInterfaceName($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typedInterface.GetGenericArguments()}>")
-            )
-            .AddInterfaces($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typedInterface.GetGenericArguments()}>");
-        }
-    }
-
-    private static string CreateParameterSelection(ParameterBuilder x)
-    {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName() && x.Name.ToString() != "predicateExpression")
-        {
-            // we need the Value propery of Nullable<T> for value types... (except for predicate expressions, those still have to be injected using ITypedExpression<bool>)
-            // for now, we only support int, long and boolean
-            var suffix = x.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
-                ? ".Value"
-                : string.Empty;
-
-            return x.IsNullable
-                ? $"{x.Name.ToString().GetCsharpFriendlyName()} == null ? null : new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()}{suffix})"
-                : $"new TypedConstantExpression<{x.TypeName.ToString().GetGenericArguments()}>({x.Name.ToString().GetCsharpFriendlyName()})";
-        }
-
-        if (x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
-        {
-            return $"new ConstantExpression({x.Name.ToString().GetCsharpFriendlyName()})";
-        }
-
-        return x.Name.ToString().GetCsharpFriendlyName();
-    }
-
-    private static string CreateTypeName(ParameterBuilder x)
-    {
-        if (x.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
-        {
-            if (x.Name.ToString() == "predicateExpression")
-            {
-                // hacking here... we only want to allow to inject the typed expression
-                return x.TypeName.ToString();
-            }
-            else
-            {
-                return x.TypeName.ToString().GetGenericArguments();
-            }
-        }
-
-        if (x.TypeName.ToString().GetClassName() == Constants.Types.Expression)
-        {
-            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
-            return $"{typeof(object).FullName}?";
-        }
-
-        return x.TypeName.ToString();
-    }
-
     private static void AddIsSupportedOverride(ITypeBase model, ClassBuilder parserClass)
     {
         if (model.GenericTypeArguments.Count > 0)
@@ -275,7 +208,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.Name.StartsWithAny("TypedConstant", "TypedDelegate"))
         {
-            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), nameof({typeBase.Name}<{typeof(object).FullName}>.Value), functionParseResult, evaluator, parser);");
+            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), 0, nameof({typeBase.Name}<{typeof(object).FullName}>.Value), functionParseResult, evaluator, parser);");
             return;
         }
 
@@ -429,8 +362,39 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             _ => (string.Empty, string.Empty)
         };
 
-    public CodeGenerationSettings GetSettings(CodeGenerationSettings settings)
-        => string.IsNullOrEmpty(LastGeneratedFilesFileName)
-            ? settings.ForScaffolding()
-            : settings.ForGeneration();
+    private static string CreateTypeName(ClassPropertyBuilder builder)
+    {
+        if (builder.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
+        {
+            if (builder.Name.ToString() == Constants.ArgumentNames.PredicateExpression)
+            {
+                // hacking here... we only want to allow to inject the typed expression
+                return builder.TypeName.ToString();
+            }
+            else
+            {
+                return builder.TypeName.ToString().GetGenericArguments();
+            }
+        }
+
+        if (builder.TypeName.ToString().GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.ITypedExpression"))
+        {
+            return builder.TypeName.ToString().GetGenericArguments().GetGenericArguments();
+        }
+
+        if (builder.TypeName.ToString().GetClassName() == Constants.Types.Expression)
+        {
+            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
+            return $"{typeof(object).FullName}?";
+        }
+
+        return builder.TypeName.ToString();
+    }
+
+    private static readonly VisitorContext _context = new();
+
+    private static readonly IVisitor[] Visitors = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(t => typeof(IVisitor).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
+        .Select(Activator.CreateInstance)
+        .Cast<IVisitor>()
+        .ToArray();
 }

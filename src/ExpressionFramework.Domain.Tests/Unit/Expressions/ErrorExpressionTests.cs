@@ -6,7 +6,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_ErrorResult_With_Specified_ErrorMessage()
     {
         // Assert
-        var sut = new ErrorExpression("Error message");
+        var sut = new ErrorExpressionBuilder().WithErrorMessageExpression("Error message").Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_ErrorResult_With_Null_ErrorMessage()
     {
         // Assert
-        var sut = new ErrorExpression();
+        var sut = new ErrorExpressionBuilder().Build();
 
         // Act
         var result = sut.Evaluate();
@@ -58,7 +58,7 @@ public class ErrorExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new ErrorExpression("Kaboom");
+        var expression = new ErrorExpressionBuilder().WithErrorMessageExpression("Kaboom").Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

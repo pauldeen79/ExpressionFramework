@@ -7,11 +7,11 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
 
     public override object CreateModel()
         => GetOverrideModels(typeof(IExpression))
-            .Select(model => CreateParserClass
+            .Select(x => CreateParserClass
             (
-                model,
+                x,
                 Constants.Types.Expression,
-                model.Name.ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
+                x.Name.ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
                 Constants.Namespaces.DomainExpressions
             ).Build());
 }

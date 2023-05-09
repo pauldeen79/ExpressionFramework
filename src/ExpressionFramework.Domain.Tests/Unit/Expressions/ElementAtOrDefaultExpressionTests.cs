@@ -6,7 +6,9 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(default!, 1);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,10 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(Enumerable.Empty<object>(), 1);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithIndexExpression(1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +39,11 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(Enumerable.Empty<object>(), 1, "default value");
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithIndexExpression(1)
+            .WithDefaultExpression("default value")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +57,10 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Returns_Invalid()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedConstantResultExpression<int>(Result<int>.Invalid("Something bad happened")), default);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result<int>.Invalid("Something bad happened")))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +74,10 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Error_When_IndexExpression_Returns_Error()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), new TypedConstantResultExpression<int>(Result<int>.Error("Something bad happened")), default);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result<int>.Error("Something bad happened")))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +91,10 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 10);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +108,11 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 10, "default");
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(10)
+            .WithDefaultExpression("default")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +126,10 @@ public class ElementAtOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 1);
+        var sut = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -128,7 +153,10 @@ public class ElementAtOrDefaultExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new ElementAtOrDefaultExpression(new[] { 1, 2, 3 }, 1);
+        var expression = new ElementAtOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(1)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

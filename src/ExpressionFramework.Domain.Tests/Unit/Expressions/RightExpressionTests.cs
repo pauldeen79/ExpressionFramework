@@ -6,7 +6,10 @@ public class RightExpressionTests
     public void Evaluate_Returns_RightValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression("test", 2);
+        var sut = new RightExpressionBuilder()
+            .WithExpression("test")
+            .WithLengthExpression(2)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +22,10 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(string.Empty, 2);
+        var sut = new RightExpressionBuilder()
+            .WithExpression(string.Empty)
+            .WithLengthExpression(2)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -33,7 +39,9 @@ public class RightExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(null!, 2);
+        var sut = new RightExpressionBuilder()
+            .WithExpression(default(string)!)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -61,7 +69,10 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_RightValue_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new RightExpression("test", 2);
+        var sut = new RightExpressionBuilder()
+            .WithExpression("test")
+            .WithLengthExpression(2)
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -75,7 +86,10 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new RightExpression(string.Empty, 2);
+        var sut = new RightExpressionBuilder()
+            .WithExpression(string.Empty)
+            .WithLengthExpression(2)
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -89,7 +103,7 @@ public class RightExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new RightExpression(default!, 2);
+        var sut = new RightExpressionBuilder().WithExpression(default(string)!).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -117,7 +131,10 @@ public class RightExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new RightExpression("some test", 1);
+        var sut = new RightExpressionBuilder()
+            .WithExpression("some test")
+            .WithLengthExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

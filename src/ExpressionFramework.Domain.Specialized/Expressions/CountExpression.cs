@@ -37,6 +37,4 @@ public partial record CountExpression
             hasDefaultExpression: false,
             resultValueType: typeof(int)
         );
-        
-        public CountExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

@@ -32,6 +32,4 @@ public partial record ElementAtOrDefaultExpression
             hasDefaultExpression: true,
             resultValueType: typeof(object)
         );
-
-        public ElementAtOrDefaultExpression(IEnumerable expression, int indexExpression) : this(new TypedConstantExpression<IEnumerable>(expression), new TypedConstantExpression<int>(indexExpression), null) { }
 }

@@ -27,6 +27,4 @@ public partial record FirstExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-        
-        public FirstExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

@@ -37,6 +37,4 @@ public partial record AnyExpression
             hasDefaultExpression: false,
             resultValueType: typeof(bool)
         );
-
-        public AnyExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
-    }
+}

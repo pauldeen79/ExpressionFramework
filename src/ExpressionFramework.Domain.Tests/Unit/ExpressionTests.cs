@@ -115,7 +115,7 @@ public class ExpressionTests
     public void Can_Concatenate_Multiple_Strings_Using_AggregateExpression()
     {
         // Arrange
-        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator(), default(IFormatProvider));
+        var aggregator = new AggregateExpression(new[] { "a", "b", "c" }.Select(x => new ConstantExpression(x)), new StringConcatenateAggregator(), default);
 
         // Act
         var result = aggregator.Evaluate(null);
@@ -130,7 +130,7 @@ public class ExpressionTests
     {
         // Arrange
         var value = "Hello world!";
-        var expression = new CountExpression(value, null);
+        var expression = new CountExpression(new TypedConstantExpression<IEnumerable>(value), null);
 
         // Act
         var result = expression.Evaluate(null);

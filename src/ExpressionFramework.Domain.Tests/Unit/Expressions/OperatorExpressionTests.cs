@@ -6,8 +6,12 @@ public class OperatorExpressionTests
     public void Can_Evaluate_Operator_Through_OperatorExpression()
     {
         // Arrange
-        var @operator = new EqualsOperator();
-        var sut = new OperatorExpression("A", "B", @operator);
+        var @operator = new EqualsOperatorBuilder();
+        var sut = new OperatorExpressionBuilder()
+            .WithLeftExpression("A")
+            .WithRightExpression("B")
+            .WithOperator(@operator)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -21,8 +25,12 @@ public class OperatorExpressionTests
     public void Can_Evaluate_Operator_Through_OperatorExpression_Typed()
     {
         // Arrange
-        var @operator = new EqualsOperator();
-        var sut = new OperatorExpression("A", "B", @operator);
+        var @operator = new EqualsOperatorBuilder();
+        var sut = new OperatorExpressionBuilder()
+            .WithLeftExpression("A")
+            .WithRightExpression("B")
+            .WithOperator(@operator)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -36,7 +44,11 @@ public class OperatorExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new OperatorExpression(false, true, new EqualsOperator());
+        var sut = new OperatorExpressionBuilder()
+            .WithLeftExpression(false)
+            .WithRightExpression(true)
+            .WithOperator(new EqualsOperatorBuilder())
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

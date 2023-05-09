@@ -6,7 +6,11 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Substring_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new SubstringExpression("test", 1, 1);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression("test")
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +23,11 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new SubstringExpression(string.Empty, 1, 1);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression(string.Empty)
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -75,7 +83,11 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Substring_From_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new SubstringExpression("test", 1, 1);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression("test")
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -85,12 +97,15 @@ public class SubstringExpressionTests
         actual.Value.Should().Be("e");
     }
 
-
     [Fact]
     public void EvaluateTyped_Returns_Substring_From_Expression_When_Expression_Is_NonEmptyString_No_Length()
     {
         // Arrange
-        var sut = new SubstringExpression("test", 1, null);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression("test")
+            .WithIndexExpression(1)
+            .WithLengthExpression((int?)null)
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -104,7 +119,11 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Too_Short()
     {
         // Arrange
-        var sut = new SubstringExpression(string.Empty, 1, 1);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression(string.Empty)
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -160,7 +179,11 @@ public class SubstringExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new SubstringExpression("AB", 1, 1);
+        var sut = new SubstringExpressionBuilder()
+            .WithExpression("AB")
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -183,7 +206,11 @@ public class SubstringExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new SubstringExpression("Hello world", 1, 1);
+        var expression = new SubstringExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithIndexExpression(1)
+            .WithLengthExpression(1)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

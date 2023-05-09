@@ -34,7 +34,10 @@ public class TakeExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new TakeExpression(new object[] { "A", "B", 1, "C" }, 2);
+        var sut = new TakeExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithCountExpression(2)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +51,10 @@ public class TakeExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new TakeExpression(new object[] { "A", "B", 1, "C" }, 1);
+        var sut = new TakeExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithCountExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -71,7 +77,10 @@ public class TakeExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new TakeExpression(new object[] { "A", "B", 1, "C" }, 2);
+        var expression = new TakeExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithCountExpression(2)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -40,7 +40,7 @@ public class NowExpressionTests
     public void EvaluateTyped_Returns_Current_DateTime_Without_DateTimeProvider()
     {
         // Arrange
-        var sut = new NowExpression();
+        var sut = new NowExpression(default(IDateTimeProvider?));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -54,7 +54,7 @@ public class NowExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new NowExpression();
+        var sut = new NowExpression(default(IDateTimeProvider?));
 
         // Act
         var actual = sut.ToUntyped();
@@ -77,7 +77,7 @@ public class NowExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new NowExpression();
+        var expression = new NowExpression(default(IDateTimeProvider?));
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -27,6 +27,4 @@ public partial record LastExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public LastExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

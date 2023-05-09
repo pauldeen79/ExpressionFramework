@@ -6,7 +6,9 @@ public class MinExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MinExpression(default(IEnumerable)!);
+        var sut = new MinExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();

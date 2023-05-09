@@ -39,4 +39,3 @@ public partial record TypedChainedExpression<T>
         return result.TryCast<T>(ExpressionExtensions.CreateInvalidTypeErrorMessage<T>());
     }
 }
-

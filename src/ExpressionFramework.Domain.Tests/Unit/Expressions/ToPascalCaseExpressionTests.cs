@@ -6,7 +6,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_PascalCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression("Pascal");
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression("Pascal").Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +19,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(string.Empty);
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression(string.Empty).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -32,7 +32,7 @@ public class ToPascalCaseExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(default(string)!);
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression(default(string)!).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -46,7 +46,7 @@ public class ToPascalCaseExpressionTests
     public void EvaluateTyped_Returns_PascalCase_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression("Pascal");
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression("Pascal").BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -60,7 +60,7 @@ public class ToPascalCaseExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(string.Empty);
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression(string.Empty).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -73,7 +73,7 @@ public class ToPascalCaseExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression(default(string)!);
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression(default(string)!).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -87,7 +87,7 @@ public class ToPascalCaseExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new ToPascalCaseExpression("A");
+        var sut = new ToPascalCaseExpressionBuilder().WithExpression("A").BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -110,7 +110,7 @@ public class ToPascalCaseExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new ToPascalCaseExpression("Some string");
+        var expression = new ToPascalCaseExpressionBuilder().WithExpression("Some string").Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

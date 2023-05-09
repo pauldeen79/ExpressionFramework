@@ -6,7 +6,10 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new GroupByExpression(default(IEnumerable)!, new DelegateExpression(x => x?.ToString()?.Length ?? 0));
+        var sut = new GroupByExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .WithKeySelectorExpression(new DelegateExpressionBuilder().WithValue(x => x?.ToString()?.Length ?? 0))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -71,7 +74,10 @@ public class GroupByExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new GroupByExpression(new[] { "a", "b", "cc" }, new DelegateExpression(x => x?.ToString()?.Length ?? 0));
+        var expression = new GroupByExpressionBuilder()
+            .WithExpression(new[] { "a", "b", "cc" })
+            .WithKeySelectorExpression(new DelegateExpressionBuilder().WithValue(x => x?.ToString()?.Length ?? 0))
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

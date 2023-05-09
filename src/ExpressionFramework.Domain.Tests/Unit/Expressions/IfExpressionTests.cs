@@ -20,7 +20,10 @@ public class IfExpressionTests
     public void Evaluate_Returns_Result_Using_Constant_Expression()
     {
         // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), "Correct");
+        var expression = new IfExpressionBuilder()
+            .WithCondition(new SingleEvaluatableBuilder().WithLeftExpression("A").WithOperator(new EqualsOperatorBuilder()).WithRightExpression("A"))
+            .WithResultExpression("Correct")
+            .Build();
 
         // Act
         var result = expression.Evaluate();
@@ -31,10 +34,13 @@ public class IfExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Result_Using_Constant_Expression_No_Value_Provided()
+    public void Evaluate_Returns_Result_No_Value_Provided()
     {
         // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), default(object?));
+        var expression = new IfExpressionBuilder()
+            .WithResultExpression(new EmptyExpressionBuilder())
+            .WithCondition(new SingleEvaluatableBuilder().WithLeftExpression("A").WithOperator(new EqualsOperatorBuilder()).WithRightExpression("A"))
+            .Build();
 
         // Act
         var result = expression.Evaluate();
@@ -45,10 +51,14 @@ public class IfExpressionTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Result_Using_Constant_Expression_DefaultExpression()
+    public void Evaluate_Returns_Result_Using_DefaultExpression()
     {
         // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), "Correct", "Incorrect");
+        var expression = new IfExpressionBuilder()
+            .WithCondition(new SingleEvaluatableBuilder().WithLeftExpression("A").WithOperator(new NotEqualsOperatorBuilder()).WithRightExpression("A"))
+            .WithResultExpression("Correct")
+            .WithDefaultExpression("Incorrect")
+            .Build();
 
         // Act
         var result = expression.Evaluate();
@@ -56,34 +66,6 @@ public class IfExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().Be("Incorrect");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Result_Using_Delegate_Expression_DefaultExpression()
-    {
-        // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new NotEqualsOperator(), "A"), new DelegateExpression(_ => "Correct"), new DelegateExpression(_ => "Incorrect"));
-
-        // Act
-        var result = expression.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Incorrect");
-    }
-
-    [Fact]
-    public void Evaluate_Returns_Result_Using_Delegate_Expression_No_Value_Provided()
-    {
-        // Arrange
-        var expression = new IfExpression(new SingleEvaluatable("A", new EqualsOperator(), "A"), default(Func<object?, object?>));
-
-        // Act
-        var result = expression.Evaluate();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
     }
 
     [Fact]

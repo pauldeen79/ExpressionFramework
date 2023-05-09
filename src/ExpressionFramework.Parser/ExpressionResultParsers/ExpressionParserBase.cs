@@ -28,7 +28,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
-    protected Result<Expression> ParseTypedExpression(Type expressionType, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    protected Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
         var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())
@@ -36,7 +36,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             return Result<Expression>.FromExistingResult(typeResult);
         }
 
-        var valueResult = functionParseResult.GetArgumentValueResult(0, argumentName, functionParseResult.Context, evaluator, parser);
+        var valueResult = functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser);
         if (!valueResult.IsSuccessful())
         {
             return Result<Expression>.FromExistingResult(valueResult);

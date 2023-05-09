@@ -6,7 +6,9 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(default(IEnumerable)!, default, default);
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(Enumerable.Empty<object>());
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +38,10 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(Enumerable.Empty<object>(), default, "default value");
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithDefaultExpression("default value")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +55,10 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +72,11 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10), "default");
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .WithDefaultExpression("default")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +90,9 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 });
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +106,10 @@ public class LastOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new LastOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new LastOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -114,7 +133,9 @@ public class LastOrDefaultExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new LastOrDefaultExpression(new[] { "a", "b", "cc" });
+        var expression = new LastOrDefaultExpressionBuilder()
+            .WithExpression(new[] { "a", "b", "cc" })
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

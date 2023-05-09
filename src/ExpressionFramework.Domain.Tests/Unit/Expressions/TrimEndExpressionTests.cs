@@ -6,7 +6,9 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(" trim ");
+        var sut = new TrimEndExpressionBuilder()
+            .WithExpression(" trim ")
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +21,10 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression("0trim0", new[] { '0' });
+        var sut = new TrimEndExpressionBuilder()
+            .WithExpression("0trim0")
+            .WithTrimCharsExpression(new[] { '0' })
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -45,7 +50,7 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(string.Empty);
+        var sut = new TrimEndExpressionBuilder().WithExpression(string.Empty).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -58,7 +63,7 @@ public class TrimEndExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimEndExpression(default(string)!);
+        var sut = new TrimEndExpressionBuilder().WithExpression(default(string)!).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -100,7 +105,7 @@ public class TrimEndExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(" trim ");
+        var sut = new TrimEndExpressionBuilder().WithExpression(" trim ").BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -113,7 +118,10 @@ public class TrimEndExpressionTests
     public void EvaluateTyped_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression("0trim0", new[] { '0' });
+        var sut = new TrimEndExpressionBuilder()
+            .WithExpression("0trim0")
+            .WithTrimCharsExpression(new[] { '0' })
+            .BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -126,7 +134,7 @@ public class TrimEndExpressionTests
     public void EvaluateTyped_Returns_EmptyString_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new TrimEndExpression(string.Empty);
+        var sut = new TrimEndExpressionBuilder().WithExpression(string.Empty).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -139,7 +147,7 @@ public class TrimEndExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new TrimEndExpression(default(string)!);
+        var sut = new TrimEndExpressionBuilder().WithExpression(default(string)!).BuildTyped();
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -153,7 +161,7 @@ public class TrimEndExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new TrimEndExpression("A");
+        var sut = new TrimEndExpressionBuilder().WithExpression("A").BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -176,7 +184,7 @@ public class TrimEndExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new TrimEndExpression("Some text");
+        var expression = new TrimEndExpressionBuilder().WithExpression("Some text").Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

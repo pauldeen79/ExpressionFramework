@@ -6,7 +6,7 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<string>());
+        var sut = new StringConcatenateExpressionBuilder().Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,12 +20,9 @@ public class StringConcatenateExpressionTests
     public void Evaluate_Returns_Concatated_String_When_All_Expressions_Contain_String_Value()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[]
-        {
-            "a",
-            "b",
-            "c"
-        });
+        var sut = new StringConcatenateExpressionBuilder()
+            .AddExpressions("a", "b", "c")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -53,7 +50,7 @@ public class StringConcatenateExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expressions_Is_Empty()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(Enumerable.Empty<string>());
+        var sut = new StringConcatenateExpressionBuilder().BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -67,12 +64,9 @@ public class StringConcatenateExpressionTests
     public void EvaluateTyped_Returns_Concatated_String_When_All_Expressions_Contain_String_Value()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[]
-        {
-            "a",
-            "b",
-            "c"
-        });
+        var sut = new StringConcatenateExpressionBuilder()
+            .AddExpressions("a", "b", "c")
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -86,7 +80,9 @@ public class StringConcatenateExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new StringConcatenateExpression(new[] { "A", "B" });
+        var sut = new StringConcatenateExpressionBuilder()
+            .AddExpressions("A", "B")
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

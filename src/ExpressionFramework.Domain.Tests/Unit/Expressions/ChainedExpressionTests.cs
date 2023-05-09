@@ -60,7 +60,9 @@ public class ChainedExpressionTests
     public void Evaluate_Returns_Last_Result_When_Multiple_Expressions_Are_Provided()
     {
         // Arrange
-        var expression = new ChainedExpressionBuilder().AddExpressions(new ContextExpressionBuilder(), new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>())).BuildTyped();
+        var expression = new ChainedExpressionBuilder()
+            .AddExpressions(new ContextExpressionBuilder(), new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()))
+            .BuildTyped();
 
         // Act
         var result = expression.Evaluate("hello");

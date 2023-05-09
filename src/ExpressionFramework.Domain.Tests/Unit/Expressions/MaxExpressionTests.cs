@@ -6,7 +6,9 @@ public class MaxExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new MaxExpression(default(IEnumerable)!);
+        var sut = new MaxExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();

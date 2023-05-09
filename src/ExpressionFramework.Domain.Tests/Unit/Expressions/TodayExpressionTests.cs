@@ -40,7 +40,7 @@ public class TodayExpressionTests
     public void EvaluateTyped_Returns_Current_DateTime_Without_DateTimeProvider()
     {
         // Arrange
-        var sut = new TodayExpression();
+        var sut = new TodayExpression(default(IDateTimeProvider));
 
         // Act
         var result = sut.EvaluateTyped();
@@ -54,7 +54,7 @@ public class TodayExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new TodayExpression();
+        var sut = new TodayExpression(default(IDateTimeProvider));
 
         // Act
         var actual = sut.ToUntyped();
@@ -67,7 +67,7 @@ public class TodayExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new TodayExpression();
+        var expression = new TodayExpression(default(IDateTimeProvider));
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -85,5 +85,4 @@ public class TodayExpressionTests
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
-
 }

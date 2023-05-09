@@ -6,7 +6,10 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new TypedContextExpression<string>()));
+        var sut = new SelectExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .WithSelectorExpression(new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -47,7 +50,10 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SelectExpression(default(IEnumerable)!, new ToUpperCaseExpression(new TypedContextExpression<string>()));
+        var sut = new SelectExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .WithSelectorExpression(new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()))
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -88,7 +94,10 @@ public class SelectExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new SelectExpression(new[] { "a", "b", "c" }, new ToUpperCaseExpression(new TypedContextExpression<string>()));
+        var sut = new SelectExpressionBuilder()
+            .WithExpression(new[] { "a", "b", "c" })
+            .WithSelectorExpression(new ToUpperCaseExpressionBuilder().WithExpression(new TypedContextExpressionBuilder<string>()))
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

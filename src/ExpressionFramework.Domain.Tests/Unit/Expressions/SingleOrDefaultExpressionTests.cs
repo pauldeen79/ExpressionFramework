@@ -6,7 +6,9 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(default(IEnumerable)!);
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_No_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(Enumerable.Empty<object>());
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +38,10 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Empty_Value_When_Expression_Is_Empty_Enumerable_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(Enumerable.Empty<object>(), default, "default value");
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithDefaultExpression("default value")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +55,10 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +72,11 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_DefaultValue()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10), "default");
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .WithDefaultExpression("default")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +90,9 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 });
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +106,10 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_With_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(_ => true));
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(true)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +123,9 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1 });
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +139,10 @@ public class SingleOrDefaultExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new SingleOrDefaultExpression(new[] { 1, 2 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { 1, 2 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -143,7 +167,9 @@ public class SingleOrDefaultExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new SingleOrDefaultExpression(new[] { "a", "b", "c" }, new TypedDelegateExpression<bool>(_ => true), "some default value");
+        var expression = new SingleOrDefaultExpressionBuilder()
+            .WithExpression(new[] { "a", "b", "c" })
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

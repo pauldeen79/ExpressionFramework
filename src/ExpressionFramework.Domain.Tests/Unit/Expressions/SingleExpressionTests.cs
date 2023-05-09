@@ -6,7 +6,9 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SingleExpression(default(IEnumerable)!, default);
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new SingleExpression(Enumerable.Empty<object>());
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +38,10 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +55,9 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 });
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +71,10 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Contains_Multiple_Items_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(_ => true));
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(true)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +88,9 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1 });
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(new[] { 1 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +104,10 @@ public class SingleExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new SingleExpression(new[] { 1, 2 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new SingleExpressionBuilder()
+            .WithExpression(new[] { 1, 2 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -114,7 +131,9 @@ public class SingleExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new SingleExpression(new[] { "a", "b", "c" });
+        var expression = new SingleExpressionBuilder()
+            .WithExpression(new[] { "a", "b", "c" })
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -20,6 +20,4 @@ public partial record MinExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public MinExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }

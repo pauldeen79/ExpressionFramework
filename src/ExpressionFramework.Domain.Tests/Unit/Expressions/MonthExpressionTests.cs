@@ -6,7 +6,9 @@ public class MonthExpressionTests
     public void Evaluate_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(new DateTime(2010, 1, 2));
+        var sut = new MonthExpressionBuilder()
+            .WithExpression(new DateTime(2010, 1, 2))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class MonthExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new MonthExpression(new DateTime(2010, 1, 2));
+        var sut = new MonthExpressionBuilder()
+            .WithExpression(new DateTime(2010, 1, 2))
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -34,7 +38,9 @@ public class MonthExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new MonthExpression(DateTime.Today);
+        var sut = new MonthExpressionBuilder()
+            .WithExpression(DateTime.Today)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -57,7 +63,9 @@ public class MonthExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new MonthExpression(DateTime.Today);
+        var expression = new MonthExpressionBuilder()
+            .WithExpression(DateTime.Today)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

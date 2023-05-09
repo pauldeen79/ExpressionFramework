@@ -6,7 +6,9 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_Length_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression("some");
+        var sut = new StringLengthExpressionBuilder()
+            .WithExpression("some")
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -19,7 +21,9 @@ public class StringLengthExpressionTests
     public void Evaluate_Returns_0_When_Expression_Is_EmptyString()
     {
         // Arrange
-        var sut = new StringLengthExpression(string.Empty);
+        var sut = new StringLengthExpressionBuilder()
+            .WithExpression(string.Empty)
+            .Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -86,7 +90,9 @@ public class StringLengthExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new StringLengthExpression("A");
+        var sut = new StringLengthExpressionBuilder()
+            .WithExpression("A")
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -109,7 +115,9 @@ public class StringLengthExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new StringLengthExpression("Hello world");
+        var expression = new StringLengthExpressionBuilder()
+            .WithExpression("Hello world")
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

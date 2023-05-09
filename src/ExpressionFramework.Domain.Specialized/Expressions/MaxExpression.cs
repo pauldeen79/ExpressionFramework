@@ -20,6 +20,4 @@ public partial record MaxExpression
             hasDefaultExpression: false,
             resultValueType: typeof(object)
         );
-
-    public MaxExpression(IEnumerable expression) : this(new TypedConstantExpression<IEnumerable>(expression), null) { }
 }
