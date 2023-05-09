@@ -60,7 +60,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         }
         else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
         {
-            // add overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantEvaluatableBuilder().WithValue(value))
+            AddEnumerableExpressionPropertyBuilderOverload(property);
         }
         else if (typeName.GetClassName() == Constants.Types.Expression)
         {
@@ -99,6 +99,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     private static void AddEnumerableTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
     {
+        // Add builder overload for IEnumerable<T> and T[], that maps to value.Select(x => new ConstantTypedExpression<T>().WithValue(x)) and value.Select(x => new ConstantDelegateExpression<T>().WithValue(x))
         property.AddBuilderOverload(
             new OverloadBuilder()
                 .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
@@ -134,6 +135,24 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                     : $"{{2}} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
                 ).Build()
             );
+    }
+
+    private static void AddEnumerableExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
+    {
+        // Add builder overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantExpressionBuilder().WithValue(value))
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(object[])).WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));")
+                .Build()
+        );
+
+        property.AddBuilderOverload(
+            new OverloadBuilder()
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(IEnumerable<object>)))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
+                .Build()
+        );
     }
 
     protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
