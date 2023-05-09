@@ -3,22 +3,23 @@
 [ExpressionDescription("Returns the value of a field (property) of the context")]
 [ParameterDescription(nameof(FieldNameExpression), "Name of the property (can also be nested, like Address.Street)")]
 [ParameterRequired(nameof(FieldNameExpression), true)]
-[UsesContext(true)]
-[ContextDescription("Value to use as context in the expression")]
-[ContextType(typeof(object))]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression cannot be empty, Fieldname [x] is not found on type [y]")]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the field (property)", "This will be returned if the field (property) is found")]
 public partial record FieldExpression
 {
-    public override Result<object?> Evaluate(object? context)
+    public override Result<object?> Evaluate(object? context) => Evaluate(context, Expression, FieldNameExpression);
+
+    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
+
+    internal static Result<object?> Evaluate(object? context, Expression expression, ITypedExpression<string> fieldNameExpression)
     {
-        var result = Expression.EvaluateWithNullCheck(context);
+        var result = expression.EvaluateWithNullCheck(context);
         if (!result.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(result);
         }
 
-        var fieldNameResult = FieldNameExpression.EvaluateTyped(result.Value);
+        var fieldNameResult = fieldNameExpression.EvaluateTyped(result.Value);
         if (!fieldNameResult.IsSuccessful())
         {
             return Result<object?>.FromExistingResult(fieldNameResult);
@@ -32,9 +33,7 @@ public partial record FieldExpression
         return GetValue(result.Value!, fieldNameResult.Value!);
     }
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
-
-    private Result<object?> GetValue(object value, string fieldName)
+    private static Result<object?> GetValue(object value, string fieldName)
     {
         var type = value.GetType();
         object? returnValue = null;
