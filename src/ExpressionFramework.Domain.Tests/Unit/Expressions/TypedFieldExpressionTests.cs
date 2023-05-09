@@ -91,7 +91,7 @@ public class TypedFieldExpressionTests
     public void Evaluate_Returns_Invalid_When_FieldNameExpression_Returns_Empty_String()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantExpression<string>(string.Empty));
+        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantExpression<string>(string.Empty));
 
         // Act
         var actual = expression.Evaluate();
@@ -105,7 +105,7 @@ public class TypedFieldExpressionTests
     public void Evaluate_Returns_Error_When_FieldNameExpression_Returns_Error()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
+        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
 
         // Act
         var actual = expression.Evaluate();
@@ -136,7 +136,7 @@ public class TypedFieldExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new FieldExpressionBase(new EmptyExpression(), new DefaultExpression<string>());
+        var expression = new TypedFieldExpressionBase<string>(new EmptyExpression(), new DefaultExpression<string>());
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
@@ -146,7 +146,7 @@ public class TypedFieldExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new FieldExpression(new ConstantExpression(new MyClass()), new TypedConstantExpression<string>(nameof(MyClass.MyProperty)));
+        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass()), new TypedConstantExpression<string>(nameof(MyClass.MyProperty)));
 
         // Act
         var result = expression.GetPrimaryExpression();
