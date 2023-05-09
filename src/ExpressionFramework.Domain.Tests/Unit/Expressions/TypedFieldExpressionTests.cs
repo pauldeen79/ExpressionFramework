@@ -160,14 +160,14 @@ public class TypedFieldExpressionTests
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
-        var sut = new ReflectionExpressionDescriptorProvider(typeof(FieldExpression));
+        var sut = new ReflectionExpressionDescriptorProvider(typeof(TypedFieldExpression<string>));
 
         // Act
         var result = sut.Get();
 
         // Assert
         result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(FieldExpression));
+        result.Name.Should().Be(nameof(TypedFieldExpression<string>));
         result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
