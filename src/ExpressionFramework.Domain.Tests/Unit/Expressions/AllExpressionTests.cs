@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Domain.Expressions;
-
-namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class AllExpressionTests
 {
@@ -8,7 +6,10 @@ public class AllExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(default(IEnumerable)!, new TypedDelegateExpression<bool>(_ => false));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .WithPredicateExpression(false)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -22,7 +23,10 @@ public class AllExpressionTests
     public void Evaluate_Returns_True_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(Enumerable.Empty<object?>(), new TypedDelegateExpression<bool>(_ => false));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object?>())
+            .WithPredicateExpression(false)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -36,7 +40,10 @@ public class AllExpressionTests
     public void Evaluate_Returns_False_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new AllExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -50,7 +57,10 @@ public class AllExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -64,7 +74,10 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new AllExpression(default(IEnumerable)!, new TypedDelegateExpression<bool>(_ => false));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .WithPredicateExpression(false)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -78,7 +91,10 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_True_When_Context_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(Enumerable.Empty<object>(), new TypedDelegateExpression<bool>(_ => false));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithPredicateExpression(false)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -92,7 +108,10 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_False_When_Enumerable_Context_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new AllExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -106,7 +125,10 @@ public class AllExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new AllExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -120,7 +142,10 @@ public class AllExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new AllExpression(Enumerable.Empty<object>(), new TypedDelegateExpression<bool>(_ => false));
+        var sut = new AllExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithPredicateExpression(false)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -130,20 +155,13 @@ public class AllExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new AllExpressionBase(new DefaultExpression<IEnumerable>(), new TypedDelegateExpression<bool>(_ => true));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
-    }
-
-    [Fact]
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new AllExpression(Enumerable.Empty<object>(), new TypedDelegateExpression<bool>(_ => false));
+        var expression = new AllExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithPredicateExpression(false)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

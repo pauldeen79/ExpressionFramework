@@ -6,7 +6,10 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_With_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression("Error message", new[] { new ValidationError("Validation error message", new[] { "Member" }) });
+        var sut = new InvalidExpressionBuilder()
+            .WithErrorMessageExpression("Error message")
+            .AddValidationErrorExpressions(new ValidationError("Validation error message", new[] { "Member" }))
+            .BuildTyped();
 
         // Act
         var result = sut.Evaluate();
@@ -21,7 +24,9 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_Without_ValidationErrors()
     {
         // Assert
-        var sut = new InvalidExpression("Error message");
+        var sut = new InvalidExpressionBuilder()
+            .WithErrorMessageExpression("Error message")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -36,7 +41,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Invalid_Result_Without_ValidationErrors_And_ErrorMessage()
     {
         // Assert
-        var sut = new InvalidExpression(default(string)!);
+        var sut = new InvalidExpressionBuilder().WithErrorMessageExpression(default(string)!).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -89,7 +94,9 @@ public class InvalidExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new InvalidExpression("Something went wrong", Enumerable.Empty<ValidationError>());
+        var expression = new InvalidExpressionBuilder()
+            .WithErrorMessageExpression("Something went wrong")
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

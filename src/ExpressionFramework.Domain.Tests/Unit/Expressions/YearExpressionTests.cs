@@ -6,7 +6,9 @@ public class YearExpressionTests
     public void Evaluate_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new YearExpression(new DateTime(2010, 1, 2));
+        var sut = new YearExpressionBuilder()
+            .WithExpression(new DateTime(2010, 1, 2))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class YearExpressionTests
     public void EvaluateTyped_Returns_Correct_Result_When_Expression_Is_Of_Type_DateTime()
     {
         // Arrange
-        var sut = new YearExpression(new DateTime(2010, 1, 2));
+        var sut = new YearExpressionBuilder()
+            .WithExpression(new DateTime(2010, 1, 2))
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -34,7 +38,9 @@ public class YearExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new YearExpression(DateTime.Today);
+        var sut = new YearExpressionBuilder()
+            .WithExpression(DateTime.Today)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -47,7 +53,9 @@ public class YearExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new YearExpression(DateTime.Today);
+        var expression = new YearExpressionBuilder()
+            .WithExpression(DateTime.Today)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

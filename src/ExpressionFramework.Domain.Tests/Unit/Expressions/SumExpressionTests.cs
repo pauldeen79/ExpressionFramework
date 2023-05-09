@@ -6,7 +6,9 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(default(IEnumerable)!);
+        var sut = new SumExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +36,9 @@ public class SumExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Enumerable_Values_Are_Not_All_Numeric()
     {
         // Arrange
-        var sut = new SumExpression(new[] { "A", "B", "C" });
+        var sut = new SumExpressionBuilder()
+            .WithExpression(new[] { "A", "B", "C" })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +52,9 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Byte_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new byte[] { 1, 2 });
+        var sut = new SumExpressionBuilder()
+            .WithExpression(new byte[] { 1, 2 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +68,9 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Short_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { (short)1, (short)2 });
+        var sut = new SumExpressionBuilder()
+            .WithExpression(new[] { (short)1, (short)2 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +84,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Int_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { 1, 2 });
+        var sut = new SumExpressionBuilder().WithExpression(new[] { 1, 2 }).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +98,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Long_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { (long)1, (long)2 });
+        var sut = new SumExpressionBuilder().WithExpression(new long[] { 1, 2 }).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -104,7 +112,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Float_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { (float)1.5, (float)2.25 });
+        var sut = new SumExpressionBuilder().WithExpression(new[] { (float)1.5, (float)2.25 }).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -118,7 +126,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Double_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { 1.5, 2.25 });
+        var sut = new SumExpressionBuilder().WithExpression(new[] { 1.5, 2.25 }).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -132,7 +140,7 @@ public class SumExpressionTests
     public void Evaluate_Returns_Sum_Of_Decimal_Values_When_SelectorExpression_Is_Null()
     {
         // Arrange
-        var sut = new SumExpression(new[] { (decimal)1.5, (decimal)2.25 });
+        var sut = new SumExpressionBuilder().WithExpression(new[] { (decimal)1.5, (decimal)2.25 }).Build();
 
         // Act
         var result = sut.Evaluate();
@@ -170,7 +178,10 @@ public class SumExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new SumExpression(new[] { 1, 2 }, new DelegateExpression(x => Convert.ToInt32(x)));
+        var expression = new SumExpressionBuilder()
+            .WithExpression(new[] { 1, 2 })
+            .WithSelectorExpression(new DelegateExpressionBuilder().WithValue(x => Convert.ToInt32(x)))
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

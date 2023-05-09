@@ -6,7 +6,9 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new ElementAtExpression(default!, 1);
+        var sut = new ElementAtExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,10 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(Enumerable.Empty<object>(), 1);
+        var sut = new ElementAtExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .WithIndexExpression(1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +53,10 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_IndexExpression_No_DefaultValue()
     {
         // Arrange
-        var sut = new ElementAtExpression(new[] { 1, 2, 3 }, 10);
+        var sut = new ElementAtExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +70,10 @@ public class ElementAtExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {
         // Arrange
-        var sut = new ElementAtExpression(new[] { 1, 2, 3 }, 1);
+        var sut = new ElementAtExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithIndexExpression(1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -86,7 +97,9 @@ public class ElementAtExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new ElementAtExpression(new[] { 1, 2, 3 }, 1);
+        var expression = new ElementAtExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

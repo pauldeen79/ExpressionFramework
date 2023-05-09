@@ -6,7 +6,10 @@ public class AndExpressionTests
     public void Evaluate_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(false, true);
+        var sut = new AndExpressionBuilder()
+            .WithFirstExpression(false)
+            .WithSecondExpression(true)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +23,10 @@ public class AndExpressionTests
     public void EvaluateTyped_Returns_Success_When_FirstExpression_And_SecondExpression_Are_Both_Boolean()
     {
         // Arrange
-        var sut = new AndExpression(false, true);
+        var sut = new AndExpressionBuilder()
+            .WithFirstExpression(false)
+            .WithSecondExpression(true)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -34,7 +40,10 @@ public class AndExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new AndExpression(new TrueExpression(), new TrueExpression());
+        var sut = new AndExpressionBuilder()
+            .WithFirstExpression(true)
+            .WithSecondExpression(true)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -44,20 +53,13 @@ public class AndExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new AndExpressionBase(new TypedConstantExpression<bool>(true), new TypedConstantExpression<bool>(true));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
-    }
-
-    [Fact]
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new AndExpression(false, true);
+        var expression = new AndExpressionBuilder()
+            .WithFirstExpression(false)
+            .WithSecondExpression(true)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

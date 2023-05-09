@@ -33,7 +33,10 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Error_When_Predicate_Returns_Error()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new TypedConstantResultExpression<bool>(Result<bool>.Error("Kaboom")));
+        var sut = new WhereExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithPredicateExpression(new TypedConstantResultExpressionBuilder<bool>().WithValue(Result<bool>.Error("Kaboom")))
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -47,7 +50,10 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new TypedDelegateExpression<bool>(x => x is string));
+        var sut = new WhereExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithPredicateExpression(x => x is string)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -74,7 +80,10 @@ public class WhereExpressionTests
     public void EvaluateTyped_Returns_Filtered_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new WhereExpression(new object[] { "A", "B", 1, "C" }, new TypedDelegateExpression<bool>(x => x is string));
+        var sut = new WhereExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithPredicateExpression(x => x is string)
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -88,7 +97,10 @@ public class WhereExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new WhereExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(_ => true));
+        var sut = new WhereExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(true)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -111,7 +123,10 @@ public class WhereExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new WhereExpression(new object[] { "A", "B", 1, "C" }, new TypedDelegateExpression<bool>(x => x is string));
+        var expression = new WhereExpressionBuilder()
+            .WithExpression(new object[] { "A", "B", 1, "C" })
+            .WithPredicateExpression(x => x is string)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

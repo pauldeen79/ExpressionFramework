@@ -20,7 +20,10 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringFindExpression("Hello world", default!);
+        var sut = new StringFindExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression(default(string)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +51,10 @@ public class StringFindExpressionTests
     public void Evaluate_Returns_Position_Of_FindExpression_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringFindExpression("Hello world", "e");
+        var sut = new StringFindExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +68,10 @@ public class StringFindExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new StringFindExpression("A", "B");
+        var sut = new StringFindExpressionBuilder()
+            .WithExpression("A")
+            .WithFindExpression("B")
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -86,7 +95,10 @@ public class StringFindExpressionTests
     public void GetPrimaryExpression_Returns_Success_With_Expression()
     {
         // Arrange
-        var expression = new StringFindExpression("Hello world", "Hello");
+        var expression = new StringFindExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("Hello")
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();
@@ -100,7 +112,10 @@ public class StringFindExpressionTests
     public void EvaluateTyped_Returns_Position_Of_FindExpression_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringFindExpression("Hello world", "e");
+        var sut = new StringFindExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();

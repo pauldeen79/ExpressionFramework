@@ -6,7 +6,11 @@ public class CompoundExpressionTests
     public void Evaluate_Returns_Aggregation_Of_FirstExpression_And_SecondExpression_Using_Constant_Values()
     {
         // Arrange
-        var sut = new CompoundExpression(1, 2, new AddAggregator(), default);
+        var sut = new CompoundExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(2)
+            .WithAggregator(new AddAggregatorBuilder())
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -17,20 +21,14 @@ public class CompoundExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new CompoundExpressionBase(new EmptyExpression(), new EmptyExpression(), new AddAggregator(), default);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
-    }
-
-    [Fact]
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new CompoundExpression(new ConstantExpression(1), new ConstantExpression(2), new AddAggregator(), default);
+        var expression = new CompoundExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(2)
+            .WithAggregator(new AddAggregatorBuilder())
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

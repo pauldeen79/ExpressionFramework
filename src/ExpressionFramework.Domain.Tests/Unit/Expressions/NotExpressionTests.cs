@@ -6,7 +6,9 @@ public class NotExpressionTests
     public void Evaluate_Returns_Success_With_Negated_BooleanValue()
     {
         // Arrange
-        var sut = new NotExpression(false);
+        var sut = new NotExpressionBuilder()
+            .WithExpression(false)
+            .Build();
 
         // Act
         var result = sut.Evaluate();

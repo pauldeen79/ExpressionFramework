@@ -70,7 +70,10 @@ public class EqualsExpressionTests
     public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var expression = new EqualsExpression(1, 1);
+        var expression = new EqualsExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = expression.EvaluateTyped(null);
@@ -84,7 +87,7 @@ public class EqualsExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new EqualsExpression(true, true);
+        var sut = new EqualsExpressionBuilder().WithFirstExpression(true).WithSecondExpression(true).BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();

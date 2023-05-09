@@ -6,7 +6,9 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Null()
     {
         // Arrange
-        var sut = new FirstExpression(default(IEnumerable)!);
+        var sut = new FirstExpressionBuilder()
+            .WithExpression(default(IEnumerable)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +22,9 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Is_Empty_Enumerable()
     {
         // Arrange
-        var sut = new FirstExpression(Enumerable.Empty<object>());
+        var sut = new FirstExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -34,7 +38,10 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange
-        var sut = new FirstExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 10));
+        var sut = new FirstExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 10)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +55,9 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {
         // Arrange
-        var sut = new FirstExpression(new[] { 1, 2, 3 });
+        var sut = new FirstExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +71,10 @@ public class FirstExpressionTests
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_With_Predicate()
     {
         // Arrange
-        var sut = new FirstExpression(new[] { 1, 2, 3 }, new TypedDelegateExpression<bool>(x => x is int i && i > 1));
+        var sut = new FirstExpressionBuilder()
+            .WithExpression(new[] { 1, 2, 3 })
+            .WithPredicateExpression(x => x is int i && i > 1)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -86,7 +98,9 @@ public class FirstExpressionTests
     public void GetPrimaryExpression_Returns_Success()
     {
         // Arrange
-        var expression = new FirstExpression(Enumerable.Empty<object>());
+        var expression = new FirstExpressionBuilder()
+            .WithExpression(Enumerable.Empty<object>())
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

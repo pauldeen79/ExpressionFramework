@@ -38,7 +38,10 @@ public class NotEqualsExpressionTests
     public void Evaluate_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var expression = new NotEqualsExpression(1, 1);
+        var expression = new NotEqualsExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(1)
+            .Build();
 
         // Act
         var actual = expression.Evaluate();
@@ -84,7 +87,10 @@ public class NotEqualsExpressionTests
     public void EvaluateTyped_Returns_Correct_Value_On_Success()
     {
         // Arrange
-        var expression = new NotEqualsExpression(1, 1);
+        var expression = new NotEqualsExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(1)
+            .BuildTyped();
 
         // Act
         var actual = expression.EvaluateTyped();
@@ -98,7 +104,10 @@ public class NotEqualsExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new NotEqualsExpression(true, false);
+        var sut = new NotEqualsExpressionBuilder()
+            .WithFirstExpression(true)
+            .WithSecondExpression(false)
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -121,7 +130,10 @@ public class NotEqualsExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new NotEqualsExpression(1, 1);
+        var expression = new NotEqualsExpressionBuilder()
+            .WithFirstExpression(1)
+            .WithSecondExpression(1)
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();

@@ -20,7 +20,11 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_FindExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression("Hello world", default!, "f");
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression(default(string)!)
+            .WithReplaceExpression("f")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -48,7 +52,11 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_ReplaceExpression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression("Hello world", "e", default!);
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .WithReplaceExpression(default(string)!)
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -62,7 +70,11 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Invalid_When_Expression_Returns_Non_String_Value()
     {
         // Arrange
-        var sut = new StringReplaceExpression(default!, "e", "f");
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression(default(string)!)
+            .WithFindExpression("e")
+            .WithReplaceExpression("f")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -76,7 +88,11 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression("Hello world", "e", "f");
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .WithReplaceExpression("f")
+            .Build();
 
         // Act
         var result = sut.Evaluate();
@@ -90,7 +106,11 @@ public class StringReplaceExpressionTests
     public void EvaluateTyped_Returns_Replaced_Value_When_Both_Expressions_Are_String()
     {
         // Arrange
-        var sut = new StringReplaceExpression("Hello world", "e", "f");
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .WithReplaceExpression("f")
+            .BuildTyped();
 
         // Act
         var result = sut.EvaluateTyped();
@@ -104,7 +124,11 @@ public class StringReplaceExpressionTests
     public void ToUntyped_Returns_Expression()
     {
         // Arrange
-        var sut = new StringReplaceExpression("A", "B", "C");
+        var sut = new StringReplaceExpressionBuilder()
+            .WithExpression("A")
+            .WithFindExpression("B")
+            .WithReplaceExpression("C")
+            .BuildTyped();
 
         // Act
         var actual = sut.ToUntyped();
@@ -127,7 +151,11 @@ public class StringReplaceExpressionTests
     public void GetPrimaryExpression_Returns_NotSupported()
     {
         // Arrange
-        var expression = new StringReplaceExpression("Hello world", "e", "f");
+        var expression = new StringReplaceExpressionBuilder()
+            .WithExpression("Hello world")
+            .WithFindExpression("e")
+            .WithReplaceExpression("f")
+            .Build();
 
         // Act
         var result = expression.GetPrimaryExpression();
