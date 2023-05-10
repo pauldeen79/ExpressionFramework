@@ -12,3 +12,4 @@ expressions:
 - Add TypedSequenceExpression<T>
 - Add FormattableStringExpression, with a formattable string (you might also used the generic ConstantExpression, but it seems logical to have a special cased one for this in the front-end so you can recognize it)
 - Add TypedSwitchExpression<T>, TypedCase<T> and TypedEvaluatable<T> as a kind of switch expression
+- Add Cast<T>(value) and TryCast<T>(value, default) expressions
