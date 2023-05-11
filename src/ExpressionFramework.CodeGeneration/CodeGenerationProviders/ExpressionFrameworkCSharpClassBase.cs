@@ -396,5 +396,6 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     private static readonly IVisitor[] Visitors = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(t => typeof(IVisitor).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
         .Select(Activator.CreateInstance)
         .Cast<IVisitor>()
+        .OrderBy(x => x.Order)
         .ToArray();
 }

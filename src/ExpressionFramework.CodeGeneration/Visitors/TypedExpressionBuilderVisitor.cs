@@ -3,6 +3,8 @@
 [ExcludeFromCodeCoverage]
 public class TypedExpressionBuilderVisitor : IVisitor
 {
+    public int Order => 30;
+
     public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase

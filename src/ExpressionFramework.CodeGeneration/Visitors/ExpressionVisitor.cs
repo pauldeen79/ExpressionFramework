@@ -3,6 +3,8 @@
 [ExcludeFromCodeCoverage]
 public class ExpressionVisitor : IVisitor
 {
+    public int Order => 40;
+
     public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
     where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
     where TEntity : ITypeBase
@@ -12,26 +14,34 @@ public class ExpressionVisitor : IVisitor
             return;
         }
 
-        typeBaseBuilder.AddMethods(new ClassMethodBuilder()
-            .WithOverride()
-            .WithName("GetSingleContainedExpression")
-            .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>")
-            .AddLiteralCodeStatements(GetSingleContainedExpressionStatements(typeBaseBuilder))
-        );
+        var key = $"{typeBaseBuilder.GetFullName()}Base";
+        context.BaseTypes.TryGetValue(key, out var baseBuilder);
+        if (baseBuilder != null)
+        {
+            typeBaseBuilder.AddMethods(new ClassMethodBuilder()
+                .WithOverride()
+                .WithName("GetSingleContainedExpression")
+                .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>")
+                .AddLiteralCodeStatements(GetSingleContainedExpressionStatements(baseBuilder))
+            );
+        }
+        else if (typeBaseBuilder.GetFullName().EndsWith("Base"))
+        {
+            typeBaseBuilder.AddMethods(new ClassMethodBuilder()
+                .WithOverride()
+                .WithName("GetSingleContainedExpression")
+                .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>")
+                .AddLiteralCodeStatements($"throw new {typeof(NotSupportedException).FullName}();")
+            );
+        }
     }
 
-    private static string GetSingleContainedExpressionStatements<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-    where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
-    where TEntity : ITypeBase
+    private static string GetSingleContainedExpressionStatements(TypeBaseBuilder typeBaseBuilder)
     {
-        if (typeBaseBuilder.Name.ToString().EndsWith("Base"))
-        {
-            return $"throw new {typeof(NotSupportedException).FullName}();";
-        }
-
         var expressionProperties = typeBaseBuilder.Properties
-            .Where(x => x.TypeName.ToString().WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
+            .Where(x => !x.IsNullable && x.TypeName.ToString().WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
             .ToArray();
+
         if (expressionProperties.Length == 1)
         {
             var nullableTypedPrefix = expressionProperties[0].IsNullable

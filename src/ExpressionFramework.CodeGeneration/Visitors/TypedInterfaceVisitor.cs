@@ -3,6 +3,8 @@
 [ExcludeFromCodeCoverage]
 public class TypedInterfaceVisitor : IVisitor
 {
+    public int Order => 20;
+
     public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
