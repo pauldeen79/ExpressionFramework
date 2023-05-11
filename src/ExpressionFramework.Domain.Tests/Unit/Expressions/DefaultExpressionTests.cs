@@ -55,6 +55,19 @@ public class DefaultExpressionTests
     }
 
     [Fact]
+    public void ToUntyped_Returns_ConstantExpression()
+    {
+        // Arrange
+        var expression = new DefaultExpressionBuilder<IEnumerable>().BuildTyped();
+
+        // Act
+        var untypedExpression = expression.ToUntyped();
+
+        // Assert
+        untypedExpression.Should().BeOfType<ConstantExpression>().Which.Value.Should().BeNull();
+    }
+
+    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

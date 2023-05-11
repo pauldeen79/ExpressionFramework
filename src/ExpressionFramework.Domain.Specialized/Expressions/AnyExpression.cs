@@ -13,8 +13,6 @@ public partial record AnyExpression
             results => Result<object?>.Success(results.Any(x => x.Result.Value))
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<bool> EvaluateTyped(object? context)
         => EnumerableExpression.GetOptionalScalarValue
         (

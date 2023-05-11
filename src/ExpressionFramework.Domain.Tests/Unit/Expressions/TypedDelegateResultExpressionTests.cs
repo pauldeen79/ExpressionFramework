@@ -58,19 +58,6 @@ public class TypedDelegateResultExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
-    {
-        // Arrange
-        var expression = new TypedDelegateResultExpression<int>(_ => Result<int>.Success(1));
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
     public void Can_Use_TypedConstantExpression_In_ExpressionBuilderFactory()
     {
         // Arrange

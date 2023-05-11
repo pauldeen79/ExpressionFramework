@@ -50,22 +50,6 @@ public class YearExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success()
-    {
-        // Arrange
-        var expression = new YearExpressionBuilder()
-            .WithExpression(DateTime.Today)
-            .Build();
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange

@@ -6,8 +6,6 @@ public partial record SumExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, Sum, SelectorExpression);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

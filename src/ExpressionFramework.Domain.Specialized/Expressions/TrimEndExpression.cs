@@ -6,8 +6,6 @@ public partial record TrimEndExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()

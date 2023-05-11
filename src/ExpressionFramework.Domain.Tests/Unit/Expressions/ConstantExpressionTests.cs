@@ -13,19 +13,6 @@ public class ConstantExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
-    {
-        // Arrange
-        var expression = new ConstantExpressionBuilder().Build();
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
     public void Evaluate_Returns_Value()
     {
         // Arrange

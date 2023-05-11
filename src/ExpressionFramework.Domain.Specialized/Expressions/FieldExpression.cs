@@ -9,8 +9,6 @@ public partial record FieldExpression
 {
     public override Result<object?> Evaluate(object? context) => Evaluate(context, Expression, FieldNameExpression);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
-
     internal static Result<object?> Evaluate(object? context, Expression expression, ITypedExpression<string> fieldNameExpression)
     {
         var result = expression.EvaluateWithNullCheck(context);

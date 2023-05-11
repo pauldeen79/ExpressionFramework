@@ -22,7 +22,6 @@ public class ExtenstionParserExtensions : ExpressionFrameworkCSharpClassBase
                         .AddParameter("services", typeof(IServiceCollection))
                         .WithType(typeof(IServiceCollection))
                         .AddLiteralCodeStatements(GetOverrideModels(typeof(IExpression))
-                            .Where(x => !x.Name.StartsWith("TypedDelegate"))
                             .SelectMany(x => new[]
                             {
                                 $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name}Parser>();",

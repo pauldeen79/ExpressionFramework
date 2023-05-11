@@ -58,20 +58,4 @@ public class DayExpressionTests
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
     }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_Success()
-    {
-        // Arrange
-        var expression = new DayExpressionBuilder()
-            .WithExpression(DateTime.Today)
-            .Build();
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
-    }
 }

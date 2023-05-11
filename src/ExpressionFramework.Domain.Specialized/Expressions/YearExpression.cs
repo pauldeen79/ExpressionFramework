@@ -9,9 +9,6 @@ public partial record YearExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Year);
 
-    public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<int> EvaluateTyped(object? context)
         => Result<int>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Year);
 }

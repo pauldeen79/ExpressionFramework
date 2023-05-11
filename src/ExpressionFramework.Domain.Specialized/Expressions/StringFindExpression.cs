@@ -16,9 +16,6 @@ public partial record StringFindExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
     
-    public override Result<Expression> GetPrimaryExpression()
-        => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<int> EvaluateTyped(object? context)
     {
         var findExpressionResult = FindExpression.EvaluateTypedWithTypeCheck(context, "FindExpression is not of type string");

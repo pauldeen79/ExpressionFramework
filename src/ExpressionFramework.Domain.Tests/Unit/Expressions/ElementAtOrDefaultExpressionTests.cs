@@ -150,23 +150,6 @@ public class ElementAtOrDefaultExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success()
-    {
-        // Arrange
-        var expression = new ElementAtOrDefaultExpressionBuilder()
-            .WithExpression(new[] { 1, 2, 3 })
-            .WithIndexExpression(1)
-            .Build();
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

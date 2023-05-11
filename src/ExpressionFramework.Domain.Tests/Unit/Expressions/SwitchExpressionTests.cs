@@ -111,32 +111,6 @@ public class SwitchExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_No_Default()
-    {
-        // Arrange
-        var expression = new SwitchExpression(Enumerable.Empty<Case>(), default);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported_Filled_Default()
-    {
-        // Arrange
-        var expression = new SwitchExpression(Enumerable.Empty<Case>(), new ConstantExpression(12345));
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
