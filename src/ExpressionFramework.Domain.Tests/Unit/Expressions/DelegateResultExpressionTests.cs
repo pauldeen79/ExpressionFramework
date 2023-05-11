@@ -37,7 +37,7 @@ public class DelegateResultExpressionTests
         var expression = new DelegateResultExpressionBase(_ => Result<object?>.Success(null));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

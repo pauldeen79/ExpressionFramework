@@ -128,7 +128,7 @@ public class LeftExpressionTests
         var expression = new LeftExpressionBase(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

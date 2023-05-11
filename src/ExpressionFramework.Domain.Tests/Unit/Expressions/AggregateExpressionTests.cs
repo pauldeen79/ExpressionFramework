@@ -72,7 +72,7 @@ public class AggregateExpressionTests
         var expression = new AggregateExpressionBase(Enumerable.Empty<Expression>(), new AddAggregator(), default);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

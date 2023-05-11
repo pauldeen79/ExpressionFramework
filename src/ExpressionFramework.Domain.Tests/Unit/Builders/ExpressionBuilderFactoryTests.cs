@@ -71,6 +71,11 @@ public class ExpressionBuilderFactoryTests
             throw new NotImplementedException();
         }
 
+        public override Result<Expression> GetSingleContainedExpression()
+        {
+            throw new NotImplementedException();
+        }
+
         public Expression ToUntyped()
         {
             throw new NotImplementedException();

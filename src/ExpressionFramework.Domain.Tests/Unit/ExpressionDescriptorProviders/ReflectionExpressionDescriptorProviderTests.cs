@@ -56,6 +56,11 @@ public class ReflectionAggregatorDescriptorProviderTests
         public override Result<object?> Evaluate(object? context)
             => Result<object?>.Success("some value");
 
+        public override Result<Expression> GetSingleContainedExpression()
+        {
+            throw new NotImplementedException();
+        }
+
         public object Parameter { get; } = "";
     }
 }

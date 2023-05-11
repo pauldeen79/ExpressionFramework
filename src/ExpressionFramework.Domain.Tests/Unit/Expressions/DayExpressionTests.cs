@@ -56,6 +56,6 @@ public class DayExpressionTests
         var expression = new DayExpressionBase(new TypedConstantExpression<DateTime>(DateTime.Today));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 }

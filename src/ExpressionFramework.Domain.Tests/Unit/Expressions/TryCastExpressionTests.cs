@@ -125,6 +125,6 @@ public class TryCastExpressionTests
         var expression = new TryCastExpressionBase<IEnumerable>(new EmptyExpression(), default);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 }

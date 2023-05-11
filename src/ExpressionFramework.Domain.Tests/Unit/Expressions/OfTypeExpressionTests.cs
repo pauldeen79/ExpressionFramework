@@ -64,7 +64,7 @@ public class OfTypeExpressionTests
         var expression = new OfTypeExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedConstantExpression<Type>(typeof(string)));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

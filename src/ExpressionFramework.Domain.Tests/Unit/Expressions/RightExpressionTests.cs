@@ -150,7 +150,7 @@ public class RightExpressionTests
         var expression = new RightExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<int>(1));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

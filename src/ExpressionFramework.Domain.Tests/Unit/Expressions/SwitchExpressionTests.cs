@@ -107,7 +107,7 @@ public class SwitchExpressionTests
         var expression = new SwitchExpressionBase(Enumerable.Empty<Case>(), null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

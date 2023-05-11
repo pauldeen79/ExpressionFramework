@@ -67,7 +67,7 @@ public class MinExpressionTests
         var expression = new MinExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

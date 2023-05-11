@@ -87,7 +87,7 @@ public class InvalidExpressionTests
         var expression = new InvalidExpressionBase(new DefaultExpression<string>(), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

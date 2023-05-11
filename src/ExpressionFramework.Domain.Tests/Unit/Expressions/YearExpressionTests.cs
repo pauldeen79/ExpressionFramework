@@ -56,6 +56,6 @@ public class YearExpressionTests
         var expression = new YearExpressionBase(new TypedConstantExpression<DateTime>(DateTime.MinValue));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 }

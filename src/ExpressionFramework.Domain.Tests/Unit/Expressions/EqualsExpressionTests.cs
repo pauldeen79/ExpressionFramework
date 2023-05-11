@@ -103,7 +103,7 @@ public class EqualsExpressionTests
         var expression = new EqualsExpressionBase(new EmptyExpression(), new EmptyExpression());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

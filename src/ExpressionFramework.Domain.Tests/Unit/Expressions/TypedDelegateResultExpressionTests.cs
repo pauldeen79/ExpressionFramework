@@ -37,7 +37,7 @@ public class TypedDelegateResultExpressionTests
         var expression = new TypedDelegateResultExpressionBase<bool>(_ => Result<bool>.Success(default));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

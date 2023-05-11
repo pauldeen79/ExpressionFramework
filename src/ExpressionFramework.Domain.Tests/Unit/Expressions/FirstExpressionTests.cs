@@ -91,7 +91,7 @@ public class FirstExpressionTests
         var expression = new FirstExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), default);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

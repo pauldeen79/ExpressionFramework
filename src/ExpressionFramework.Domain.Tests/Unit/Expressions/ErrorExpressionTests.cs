@@ -51,7 +51,7 @@ public class ErrorExpressionTests
         var expression = new ErrorExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]
