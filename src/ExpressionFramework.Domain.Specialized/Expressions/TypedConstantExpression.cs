@@ -15,5 +15,4 @@ public partial record TypedConstantExpression<T>
 
     public Expression ToUntyped()
         => new ConstantExpression(Value);
-
 }
