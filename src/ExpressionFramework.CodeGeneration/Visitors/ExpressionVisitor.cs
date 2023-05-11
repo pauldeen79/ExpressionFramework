@@ -39,7 +39,7 @@ public class ExpressionVisitor : IVisitor
     private static string GetSingleContainedExpressionStatements(TypeBaseBuilder typeBaseBuilder)
     {
         var expressionProperties = typeBaseBuilder.Properties
-            .Where(x => !x.IsNullable && x.TypeName.ToString().WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
+            .Where(x => x.Name.ToString() == "Expression" && x.TypeName.ToString().WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
             .ToArray();
 
         if (expressionProperties.Length == 1)
