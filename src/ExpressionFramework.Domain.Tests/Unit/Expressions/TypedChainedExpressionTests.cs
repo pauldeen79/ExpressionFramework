@@ -91,7 +91,7 @@ public class TypedChainedExpressionTests
         var expression = new ChainedExpressionBase(Enumerable.Empty<Expression>());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

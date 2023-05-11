@@ -56,6 +56,6 @@ public class MonthExpressionTests
         var expression = new MonthExpressionBase(new TypedConstantExpression<DateTime>(DateTime.Today));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 }

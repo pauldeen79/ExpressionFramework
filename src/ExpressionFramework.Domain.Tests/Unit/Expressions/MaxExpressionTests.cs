@@ -67,7 +67,7 @@ public class MaxExpressionTests
         var expression = new MaxExpressionBase(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object>()), null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

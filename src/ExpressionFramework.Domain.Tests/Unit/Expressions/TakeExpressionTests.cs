@@ -70,7 +70,7 @@ public class TakeExpressionTests
         var expression = new TakeExpressionBase(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

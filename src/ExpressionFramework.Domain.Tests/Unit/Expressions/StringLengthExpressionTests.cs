@@ -108,7 +108,7 @@ public class StringLengthExpressionTests
         var expression = new StringLengthExpressionBase(new TypedConstantExpression<string>(string.Empty));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

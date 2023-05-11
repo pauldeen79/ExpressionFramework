@@ -159,7 +159,7 @@ public class SingleOrDefaultExpressionTests
         var expression = new SingleOrDefaultExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), null, null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

@@ -89,7 +89,7 @@ public class IfExpressionTests
         var expression = new IfExpressionBase(new SingleEvaluatable(new EmptyExpression(), new EqualsOperator(), new EmptyExpression()), new EmptyExpression(), null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

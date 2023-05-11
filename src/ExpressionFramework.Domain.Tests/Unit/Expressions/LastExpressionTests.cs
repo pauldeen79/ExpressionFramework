@@ -89,7 +89,7 @@ public class LastExpressionTests
         var expression = new LastExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), default);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

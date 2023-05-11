@@ -174,7 +174,7 @@ public class TrimStartExpressionTests
         var expression = new TrimStartExpressionBase(new TypedConstantExpression<string>(string.Empty), null);
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

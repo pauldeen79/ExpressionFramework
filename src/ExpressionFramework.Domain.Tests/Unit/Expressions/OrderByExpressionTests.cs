@@ -191,7 +191,7 @@ public class OrderByExpressionTests
         var expression = new OrderByExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), Enumerable.Empty<ITypedExpression<SortOrder>>());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

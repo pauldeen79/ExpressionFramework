@@ -116,7 +116,7 @@ public class WhereExpressionTests
         var expression = new WhereExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedDelegateExpression<bool>(_ => true));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

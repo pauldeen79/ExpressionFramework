@@ -64,7 +64,7 @@ public class OperatorExpressionTests
         var expression = new OperatorExpressionBase(new EmptyExpression(), new EmptyExpression(), new EqualsOperator());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

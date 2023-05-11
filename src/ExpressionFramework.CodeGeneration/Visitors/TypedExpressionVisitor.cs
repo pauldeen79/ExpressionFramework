@@ -34,7 +34,7 @@ public class TypedExpressionVisitor : IVisitor
                     .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .WithOverride()
                     .AddParameter("context", typeof(object), isNullable: true)
-                    .AddNotImplementedException()
+                    .AddLiteralCodeStatements($"throw new {typeof(NotSupportedException).FullName}();")
             );
 
             context.BaseTypes.Add(typeBaseBuilder.GetFullName(), typeBaseBuilder);

@@ -51,7 +51,7 @@ public class TypedConstantResultExpressionTests
         var expression = new TypedConstantResultExpressionBase<bool>(Result<bool>.Success(default));
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]

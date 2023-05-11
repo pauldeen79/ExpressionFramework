@@ -139,7 +139,7 @@ public class TypedFieldExpressionTests
         var expression = new TypedFieldExpressionBase<string>(new EmptyExpression(), new DefaultExpression<string>());
 
         // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
+        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
 
     [Fact]
