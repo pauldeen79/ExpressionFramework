@@ -143,20 +143,6 @@ public class TypedFieldExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success_With_Expression()
-    {
-        // Arrange
-        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass()), new TypedConstantExpression<string>(nameof(MyClass.MyProperty)));
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

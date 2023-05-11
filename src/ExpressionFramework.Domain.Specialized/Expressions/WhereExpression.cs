@@ -13,8 +13,6 @@ public partial record WhereExpression
     public override Result<object?> Evaluate(object? context)
         => EnumerableExpression.GetResultFromEnumerable(Expression, context, Filter);
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, Filter);
 

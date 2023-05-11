@@ -14,8 +14,6 @@ public partial record LastOrDefaultExpression
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

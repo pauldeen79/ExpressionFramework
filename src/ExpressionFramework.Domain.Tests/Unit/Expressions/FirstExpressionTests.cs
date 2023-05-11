@@ -95,22 +95,6 @@ public class FirstExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_Success()
-    {
-        // Arrange
-        var expression = new FirstExpressionBuilder()
-            .WithExpression(Enumerable.Empty<object>())
-            .Build();
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ConstantExpression>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

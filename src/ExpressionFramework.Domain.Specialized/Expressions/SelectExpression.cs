@@ -13,8 +13,6 @@ public partial record SelectExpression
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetResultFromEnumerable(new TypedConstantExpression<IEnumerable>(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => EnumerableExpression.GetAggregateValue(context, Expression, e => EnumerableExpression.GetTypedResultFromEnumerable(new TypedConstantExpression<IEnumerable>(e), context, e => e
             .Select(x => SelectorExpression.Evaluate(x))));

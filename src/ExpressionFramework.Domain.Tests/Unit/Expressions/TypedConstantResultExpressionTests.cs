@@ -72,19 +72,6 @@ public class TypedConstantResultExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
-    {
-        // Arrange
-        var expression = new TypedConstantResultExpression<int>(Result<int>.Success(1));
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
     public void Can_Use_TypedConstantResultExpression_In_ExpressionBuilderFactory()
     {
         // Arrange

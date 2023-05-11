@@ -10,8 +10,6 @@ public partial record TypedFieldExpression<T>
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression);
-
     public Expression ToUntyped() => new FieldExpression(Expression, FieldNameExpression);
 
     public Result<T> EvaluateTyped(object? context)

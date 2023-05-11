@@ -68,22 +68,6 @@ public class OperatorExpressionTests
     }
 
     [Fact]
-    public void GetPrimaryExpression_Returns_NotSupported()
-    {
-        // Arrange
-        var @operator = new EqualsOperator();
-        var leftExpression = new ConstantExpression("A");
-        var rightExpression = new ConstantExpression("B");
-        var expression = new OperatorExpression(leftExpression, rightExpression, @operator);
-
-        // Act
-        var result = expression.GetPrimaryExpression();
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

@@ -13,8 +13,6 @@ public partial record FirstExpression
             results => Result<object?>.Success(results.First(x => x.Result.Value).Item)
         );
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor
         (

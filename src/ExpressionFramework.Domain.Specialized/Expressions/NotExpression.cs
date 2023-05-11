@@ -13,8 +13,6 @@ public partial record NotExpression
     public override Result<object?> Evaluate(object? context)
         => Result<object?>.FromExistingResult(EvaluateTyped(context));
 
-    public override Result<Expression> GetPrimaryExpression() => Result<Expression>.Success(Expression.ToUntyped());
-
     public Result<bool> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
