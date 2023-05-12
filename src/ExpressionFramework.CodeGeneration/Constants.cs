@@ -10,6 +10,7 @@ public static class Constants
         public const string Domain = "ExpressionFramework.Domain";
         public const string DomainContracts = "ExpressionFramework.Domain.Contracts";
         public const string DomainBuilders = "ExpressionFramework.Domain.Builders";
+        public const string DomainModels = "ExpressionFramework.Domain.Models";
         public const string DomainSpecialized = "ExpressionFramework.Domain.Specialized";
         public const string Parser = "ExpressionFramework.Parser";
 

@@ -21,52 +21,56 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override bool AddPrivateSetters => true;
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Shared;
 
+    protected virtual bool PerformBuilderStuff => true;
+
     protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
     {
-        if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
+        if (PerformBuilderStuff)
         {
-            var init = $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(source.{{0}})";
-            property.ConvertSinglePropertyToBuilderOnBuilder
-            (
-                $"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>",
-                property.IsNullable
-                    ? "_{1}Delegate = new (() => source.{0} == null ? null : " + init + ")"
-                    : "_{1}Delegate = new (() => " + init + ")"
-            );
-
-            AddSingleTypedExpressionPropertyBuilderOverload(property);
-
-            if (!property.IsNullable)
+            if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(ITypedExpression<>).WithoutGenerics().GetClassName())
             {
-                // Allow a default value which implements ITypedExpression<T>, using a default constant value
-                property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}!))"));
+                var init = $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(source.{{0}})";
+                property.ConvertSinglePropertyToBuilderOnBuilder
+                (
+                    $"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>",
+                    property.IsNullable
+                        ? "_{1}Delegate = new (() => source.{0} == null ? null : " + init + ")"
+                        : "_{1}Delegate = new (() => " + init + ")"
+                );
+
+                AddSingleTypedExpressionPropertyBuilderOverload(property);
+
+                if (!property.IsNullable)
+                {
+                    // Allow a default value which implements ITypedExpression<T>, using a default constant value
+                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}!))"));
+                }
+            }
+            else if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
+            {
+                // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
+                var init = $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)";
+                property.ConvertCollectionPropertyToBuilderOnBuilder
+                (
+                    false,
+                    RecordConcreteCollectionType.WithoutGenerics(),
+                    $"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>>",
+                    "{0} = source.{0}.Select(x => " + init + ").ToList()",
+                    builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
+                );
+                property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
+
+                AddEnumerableTypedExpressionPropertyBuilderOverload(property);
+            }
+            else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
+            {
+                AddEnumerableExpressionPropertyBuilderOverload(property);
+            }
+            else if (typeName.GetClassName() == Constants.Types.Expression)
+            {
+                AddSingleExpressionPropertyBuilderOverload(property);
             }
         }
-        else if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
-        {
-            // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
-            var init = $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)";
-            property.ConvertCollectionPropertyToBuilderOnBuilder
-            (
-                false,
-                RecordConcreteCollectionType.WithoutGenerics(),
-                $"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}Builder<{typeName.GetGenericArguments()}>>",
-                "{0} = source.{0}.Select(x => " + init + ").ToList()",
-                builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics()
-            );
-            property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typeName.GetGenericArguments()}>>");
-
-            AddEnumerableTypedExpressionPropertyBuilderOverload(property);
-        }
-        else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
-        {
-            AddEnumerableExpressionPropertyBuilderOverload(property);
-        }
-        else if (typeName.GetClassName() == Constants.Types.Expression)
-        {
-            AddSingleExpressionPropertyBuilderOverload(property);
-        }
-
         base.FixImmutableBuilderProperty(property, typeName);
     }
 

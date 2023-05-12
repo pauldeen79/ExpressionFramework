@@ -20,8 +20,11 @@ internal static class Program
         var settings = new CodeGenerationSettings(basePath, generateMultipleFiles, dryRun);
 
         // Generate code
-        var expressionFrameworkGenerators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => x.BaseType == typeof(ExpressionFrameworkCSharpClassBase) && !x.IsAbstract).ToArray();
+        var expressionFrameworkGenerators = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(x => !x.IsAbstract && x.BaseType == typeof(ExpressionFrameworkCSharpClassBase) && !x.IsAbstract).ToArray();
         _ = expressionFrameworkGenerators.Select(x => (ExpressionFrameworkCSharpClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(x.GetSettings(settings), multipleContentBuilder, x)).ToArray();
+
+        var modelGenerators = typeof(ExpressionFrameworkModelClassBase).Assembly.GetExportedTypes().Where(x => !x.IsAbstract && x.BaseType == typeof(ExpressionFrameworkModelClassBase)).ToArray();
+        _ = modelGenerators.Select(x => (ExpressionFrameworkModelClassBase)Activator.CreateInstance(x)!).Select(x => GenerateCode.For(x.GetSettings(settings), multipleContentBuilder, x)).ToArray();
 
         // Log output to console
         if (string.IsNullOrEmpty(basePath))
