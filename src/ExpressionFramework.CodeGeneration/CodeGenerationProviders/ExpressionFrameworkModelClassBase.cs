@@ -12,4 +12,5 @@ public abstract class ExpressionFrameworkModelClassBase : ExpressionFrameworkCSh
     protected override string BuilderFactoryName => "ModelFactory";
     protected override bool UseLazyInitialization => false; // we don't want lazy stuff in models, just getters and setters
     protected override bool ConvertStringToStringBuilderOnBuilders => false;
+    protected override Type BuilderClassCollectionType => typeof(List<>);
 }
