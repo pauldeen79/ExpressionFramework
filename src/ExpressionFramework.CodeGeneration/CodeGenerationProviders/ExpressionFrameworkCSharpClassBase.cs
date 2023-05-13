@@ -40,11 +40,11 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 // Allow a default value which implements ITypedExpression<T>, using a default constant value
                 if (BuilderName == "Model")
                 {
-                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}!))"));
+                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable, EnableNullableContext)}))"));
                 }
                 else
                 {
-                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable)}!))"));
+                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable, EnableNullableContext)}))"));
                 }
             }
         }
