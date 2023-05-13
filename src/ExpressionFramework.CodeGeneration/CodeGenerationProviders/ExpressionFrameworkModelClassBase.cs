@@ -9,6 +9,7 @@ public abstract class ExpressionFrameworkModelClassBase : ExpressionFrameworkCSh
     protected override string BuilderBuildTypedMethodName => "ToTypedEntity";
     protected override string BuilderName => "Model";
     protected override string BuildersName => "Models";
+    protected override string BuilderFactoryName => "ModelFactory";
     protected override bool UseLazyInitialization => false; // we don't want lazy stuff in models, just getters and setters
-    protected override bool PerformBuilderStuff => false;
+    protected override bool ConvertStringToStringBuilderOnBuilders => false;
 }
