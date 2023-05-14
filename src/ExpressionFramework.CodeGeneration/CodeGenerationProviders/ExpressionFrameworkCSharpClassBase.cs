@@ -24,13 +24,10 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     {
         if (typeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
-            property.ConvertSinglePropertyToBuilderOnBuilder
-            (
-                $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>",
-                CreateAssignment(property, typeName),
-                builderName: BuilderName,
-                buildMethodName: BuilderBuildMethodName
-            );
+            var argumentType = $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>";
+            property.WithCustomBuilderConstructorInitializeExpressionSingleProperty(argumentType, CreateAssignment(property, typeName));
+            property.WithCustomBuilderArgumentTypeSingleProperty(argumentType, builderName: BuilderName);
+            property.WithCustomBuilderMethodParameterExpression(buildMethodName: BuilderBuildMethodName);
 
             AddSingleTypedExpressionPropertyBuilderOverload(property);
 
@@ -53,10 +50,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             var init = BuilderName == "Builder"
                 ? $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)"
                 : $"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)";
+            property.ConvertCollectionOnBuilderToEnumerable(false, RecordConcreteCollectionType.WithoutGenerics());
             property.ConvertCollectionPropertyToBuilderOnBuilder
             (
-                false,
-                RecordConcreteCollectionType.WithoutGenerics(),
                 $"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>>",
                 "{0} = source.{0}.Select(x => " + init + ").ToList()",
                 builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics(),
