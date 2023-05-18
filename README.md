@@ -47,7 +47,7 @@ dotnet tool install --global pauldeen79.TextTemplateTransformationFramework.T4.P
 Command to build code generation project (example where you are in the root directory):
 
 ```bash
-dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
+dotnet build -c Debug src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
 ```
 
 Command to run code generation (example where you are in the root directory):
