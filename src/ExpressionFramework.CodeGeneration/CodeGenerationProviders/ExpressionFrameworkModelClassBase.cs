@@ -1,5 +1,6 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
+[ExcludeFromCodeCoverage]
 public abstract class ExpressionFrameworkModelClassBase : ExpressionFrameworkCSharpClassBase
 {
     protected override string AddMethodNameFormatString => string.Empty; // we don't want Add methods for collection properties
