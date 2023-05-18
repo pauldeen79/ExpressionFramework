@@ -1,7 +1,9 @@
 # ExpressionFramework
+
 Evaluates expressions.
 
 Example:
+
 ```C#
 var expression = new FieldExpression("Name");
 var context = new { Name = "Hello world!" };
@@ -37,19 +39,24 @@ Second, Sonar runs the post build command in a Docker image, and this image does
 Because of these problems, I have commented the post build event. You may uncomment it if you find yourself constantly re-generating stuff.
 
 Command to install t4plus:
+
 ```bash
 dotnet tool install --global pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.2.5
 ```
 
 Command to build code generation project (example where you are in the root directory):
+
 ```bash
-dotnet build ./src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
+dotnet build src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
 ```
 
 Command to run code generation (example where you are in the root directory):
-```bash
-t4plus assembly -a ./src/ExpressionFramework.CodeGenertion/bin/debug/net7.0/ExpressionFramework.CodeGeneration.dll -p . -u ./src/ExpressionFramework.CodeGenertion/bin/debug/net7.0/
+
+```powershell
+Invoke-Expression "t4plus assembly -a $(Resolve-Path "src/ExpressionFramework.CodeGeneration/bin/Debug/net7.0/ExpressionFramework.CodeGeneration.dll") -p $(Resolve-Path "src") -u $(Resolve-Path "src/ExpressionFramework.CodeGeneration/bin/Debug/net7.0")"
 ```
+
+Note that the -a argument of the t4plus assembly command currently requires a fully qualified path to the code generation assembly.
 
 You can use the following post build event in the code generation project to run it automatically after changing code generation models or providers:
 
