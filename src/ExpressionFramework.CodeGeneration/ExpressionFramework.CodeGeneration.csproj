@@ -1,12 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <CodeAnalysisRuleSet>..\..\.sonarlint\pauldeen79_expressionframeworkcsharp.ruleset</CodeAnalysisRuleSet>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,11 +16,11 @@
   <ItemGroup>
     <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="2.7.53" />
     <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.7.53" />
-    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.73" />
+    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.76" />
   </ItemGroup>
 
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Exec Command="dotnet $(TargetDir)ExpressionFramework.CodeGeneration.dll" />
-  </Target>
+  <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="t4plus assembly -a $(TargetDir)ExpressionFramework.CodeGeneration.dll -p $(TargetDir)../../../../ -u $(TargetDir)" />
+  </Target>-->
 
 </Project>
