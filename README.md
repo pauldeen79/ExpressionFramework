@@ -38,7 +38,7 @@ Because of these problems, I have commented the post build event. You may uncomm
 
 Command to install t4plus:
 ```bash
-dotnet tool install --global pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.2.3
+dotnet tool install --global pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd --version 0.2.5
 ```
 
 Command to build code generation project (example where you are in the root directory):
