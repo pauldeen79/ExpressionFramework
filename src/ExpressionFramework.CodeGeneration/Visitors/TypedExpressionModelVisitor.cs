@@ -1,9 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Visitors;
 
 [ExcludeFromCodeCoverage]
-public class TypedExpressionBuilderVisitor : IVisitor
+public class TypedExpressionModelVisitor : IVisitor
 {
-    public int Order => 31;
+    public int Order => 32;
 
     public void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder, VisitorContext context)
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
@@ -11,9 +11,9 @@ public class TypedExpressionBuilderVisitor : IVisitor
         (
             typeBaseBuilder,
             context,
-            Constants.Namespaces.DomainBuildersExpressions,
-            "BuildTyped",
-            "Build",
-            "Builder"
+            Constants.Namespaces.DomainModelsExpressions,
+            "ToTypedEntity",
+            "ToEntity",
+            "Model"
         );
 }

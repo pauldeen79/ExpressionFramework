@@ -10,6 +10,7 @@ public static class Constants
         public const string Domain = "ExpressionFramework.Domain";
         public const string DomainContracts = "ExpressionFramework.Domain.Contracts";
         public const string DomainBuilders = "ExpressionFramework.Domain.Builders";
+        public const string DomainModels = "ExpressionFramework.Domain.Models";
         public const string DomainSpecialized = "ExpressionFramework.Domain.Specialized";
         public const string Parser = "ExpressionFramework.Parser";
 
@@ -22,6 +23,11 @@ public static class Constants
         public const string DomainBuildersEvaluatables = "ExpressionFramework.Domain.Builders.Evaluatables";
         public const string DomainBuildersExpressions = "ExpressionFramework.Domain.Builders.Expressions";
         public const string DomainBuildersOperators = "ExpressionFramework.Domain.Builders.Operators";
+
+        public const string DomainModelsAggregators = "ExpressionFramework.Domain.Models.Aggregators";
+        public const string DomainModelsEvaluatables = "ExpressionFramework.Domain.Models.Evaluatables";
+        public const string DomainModelsExpressions = "ExpressionFramework.Domain.Models.Expressions";
+        public const string DomainModelsOperators = "ExpressionFramework.Domain.Models.Operators";
 
         public const string DomainAggregators = "ExpressionFramework.Domain.Aggregators";
         public const string DomainEvaluatables = "ExpressionFramework.Domain.Evaluatables";
@@ -41,6 +47,11 @@ public static class Constants
         public const string EvaluatableBuilder = "EvaluatableBuilder";
         public const string ExpressionBuilder = "ExpressionBuilder";
         public const string OperatorBuilder = "OperatorBuilder";
+
+        public const string AggregatorModel = "AggregatorModel";
+        public const string EvaluatableModel = "EvaluatableModel";
+        public const string ExpressionModel = "ExpressionModel";
+        public const string OperatorModel = "OperatorModel";
     }
 
     [ExcludeFromCodeCoverage]
@@ -72,6 +83,11 @@ public static class Constants
         public const string EvaluatableBuilders = $"{Namespaces.DomainBuilders}/{nameof(Evaluatables)}";
         public const string ExpressionBuilders = $"{Namespaces.DomainBuilders}/{nameof(Expressions)}";
         public const string OperatorBuilders = $"{Namespaces.DomainBuilders}/{nameof(Operators)}";
+
+        public const string AggregatorModels = $"{Namespaces.DomainModels}/{nameof(Aggregators)}";
+        public const string EvaluatableModels = $"{Namespaces.DomainModels}/{nameof(Evaluatables)}";
+        public const string ExpressionModels = $"{Namespaces.DomainModels}/{nameof(Expressions)}";
+        public const string OperatorModels = $"{Namespaces.DomainModels}/{nameof(Operators)}";
 
         public const string ParserAggregatorResultParsers = $"{Namespaces.Parser}/AggregatorResultParsers";
         public const string ParserEvaluatableResultParsers = $"{Namespaces.Parser}/EvaluatableResultParsers";
