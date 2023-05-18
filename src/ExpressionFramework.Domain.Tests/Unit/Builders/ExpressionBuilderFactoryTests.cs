@@ -56,29 +56,7 @@ public class ExpressionBuilderFactoryTests
     public void CreateTyped_Throws_On_Unsupported_Expression()
     {
         // Act & Assert
-        this.Invoking(_ => ExpressionBuilderFactory.CreateTyped(new MyUnsupportedExpression())).Should().Throw<NotSupportedException>();
-    }
-
-    private sealed record MyUnsupportedExpression : Expression, ITypedExpression<int>
-    {
-        public override Result<object?> Evaluate(object? context)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Result<int> EvaluateTyped(object? context)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override Result<Expression> GetSingleContainedExpression()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Expression ToUntyped()
-        {
-            throw new NotImplementedException();
-        }
+        this.Invoking(_ => ExpressionBuilderFactory.CreateTyped(new Mock<ITypedExpression<string>>().Object))
+            .Should().Throw<NotSupportedException>();
     }
 }
