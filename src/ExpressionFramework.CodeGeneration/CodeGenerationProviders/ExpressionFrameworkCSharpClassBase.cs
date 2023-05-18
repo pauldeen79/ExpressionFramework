@@ -3,10 +3,12 @@
 [ExcludeFromCodeCoverage]
 public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
 {
-    public CodeGenerationSettings GetSettings(CodeGenerationSettings settings)
-        => string.IsNullOrEmpty(LastGeneratedFilesFileName)
-            ? settings.ForScaffolding()
-            : settings.ForGeneration();
+    public override void Initialize(bool generateMultipleFiles, bool skipWhenFileExists, string basePath)
+    {
+        // first argument: force generating multiple files
+        // second argument: skip overwriting files when scaffolding (this can be detected using the LastGeneratedFilesFileName)
+        base.Initialize(true, string.IsNullOrEmpty(LastGeneratedFilesFileName), basePath);
+    }
 
     public override bool RecurseOnDeleteGeneratedFiles => false;
     public override string DefaultFileName => string.Empty; // not used because we're using multiple files, but it's abstract so we need to fill ilt
