@@ -26,7 +26,7 @@ jobs:
       - name: Build code generation artifacts
         run: dotnet build -c Release --no-restore src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: Run code generation
-        run: t4plus assembly -a ${GITHUB_WORKSPACE}/src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/ExpressionFramework.CodeGeneration.dll -p ${GITHUB_WORKSPACE}/src/ -u ${GITHUB_WORKSPACE}/src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/
+        run: t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/ExpressionFramework.CodeGeneration.dll -p src/
       - name: sonarscan-dotnet
         uses: highbyte/sonarscan-dotnet@v2.2.2
         with:
