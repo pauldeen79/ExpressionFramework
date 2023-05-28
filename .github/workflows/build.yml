@@ -86,6 +86,7 @@ jobs:
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
           dotnet tool install -g pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd
+          dotnet restore
           dotnet build -c Release src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
           t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net7.0/ExpressionFramework.CodeGeneration.dll -p src/
           dotnet pack -v normal -c Release --include-symbols --include-source --no-restore -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
