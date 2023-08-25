@@ -10,6 +10,26 @@ public class EvaluatableParserBaseTests
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
                       .Returns(Result<object?>.Success(new Mock<Evaluatable>().Object));
     }
+
+    [Fact]
+    public void Ctor_Throws_On_Null_FunctionName()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyEvaluatableParser(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
+    }
+
+    [Fact]
+    public void Parse_Throws_On_Null_FunctionParseResult()
+    {
+        // Arrange
+        var parser = new MyEvaluatableParser();
+
+        // Act & Assert
+        this.Invoking(_ => Parse(parser, functionParseResult: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+    }
+
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
@@ -50,6 +70,10 @@ public class EvaluatableParserBaseTests
 
     private sealed class MyEvaluatableParser : EvaluatableParserBase
     {
+        public MyEvaluatableParser(string functionName) : base(functionName)
+        {
+        }
+
         public MyEvaluatableParser() : base("Correct") { }
 
         protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)

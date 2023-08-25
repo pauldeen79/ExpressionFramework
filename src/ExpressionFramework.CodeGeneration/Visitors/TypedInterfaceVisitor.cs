@@ -26,7 +26,7 @@ public class TypedInterfaceVisitor : IVisitor
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
     {
-        var typedInterface = typeBaseBuilder.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
+        var typedInterface = typeBaseBuilder.Interfaces.Find(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics());
 
         // This is a kind of hack for the fact that .net says the generic type argument of IEnumerable<T> is nullable.
         // ModelFramework is not extendable for this, so we are currently hacking this here.

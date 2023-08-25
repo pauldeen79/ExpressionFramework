@@ -6,7 +6,8 @@ internal static class DescriptorProvider
         => type.GetCustomAttribute<TDescriptionAttribute>()?.Description ?? string.Empty;
 
     internal static IEnumerable<ReturnValueDescriptor> GetReturnValues(Type type)
-        => type.GetCustomAttributes<ReturnValueAttribute>()
+        => type
+            .GetCustomAttributes<ReturnValueAttribute>()
             .Select(x => new ReturnValueDescriptor(x.Status, x.Value, x.ValueType, x.Description));
 
     internal static IEnumerable<ParameterDescriptor> GetParameters(Type type)
@@ -17,9 +18,10 @@ internal static class DescriptorProvider
         var parameters = type.GetProperties()
             .Select(x => new ParameterDescriptor(
                 x.Name,
-                parameterTypes.FirstOrDefault(y => y.Name == x.Name)?.Type.FullName ?? x.PropertyType.FullName,
-                parameterDescriptions.FirstOrDefault(y => y.Name == x.Name)?.Description ?? string.Empty,
-                parameterRequiredIndicators.FirstOrDefault(y => y.Name == x.Name)?.Required ?? false));
+                Array.Find(parameterTypes, y => y.Name == x.Name)?.Type.FullName ?? x.PropertyType.FullName,
+                Array.Find(parameterDescriptions, y => y.Name == x.Name)?.Description ?? string.Empty,
+                Array.Find(parameterRequiredIndicators, y => y.Name == x.Name)?.Required ?? false));
+
         return parameters;
     }
 }

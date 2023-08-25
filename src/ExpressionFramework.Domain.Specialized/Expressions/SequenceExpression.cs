@@ -11,9 +11,9 @@ public partial record SequenceExpression
     public override Result<object?> Evaluate(object? context)
     {
         var values = Expressions.EvaluateUntilFirstError(context);
-        if (values.Any() && !values.Last().IsSuccessful())
+        if (values.Any() && !values[values.Length - 1].IsSuccessful())
         {
-            return values.Last();
+            return values[values.Length - 1];
         }
 
         return Result<object?>.Success(values.Select(x => x.Value));
@@ -22,9 +22,9 @@ public partial record SequenceExpression
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
     {
         var values = Expressions.EvaluateUntilFirstError(context);
-        if (values.Any() && !values.Last().IsSuccessful())
+        if (values.Any() && !values[values.Length - 1].IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(values.Last());
+            return Result<IEnumerable<object?>>.FromExistingResult(values[values.Length - 1]);
         }
 
         return Result<IEnumerable<object?>>.Success(values.Select(x => x.Value));

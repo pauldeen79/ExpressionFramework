@@ -6,6 +6,11 @@ public class ReflectionEvaluatableDescriptorProvider : IEvaluatableDescriptorPro
 
     public ReflectionEvaluatableDescriptorProvider(Type type)
     {
+        if (type is null)
+        {
+            throw new ArgumentNullException(nameof(type));
+        }
+
         var description = DescriptorProvider.GetDescription<EvaluatableDescriptionAttribute>(type);
         var usesContext = type.GetCustomAttribute<UsesContextAttribute>()?.UsesContext ?? false;
         var contextTypeName = type.GetCustomAttribute<ContextTypeAttribute>()?.Type.FullName;

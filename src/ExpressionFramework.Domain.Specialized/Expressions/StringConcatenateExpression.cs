@@ -18,14 +18,14 @@ public partial record StringConcatenateExpression
     public Result<string> EvaluateTyped(object? context)
     {
         var valueResults = Expressions.EvaluateTypedUntilFirstError(context, "Expressions must be of type string");
-        if (!valueResults.Any())
+        if (valueResults.Length == 0)
         {
             return Result<string>.Invalid("At least one expression is required");
         }
 
-        if (!valueResults.Last().IsSuccessful())
+        if (!valueResults[valueResults.Length - 1].IsSuccessful())
         {
-            return Result<string>.FromExistingResult(valueResults.Last());
+            return Result<string>.FromExistingResult(valueResults[valueResults.Length - 1]);
         }
 
         return Result<string>.Success(string.Concat(valueResults.Select(x => x.Value)));

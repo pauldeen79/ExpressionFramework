@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ParameterDescriptionAttribute : Attribute
+public sealed class ParameterDescriptionAttribute : Attribute
 {
     public string Name { get; }
     public string Description { get; }

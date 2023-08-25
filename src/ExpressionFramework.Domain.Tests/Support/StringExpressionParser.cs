@@ -15,7 +15,7 @@ public static class StringExpressionParser
             return value;
         }
 
-        if (!(s.StartsWith("[") && s.EndsWith("]")))
+        if (!(s.StartsWith('[') && s.EndsWith(']')))
         {
             return value;
         }

@@ -22,6 +22,22 @@ public class ExpressionParserBaseTests
     }
 
     [Fact]
+    public void Ctor_Throws_On_Null_FunctionName()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyExpressionParser(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
+    }
+
+    [Fact]
+    public void Parse_Without_Context_Throws_On_Null_FunctionParseResult()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyExpressionParser().Parse(functionParseResult: null!, _evaluatorMock.Object, _parserMock.Object))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+    }
+
+    [Fact]
     public void Parse_Without_Context_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
@@ -120,6 +136,31 @@ public class ExpressionParserBaseTests
     }
 
     [Fact]
+    public void ParseTypedExpression_Throws_On_Null_ExpressionType()
+    {
+        // Arrange
+        var functionParseResult = new FunctionParseResultBuilder()
+            .WithFunctionName("Correct")
+            .Build();
+        var sut = new MyExpressionParser();
+
+        // Act & Assert
+        sut.Invoking(x => x.DoParseTypedExpression(expressionType: null!, 0, string.Empty, functionParseResult, _evaluatorMock.Object, _parserMock.Object))
+           .Should().Throw<ArgumentNullException>().WithParameterName("expressionType");
+    }
+
+    [Fact]
+    public void ParseTypedExpression_Throws_On_Null_FunctionParseResult()
+    {
+        // Arrange
+        var sut = new MyExpressionParser();
+
+        // Act & Assert
+        sut.Invoking(x => x.DoParseTypedExpression(typeof(string), 0, string.Empty, functionParseResult: null!, _evaluatorMock.Object, _parserMock.Object))
+           .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+    }
+
+    [Fact]
     public void ParseTypedExpression_Returns_Failure_When_Generic_Type_Is_Missing()
     {
         // Arrange
@@ -185,8 +226,20 @@ public class ExpressionParserBaseTests
         result.Value.Should().BeOfType<TypedConstantExpression<string>>();
     }
 
+    [Fact]
+    public void IsNameValid_Throws_On_Null_FunctionName()
+    {
+        // Act
+        this.Invoking(_ => new MyExpressionParser().IsNameValidPublic(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
+    }
+
     private sealed class MyExpressionParser : ExpressionParserBase
     {
+        public MyExpressionParser(string functionName) : base(functionName)
+        {
+        }
+
         public MyExpressionParser() : base("Correct") { }
 
         protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -194,5 +247,7 @@ public class ExpressionParserBaseTests
 
         public Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
           => ParseTypedExpression(expressionType, index, argumentName, functionParseResult, evaluator, parser);
+
+        public bool IsNameValidPublic(string functionName) => IsNameValid(functionName);
     }
 }

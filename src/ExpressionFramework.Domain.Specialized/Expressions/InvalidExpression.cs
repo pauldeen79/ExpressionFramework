@@ -27,9 +27,9 @@ public partial record InvalidExpression
         }
 
         var validationErrorResult = ValidationErrorExpressions.EvaluateTypedUntilFirstError(context, "ValidationErrorExpressions must be a collection of type string");
-        if (!validationErrorResult.Last().IsSuccessful())
+        if (!validationErrorResult[validationErrorResult.Length - 1].IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(validationErrorResult.Last());
+            return Result<object?>.FromExistingResult(validationErrorResult[validationErrorResult.Length - 1]);
         }
 
         return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));

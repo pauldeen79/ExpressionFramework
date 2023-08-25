@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class OperatorLeftValueTypeAttribute : Attribute
+public sealed class OperatorLeftValueTypeAttribute : Attribute
 {
     public Type Type { get; }
 

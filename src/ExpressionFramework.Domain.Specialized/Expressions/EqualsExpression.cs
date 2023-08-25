@@ -7,7 +7,7 @@ public partial record EqualsExpression
     {
         var results = new[] { FirstExpression, SecondExpression }.EvaluateUntilFirstError(context);
 
-        var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
+        var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? nonSuccessfulResult
             : Result<object?>.FromExistingResult(Equal.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase));
@@ -17,7 +17,7 @@ public partial record EqualsExpression
     {
         var results = new[] { FirstExpression, SecondExpression }.EvaluateUntilFirstError(context);
 
-        var nonSuccessfulResult = results.FirstOrDefault(x => !x.IsSuccessful());
+        var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? Result<bool>.FromExistingResult(nonSuccessfulResult)
             : Equal.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase);

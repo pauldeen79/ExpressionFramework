@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class OperatorUsesRightValueAttribute : Attribute
+public sealed class OperatorUsesRightValueAttribute : Attribute
 {
     public bool UsesRightValue { get; }
 

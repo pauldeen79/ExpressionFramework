@@ -8,6 +8,21 @@ public static class BooleanExpression
         ITypedExpression<bool> secondExpression,
         Func<bool, bool, bool> @delegate)
     {
+        if (firstExpression is null)
+        {
+            return Result<bool>.Invalid("First expression is required");
+        }
+
+        if (secondExpression is null)
+        {
+            return Result<bool>.Invalid("Second expression is required");
+        }
+
+        if (@delegate is null)
+        {
+            return Result<bool>.Invalid("Delegate is required");
+        }
+
         var firstExpressionResult = firstExpression.EvaluateTyped(context);
         if (!firstExpressionResult.IsSuccessful())
         {
@@ -29,7 +44,13 @@ public static class BooleanExpression
                                                      string okDescription,
                                                      string? invalidDescription,
                                                      string parameterDescription)
-        => new(
+    {
+        if (type is null)
+        {
+            throw new ArgumentNullException(nameof(type));
+        }
+
+        return new(
             type.Name,
             type.FullName,
             description,
@@ -39,13 +60,14 @@ public static class BooleanExpression
             null,
             new[]
             {
-                new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
-                new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
+            new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
+            new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
             },
             new[]
             {
-                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
-                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
+            new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
+            new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
             }.Where(x => invalidDescription != null || x.Status != ResultStatus.Invalid)
         );
+    }
 }

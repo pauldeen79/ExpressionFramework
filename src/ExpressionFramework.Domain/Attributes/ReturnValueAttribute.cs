@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ReturnValueAttribute : Attribute
+public sealed class ReturnValueAttribute : Attribute
 {
     public ResultStatus Status { get; }
     public string Value { get; }

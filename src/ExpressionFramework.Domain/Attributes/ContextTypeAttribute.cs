@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class ContextTypeAttribute : Attribute
+public sealed class ContextTypeAttribute : Attribute
 {
     public Type Type { get; }
 
