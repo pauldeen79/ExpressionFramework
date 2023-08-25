@@ -19,17 +19,34 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => IsNameValid(functionParseResult.FunctionName)
+    {
+        if (functionParseResult is null)
+        {
+            throw new ArgumentNullException(nameof(functionParseResult));
+        }
+
+        return IsNameValid(functionParseResult.FunctionName)
             ? DoParse(functionParseResult, evaluator, parser)
             : Result<Expression>.Continue();
+    }
 
     protected virtual bool IsNameValid(string functionName)
-        => functionName.ToUpperInvariant() == _functionName.ToUpperInvariant();
+        => (functionName ?? throw new ArgumentNullException(nameof(functionName))).ToUpperInvariant() == _functionName.ToUpperInvariant();
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
     protected Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
+        if (expressionType is null)
+        {
+            throw new ArgumentNullException(nameof(expressionType));
+        }
+
+        if (functionParseResult is null)
+        {
+            throw new ArgumentNullException(nameof(functionParseResult));
+        }
+
         var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())
         {
