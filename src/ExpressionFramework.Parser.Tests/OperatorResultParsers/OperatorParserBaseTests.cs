@@ -10,6 +10,26 @@ public class OperatorParserBaseTests
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
                       .Returns(Result<object?>.Success(new Mock<Operator>().Object));
     }
+
+    [Fact]
+    public void Ctor_Throws_On_Null_FunctionName()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyOperatorParser(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
+    }
+
+    [Fact]
+    public void Parse_Throws_On_Null_FunctionParseResult()
+    {
+        // Arrange
+        var parser = new MyOperatorParser();
+
+        // Act & Assert
+        this.Invoking(_ => Parse(parser, functionParseResult: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+    }
+
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
@@ -50,6 +70,10 @@ public class OperatorParserBaseTests
 
     private sealed class MyOperatorParser : OperatorParserBase
     {
+        public MyOperatorParser(string functionName) : base(functionName)
+        {
+        }
+
         public MyOperatorParser() : base("Correct") { }
 
         protected override Result<Operator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)

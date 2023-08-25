@@ -10,6 +10,26 @@ public class AggregatorParserBaseTests
         _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
                       .Returns(Result<object?>.Success(new Mock<Aggregator>().Object));
     }
+
+    [Fact]
+    public void Ctor_Throws_On_Null_FunctionName()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyAggregatorParser(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
+    }
+
+    [Fact]
+    public void Parse_Throws_On_Null_FunctionParseResult()
+    {
+        // Arrange
+        var parser = new MyAggregatorParser();
+
+        // Act & Assert
+        this.Invoking(_ => Parse(parser, functionParseResult: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+    }
+
     [Fact]
     public void Parse_Returns_Continue_For_Wrong_FunctionName()
     {
@@ -50,6 +70,10 @@ public class AggregatorParserBaseTests
 
     private sealed class MyAggregatorParser : AggregatorParserBase
     {
+        public MyAggregatorParser(string functionName) : base(functionName!)
+        {
+        }
+
         public MyAggregatorParser() : base("Correct") { }
 
         protected override Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)

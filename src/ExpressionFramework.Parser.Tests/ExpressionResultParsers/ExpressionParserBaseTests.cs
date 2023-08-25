@@ -1,6 +1,4 @@
-﻿using CrossCutting.Utilities.Parsers;
-
-namespace ExpressionFramework.Parser.Tests.ExpressionResultParsers;
+﻿namespace ExpressionFramework.Parser.Tests.ExpressionResultParsers;
 
 public class ExpressionParserBaseTests
 {
@@ -21,6 +19,14 @@ public class ExpressionParserBaseTests
 
         _expressionMock.Setup(x => x.Evaluate(It.IsAny<object?>()))
                        .Returns(Result<object?>.Success("evaluated value"));
+    }
+
+    [Fact]
+    public void Ctor_Throws_On_Null_FunctionName()
+    {
+        // Act & Assert
+        this.Invoking(_ => new MyExpressionParser(functionName: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
     }
 
     [Fact]
@@ -230,6 +236,10 @@ public class ExpressionParserBaseTests
 
     private sealed class MyExpressionParser : ExpressionParserBase
     {
+        public MyExpressionParser(string functionName) : base(functionName)
+        {
+        }
+
         public MyExpressionParser() : base("Correct") { }
 
         protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)

@@ -6,7 +6,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected ExpressionParserBase(string functionName)
     {
-        _functionName = functionName;
+        _functionName = functionName ?? throw new ArgumentNullException(nameof(functionName));
     }
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
