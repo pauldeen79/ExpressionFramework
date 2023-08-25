@@ -75,4 +75,15 @@ public class EnumerableExpressionTests
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Delegate is required");
     }
+
+    [Fact]
+    public void GetRequiredScalarValue_Returns_Invalid_On_Null_DelegateWithoutPredicate()
+    {
+        // Act
+        var result = EnumerableExpression.GetRequiredScalarValue<int>(null, new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null, delegateWithoutPredicate: null!);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Delegate without predicate is required");
+    }
 }

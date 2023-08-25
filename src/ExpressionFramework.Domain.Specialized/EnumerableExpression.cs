@@ -236,7 +236,7 @@ public static class EnumerableExpression
 
             if (delegateWithoutPredicate is null)
             {
-                return Result<T>.Invalid("Delegatge without predicate is required");
+                return Result<T>.Invalid("Delegate without predicate is required");
             }
 
             return delegateWithoutPredicate.Invoke(itemsResult.Value!);
