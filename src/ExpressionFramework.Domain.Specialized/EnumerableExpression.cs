@@ -74,6 +74,11 @@ public static class EnumerableExpression
             return Result<IEnumerable<object?>>.Invalid("Count expression is required");
         }
 
+        if (@delegate is null)
+        {
+            return Result<IEnumerable<object?>>.Invalid("Delegate is required");
+        }
+
         var countResult = countExpression.EvaluateTyped(context);
         if (!countResult.IsSuccessful())
         {
@@ -87,16 +92,6 @@ public static class EnumerableExpression
         IEnumerable enumerable,
         Func<IEnumerable<object?>, IEnumerable<Result<object?>>> @delegate)
     {
-        if (enumerable is null)
-        {
-            return Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable");
-        }
-
-        if (@delegate is null)
-        {
-            return Result<IEnumerable<object?>>.Invalid("Delegate is required");
-        }
-
         var results = @delegate(enumerable.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results[results.Length - 1].IsSuccessful())
         {

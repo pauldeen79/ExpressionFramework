@@ -31,4 +31,48 @@ public class EnumerableExpressionTests
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Delegate is required");
     }
+
+    [Fact]
+    public void GetTypedResultFromEnumerable_Ruturns_Invalid_On_Null_Expression()
+    {
+        // Act
+        var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result<object?>.Success(x)));
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Expression is required");
+    }
+
+    [Fact]
+    public void GetTypedResultFromEnumerable_Ruturns_Invalid_On_Null_Delegate()
+    {
+        // Act
+        var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), null, @delegate: null!);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Delegate is required");
+    }
+
+    [Fact]
+    public void GetTypedResultFromEnumerableWithCount_Ruturns_Invalid_On_Null_CountExpression()
+    {
+        // Act
+        var result = EnumerableExpression.GetTypedResultFromEnumerableWithCount(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), countExpression: null!, null, (_, _) => Enumerable.Empty<Result<object?>>());
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Count expression is required");
+    }
+
+    [Fact]
+    public void GetTypedResultFromEnumerableWithCount_Ruturns_Invalid_On_Null_Delegate()
+    {
+        // Act
+        var result = EnumerableExpression.GetTypedResultFromEnumerableWithCount(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), new TypedConstantExpression<int>(23), null, @delegate: null!);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Invalid);
+        result.ErrorMessage.Should().Be("Delegate is required");
+    }
 }
