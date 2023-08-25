@@ -2,7 +2,6 @@
 
 public static class EnumerableExpression
 {
-
     public static Result<object?> GetResultFromEnumerable(
         ITypedExpression<IEnumerable> expression,
         object? context,
