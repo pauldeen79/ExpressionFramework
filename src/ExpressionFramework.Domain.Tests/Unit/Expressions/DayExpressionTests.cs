@@ -7,7 +7,7 @@ public class DayExpressionTests
     {
         // Arrange
         var sut = new DayExpressionBuilder()
-            .WithExpression(new DateTime(2010, 1, 2))
+            .WithExpression(new DateTime(2010, 1, 2, 0, 0, 0, DateTimeKind.Local))
             .Build();
 
         // Act
@@ -23,7 +23,7 @@ public class DayExpressionTests
     {
         // Arrange
         var sut = new DayExpressionBuilder()
-            .WithExpression(new DateTime(2010, 1, 2))
+            .WithExpression(new DateTime(2010, 1, 2, 0, 0, 0, DateTimeKind.Local))
             .BuildTyped();
 
         // Act

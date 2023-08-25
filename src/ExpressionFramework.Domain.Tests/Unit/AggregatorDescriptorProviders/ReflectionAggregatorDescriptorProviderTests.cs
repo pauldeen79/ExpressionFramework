@@ -1,7 +1,14 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.AggregatorDescriptorProviders;
 
-public class ReflectionEvaluatableDescriptorProviderTests
+public class ReflectionAggregatorDescriptorProviderTests
 {
+    [Fact]
+    public void Throws_On_Null_Type()
+    {
+        this.Invoking(_ => new ReflectionAggregatorDescriptorProvider(type: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+    }
+
     [Fact]
     public void Get_Returns_Default_Values_When_Attributes_Are_Not_Found()
     {

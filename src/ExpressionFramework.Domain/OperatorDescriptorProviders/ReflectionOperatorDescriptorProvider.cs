@@ -6,6 +6,11 @@ public class ReflectionOperatorDescriptorProvider : IOperatorDescriptorProvider
 
     public ReflectionOperatorDescriptorProvider(Type type)
     {
+        if (type is null)
+        {
+            throw new ArgumentNullException(nameof(type));
+        }
+
         var description = DescriptorProvider.GetDescription<OperatorDescriptionAttribute>(type);
         var usesLeftValue = type.GetCustomAttribute<OperatorUsesLeftValueAttribute>()?.UsesLeftValue ?? false;
         var leftValueTypeName = type.GetCustomAttribute<OperatorLeftValueTypeAttribute>()?.Type.FullName;

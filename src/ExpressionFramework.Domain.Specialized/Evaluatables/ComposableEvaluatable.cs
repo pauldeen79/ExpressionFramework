@@ -16,7 +16,7 @@ public partial record ComposableEvaluatable
     }
     
     public ComposableEvaluatable(Func<object?, object?> leftExpression, Func<Operator> @operator, Func<object?, object?> rightExpression, bool startGroup = false, bool endGroup = false, Combination combination = Domains.Combination.And)
-        : this(new DelegateExpression(leftExpression), @operator(), new DelegateExpression(rightExpression), combination, startGroup, endGroup)
+        : this(new DelegateExpression(leftExpression), (@operator ?? throw new ArgumentNullException(nameof(@operator))).Invoke(), new DelegateExpression(rightExpression), combination, startGroup, endGroup)
     {
     }
 

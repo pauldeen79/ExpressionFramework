@@ -3,6 +3,13 @@
 public class BooleanExpressionTests
 {
     [Fact]
+    public void GetDescriptor_Throws_On_Null_Type()
+    {
+        this.Invoking(_ => BooleanExpression.GetDescriptor(type: null!, string.Empty, string.Empty, string.Empty, null, string.Empty))
+            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+    }
+
+    [Fact]
     public void EvaluateBooleanCombinations_Returns_Error_When_First_Is_Error()
     {
         // Act
