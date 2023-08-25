@@ -43,7 +43,9 @@ public partial record ComposedEvaluatable : IValidatableObject
         {
             yield return new ValidationResult("Missing EndGroup", new[] { nameof(Conditions) });
         }
+#pragma warning disable S2583 // false positive!
         else if (groupCounter > 1)
+#pragma warning restore S2583 // false positive!
         {
             yield return new ValidationResult($"{groupCounter} missing EndGroups", new[] { nameof(Conditions) });
         }
