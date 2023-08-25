@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class DynamicDescriptorAttribute : Attribute
+public sealed class DynamicDescriptorAttribute : Attribute
 {
     public Type Type { get; }
 

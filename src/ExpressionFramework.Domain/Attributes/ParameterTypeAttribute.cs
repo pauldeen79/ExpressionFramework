@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
-public class ParameterTypeAttribute : Attribute
+public sealed class ParameterTypeAttribute : Attribute
 {
     public string Name { get; }
     public Type Type { get; }

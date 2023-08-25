@@ -21,29 +21,31 @@ public partial record SumExpression
 
     private static Result<object?> Sum(IEnumerable<object?> value)
     {
-        if (value.All(x => x is decimal))
+        var values = value.ToArray();
+
+        if (Array.TrueForAll(values, x => x is decimal))
         {
-            return Result<object?>.Success(value.Select(Convert.ToDecimal).Sum());
+            return Result<object?>.Success(values.Select(Convert.ToDecimal).Sum());
         }
 
-        if (value.All(x => x is double))
+        if (Array.TrueForAll(values, x => x is double))
         {
-            return Result<object?>.Success(value.Select(Convert.ToDouble).Sum());
+            return Result<object?>.Success(values.Select(Convert.ToDouble).Sum());
         }
 
-        if (value.All(x => x is float))
+        if (Array.TrueForAll(values, x => x is float))
         {
-            return Result<object?>.Success(value.Select(Convert.ToSingle).Sum());
+            return Result<object?>.Success(values.Select(Convert.ToSingle).Sum());
         }
 
-        if (value.All(x => x is long))
+        if (Array.TrueForAll(values, x => x is long))
         {
-            return Result<object?>.Success(value.Select(Convert.ToInt64).Sum());
+            return Result<object?>.Success(values.Select(Convert.ToInt64).Sum());
         }
 
-        if (value.All(x => x is int || x is short || x is byte))
+        if (Array.TrueForAll(values, x => x is int || x is short || x is byte))
         {
-            return Result<object?>.Success(value.Select(Convert.ToInt32).Sum());
+            return Result<object?>.Success(values.Select(Convert.ToInt32).Sum());
         }
 
         return Result<object?>.Invalid("Could only compute sum of numeric values");

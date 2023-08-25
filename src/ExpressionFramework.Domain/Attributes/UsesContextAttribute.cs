@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.Domain.Attributes;
 
 [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-public class UsesContextAttribute : Attribute
+public sealed class UsesContextAttribute : Attribute
 {
     public bool UsesContext { get; }
 

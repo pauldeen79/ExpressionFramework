@@ -42,6 +42,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             return Result<Expression>.FromExistingResult(valueResult);
         }
 
+#pragma warning disable CA1031 // Do not catch general exception types
         try
         {
             return Result<Expression>.Success((Expression)Activator.CreateInstance(expressionType.MakeGenericType(typeResult.Value!), valueResult.Value));
@@ -50,5 +51,6 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         {
             return Result<Expression>.Invalid($"Could not create {expressionType.Name.Replace("`1", string.Empty)}. Error: {ex.Message}");
         }
+#pragma warning restore CA1031 // Do not catch general exception types
     }
 }

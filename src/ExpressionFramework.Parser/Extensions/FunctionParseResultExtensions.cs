@@ -88,6 +88,7 @@ public static class FunctionParseResultExtensions
 
         if (typeof(T).IsEnum && value is string s)
         {
+#pragma warning disable CA1031 // Do not catch general exception types
             try
             {
                 return new TypedConstantResultExpression<T>(Result<T>.Success((T)Enum.Parse(typeof(T), s)));
@@ -96,6 +97,7 @@ public static class FunctionParseResultExtensions
             {
                 return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} value [{s}] could not be converted to {typeof(T).FullName}. Error message: {ex.Message}"));
             }
+#pragma warning restore CA1031 // Do not catch general exception types
         }
 
         return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
