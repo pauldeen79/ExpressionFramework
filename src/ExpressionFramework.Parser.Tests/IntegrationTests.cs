@@ -3,6 +3,7 @@
 public sealed class IntegrationTests : IDisposable
 {
     private readonly ServiceProvider _provider;
+    private readonly IServiceScope _scope;
     private readonly Mock<IFunctionResultParser> _functionResultParserMock = new();
 
     public IntegrationTests()
@@ -16,14 +17,16 @@ public sealed class IntegrationTests : IDisposable
             .AddParsers()
             .AddExpressionParser()
             .AddSingleton(_functionResultParserMock.Object)
-            .BuildServiceProvider();
+            .BuildServiceProvider(true);
+
+        _scope = _provider.CreateScope();
     }
     
     [Fact]
     public void Can_Parse_Function_With_Expression()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world", null);
@@ -37,10 +40,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Expression_And_Using_FormattableStrings_As_Well()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _provider.GetRequiredService<IFormattableStringParser>());
+        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -51,7 +54,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Nested_Expression()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!", null);
@@ -65,7 +68,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_Without_Nested_Expression()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
@@ -79,7 +82,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Context()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
@@ -93,7 +96,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Context_And_Operator()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello", null);
@@ -107,7 +110,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Generated_DefaultValue_On_Nullable_Property()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
@@ -121,7 +124,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Supplied_DefaultValue_On_Nullable_Property()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
@@ -135,7 +138,7 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Correct_Typed_Arguments()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=Constant(13)", CultureInfo.InvariantCulture);
@@ -149,7 +152,7 @@ public sealed class IntegrationTests : IDisposable
     public void Unknown_Expression_Gives_NotSupported()
     {
         // Arrange
-        var parser = _provider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
         var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this, null);
@@ -157,6 +160,10 @@ public sealed class IntegrationTests : IDisposable
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
     }
-   
-    public void Dispose() => _provider.Dispose();
+
+    public void Dispose()
+    {
+        _scope.Dispose();
+        _provider.Dispose();
+    }
 }

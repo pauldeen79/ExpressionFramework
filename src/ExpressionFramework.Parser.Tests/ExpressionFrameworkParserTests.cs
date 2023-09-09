@@ -3,13 +3,16 @@
 public sealed class ExpressionFrameworkParserTests : IDisposable
 {
     private readonly ServiceProvider _provider;
-    
+    private readonly IServiceScope _scope;
+
     public ExpressionFrameworkParserTests()
     {
         _provider = new ServiceCollection()
             .AddParsers()
             .AddExpressionParser()
-            .BuildServiceProvider();
+            .BuildServiceProvider(true);
+
+        _scope = _provider.CreateScope();
     }
 
     [Fact]
@@ -70,19 +73,23 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         result.Value.Should().BeAssignableTo<ITypedExpression<string>>();
     }
 
-    public void Dispose() => _provider.Dispose();
+    public void Dispose()
+    {
+        _scope.Dispose();
+        _provider.Dispose();
+    }
 
     private Result<Expression> Parse(FunctionParseResult functionParseResult) => _provider
         .GetRequiredService<IExpressionFrameworkParser>()
         .Parse(
             functionParseResult,
-            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
-            _provider.GetRequiredService<IExpressionParser>());
+            _scope.ServiceProvider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _scope.ServiceProvider.GetRequiredService<IExpressionParser>());
 
     private Result<ITypedExpression<T>> Parse<T>(FunctionParseResult functionParseResult) => _provider
         .GetRequiredService<IExpressionFrameworkParser>()
         .Parse<T>(
             functionParseResult,
-            _provider.GetRequiredService<IFunctionParseResultEvaluator>(),
-            _provider.GetRequiredService<IExpressionParser>());
+            _scope.ServiceProvider.GetRequiredService<IFunctionParseResultEvaluator>(),
+            _scope.ServiceProvider.GetRequiredService<IExpressionParser>());
 }
