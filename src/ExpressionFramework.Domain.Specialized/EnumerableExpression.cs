@@ -170,10 +170,7 @@ public static class EnumerableExpression
                                                      Type? resultValueType,
                                                      bool predicateIsRequired = false)
     {
-        if (type is null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
+        ArgumentGuard.IsNotNull(type, nameof(type));
 
         return new(
             type.Name,

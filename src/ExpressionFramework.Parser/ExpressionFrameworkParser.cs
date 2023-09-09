@@ -6,12 +6,20 @@ public class ExpressionFrameworkParser : IExpressionFrameworkParser
 
     public ExpressionFrameworkParser(IEnumerable<IExpressionResolver> resolvers)
     {
+        ArgumentGuard.IsNotNull(resolvers, nameof(resolvers));
+
         _resolvers = resolvers;
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => _resolvers
+    {
+        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
+        ArgumentGuard.IsNotNull(evaluator, nameof(evaluator));
+        ArgumentGuard.IsNotNull(parser, nameof(parser));
+
+        return _resolvers
             .Select(x => x.Parse(functionParseResult, evaluator, parser))
             .FirstOrDefault(x => x.Status != ResultStatus.Continue)
                 ?? Result<Expression>.NotSupported($"Unknown expression: {functionParseResult?.FunctionName}");
+    }
 }

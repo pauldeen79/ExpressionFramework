@@ -45,10 +45,7 @@ public static class BooleanExpression
                                                      string? invalidDescription,
                                                      string parameterDescription)
     {
-        if (type is null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
+        ArgumentGuard.IsNotNull(type, nameof(type));
 
         return new(
             type.Name,

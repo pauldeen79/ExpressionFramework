@@ -9,7 +9,7 @@ public static class StringExpression
         string okValue,
         string okDescription)
         => GetDescriptor(
-            type ?? throw new ArgumentNullException(nameof(type)),
+            ArgumentGuard.IsNotNull(type, nameof(type)),
             description,
             expressionDescription,
             okValue, 
@@ -27,7 +27,7 @@ public static class StringExpression
         string okValue,
         string okDescription)
         => GetDescriptor(
-            type ?? throw new ArgumentNullException(nameof(type)),
+            ArgumentGuard.IsNotNull(type, nameof(type)),
             description,
             expressionDescription,
             okValue,

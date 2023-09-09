@@ -6,7 +6,9 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected ExpressionParserBase(string functionName)
     {
-        _functionName = functionName ?? throw new ArgumentNullException(nameof(functionName));
+        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
+
+        _functionName = functionName;
     }
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -20,10 +22,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        if (functionParseResult is null)
-        {
-            throw new ArgumentNullException(nameof(functionParseResult));
-        }
+        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
 
         return IsNameValid(functionParseResult.FunctionName)
             ? DoParse(functionParseResult, evaluator, parser)
@@ -31,21 +30,14 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     }
 
     protected virtual bool IsNameValid(string functionName)
-        => (functionName ?? throw new ArgumentNullException(nameof(functionName))).ToUpperInvariant() == _functionName.ToUpperInvariant();
+        => ArgumentGuard.IsNotNull(functionName, nameof(functionName)).ToUpperInvariant() == _functionName.ToUpperInvariant();
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
     protected Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        if (expressionType is null)
-        {
-            throw new ArgumentNullException(nameof(expressionType));
-        }
-
-        if (functionParseResult is null)
-        {
-            throw new ArgumentNullException(nameof(functionParseResult));
-        }
+        ArgumentGuard.IsNotNull(expressionType, nameof(expressionType));
+        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
 
         var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())

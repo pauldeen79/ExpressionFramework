@@ -6,10 +6,7 @@ public class ReflectionAggregatorDescriptorProvider : IAggregatorDescriptorProvi
 
     public ReflectionAggregatorDescriptorProvider(Type type)
     {
-        if (type is null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
+        ArgumentGuard.IsNotNull(type, nameof(type));
 
         var description = DescriptorProvider.GetDescription<AggregatorDescriptionAttribute>(type);
         var contextTypeName = type.GetCustomAttribute<ContextTypeAttribute>()?.Type.FullName ?? string.Empty;
