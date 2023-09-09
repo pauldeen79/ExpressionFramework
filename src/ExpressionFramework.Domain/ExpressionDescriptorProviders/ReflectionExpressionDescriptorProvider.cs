@@ -6,10 +6,7 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
 
     public ReflectionExpressionDescriptorProvider(Type type)
     {
-        if (type is null)
-        {
-            throw new ArgumentNullException(nameof(type));
-        }
+        type =ArgumentGuard.IsNotNull(type, nameof(type));
 
         var dynamicDesciptorProvider = type.GetCustomAttribute<DynamicDescriptorAttribute>()?.Type;
         if (dynamicDesciptorProvider != null)

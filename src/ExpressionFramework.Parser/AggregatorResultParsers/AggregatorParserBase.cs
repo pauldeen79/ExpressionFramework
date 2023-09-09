@@ -6,11 +6,13 @@ public abstract class AggregatorParserBase : IFunctionResultParser
 
     protected AggregatorParserBase(string functionName)
     {
-        _functionName = functionName ?? throw new ArgumentNullException(nameof(functionName));
+        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
+
+        _functionName = functionName;
     }
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => (functionParseResult ?? throw new ArgumentNullException(nameof(functionParseResult))).FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
+        => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
             ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator, parser))
             : Result<object?>.Continue();
 
