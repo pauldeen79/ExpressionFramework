@@ -29,7 +29,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world", null);
+        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -57,7 +57,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!", null);
+        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -85,7 +85,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
+        var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -99,7 +99,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello", null);
+        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -113,7 +113,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
+        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -127,7 +127,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
+        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -149,13 +149,27 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
+    public void Function_With_String_Argument_Preserves_WhiteSpace()
+    {
+        // Arrange
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+
+        // Act
+        var result = parser.Parse("=ToUpperCase(\"  space  \")", CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
+        result.Value.Should().BeEquivalentTo("  SPACE  ");
+    }
+
+    [Fact]
     public void Unknown_Expression_Gives_NotSupported()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this, null);
+        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
