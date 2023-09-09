@@ -6,7 +6,7 @@ public class ReflectionOperatorDescriptorProvider : IOperatorDescriptorProvider
 
     public ReflectionOperatorDescriptorProvider(Type type)
     {
-        ArgumentGuard.IsNotNull(type, nameof(type));
+        type = ArgumentGuard.IsNotNull(type, nameof(type));
 
         var description = DescriptorProvider.GetDescription<OperatorDescriptionAttribute>(type);
         var usesLeftValue = type.GetCustomAttribute<OperatorUsesLeftValueAttribute>()?.UsesLeftValue ?? false;

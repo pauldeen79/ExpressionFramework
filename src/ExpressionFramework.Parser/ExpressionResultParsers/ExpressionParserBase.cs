@@ -22,7 +22,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
+        functionParseResult = ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
 
         return IsNameValid(functionParseResult.FunctionName)
             ? DoParse(functionParseResult, evaluator, parser)
@@ -36,8 +36,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
     protected Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
     {
-        ArgumentGuard.IsNotNull(expressionType, nameof(expressionType));
-        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
+        expressionType = ArgumentGuard.IsNotNull(expressionType, nameof(expressionType));
+        functionParseResult = ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
 
         var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())

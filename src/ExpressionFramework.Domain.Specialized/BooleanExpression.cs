@@ -45,7 +45,7 @@ public static class BooleanExpression
                                                      string? invalidDescription,
                                                      string parameterDescription)
     {
-        ArgumentGuard.IsNotNull(type, nameof(type));
+        type = ArgumentGuard.IsNotNull(type, nameof(type));
 
         return new(
             type.Name,

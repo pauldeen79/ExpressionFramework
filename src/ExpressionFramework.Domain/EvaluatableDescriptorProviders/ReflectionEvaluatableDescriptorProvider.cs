@@ -6,7 +6,7 @@ public class ReflectionEvaluatableDescriptorProvider : IEvaluatableDescriptorPro
 
     public ReflectionEvaluatableDescriptorProvider(Type type)
     {
-        ArgumentGuard.IsNotNull(type, nameof(type));
+        type = ArgumentGuard.IsNotNull(type, nameof(type));
 
         var description = DescriptorProvider.GetDescription<EvaluatableDescriptionAttribute>(type);
         var usesContext = type.GetCustomAttribute<UsesContextAttribute>()?.UsesContext ?? false;
