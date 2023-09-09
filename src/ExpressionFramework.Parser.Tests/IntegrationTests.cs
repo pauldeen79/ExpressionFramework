@@ -26,7 +26,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
+        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world", null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -40,7 +40,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture);
+        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _provider.GetRequiredService<IFormattableStringParser>());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -54,7 +54,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
+        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!", null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -82,7 +82,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -96,7 +96,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
+        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello", null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -110,7 +110,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -124,7 +124,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 }, null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -152,7 +152,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _provider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this);
+        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this, null);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
