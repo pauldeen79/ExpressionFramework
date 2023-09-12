@@ -2,22 +2,21 @@
 
 public class ExpressionParserBaseTests
 {
-    private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
-    private readonly Mock<IExpressionParser> _parserMock = new();
-    private readonly Mock<Expression> _expressionMock = new();
+    private readonly IFunctionParseResultEvaluator _evaluatorMock = Substitute.For<IFunctionParseResultEvaluator>();
+    private readonly IExpressionParser _parserMock = Substitute.For<IExpressionParser>();
+    private readonly Expression _expressionMock = Substitute.For<Expression>();
 
     public ExpressionParserBaseTests()
     {
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
-                      .Returns(Result<object?>.Success(_expressionMock.Object));
-
-        _parserMock.Setup(x => x.Parse(It.IsAny<string>(), It.IsAny<IFormatProvider>(), It.IsAny<object?>()))
-                   .Returns<string, IFormatProvider, object?>((value, formatProvider, context)
-                    => int.TryParse(value, formatProvider, out var result)
+        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
+                      .Returns(Result<object?>.Success(_expressionMock));
+        _parserMock.Parse(Arg.Any<string>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+                   .Returns(x =>
+                        int.TryParse(x.ArgAt<string>(0), x.ArgAt<IFormatProvider>(1), out var result)
                         ? Result<object?>.Success(result)
-                        : Result<object?>.Success(value));
+                        : Result<object?>.Success(x.ArgAt<string>(0)));
 
-        _expressionMock.Setup(x => x.Evaluate(It.IsAny<object?>()))
+        _expressionMock.Evaluate(Arg.Any<object?>())
                        .Returns(Result<object?>.Success("evaluated value"));
     }
 
@@ -33,7 +32,7 @@ public class ExpressionParserBaseTests
     public void Parse_Without_Context_Throws_On_Null_FunctionParseResult()
     {
         // Act & Assert
-        this.Invoking(_ => new MyExpressionParser().Parse(functionParseResult: null!, _evaluatorMock.Object, _parserMock.Object))
+        this.Invoking(_ => new MyExpressionParser().Parse(functionParseResult: null!, _evaluatorMock, _parserMock))
             .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
     }
 
@@ -46,7 +45,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -61,7 +60,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -77,7 +76,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -88,14 +87,14 @@ public class ExpressionParserBaseTests
     public void Parse_With_Context_Returns_Success_With_Null_Value_For_Correct_FunctionName_When_Value_Was_Empty()
     {
         // Arrange
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
+        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
                       .Returns(Result<object?>.Success(null));
         var functionParseResult = new FunctionParseResultBuilder()
             .WithFunctionName("Correct")
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -111,7 +110,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
@@ -121,14 +120,14 @@ public class ExpressionParserBaseTests
     public void Parse_With_Context_Returns_Failure_When_Parse_Fails()
     {
         // Arrange
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
+        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
                       .Returns(Result<object?>.Error("Kaboom"));
         var functionParseResult = new FunctionParseResultBuilder()
             .WithFunctionName("Correct")
             .Build();
 
         // Act
-        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().Parse(functionParseResult, null, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -145,7 +144,7 @@ public class ExpressionParserBaseTests
         var sut = new MyExpressionParser();
 
         // Act & Assert
-        sut.Invoking(x => x.DoParseTypedExpression(expressionType: null!, 0, string.Empty, functionParseResult, _evaluatorMock.Object, _parserMock.Object))
+        sut.Invoking(x => x.DoParseTypedExpression(expressionType: null!, 0, string.Empty, functionParseResult, _evaluatorMock, _parserMock))
            .Should().Throw<ArgumentNullException>().WithParameterName("expressionType");
     }
 
@@ -156,7 +155,7 @@ public class ExpressionParserBaseTests
         var sut = new MyExpressionParser();
 
         // Act & Assert
-        sut.Invoking(x => x.DoParseTypedExpression(typeof(string), 0, string.Empty, functionParseResult: null!, _evaluatorMock.Object, _parserMock.Object))
+        sut.Invoking(x => x.DoParseTypedExpression(typeof(string), 0, string.Empty, functionParseResult: null!, _evaluatorMock, _parserMock))
            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
     }
 
@@ -169,7 +168,7 @@ public class ExpressionParserBaseTests
             .Build();
         
         // Act
-        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -185,7 +184,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -202,7 +201,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -219,7 +218,7 @@ public class ExpressionParserBaseTests
             .Build();
 
         // Act
-        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock.Object, _parserMock.Object);
+        var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock, _parserMock);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

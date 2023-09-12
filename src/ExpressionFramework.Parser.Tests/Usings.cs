@@ -1,4 +1,5 @@
 ﻿global using System.Globalization;
+global using AutoFixture.Xunit2;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Builders;
@@ -16,5 +17,6 @@ global using ExpressionFramework.Parser.Extensions;
 global using ExpressionFramework.Parser.OperatorResultParsers;
 global using FluentAssertions;
 global using Microsoft.Extensions.DependencyInjection;
-global using Moq;
+global using NSubstitute;
+global using Objectivity.AutoFixture.XUnit2.AutoNSubstitute.Attributes;
 global using Xunit;

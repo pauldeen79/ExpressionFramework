@@ -2,14 +2,13 @@
 
 public class TodayExpressionTests
 {
-    [Fact]
-    public void Evaluate_Returns_Current_DateTime()
+    [Theory, AutoMockData]
+    public void Evaluate_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
     {
         // Arrange
         var dateTime = DateTime.Now;
-        var dateTimeProvider = new Mock<IDateTimeProvider>();
-        dateTimeProvider.Setup(x => x.GetCurrentDateTime()).Returns(dateTime);
-        var sut = new TodayExpression(dateTimeProvider.Object);
+        dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
+        var sut = new TodayExpression(dateTimeProvider);
 
         // Act
         var result = sut.Evaluate();
@@ -19,14 +18,13 @@ public class TodayExpressionTests
         result.Value.Should().BeEquivalentTo(dateTime.Date);
     }
 
-    [Fact]
-    public void EvaluateTyped_Returns_Current_DateTime()
+    [Theory, AutoMockData]
+    public void EvaluateTyped_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
     {
         // Arrange
         var dateTime = DateTime.Now;
-        var dateTimeProvider = new Mock<IDateTimeProvider>();
-        dateTimeProvider.Setup(x => x.GetCurrentDateTime()).Returns(dateTime);
-        var sut = new TodayExpression(dateTimeProvider.Object);
+        dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
+        var sut = new TodayExpression(dateTimeProvider);
 
         // Act
         var result = sut.EvaluateTyped();

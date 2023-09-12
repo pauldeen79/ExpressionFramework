@@ -52,11 +52,11 @@ public class ExpressionBuilderFactoryTests
         result.Should().BeOfType<StringLengthExpressionBuilder>();
     }
 
-    [Fact]
-    public void CreateTyped_Throws_On_Unsupported_Expression()
+    [Theory, AutoMockData]
+    public void CreateTyped_Throws_On_Unsupported_Expression([Frozen] ITypedExpression<string> expression)
     {
         // Act & Assert
-        this.Invoking(_ => ExpressionBuilderFactory.CreateTyped(new Mock<ITypedExpression<string>>().Object))
+        this.Invoking(_ => ExpressionBuilderFactory.CreateTyped(expression))
             .Should().Throw<NotSupportedException>();
     }
 }

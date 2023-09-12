@@ -4,19 +4,19 @@ public sealed class IntegrationTests : IDisposable
 {
     private readonly ServiceProvider _provider;
     private readonly IServiceScope _scope;
-    private readonly Mock<IFunctionResultParser> _functionResultParserMock = new();
+    private readonly IFunctionResultParser _functionResultParserMock = Substitute.For<IFunctionResultParser>();
 
     public IntegrationTests()
     {
-        _functionResultParserMock.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<object?>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
-            .Returns<FunctionParseResult, object?, IFunctionParseResultEvaluator, IExpressionParser>((result, context, evaluator, parser) => result.FunctionName == "MyPredicate"
-                ? Result<object?>.Success(context is int i && i > 2)
+        _functionResultParserMock.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<object?>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+            .Returns(x => x.ArgAt<FunctionParseResult>(0).FunctionName == "MyPredicate"
+                ? Result<object?>.Success(x[1] is int i && i > 2)
                 : Result<object?>.Continue());
 
         _provider = new ServiceCollection()
             .AddParsers()
             .AddExpressionParser()
-            .AddSingleton(_functionResultParserMock.Object)
+            .AddSingleton(_functionResultParserMock)
             .BuildServiceProvider(true);
 
         _scope = _provider.CreateScope();

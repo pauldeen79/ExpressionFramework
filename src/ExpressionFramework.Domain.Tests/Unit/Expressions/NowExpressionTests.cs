@@ -2,14 +2,13 @@
 
 public class NowExpressionTests
 {
-    [Fact]
-    public void Evaluate_Returns_Current_DateTime()
+    [Theory, AutoMockData]
+    public void Evaluate_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
     {
         // Arrange
         var dateTime = DateTime.Now;
-        var dateTimeProvider = new Mock<IDateTimeProvider>();
-        dateTimeProvider.Setup(x => x.GetCurrentDateTime()).Returns(dateTime);
-        var sut = new NowExpression(dateTimeProvider.Object);
+        dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
+        var sut = new NowExpression(dateTimeProvider);
 
         // Act
         var result = sut.Evaluate();
@@ -19,14 +18,14 @@ public class NowExpressionTests
         result.Value.Should().BeEquivalentTo(dateTime);
     }
 
-    [Fact]
-    public void EvaluateTyped_Returns_Current_DateTime()
+
+    [Theory, AutoMockData]
+    public void EvaluateTyped_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
     {
         // Arrange
         var dateTime = DateTime.Now;
-        var dateTimeProvider = new Mock<IDateTimeProvider>();
-        dateTimeProvider.Setup(x => x.GetCurrentDateTime()).Returns(dateTime);
-        var sut = new NowExpression(dateTimeProvider.Object);
+        dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
+        var sut = new NowExpression(dateTimeProvider);
 
         // Act
         var result = sut.EvaluateTyped();
@@ -72,5 +71,4 @@ public class NowExpressionTests
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
     }
-
 }

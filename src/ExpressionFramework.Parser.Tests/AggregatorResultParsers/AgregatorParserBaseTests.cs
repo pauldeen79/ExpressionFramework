@@ -2,13 +2,13 @@
 
 public class AggregatorParserBaseTests
 {
-    private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
-    private readonly Mock<IExpressionParser> _parserMock = new();
+    private readonly IFunctionParseResultEvaluator _evaluatorMock = Substitute.For<IFunctionParseResultEvaluator>();
+    private readonly IExpressionParser _parserMock = Substitute.For<IExpressionParser>();
 
     public AggregatorParserBaseTests()
     {
-        _evaluatorMock.Setup(x => x.Evaluate(It.IsAny<FunctionParseResult>(), It.IsAny<IExpressionParser>(), It.IsAny<object?>()))
-                      .Returns(Result<object?>.Success(new Mock<Aggregator>().Object));
+        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
+                      .Returns(Result<object?>.Success(Substitute.For<Aggregator>()));
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class AggregatorParserBaseTests
         (
             functionParseResult,
             null,
-            _evaluatorMock.Object,
-            _parserMock.Object
+            _evaluatorMock,
+            _parserMock
         );
 
     private sealed class MyAggregatorParser : AggregatorParserBase

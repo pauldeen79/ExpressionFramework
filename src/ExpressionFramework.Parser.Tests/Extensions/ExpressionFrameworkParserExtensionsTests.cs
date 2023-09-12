@@ -2,52 +2,57 @@
 
 public class ExpressionFrameworkParserExtensionsTests
 {
-    private readonly Mock<IExpressionFrameworkParser> _sut = new();
-    private readonly Mock<IFunctionParseResultEvaluator> _evaluatorMock = new();
-    private readonly Mock<IExpressionParser> _expressionParserMock = new();
-
-    [Fact]
-    public void Parse_Returns_Failure_When_Source_Parsing_Fails()
+    [Theory, AutoMockData]
+    public void Parse_Returns_Failure_When_Source_Parsing_Fails(
+        [Frozen] IFunctionParseResultEvaluator evaluator,
+        [Frozen] IExpressionParser expressionParser,
+        [Frozen] IExpressionFrameworkParser sut)
     {
         // Arrange
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        _sut.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
-            .Returns(Result<Expression>.Error("Kaboom"));
+        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+           .Returns(Result<Expression>.Error("Kaboom"));
 
         // Act
-        var result = _sut.Object.Parse<string>(functionParseResult, _evaluatorMock.Object, _expressionParserMock.Object);
+        var result = sut.Parse<string>(functionParseResult, evaluator, expressionParser);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
         result.ErrorMessage.Should().Be("Kaboom");
     }
 
-    [Fact]
-    public void Parse_Returns_Success_When_Source_Parsing_Succeeds_And_Result_Value_Is_Of_Correct_Type()
+    [Theory, AutoMockData]
+    public void Parse_Returns_Success_When_Source_Parsing_Succeeds_And_Result_Value_Is_Of_Correct_Type(
+        [Frozen] IFunctionParseResultEvaluator evaluator,
+        [Frozen] IExpressionParser expressionParser,
+        [Frozen] IExpressionFrameworkParser sut)
     {
         // Arrange
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        _sut.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
-            .Returns(Result<Expression>.Success(new TypedConstantExpression<string>("test")));
+        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+           .Returns(Result<Expression>.Success(new TypedConstantExpression<string>("test")));
 
         // Act
-        var result = _sut.Object.Parse<string>(functionParseResult, _evaluatorMock.Object, _expressionParserMock.Object);
+        var result = sut.Parse<string>(functionParseResult, evaluator, expressionParser);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeOfType<TypedConstantExpression<string>>();
     }
 
-    [Fact]
-    public void Parse_Returns_Invalid_When_Source_Parsing_Succeeds_And_Result_Value_Is_Not_Of_Correct_Type()
+    [Theory, AutoMockData]
+    public void Parse_Returns_Invalid_When_Source_Parsing_Succeeds_And_Result_Value_Is_Not_Of_Correct_Type(
+        [Frozen] IFunctionParseResultEvaluator evaluator,
+        [Frozen] IExpressionParser expressionParser,
+        [Frozen] IExpressionFrameworkParser sut)
     {
         // Arrange
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        _sut.Setup(x => x.Parse(It.IsAny<FunctionParseResult>(), It.IsAny<IFunctionParseResultEvaluator>(), It.IsAny<IExpressionParser>()))
-            .Returns(Result<Expression>.Success(new TypedConstantExpression<int>(1)));
+        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+           .Returns(Result<Expression>.Success(new TypedConstantExpression<int>(1)));
 
         // Act
-        var result = _sut.Object.Parse<string>(functionParseResult, _evaluatorMock.Object, _expressionParserMock.Object);
+        var result = sut.Parse<string>(functionParseResult, evaluator, expressionParser);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
