@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Builders;
 
-public class ExpressionBuilderFactoryTests
+public class ExpressionBuilderFactoryTests : TestBase
 {
     [Fact]
     public void CreateTyped_Returns_Correct_Result_On_TypedConstantExpression()
@@ -52,9 +52,12 @@ public class ExpressionBuilderFactoryTests
         result.Should().BeOfType<StringLengthExpressionBuilder>();
     }
 
-    [Theory, AutoMockData]
-    public void CreateTyped_Throws_On_Unsupported_Expression([Frozen] ITypedExpression<string> expression)
+    [Fact]
+    public void CreateTyped_Throws_On_Unsupported_Expression()
     {
+        // Arrange
+        var expression = Fixture.Freeze<ITypedExpression<string>>();
+
         // Act & Assert
         this.Invoking(_ => ExpressionBuilderFactory.CreateTyped(expression))
             .Should().Throw<NotSupportedException>();

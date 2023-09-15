@@ -1,7 +1,8 @@
 ﻿global using System.Collections;
 global using System.ComponentModel.DataAnnotations;
 global using System.Globalization;
-global using AutoFixture.Xunit2;
+global using AutoFixture;
+global using AutoFixture.AutoNSubstitute;
 global using CrossCutting.Common;
 global using CrossCutting.Common.Abstractions;
 global using CrossCutting.Common.Results;
@@ -26,7 +27,6 @@ global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.SpecFlow.Tests.Support;
 global using FluentAssertions;
 global using NSubstitute;
-global using Objectivity.AutoFixture.XUnit2.AutoNSubstitute.Attributes;
 global using TechTalk.SpecFlow;
 global using TechTalk.SpecFlow.Assist;
 global using Xunit;

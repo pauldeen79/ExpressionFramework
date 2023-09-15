@@ -1,12 +1,13 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
-public class NowExpressionTests
+public class NowExpressionTests : TestBase
 {
-    [Theory, AutoMockData]
-    public void Evaluate_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
+    [Fact]
+    public void Evaluate_Returns_Current_DateTime()
     {
         // Arrange
         var dateTime = DateTime.Now;
+        var dateTimeProvider = Fixture.Freeze<IDateTimeProvider>();
         dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
         var sut = new NowExpression(dateTimeProvider);
 
@@ -19,11 +20,12 @@ public class NowExpressionTests
     }
 
 
-    [Theory, AutoMockData]
-    public void EvaluateTyped_Returns_Current_DateTime([Frozen] IDateTimeProvider dateTimeProvider)
+    [Fact]
+    public void EvaluateTyped_Returns_Current_DateTime()
     {
         // Arrange
         var dateTime = DateTime.Now;
+        var dateTimeProvider = Fixture.Freeze<IDateTimeProvider>();
         dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
         var sut = new NowExpression(dateTimeProvider);
 

@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Unit;
 
-public class ExpressionTests
+public class ExpressionTests : TestBase
 {
     [Fact]
     public void Evaluate_Happy_Flow()
@@ -154,11 +154,12 @@ public class ExpressionTests
         result.Value.Should().Be("Hello world!".Length);
     }
 
-    [Theory, AutoMockData]
-    public void Can_Get_Current_Month_Using_ChainedExpression_Of_Today_And_Field([Frozen] IDateTimeProvider dateTimeProvider)
+    [Fact]
+    public void Can_Get_Current_Month_Using_ChainedExpression_Of_Today_And_Field()
     {
         // Arrange
         var dateTime = DateTime.Now;
+        var dateTimeProvider = Fixture.Freeze<IDateTimeProvider>();
         dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
         var currentMonthExpression = new ChainedExpression(new Expression[]
         {
