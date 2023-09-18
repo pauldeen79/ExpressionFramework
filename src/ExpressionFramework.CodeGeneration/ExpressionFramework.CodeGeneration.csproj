@@ -11,7 +11,7 @@
   <ItemGroup>
     <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="2.10.0" />
     <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="2.10.0" />
-    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.76" />
+    <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.6.77" />
   </ItemGroup>
 
   <!--<Target Name="PostBuild" AfterTargets="PostBuildEvent">
