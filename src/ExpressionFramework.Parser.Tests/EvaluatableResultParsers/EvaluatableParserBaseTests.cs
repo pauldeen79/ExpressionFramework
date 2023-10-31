@@ -8,7 +8,7 @@ public class EvaluatableParserBaseTests
     public EvaluatableParserBaseTests()
     {
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Success(Substitute.For<Evaluatable>()));
+                      .Returns(Result.Success<object?>(Substitute.For<Evaluatable>()));
     }
 
     [Fact]
@@ -77,6 +77,6 @@ public class EvaluatableParserBaseTests
         public MyEvaluatableParser() : base("Correct") { }
 
         protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-            => Result<Evaluatable>.FromExistingResult(evaluator.Evaluate(functionParseResult, parser));
+            => Result.FromExistingResult<Evaluatable>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

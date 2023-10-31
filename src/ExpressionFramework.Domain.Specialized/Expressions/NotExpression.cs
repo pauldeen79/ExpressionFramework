@@ -11,11 +11,11 @@
 public partial record NotExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<bool> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<bool>.Success(!result.Value)
+                ? Result.Success<bool>(!result.Value)
                 : result);
 }

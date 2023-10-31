@@ -9,15 +9,15 @@ public class ExpressionParserBaseTests
     public ExpressionParserBaseTests()
     {
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Success(_expressionMock));
+                      .Returns(Result.Success<object?>(_expressionMock));
         _parserMock.Parse(Arg.Any<string>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
                    .Returns(x =>
                         int.TryParse(x.ArgAt<string>(0), x.ArgAt<IFormatProvider>(1), out var result)
-                        ? Result<object?>.Success(result)
-                        : Result<object?>.Success(x.ArgAt<string>(0)));
+                        ? Result.Success<object?>(result)
+                        : Result.Success<object?>(x.ArgAt<string>(0)));
 
         _expressionMock.Evaluate(Arg.Any<object?>())
-                       .Returns(Result<object?>.Success("evaluated value"));
+                       .Returns(Result.Success<object?>("evaluated value"));
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Success(null));
+                      .Returns(Result.Success<object?>(null));
         var functionParseResult = new FunctionParseResultBuilder()
             .WithFunctionName("Correct")
             .Build();
@@ -121,7 +121,7 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Error("Kaboom"));
+                      .Returns(Result.Error<object?>("Kaboom"));
         var functionParseResult = new FunctionParseResultBuilder()
             .WithFunctionName("Correct")
             .Build();
@@ -242,7 +242,7 @@ public class ExpressionParserBaseTests
         public MyExpressionParser() : base("Correct") { }
 
         protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-            => Result<Expression>.FromExistingResult(evaluator.Evaluate(functionParseResult, parser));
+            => Result.FromExistingResult<Expression>(evaluator.Evaluate(functionParseResult, parser));
 
         public Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
           => ParseTypedExpression(expressionType, index, argumentName, functionParseResult, evaluator, parser);

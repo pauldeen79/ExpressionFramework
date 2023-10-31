@@ -14,19 +14,19 @@
 public partial record StringFindExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
     
     public Result<int> EvaluateTyped(object? context)
     {
         var findExpressionResult = FindExpression.EvaluateTypedWithTypeCheck(context, "FindExpression is not of type string");
         if (!findExpressionResult.IsSuccessful())
         {
-            return Result<int>.FromExistingResult(findExpressionResult);
+            return Result.FromExistingResult<int>(findExpressionResult);
         }
 
         return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<int>.Success(result.Value!.IndexOf(findExpressionResult.Value!))
-                : Result<int>.FromExistingResult(result));
+                ? Result.Success<int>(result.Value!.IndexOf(findExpressionResult.Value!))
+                : Result.FromExistingResult<int>(result));
     }
 }

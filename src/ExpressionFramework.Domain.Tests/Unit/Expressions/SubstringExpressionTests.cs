@@ -55,7 +55,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")), default);
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result.Invalid<int>("Kaboom")), default);
 
         // Act
         var actual = sut.Evaluate();
@@ -69,7 +69,7 @@ public class SubstringExpressionTests
     public void Evaluate_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result.Invalid<int>("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -151,7 +151,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_IndexExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result<int>.Invalid("Kaboom")), new TypedConstantExpression<int>(1));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantResultExpression<int>(Result.Invalid<int>("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var actual = sut.EvaluateTyped();
@@ -165,7 +165,7 @@ public class SubstringExpressionTests
     public void EvaluateTyped_Returns_Invalid_When_LengthExpression_Result_Is_Invalid()
     {
         // Arrange
-        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Invalid("Something bad happened")));
+        var sut = new SubstringExpression(new TypedConstantExpression<string>("test"), new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result.Invalid<int>("Something bad happened")));
 
         // Act
         var actual = sut.EvaluateTyped();

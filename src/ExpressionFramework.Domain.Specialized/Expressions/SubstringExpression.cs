@@ -17,7 +17,7 @@
 public partial record SubstringExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
@@ -30,22 +30,22 @@ public partial record SubstringExpression
         var indexResult = IndexExpression.EvaluateTyped(s);
         if (!indexResult.IsSuccessful())
         {
-            return Result<string>.FromExistingResult(indexResult);
+            return Result.FromExistingResult<string>(indexResult);
         }
 
         if (LengthExpression is null)
         {
-            return Result<string>.Success(s.Substring(indexResult.Value));
+            return Result.Success<string>(s.Substring(indexResult.Value));
         }
 
         var lengthResult = LengthExpression!.EvaluateTyped(s);
         if (!lengthResult.IsSuccessful())
         {
-            return Result<string>.FromExistingResult(lengthResult);
+            return Result.FromExistingResult<string>(lengthResult);
         }
 
         return s.Length >= indexResult.Value + lengthResult.Value
-            ? Result<string>.Success(s.Substring(indexResult.Value, lengthResult.Value))
-            : Result<string>.Invalid("Index and length must refer to a location within the string");
+            ? Result.Success<string>(s.Substring(indexResult.Value, lengthResult.Value))
+            : Result.Invalid<string>("Index and length must refer to a location within the string");
     }
 }

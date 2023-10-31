@@ -73,7 +73,7 @@ public class TryCastExpressionTests
         // Arrange
         var expression = new TryCastExpressionBuilder<IEnumerable>()
             .WithSourceExpression(1)
-            .WithDefaultExpression(new TypedConstantResultExpressionBuilder<IEnumerable>().WithValue(Result<IEnumerable>.Error("Kaboom")))
+            .WithDefaultExpression(new TypedConstantResultExpressionBuilder<IEnumerable>().WithValue(Result.Error<IEnumerable>("Kaboom")))
             .Build();
 
         // Act

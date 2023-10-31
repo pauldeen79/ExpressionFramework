@@ -10,13 +10,13 @@
 public partial record TypedContextExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Expression ToUntyped() => new ContextExpression();
 
     public Result<T> EvaluateTyped(object? context)
         => context is T t
-            ? Result<T>.Success(t)
-            : Result<T>.Invalid($"Context is not of type {typeof(T).FullName}");
+            ? Result.Success<T>(t)
+            : Result.Invalid<T>($"Context is not of type {typeof(T).FullName}");
 }
 

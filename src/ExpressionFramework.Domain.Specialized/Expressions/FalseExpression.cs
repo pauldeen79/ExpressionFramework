@@ -6,8 +6,8 @@
 public partial record FalseExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.Success(false);
+        => Result.Success<object?>(false);
 
     public Result<bool> EvaluateTyped(object? context)
-        => Result<bool>.Success(false);
+        => Result.Success<bool>(false);
 }

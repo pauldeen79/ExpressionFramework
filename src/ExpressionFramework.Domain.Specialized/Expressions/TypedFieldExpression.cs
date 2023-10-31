@@ -8,7 +8,7 @@
 public partial record TypedFieldExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Expression ToUntyped() => new FieldExpression(Expression, FieldNameExpression);
 
@@ -17,6 +17,6 @@ public partial record TypedFieldExpression<T>
         var untypedResult = FieldExpression.Evaluate(context, Expression, FieldNameExpression);
         return untypedResult.IsSuccessful()
             ? untypedResult.TryCast<T>($"Field is not of type [{typeof(T).FullName}]")
-            : Result<T>.FromExistingResult(untypedResult);
+            : Result.FromExistingResult<T>(untypedResult);
     }
 }

@@ -9,14 +9,14 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable")]
 public partial record OfTypeExpression
 {
-    public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
+    public override Result<object?> Evaluate(object? context) => Result.FromExistingResult<IEnumerable<object?>, object?>(EvaluateTyped(context), result => result);
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
     {
         var typeResult = TypeExpression.EvaluateTyped(context);
         if (!typeResult.IsSuccessful())
         {
-            return Result< IEnumerable<object?>>.FromExistingResult(typeResult);
+            return Result.FromExistingResult<IEnumerable<object?>>(typeResult);
         }
 
         return EnumerableExpression.GetTypedResultFromEnumerable(Expression, context, e => IsOfType(e, typeResult));
@@ -24,5 +24,5 @@ public partial record OfTypeExpression
 
     private static IEnumerable<Result<object?>> IsOfType(IEnumerable<object?> e, Result<Type> typeResult) => e
         .Where(x => x != null && typeResult.Value!.IsInstanceOfType(x))
-        .Select(Result<object?>.Success);
+        .Select(Result.Success);
 }

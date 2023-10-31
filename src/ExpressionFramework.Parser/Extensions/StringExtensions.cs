@@ -48,13 +48,13 @@ public static class StringExtensions
         var typeName = functionName.GetGenericArguments();
         if (string.IsNullOrEmpty(typeName))
         {
-            return Result<Type>.Invalid("No type defined");
+            return Result.Invalid<Type>("No type defined");
         }
 
         var type = Type.GetType(typeName);
 
         return type != null
-            ? Result<Type>.Success(type)
-            : Result<Type>.Invalid($"Unknown type: {typeName}");
+            ? Result.Success<Type>(type)
+            : Result.Invalid<Type>($"Unknown type: {typeName}");
     }
 }

@@ -14,16 +14,16 @@ public partial record GroupByExpression
         var enumerableResult = Expression.EvaluateTyped(context);
         if (!enumerableResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(enumerableResult);
+            return Result.FromExistingResult<object?>(enumerableResult);
         }
 
         var keysResult = EnumerableExpression.GetTypedResultFromEnumerable(new TypedConstantExpression<IEnumerable>(enumerableResult.Value!), context, e => e.Select(x => KeySelectorExpression.Evaluate(x)).Distinct());
         if (!keysResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(keysResult);
+            return Result.FromExistingResult<object?>(keysResult);
         }
 
-        return Result<object?>.Success(keysResult.Value.Select(x => new Grouping<object?, object?>(x, enumerableResult.Value!.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
+        return Result.Success<object?>(keysResult.Value.Select(x => new Grouping<object?, object?>(x, enumerableResult.Value!.OfType<object?>().Where(y => ItemSatisfiesKey(y, x)))));
     }
 
     private bool ItemSatisfiesKey(object? item, object? key)

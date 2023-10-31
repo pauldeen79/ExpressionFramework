@@ -10,7 +10,7 @@ public partial record NotEqualsExpression
         var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
         return nonSuccessfulResult != null
             ? nonSuccessfulResult
-            : Result<object?>.FromExistingResult(NotEqual.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase));
+            : Result.FromExistingResult<object?>(NotEqual.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase));
     }
 
     public Result<bool> EvaluateTyped(object? context)
@@ -19,7 +19,7 @@ public partial record NotEqualsExpression
 
         var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
         return nonSuccessfulResult != null
-            ? Result<bool>.FromExistingResult(nonSuccessfulResult)
+            ? Result.FromExistingResult<bool>(nonSuccessfulResult)
             : NotEqual.Evaluate(results[0], results[1], StringComparison.CurrentCultureIgnoreCase);
     }
 

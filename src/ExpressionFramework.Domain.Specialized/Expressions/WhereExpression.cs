@@ -20,6 +20,6 @@ public partial record WhereExpression
         .Select(x => new { Item = x, Result = PredicateExpression.EvaluateTyped(x) })
         .Where(x => !x.Result.IsSuccessful() || x.Result.Value.IsTrue())
         .Select(x => x.Result.IsSuccessful()
-            ? Result<object?>.Success(x.Item)
-            : Result<object?>.FromExistingResult(x.Result));
+            ? Result.Success<object?>(x.Item)
+            : Result.FromExistingResult<object?>(x.Result));
 }

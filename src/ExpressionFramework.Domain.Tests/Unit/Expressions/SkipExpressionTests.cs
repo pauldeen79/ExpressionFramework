@@ -6,7 +6,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new SkipExpression(new TypedDelegateResultExpression<IEnumerable>(_ => Result<IEnumerable>.Error("Kaboom")), new TypedConstantExpression<int>(1));
+        var sut = new SkipExpression(new TypedDelegateResultExpression<IEnumerable>(_ => Result.Error<IEnumerable>("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class SkipExpressionTests
     public void Evaluate_Returns_Error_When_CountExpression_Returns_Error()
     {
         // Arrange
-        var sut = new SkipExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
+        var sut = new SkipExpression(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result.Error<int>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

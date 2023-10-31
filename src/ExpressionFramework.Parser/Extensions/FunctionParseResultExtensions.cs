@@ -72,18 +72,18 @@ public static class FunctionParseResultExtensions
     {
         if (!argumentValueResult.IsSuccessful())
         {
-            return new TypedConstantResultExpression<T>(Result<T>.FromExistingResult(argumentValueResult));
+            return new TypedConstantResultExpression<T>(Result.FromExistingResult<T>(argumentValueResult));
         }
 
         var value = argumentValueResult.GetValue();
         if (value is T t)
         {
-            return new TypedConstantResultExpression<T>(Result<T>.Success(t));
+            return new TypedConstantResultExpression<T>(Result.Success<T>(t));
         }
 
         if (value == null && useDefaultValue)
         {
-            return new TypedConstantResultExpression<T>(Result<T>.Success(defaultValue!));
+            return new TypedConstantResultExpression<T>(Result.Success<T>(defaultValue!));
         }
 
         if (typeof(T).IsEnum && value is string s)
@@ -91,15 +91,15 @@ public static class FunctionParseResultExtensions
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
-                return new TypedConstantResultExpression<T>(Result<T>.Success((T)Enum.Parse(typeof(T), s)));
+                return new TypedConstantResultExpression<T>(Result.Success<T>((T)Enum.Parse(typeof(T), s)));
             }
             catch (Exception ex)
             {
-                return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} value [{s}] could not be converted to {typeof(T).FullName}. Error message: {ex.Message}"));
+                return new TypedConstantResultExpression<T>(Result.Invalid<T>($"{argumentName} value [{s}] could not be converted to {typeof(T).FullName}. Error message: {ex.Message}"));
             }
 #pragma warning restore CA1031 // Do not catch general exception types
         }
 
-        return new TypedConstantResultExpression<T>(Result<T>.Invalid($"{argumentName} is not of type {typeof(T).FullName}"));
+        return new TypedConstantResultExpression<T>(Result.Invalid<T>($"{argumentName} is not of type {typeof(T).FullName}"));
     }    
 }

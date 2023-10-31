@@ -9,8 +9,8 @@ public partial record LastOrDefaultExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<object?>.Success(results.Last()),
-            results => Result<object?>.Success(results.Last(x => x.Result.Value).Item),
+            results => Result.Success<object?>(results.Last()),
+            results => Result.Success<object?>(results.Last(x => x.Result.Value).Item),
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context)
         );
 

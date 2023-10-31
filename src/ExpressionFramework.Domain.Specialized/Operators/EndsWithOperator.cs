@@ -11,7 +11,7 @@ public partial record EndsWithOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => leftValue is string leftString && rightValue is string rightString
-            ? Result<bool>.Success(leftString.EndsWith(rightString, StringComparison.CurrentCultureIgnoreCase))
-            : Result<bool>.Invalid("LeftValue and RightValue both need to be of type string");
+            ? Result.Success<bool>(leftString.EndsWith(rightString, StringComparison.CurrentCultureIgnoreCase))
+            : Result.Invalid<bool>("LeftValue and RightValue both need to be of type string");
 }
 

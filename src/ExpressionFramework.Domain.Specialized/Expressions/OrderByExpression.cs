@@ -12,32 +12,32 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression is not of type enumerable, SortOrders should have at least one sort order")]
 public partial record OrderByExpression
 {
-    public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
+    public override Result<object?> Evaluate(object? context) => Result.FromExistingResult<IEnumerable<object?>, object?>(EvaluateTyped(context), result => result);
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
                 ? result.Transform(x => x.Value == null
-                    ? Result<IEnumerable<object?>>.Invalid("Expression is not of type enumerable")
+                    ? Result.Invalid<IEnumerable<object?>>("Expression is not of type enumerable")
                     : GetSortedEnumerable(context, result.Value!.OfType<object?>()))
-                : Result<IEnumerable<object?>>.FromExistingResult(result));
+                : Result.FromExistingResult<IEnumerable<object?>>(result));
 
     private Result<IEnumerable<object?>> GetSortedEnumerable(object? context, IEnumerable<object?> e)
     {
         var sortOrdersResult = GetSortOrdersResult(context);
         if (!sortOrdersResult.IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(sortOrdersResult);
+            return Result.FromExistingResult<IEnumerable<object?>>(sortOrdersResult);
         }
 
         if (!sortOrdersResult.Value!.Any())
         {
-            return Result<IEnumerable<object?>>.Invalid("SortOrderExpressions should have at least one item");
+            return Result.Invalid<IEnumerable<object?>>("SortOrderExpressions should have at least one item");
         }
 
         if (!e.Any())
         {
-            return Result<IEnumerable<object?>>.Success(e);
+            return Result.Success<IEnumerable<object?>>(e);
         }
 
         var first = true;
@@ -66,7 +66,7 @@ public partial record OrderByExpression
             }
         }
 
-        return Result<IEnumerable<object?>>.Success(e);
+        return Result.Success(e);
     }
 
     private Result<IEnumerable<SortOrder>> GetSortOrdersResult(object? context)
@@ -78,13 +78,13 @@ public partial record OrderByExpression
         {
             if (!sortOrderResult.IsSuccessful())
             {
-                return Result<IEnumerable<SortOrder>>.FromExistingResult(sortOrderResult);
+                return Result.FromExistingResult<IEnumerable<SortOrder>>(sortOrderResult);
             }
 
             items.Add(sortOrderResult.Value!);
             index++;
         }
 
-        return Result<IEnumerable<SortOrder>>.Success(items);
+        return Result.Success<IEnumerable<SortOrder>>(items);
     }
 }

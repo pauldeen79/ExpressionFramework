@@ -59,7 +59,7 @@ public class ElementAtOrDefaultExpressionTests
         // Arrange
         var sut = new ElementAtOrDefaultExpressionBuilder()
             .WithExpression(new[] { 1, 2, 3 })
-            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result<int>.Invalid("Something bad happened")))
+            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result.Invalid<int>("Something bad happened")))
             .Build();
 
         // Act
@@ -76,7 +76,7 @@ public class ElementAtOrDefaultExpressionTests
         // Arrange
         var sut = new ElementAtOrDefaultExpressionBuilder()
             .WithExpression(new[] { 1, 2, 3 })
-            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result<int>.Error("Something bad happened")))
+            .WithIndexExpression(new TypedConstantResultExpressionBuilder<int>().WithValue(Result.Error<int>("Something bad happened")))
             .Build();
 
         // Act

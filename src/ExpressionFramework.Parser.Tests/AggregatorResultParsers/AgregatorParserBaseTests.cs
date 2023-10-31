@@ -8,7 +8,7 @@ public class AggregatorParserBaseTests
     public AggregatorParserBaseTests()
     {
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Success(Substitute.For<Aggregator>()));
+                      .Returns(Result.Success<object?>(Substitute.For<Aggregator>()));
     }
 
     [Fact]
@@ -77,6 +77,6 @@ public class AggregatorParserBaseTests
         public MyAggregatorParser() : base("Correct") { }
 
         protected override Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-            => Result<Aggregator>.FromExistingResult(evaluator.Evaluate(functionParseResult, parser));
+            => Result.FromExistingResult<Aggregator>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

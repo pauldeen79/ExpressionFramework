@@ -5,10 +5,10 @@
 public partial record NowExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<DateTime> EvaluateTyped(object? context)
-        => Result<DateTime>.Success(DateTimeProvider is null
+        => Result.Success<DateTime>(DateTimeProvider is null
             ? DateTime.Now
             : DateTimeProvider.GetCurrentDateTime());
 }

@@ -6,7 +6,7 @@ public class DelegateResultExpressionTests
     public void Evaluate_Returns_Value_From_Delegate_Status_Ok()
     {
         // Arrange
-        var sut = new DelegateResultExpression(_ => Result<object?>.Success("ok"));
+        var sut = new DelegateResultExpression(_ => Result.Success<object?>("ok"));
 
         // Act
         var result = sut.Evaluate("not used");
@@ -20,7 +20,7 @@ public class DelegateResultExpressionTests
     public void Evaluate_Returns_Value_From_Delegate_Status_Error()
     {
         // Arrange
-        var sut = new DelegateResultExpression(_ => Result<object?>.Error("Kaboom"));
+        var sut = new DelegateResultExpression(_ => Result.Error<object?>("Kaboom"));
 
         // Act
         var result = sut.Evaluate("not used");
@@ -34,7 +34,7 @@ public class DelegateResultExpressionTests
     public void BaseClass_Cannot_Evaluate()
     {
         // Arrange
-        var expression = new DelegateResultExpressionBase(_ => Result<object?>.Success(null));
+        var expression = new DelegateResultExpressionBase(_ => Result.Success<object?>(null));
 
         // Act & Assert
         expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();

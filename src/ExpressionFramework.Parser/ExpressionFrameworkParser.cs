@@ -20,6 +20,6 @@ public class ExpressionFrameworkParser : IExpressionFrameworkParser
         return _resolvers
             .Select(x => x.Parse(functionParseResult, evaluator, parser))
             .FirstOrDefault(x => x.Status != ResultStatus.Continue)
-                ?? Result<Expression>.NotSupported($"Unknown expression: {functionParseResult?.FunctionName}");
+                ?? Result.NotSupported<Expression>($"Unknown expression: {functionParseResult?.FunctionName}");
     }
 }

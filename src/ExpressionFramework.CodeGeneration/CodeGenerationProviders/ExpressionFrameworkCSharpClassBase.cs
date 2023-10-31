@@ -249,7 +249,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 "}.FirstOrDefault(x => !x.IsSuccessful());",
                 "if (error != null)",
                 "{",
-                $"    return Result<{Constants.Namespaces.Domain}.{type}>.FromExistingResult(error);",
+                $"    return Result.FromExistingResult<{Constants.Namespaces.Domain}.{type}>(error);",
                 "}"
             );
         }
@@ -261,7 +261,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
                 "var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();",
                 "if (!typeResult.IsSuccessful())",
                 "{",
-                $"    return Result<{Constants.Namespaces.Domain}.{type}>.FromExistingResult(typeResult);",
+                $"    return Result.FromExistingResult<{Constants.Namespaces.Domain}.{type}>(typeResult);",
                 "}"
             );
         }
@@ -274,7 +274,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         };
 
         parseMethod.AddLiteralCodeStatements("#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
-        parseMethod.AddLiteralCodeStatements($"return Result<{Constants.Namespaces.Domain}.{type}>.Success({initializer});");
+        parseMethod.AddLiteralCodeStatements($"return Result.Success<{Constants.Namespaces.Domain}.{type}>({initializer});");
         parseMethod.AddLiteralCodeStatements("#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
     }
 

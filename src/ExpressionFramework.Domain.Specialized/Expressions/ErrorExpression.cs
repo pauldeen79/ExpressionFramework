@@ -11,6 +11,6 @@ public partial record ErrorExpression
     public override Result<object?> Evaluate(object? context)
         => ErrorMessageExpression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<object?>.Error(result.Value!)
-                : Result<object?>.FromExistingResult(result));
+                ? Result.Error<object?>(result.Value!)
+                : Result.FromExistingResult<object?>(result));
 }

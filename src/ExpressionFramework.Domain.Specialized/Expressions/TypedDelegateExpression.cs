@@ -8,10 +8,10 @@
 public partial record TypedDelegateExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.Success(Value.Invoke(context));
+        => Result.Success<object?>(Value.Invoke(context));
 
     public Result<T> EvaluateTyped(object? context)
-        => Result<T>.Success(Value.Invoke(context));
+        => Result.Success<T>(Value.Invoke(context));
 
     public Expression ToUntyped()
         => new DelegateExpression(context => Value.Invoke(context));

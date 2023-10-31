@@ -9,5 +9,5 @@
 public partial record ContextExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.Success(context);
+        => Result.Success<object?>(context);
 }

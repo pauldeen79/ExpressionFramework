@@ -22,7 +22,7 @@ public class GroupByExpressionTests
     public void Evaluate_Returns_NonSuccessfulResult_From_Expression()
     {
         // Arrange
-        var sut = new GroupByExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new TypedConstantExpression<string>("Kaboom"));
+        var sut = new GroupByExpression(new TypedConstantResultExpression<IEnumerable>(Result.Error<IEnumerable>("Kaboom")), new TypedConstantExpression<string>("Kaboom"));
 
         // Act
         var result = sut.Evaluate();

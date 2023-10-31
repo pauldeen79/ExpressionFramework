@@ -11,16 +11,16 @@ public partial record StringConcatenateAggregator
         var result1 = firstExpression.EvaluateTyped<string>(context, "First expression is not of type string");
         if (!result1.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result1);
+            return Result.FromExistingResult<object?>(result1);
         }
 
         var result2 = secondExpression.EvaluateTyped<string>(context, "Second expression is not of type string");
         if (!result2.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result2);
+            return Result.FromExistingResult<object?>(result2);
         }
 
-        return Result<object?>.Success(result1.Value + result2.Value);
+        return Result.Success<object?>(result1.Value + result2.Value);
     }
 }
 

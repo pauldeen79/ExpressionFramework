@@ -16,18 +16,18 @@ public static class EnumerableExpression
     {
         if (expression is null)
         {
-            return Result<object?>.Invalid("Expression is required");
+            return Result.Invalid<object?>("Expression is required");
         }
 
         if (@delegate is null)
         {
-            return Result<object?>.Invalid("Delegate is required");
+            return Result.Invalid<object?>("Delegate is required");
         }
 
         var enumerableResult = expression.EvaluateTypedWithTypeCheck(context, errorMessage);
         if (!enumerableResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(enumerableResult);
+            return Result.FromExistingResult<object?>(enumerableResult);
         }
 
         var results = @delegate.Invoke(enumerableResult.Value.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
@@ -36,7 +36,7 @@ public static class EnumerableExpression
             return results[results.Length - 1];
         }
 
-        return Result<object?>.Success(results.Select(x => x.Value));
+        return Result.Success<object?>(results.Select(x => x.Value));
     }
 
     public static Result<IEnumerable<object?>> GetTypedResultFromEnumerable(
@@ -46,18 +46,18 @@ public static class EnumerableExpression
     {
         if (expression is null)
         {
-            return Result<IEnumerable<object?>>.Invalid("Expression is required");
+            return Result.Invalid<IEnumerable<object?>>("Expression is required");
         }
 
         if (@delegate is null)
         {
-            return Result<IEnumerable<object?>>.Invalid("Delegate is required");
+            return Result.Invalid<IEnumerable<object?>>("Delegate is required");
         }
 
         var enumerableResult = expression.EvaluateTypedWithTypeCheck(context);
         if (!enumerableResult.IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(enumerableResult);
+            return Result.FromExistingResult<IEnumerable<object?>>(enumerableResult);
         }
 
         return GetTypedResultFromEnumerable(enumerableResult.Value!, @delegate);
@@ -71,18 +71,18 @@ public static class EnumerableExpression
     {
         if (countExpression is null)
         {
-            return Result<IEnumerable<object?>>.Invalid("Count expression is required");
+            return Result.Invalid<IEnumerable<object?>>("Count expression is required");
         }
 
         if (@delegate is null)
         {
-            return Result<IEnumerable<object?>>.Invalid("Delegate is required");
+            return Result.Invalid<IEnumerable<object?>>("Delegate is required");
         }
 
         var countResult = countExpression.EvaluateTyped(context);
         if (!countResult.IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(countResult);
+            return Result.FromExistingResult<IEnumerable<object?>>(countResult);
         }
 
         return GetTypedResultFromEnumerable(expression, context, e => @delegate(e, countResult));
@@ -95,10 +95,10 @@ public static class EnumerableExpression
         var results = @delegate(enumerable.OfType<object?>()).TakeWhileWithFirstNonMatching(x => x.IsSuccessful()).ToArray();
         if (!results[results.Length - 1].IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(results[results.Length - 1]);
+            return Result.FromExistingResult<IEnumerable<object?>>(results[results.Length - 1]);
         }
 
-        return Result<IEnumerable<object?>>.Success(results.Select(x => x.Value));
+        return Result.Success<IEnumerable<object?>>(results.Select(x => x.Value));
     }
 
     public static Result<T> GetRequiredScalarValue<T>(object? context,
@@ -115,8 +115,8 @@ public static class EnumerableExpression
             predicateExpression,
             delegateWithoutPredicate,
             delegateWithPredicate,
-            _ => Result<T>.Invalid("Enumerable is empty"),
-            _ => Result<T>.Invalid("None of the items conform to the supplied predicate"),
+            _ => Result.Invalid<T>("Enumerable is empty"),
+            _ => Result.Invalid<T>("None of the items conform to the supplied predicate"),
             selectorDelegate,
             predicateIsRequired
         );
@@ -149,10 +149,10 @@ public static class EnumerableExpression
                                                  Expression? selectorExpression = null)
         => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
             .Select(y => selectorExpression is null
-                ? Result<object?>.Success(y)
+                ? Result.Success<object?>(y)
                 : selectorExpression.EvaluateWithNullCheck(y))).Transform(result => result.IsSuccessful()
                     ? aggregateDelegate.Invoke(result.Value!)
-                    : Result<T>.FromExistingResult(result));
+                    : Result.FromExistingResult<T>(result));
 
     public static Result<object?> GetDefaultValue(Expression? defaultExpression, object? context)
         => defaultExpression is null
@@ -209,19 +209,19 @@ public static class EnumerableExpression
         var enumerableResult = enumerableExpression.EvaluateTypedWithTypeCheck(context);
         if (!enumerableResult.IsSuccessful())
         {
-            return Result<T>.FromExistingResult(enumerableResult);
+            return Result.FromExistingResult<T>(enumerableResult);
         }
 
         if (predicateIsRequired && predicateExpression is null)
         {
-            return Result<T>.Invalid("Predicate is required");
+            return Result.Invalid<T>("Predicate is required");
         }
 
-        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(Result<IEnumerable<object?>>.Success);
+        selectorDelegate ??= new Func<IEnumerable<object?>, Result<IEnumerable<object?>>>(Result.Success);
         var itemsResult = selectorDelegate.Invoke(enumerableResult.Value.OfType<object?>());
         if (!itemsResult.IsSuccessful())
         {
-            return Result<T>.FromExistingResult(itemsResult);
+            return Result.FromExistingResult<T>(itemsResult);
         }
 
         if (predicateExpression is null)
@@ -233,7 +233,7 @@ public static class EnumerableExpression
 
             if (delegateWithoutPredicate is null)
             {
-                return Result<T>.Invalid("Delegate without predicate is required");
+                return Result.Invalid<T>("Delegate without predicate is required");
             }
 
             return delegateWithoutPredicate.Invoke(itemsResult.Value!);
@@ -248,7 +248,7 @@ public static class EnumerableExpression
         if (Array.Exists(results, x => !x.Result.IsSuccessful()))
         {
             // Error in predicate evaluation
-            return Result<T>.FromExistingResult(results.First(x => !x.Result.IsSuccessful()).Result);
+            return Result.FromExistingResult<T>(results.First(x => !x.Result.IsSuccessful()).Result);
         }
 
         if (!Array.Exists(results, x => x.Result.Value) && defaultValueDelegateWithPredicate != null)
@@ -257,6 +257,6 @@ public static class EnumerableExpression
         }
 
         return delegateWithPredicate?.Invoke(results)
-            ?? Result<T>.Invalid("DelegateWithPredicate is required when predicate is filled");
+            ?? Result.Invalid<T>("DelegateWithPredicate is required when predicate is filled");
     }
 }

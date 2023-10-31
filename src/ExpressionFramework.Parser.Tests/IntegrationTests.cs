@@ -10,8 +10,8 @@ public sealed class IntegrationTests : IDisposable
     {
         _functionResultParserMock.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<object?>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
             .Returns(x => x.ArgAt<FunctionParseResult>(0).FunctionName == "MyPredicate"
-                ? Result<object?>.Success(x[1] is int i && i > 2)
-                : Result<object?>.Continue());
+                ? Result.Success<object?>(x[1] is int i && i > 2)
+                : Result.Continue<object?>());
 
         _provider = new ServiceCollection()
             .AddParsers()

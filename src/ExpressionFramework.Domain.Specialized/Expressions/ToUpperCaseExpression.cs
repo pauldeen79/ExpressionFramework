@@ -11,11 +11,11 @@
 public partial record ToUpperCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<string>.Success(result.Value!.ToUpper())
+                ? Result.Success<string>(result.Value!.ToUpper())
                 : result);
 }

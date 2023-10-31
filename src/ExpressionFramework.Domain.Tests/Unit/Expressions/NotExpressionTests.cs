@@ -22,7 +22,7 @@ public class NotExpressionTests
     public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var expression = new NotExpression(new TypedConstantResultExpression<bool>(Result<bool>.Error("Kaboom")));
+        var expression = new NotExpression(new TypedConstantResultExpression<bool>(Result.Error<bool>("Kaboom")));
 
         // Act
         var result = expression.Evaluate();

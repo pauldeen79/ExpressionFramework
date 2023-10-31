@@ -12,7 +12,7 @@
 public partial record TypedChainedExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Expression ToUntyped() => new ChainedExpression(Expressions);
 
@@ -20,13 +20,13 @@ public partial record TypedChainedExpression<T>
     {
         if (!Expressions.Any())
         {
-            return Result<T>.Success(context is T t ? t : default!);
+            return Result.Success<T>(context is T t ? t : default!);
         }
 
         var result = Expressions.First().Evaluate(context);
         if (!result.IsSuccessful())
         {
-            return Result<T>.FromExistingResult(result);
+            return Result.FromExistingResult<T>(result);
         }
 
         foreach (var expression in Expressions.Skip(1))
@@ -34,7 +34,7 @@ public partial record TypedChainedExpression<T>
             result = expression.Evaluate(result.Value);
             if (!result.IsSuccessful())
             {
-                return Result<T>.FromExistingResult(result);
+                return Result.FromExistingResult<T>(result);
             }
         }
 

@@ -7,8 +7,8 @@
 public partial record DayExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Day);
+        => Result.FromExistingResult<DateTime, object?>(Expression.EvaluateTyped(context), x => x.Day);
 
     public Result<int> EvaluateTyped(object? context)
-        => Result<int>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Day);
+        => Result.FromExistingResult<DateTime, int>(Expression.EvaluateTyped(context), x => x.Day);
 }

@@ -15,7 +15,7 @@ public partial record ChainedExpression
     {
         if (!Expressions.Any())
         {
-            return Result<object?>.Success(context);
+            return Result.Success<object?>(context);
         }
 
         var result = Expressions.First().Evaluate(context);

@@ -16,7 +16,7 @@ public partial record SequenceExpression
             return values[values.Length - 1];
         }
 
-        return Result<object?>.Success(values.Select(x => x.Value));
+        return Result.Success<object?>(values.Select(x => x.Value));
     }
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
@@ -24,9 +24,9 @@ public partial record SequenceExpression
         var values = Expressions.EvaluateUntilFirstError(context);
         if (values.Any() && !values[values.Length - 1].IsSuccessful())
         {
-            return Result<IEnumerable<object?>>.FromExistingResult(values[values.Length - 1]);
+            return Result.FromExistingResult<IEnumerable<object?>>(values[values.Length - 1]);
         }
 
-        return Result<IEnumerable<object?>>.Success(values.Select(x => x.Value));
+        return Result.Success<IEnumerable<object?>>(values.Select(x => x.Value));
     }
 }

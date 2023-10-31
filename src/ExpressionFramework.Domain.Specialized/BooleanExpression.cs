@@ -10,32 +10,32 @@ public static class BooleanExpression
     {
         if (firstExpression is null)
         {
-            return Result<bool>.Invalid("First expression is required");
+            return Result.Invalid<bool>("First expression is required");
         }
 
         if (secondExpression is null)
         {
-            return Result<bool>.Invalid("Second expression is required");
+            return Result.Invalid<bool>("Second expression is required");
         }
 
         if (@delegate is null)
         {
-            return Result<bool>.Invalid("Delegate is required");
+            return Result.Invalid<bool>("Delegate is required");
         }
 
         var firstExpressionResult = firstExpression.EvaluateTyped(context);
         if (!firstExpressionResult.IsSuccessful())
         {
-            return Result<bool>.FromExistingResult(firstExpressionResult);
+            return Result.FromExistingResult<bool>(firstExpressionResult);
         }
 
         var secondExpressionResult = secondExpression.EvaluateTyped(context);
         if (!secondExpressionResult.IsSuccessful())
         {
-            return Result<bool>.FromExistingResult(secondExpressionResult);
+            return Result.FromExistingResult<bool>(secondExpressionResult);
         }
 
-        return Result<bool>.Success(@delegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value));
+        return Result.Success<bool>(@delegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value));
     }
 
     public static ExpressionDescriptor GetDescriptor(Type type,

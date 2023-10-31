@@ -64,7 +64,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     private sealed record SomeAggregator : Evaluatable
     {
         public override Result<bool> Evaluate(object? context)
-            => Result<bool>.Success(true);
+            => Result.Success<bool>(true);
 
         public object Parameter { get; } = "";
     }

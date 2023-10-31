@@ -19,7 +19,7 @@ public partial record AggregateExpression
     {
         if (!Expressions.Any())
         {
-            return Result<object?>.Invalid("Sequence contains no elements");
+            return Result.Invalid<object?>("Sequence contains no elements");
         }
 
         var result = Expressions.First().Evaluate(context);

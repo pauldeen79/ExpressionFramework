@@ -9,8 +9,8 @@ public partial record AnyExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<object?>.Success(results.Any()),
-            results => Result<object?>.Success(results.Any(x => x.Result.Value))
+            results => Result.Success<object?>(results.Any()),
+            results => Result.Success<object?>(results.Any(x => x.Result.Value))
         );
 
     public Result<bool> EvaluateTyped(object? context)
@@ -19,8 +19,8 @@ public partial record AnyExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<bool>.Success(results.Any()),
-            results => Result<bool>.Success(results.Any(x => x.Result.Value))
+            results => Result.Success<bool>(results.Any()),
+            results => Result.Success<bool>(results.Any(x => x.Result.Value))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

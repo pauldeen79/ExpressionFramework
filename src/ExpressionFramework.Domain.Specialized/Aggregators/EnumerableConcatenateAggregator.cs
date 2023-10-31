@@ -10,16 +10,16 @@ public partial record EnumerableConcatenateAggregator
         var result1 = firstExpression.EvaluateTyped<IEnumerable>(context, "First expression is not of type enumerable");
         if (!result1.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result1);
+            return Result.FromExistingResult<object?>(result1);
         }
 
         var result2 = secondExpression.EvaluateTyped<IEnumerable>(result1.Value, "Second expression is not of type enumerable");
         if (!result2.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result2);
+            return Result.FromExistingResult<object?>(result2);
         }
 
-        return Result<object?>.Success(result1.Value.OfType<object?>().Concat(result2.Value.OfType<object?>()));
+        return Result.Success<object?>(result1.Value.OfType<object?>().Concat(result2.Value.OfType<object?>()));
     }
 }
 

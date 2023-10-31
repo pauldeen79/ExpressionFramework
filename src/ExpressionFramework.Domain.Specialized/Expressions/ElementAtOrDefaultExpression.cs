@@ -13,9 +13,9 @@ public partial record ElementAtOrDefaultExpression
                 .EvaluateTyped(context)
                 .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => results.Count() >= index
-                            ? Result<object?>.Success(results.ElementAt(index))
+                            ? Result.Success<object?>(results.ElementAt(index))
                             : EnumerableExpression.GetDefaultValue(DefaultExpression, context))
-                        : Result<object?>.FromExistingResult(indexResult))
+                        : Result.FromExistingResult<object?>(indexResult))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

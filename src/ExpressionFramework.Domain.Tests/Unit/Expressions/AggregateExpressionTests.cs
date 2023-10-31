@@ -36,7 +36,7 @@ public class AggregateExpressionTests
     {
         // Arrange
         var sut = new AggregateExpressionBuilder()
-            .AddExpressions(new TypedConstantResultExpressionBuilder<int>().WithValue(Result<int>.Error("Kaboom")), new TypedConstantExpressionBuilder<int>().WithValue(1))
+            .AddExpressions(new TypedConstantResultExpressionBuilder<int>().WithValue(Result.Error<int>("Kaboom")), new TypedConstantExpressionBuilder<int>().WithValue(1))
             .WithAggregator(new AddAggregatorBuilder())
             .Build();
 

@@ -105,7 +105,7 @@ public class TypedFieldExpressionTests
     public void Evaluate_Returns_Error_When_FieldNameExpression_Returns_Error()
     {
         // Arrange
-        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
+        var expression = new TypedFieldExpression<string>(new ConstantExpression(new MyClass { MyProperty = "Test" }), new TypedConstantResultExpression<string>(Result.Error<string>("Kaboom")));
 
         // Act
         var actual = expression.Evaluate();

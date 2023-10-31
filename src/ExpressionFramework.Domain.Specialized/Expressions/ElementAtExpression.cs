@@ -11,15 +11,15 @@ public partial record ElementAtExpression
             null,
             results => IndexExpression
                 .EvaluateTyped(context)
-                .Transform(indexResult => Result<object?>.Success(results.ElementAt(indexResult.Value))),
+                .Transform(indexResult => Result.Success<object?>(results.ElementAt(indexResult.Value))),
             selectorDelegate: items =>
                 IndexExpression
                     .EvaluateTyped(context)
                     .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => items.Count() >= index
-                            ? Result<IEnumerable<object?>>.Success(items)
-                            : Result<IEnumerable<object?>>.Invalid("Index is outside the bounds of the array"))
-                        : Result<IEnumerable<object?>>.FromExistingResult(indexResult))
+                            ? Result.Success<IEnumerable<object?>>(items)
+                            : Result.Invalid<IEnumerable<object?>>("Index is outside the bounds of the array"))
+                        : Result.FromExistingResult<IEnumerable<object?>>(indexResult))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

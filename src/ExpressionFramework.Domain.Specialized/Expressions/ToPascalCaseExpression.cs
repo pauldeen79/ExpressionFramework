@@ -11,12 +11,12 @@
 public partial record ToPascalCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<string>.Success(ToPascalCase(result.Value!))
+                ? Result.Success<string>(ToPascalCase(result.Value!))
                 : result);
 
     private string ToPascalCase(string value)

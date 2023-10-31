@@ -3,6 +3,6 @@
 public partial record ConstantResultExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Value);
+        => Result.FromExistingResult<object?>(Value);
 }
 

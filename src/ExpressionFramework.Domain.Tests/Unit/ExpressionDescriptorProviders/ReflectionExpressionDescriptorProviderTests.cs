@@ -61,7 +61,7 @@ public class ReflectionExpressionDescriptorProviderTests
     private sealed record SomeExpression : Expression
     {
         public override Result<object?> Evaluate(object? context)
-            => Result<object?>.Success("some value");
+            => Result.Success<object?>("some value");
 
         public override Result<Expression> GetSingleContainedExpression()
         {

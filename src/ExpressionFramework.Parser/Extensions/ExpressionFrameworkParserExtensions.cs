@@ -7,14 +7,14 @@ public static class ExpressionFrameworkParserExtensions
         var result = instance.Parse(functionParseResult, evaluator, parser);
         if (!result.IsSuccessful())
         {
-            return Result<ITypedExpression<T>>.FromExistingResult(result);
+            return Result.FromExistingResult<ITypedExpression<T>>(result);
         }
 
         if (result.Value is ITypedExpression<T> t)
         {
-            return Result<ITypedExpression<T>>.Success(t);
+            return Result.Success<ITypedExpression<T>>(t);
         }
 
-        return Result<ITypedExpression<T>>.Invalid($"Expression is not a typed expression of type {typeof(T).FullName}");
+        return Result.Invalid<ITypedExpression<T>>($"Expression is not a typed expression of type {typeof(T).FullName}");
     }
 }

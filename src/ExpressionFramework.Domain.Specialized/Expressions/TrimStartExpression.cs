@@ -4,7 +4,7 @@
 public partial record TrimStartExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
@@ -16,26 +16,26 @@ public partial record TrimStartExpression
     {
         if (s is null)
         {
-            return Result<string>.Invalid("Expression is not of type string");
+            return Result.Invalid<string>("Expression is not of type string");
         }
 
         if (TrimCharsExpression is null)
         {
-            return Result<string>.Success(s.TrimStart());
+            return Result.Success<string>(s.TrimStart());
         }
 
         var trimCharsResult = TrimCharsExpression.EvaluateTyped(context);
         if (!trimCharsResult.IsSuccessful())
         {
-            return Result<string>.FromExistingResult(trimCharsResult);
+            return Result.FromExistingResult<string>(trimCharsResult);
         }
 
         if (trimCharsResult.Value is null)
         {
-            return Result<string>.Success(s.TrimStart());
+            return Result.Success<string>(s.TrimStart());
         }
 
-        return Result<string>.Success(s.TrimStart(trimCharsResult.Value));
+        return Result.Success<string>(s.TrimStart(trimCharsResult.Value));
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()

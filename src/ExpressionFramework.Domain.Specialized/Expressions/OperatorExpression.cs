@@ -15,7 +15,7 @@
 public partial record OperatorExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<bool> EvaluateTyped(object? context)
         => Operator.Evaluate(context, LeftExpression, RightExpression);

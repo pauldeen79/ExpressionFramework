@@ -14,7 +14,7 @@
 public partial record StringReplaceExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
     {
@@ -32,7 +32,7 @@ public partial record StringReplaceExpression
 
         return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<string>.Success(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
-                : Result<string>.FromExistingResult(result));
+                ? Result.Success<string>(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
+                : Result.FromExistingResult<string>(result));
     }
 }

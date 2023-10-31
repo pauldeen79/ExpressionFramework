@@ -6,7 +6,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Error_When_FindExpression_Returns_Error()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), new TypedConstantExpression<string>("f"));
+        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantResultExpression<string>(Result.Error<string>("Kaboom")), new TypedConstantExpression<string>("f"));
 
         // Act
         var result = sut.Evaluate();
@@ -38,7 +38,7 @@ public class StringReplaceExpressionTests
     public void Evaluate_Returns_Error_When_ReplaceExpression_Returns_Error()
     {
         // Arrange
-        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantExpression<string>("f"), new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")));
+        var sut = new StringReplaceExpression(new TypedConstantExpression<string>("Hello world"), new TypedConstantExpression<string>("f"), new TypedConstantResultExpression<string>(Result.Error<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

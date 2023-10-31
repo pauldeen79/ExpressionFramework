@@ -59,7 +59,7 @@ public class ReflectionAggregatorDescriptorProviderTests
     private sealed record SomeAggregator : Aggregator
     {
         public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression)
-            => Result<object?>.Success("some value");
+            => Result.Success<object?>("some value");
 
         public object Parameter { get; } = "";
     }

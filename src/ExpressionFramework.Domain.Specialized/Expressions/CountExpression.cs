@@ -9,8 +9,8 @@ public partial record CountExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<object?>.Success(results.Count()),
-            results => Result<object?>.Success(results.Count(x => x.Result.Value))
+            results => Result.Success<object?>(results.Count()),
+            results => Result.Success<object?>(results.Count(x => x.Result.Value))
         );
 
     public Result<int> EvaluateTyped(object? context)
@@ -19,8 +19,8 @@ public partial record CountExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<int>.Success(results.Count()),
-            results => Result<int>.Success(results.Count(x => x.Result.Value))
+            results => Result.Success<int>(results.Count()),
+            results => Result.Success<int>(results.Count(x => x.Result.Value))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

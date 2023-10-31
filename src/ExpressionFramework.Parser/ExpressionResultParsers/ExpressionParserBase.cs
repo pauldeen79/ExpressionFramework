@@ -16,8 +16,8 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var result = Parse(functionParseResult, evaluator, parser);
 
         return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value?.Evaluate(context) ?? Result<object?>.Success(null)
-            : Result<object?>.FromExistingResult(result);
+            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
+            : Result.FromExistingResult<object?>(result);
     }
 
     public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -26,7 +26,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 
         return IsNameValid(functionParseResult.FunctionName)
             ? DoParse(functionParseResult, evaluator, parser)
-            : Result<Expression>.Continue();
+            : Result.Continue<Expression>();
     }
 
     protected virtual bool IsNameValid(string functionName)
@@ -42,23 +42,23 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())
         {
-            return Result<Expression>.FromExistingResult(typeResult);
+            return Result.FromExistingResult<Expression>(typeResult);
         }
 
         var valueResult = functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser);
         if (!valueResult.IsSuccessful())
         {
-            return Result<Expression>.FromExistingResult(valueResult);
+            return Result.FromExistingResult<Expression>(valueResult);
         }
 
 #pragma warning disable CA1031 // Do not catch general exception types
         try
         {
-            return Result<Expression>.Success((Expression)Activator.CreateInstance(expressionType.MakeGenericType(typeResult.Value!), valueResult.Value));
+            return Result.Success<Expression>((Expression)Activator.CreateInstance(expressionType.MakeGenericType(typeResult.Value!), valueResult.Value));
         }
         catch (Exception ex)
         {
-            return Result<Expression>.Invalid($"Could not create {expressionType.Name.Replace("`1", string.Empty)}. Error: {ex.Message}");
+            return Result.Invalid<Expression>($"Could not create {expressionType.Name.Replace("`1", string.Empty)}. Error: {ex.Message}");
         }
 #pragma warning restore CA1031 // Do not catch general exception types
     }

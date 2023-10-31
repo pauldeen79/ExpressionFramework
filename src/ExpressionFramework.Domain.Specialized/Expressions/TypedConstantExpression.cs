@@ -8,10 +8,10 @@
 public partial record TypedConstantExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.Success(Value);
+        => Result.Success<object?>(Value);
 
     public Result<T> EvaluateTyped(object? context)
-        => Result<T>.Success(Value);
+        => Result.Success<T>(Value);
 
     public Expression ToUntyped()
         => new ConstantExpression(Value);

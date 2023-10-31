@@ -8,7 +8,7 @@
 public partial record TypedConstantResultExpression<T>
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Value);
+        => Result.FromExistingResult<object?>(Value);
 
     public Result<T> EvaluateTyped(object? context)
         => Value;

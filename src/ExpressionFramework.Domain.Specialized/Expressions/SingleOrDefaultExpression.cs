@@ -9,12 +9,12 @@ public partial record SingleOrDefaultExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result<object?>.Success(results.Single()),
-            results => Result<object?>.Success(results.Single(x => x.Result.Value).Item),
+            results => Result.Success<object?>(results.Single()),
+            results => Result.Success<object?>(results.Single(x => x.Result.Value).Item),
             context => EnumerableExpression.GetDefaultValue(DefaultExpression, context),
             items => items.Count(x => PredicateExpression is null || PredicateExpression.EvaluateTyped(x).Value) > 1
-                ? Result<IEnumerable<object?>>.Invalid("Sequence contains more than one element")
-                : Result<IEnumerable<object?>>.Success(items)
+                ? Result.Invalid<IEnumerable<object?>>("Sequence contains more than one element")
+                : Result.Success<IEnumerable<object?>>(items)
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

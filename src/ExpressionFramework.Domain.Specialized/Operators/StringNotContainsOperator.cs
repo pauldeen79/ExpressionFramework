@@ -11,7 +11,7 @@ public partial record StringNotContainsOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => leftValue is string leftString && rightValue is string rightString
-            ? Result<bool>.Success(leftString.IndexOf(rightString, StringComparison.CurrentCultureIgnoreCase) == -1)
-            : Result<bool>.Invalid("LeftValue and RightValue both need to be of type string");
+            ? Result.Success<bool>(leftString.IndexOf(rightString, StringComparison.CurrentCultureIgnoreCase) == -1)
+            : Result.Invalid<bool>("LeftValue and RightValue both need to be of type string");
 }
 

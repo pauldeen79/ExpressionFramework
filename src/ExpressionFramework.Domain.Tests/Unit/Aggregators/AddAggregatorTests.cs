@@ -123,7 +123,7 @@ public class AddAggregatorTests
         var sut = new AddAggregator();
 
         // Act
-        var result = sut.Aggregate(new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")), new TypedConstantExpression<int>(2));
+        var result = sut.Aggregate(new TypedConstantResultExpression<int>(Result.Error<int>("Kaboom")), new TypedConstantExpression<int>(2));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -137,7 +137,7 @@ public class AddAggregatorTests
         var sut = new AddAggregator();
 
         // Act
-        var result = sut.Aggregate(new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result<int>.Error("Kaboom")));
+        var result = sut.Aggregate(new TypedConstantExpression<int>(1), new TypedConstantResultExpression<int>(Result.Error<int>("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -151,7 +151,7 @@ public class AddAggregatorTests
         var sut = new AddAggregator();
 
         // Act
-        var result = sut.Aggregate(new ConstantExpression(1), new TypedConstantExpression<int>(2), new TypedConstantResultExpression<IFormatProvider>(Result<IFormatProvider>.Error("Kaboom")));
+        var result = sut.Aggregate(new ConstantExpression(1), new TypedConstantExpression<int>(2), new TypedConstantResultExpression<IFormatProvider>(Result.Error<IFormatProvider>("Kaboom")));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);

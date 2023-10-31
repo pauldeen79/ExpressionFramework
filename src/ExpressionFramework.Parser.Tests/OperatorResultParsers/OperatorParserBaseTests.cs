@@ -8,7 +8,7 @@ public class OperatorParserBaseTests
     public OperatorParserBaseTests()
     {
         _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result<object?>.Success(Substitute.For<Operator>()));
+                      .Returns(Result.Success<object?>(Substitute.For<Operator>()));
     }
 
     [Fact]
@@ -77,6 +77,6 @@ public class OperatorParserBaseTests
         public MyOperatorParser() : base("Correct") { }
 
         protected override Result<Operator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-            => Result<Operator>.FromExistingResult(evaluator.Evaluate(functionParseResult, parser));
+            => Result.FromExistingResult<Operator>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

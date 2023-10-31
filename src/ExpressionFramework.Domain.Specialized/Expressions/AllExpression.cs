@@ -10,7 +10,7 @@ public partial record AllExpression
             Expression,
             PredicateExpression,
             null!, // you can't get here... predicate is always checked
-            results => Result<object?>.Success(results.All(x => x.Result.Value)),
+            results => Result.Success<object?>(results.All(x => x.Result.Value)),
             predicateIsRequired: true
         );
 
@@ -21,7 +21,7 @@ public partial record AllExpression
             Expression,
             PredicateExpression,
             null!, // you can't get here... predicate is always checked
-            results => Result<bool>.Success(results.All(x => x.Result.Value)),
+            results => Result.Success<bool>(results.All(x => x.Result.Value)),
             predicateIsRequired: true
         );
 

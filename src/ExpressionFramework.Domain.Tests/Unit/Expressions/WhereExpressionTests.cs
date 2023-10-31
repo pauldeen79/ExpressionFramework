@@ -19,7 +19,7 @@ public class WhereExpressionTests
     public void Evaluate_Returns_Error_When_Expression_Returns_Error()
     {
         // Arrange
-        var sut = new WhereExpression(new TypedConstantResultExpression<IEnumerable>(Result<IEnumerable>.Error("Kaboom")), new TypedDelegateExpression<bool>(x => x is string));
+        var sut = new WhereExpression(new TypedConstantResultExpression<IEnumerable>(Result.Error<IEnumerable>("Kaboom")), new TypedDelegateExpression<bool>(x => x is string));
 
         // Act
         var result = sut.Evaluate();
@@ -35,7 +35,7 @@ public class WhereExpressionTests
         // Arrange
         var sut = new WhereExpressionBuilder()
             .WithExpression(new object[] { "A", "B", 1, "C" })
-            .WithPredicateExpression(new TypedConstantResultExpressionBuilder<bool>().WithValue(Result<bool>.Error("Kaboom")))
+            .WithPredicateExpression(new TypedConstantResultExpressionBuilder<bool>().WithValue(Result.Error<bool>("Kaboom")))
             .Build();
 
         // Act

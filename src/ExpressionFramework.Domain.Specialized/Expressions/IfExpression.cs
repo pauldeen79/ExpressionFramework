@@ -20,7 +20,7 @@ public partial record IfExpression
         var result = new EvaluatableExpression(Condition, ResultExpression).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result);
+            return Result.FromExistingResult<object?>(result);
         }
         
         if (result.Value)
@@ -33,6 +33,6 @@ public partial record IfExpression
             return DefaultExpression.Evaluate(context);
         }
 
-        return Result<object?>.Success(null);
+        return Result.Success<object?>(null);
     }
 }

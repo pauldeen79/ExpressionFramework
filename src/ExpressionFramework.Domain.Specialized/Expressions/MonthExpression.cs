@@ -7,8 +7,8 @@
 public partial record MonthExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Month);
+        => Result.FromExistingResult<DateTime, object?>(Expression.EvaluateTyped(context), x => x.Month);
 
     public Result<int> EvaluateTyped(object? context)
-        => Result<int>.FromExistingResult(Expression.EvaluateTyped(context), x => x.Month);
+        => Result.FromExistingResult<DateTime, int>(Expression.EvaluateTyped(context), x => x.Month);
 }

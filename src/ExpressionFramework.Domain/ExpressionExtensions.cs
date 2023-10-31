@@ -4,7 +4,7 @@ public static class ExpressionExtensions
 {
     public static Result<object?> EvaluateWithNullCheck(this Expression instance, object? context, string? errorMessage = null)
         => instance.Evaluate(context).Transform(result => result.IsSuccessful() && result.Value is null
-            ? Result<object?>.Invalid(errorMessage.WhenNullOrEmpty("Expression cannot be empty"))
+            ? Result.Invalid<object?>(errorMessage.WhenNullOrEmpty("Expression cannot be empty"))
             : result);
 
     public static Result<T> EvaluateTyped<T>(this Expression instance, object? context = null, string? errorMessage = null)
@@ -14,9 +14,9 @@ public static class ExpressionExtensions
 
     public static Result<T> EvaluateTypedWithTypeCheck<T>(this ITypedExpression<T> instance, object? context = null, string? errorMessage = null)
         => instance.EvaluateTyped(context).Transform(result => result.IsSuccessful() && result.Value is T t
-            ? Result<T>.FromExistingResult(result, _ => t) // use FromExistingResult because status might be Ok, Continue or another successful status
+            ? Result.FromExistingResult<T>(result, t) // use FromExistingResult because status might be Ok, Continue or another successful status
             : result.Transform(x => x.IsSuccessful()
-                ? Result<T>.Invalid(CreateInvalidTypeErrorMessage<T>(errorMessage))
+                ? Result.Invalid<T>(CreateInvalidTypeErrorMessage<T>(errorMessage))
                 : x));
 
     public static string CreateInvalidTypeErrorMessage<T>(string? errorMessage = null)

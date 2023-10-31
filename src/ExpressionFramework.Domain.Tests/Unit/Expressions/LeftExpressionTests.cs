@@ -39,7 +39,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Error_When_Expression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new LeftExpression(new TypedDelegateResultExpression<string>(_ => Result<string>.Error("Kaboom")), new TypedConstantExpression<int>(1));
+        var sut = new LeftExpression(new TypedDelegateResultExpression<string>(_ => Result.Error<string>("Kaboom")), new TypedConstantExpression<int>(1));
 
         // Act
         var actual = sut.Evaluate();
@@ -53,7 +53,7 @@ public class LeftExpressionTests
     public void Evaluate_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new LeftExpression(new TypedConstantExpression<string>("test"), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
+        var sut = new LeftExpression(new TypedConstantExpression<string>("test"), new TypedDelegateResultExpression<int>(_ => Result.Error<int>("Kaboom")));
 
         // Act
         var actual = sut.Evaluate();
@@ -95,7 +95,7 @@ public class LeftExpressionTests
     public void EvaluateTyped_Returns_Error_When_LengthExpression_Evaluation_Returns_Error()
     {
         // Arrange
-        var sut = new LeftExpression(new TypedConstantExpression<string>("test"), new TypedDelegateResultExpression<int>(_ => Result<int>.Error("Kaboom")));
+        var sut = new LeftExpression(new TypedConstantExpression<string>("test"), new TypedDelegateResultExpression<int>(_ => Result.Error<int>("Kaboom")));
 
         // Act
         var actual = sut.EvaluateTyped();

@@ -34,7 +34,7 @@ public class ErrorExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new ErrorExpression(new TypedDelegateResultExpression<string>(_ => Result<string>.Error("Kaboom")));
+        var sut = new ErrorExpression(new TypedDelegateResultExpression<string>(_ => Result.Error<string>("Kaboom")));
 
         // Act
         var result = sut.Evaluate();

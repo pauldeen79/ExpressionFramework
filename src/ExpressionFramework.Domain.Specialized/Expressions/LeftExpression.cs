@@ -4,7 +4,7 @@
 public partial record LeftExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
@@ -17,12 +17,12 @@ public partial record LeftExpression
         var lengthResult = LengthExpression.EvaluateTyped(s);
         if (!lengthResult.IsSuccessful())
         {
-            return Result<string>.FromExistingResult(lengthResult);
+            return Result.FromExistingResult<string>(lengthResult);
         }
 
         return s.Length >= lengthResult.Value
-            ? Result<string>.Success(s.Substring(0, lengthResult.Value))
-            : Result<string>.Invalid("Length must refer to a location within the string");
+            ? Result.Success<string>(s.Substring(0, lengthResult.Value))
+            : Result.Invalid<string>("Length must refer to a location within the string");
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()

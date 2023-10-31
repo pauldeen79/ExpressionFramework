@@ -14,18 +14,18 @@ public partial record FieldExpression
         var result = expression.EvaluateWithNullCheck(context);
         if (!result.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(result);
+            return Result.FromExistingResult<object?>(result);
         }
 
         var fieldNameResult = fieldNameExpression.EvaluateTyped(result.Value);
         if (!fieldNameResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(fieldNameResult);
+            return Result.FromExistingResult<object?>(fieldNameResult);
         }
 
         if (string.IsNullOrEmpty(fieldNameResult.Value))
         {
-            return Result<object?>.Invalid("FieldNameExpression must be a non empty string");
+            return Result.Invalid<object?>("FieldNameExpression must be a non empty string");
         }
 
         return GetValue(result.Value!, fieldNameResult.Value!);
@@ -41,7 +41,7 @@ public partial record FieldExpression
 
             if (property is null)
             {
-                return Result<object?>.Invalid($"Fieldname [{fieldName}] is not found on type [{type.FullName}]");
+                return Result.Invalid<object?>($"Fieldname [{fieldName}] is not found on type [{type.FullName}]");
             }
 
             returnValue = property.GetValue(value);
@@ -53,6 +53,6 @@ public partial record FieldExpression
             type = returnValue.GetType();
         }
 
-        return Result<object?>.Success(returnValue);
+        return Result.Success<object?>(returnValue);
     }
 }

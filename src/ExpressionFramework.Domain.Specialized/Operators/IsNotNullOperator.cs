@@ -8,5 +8,5 @@
 public partial record IsNotNullOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
-        => Result<bool>.Success(leftValue != null);
+        => Result.Success<bool>(leftValue != null);
 }

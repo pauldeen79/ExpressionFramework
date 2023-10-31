@@ -25,29 +25,29 @@ public partial record SumExpression
 
         if (Array.TrueForAll(values, x => x is decimal))
         {
-            return Result<object?>.Success(values.Select(Convert.ToDecimal).Sum());
+            return Result.Success<object?>(values.Select(Convert.ToDecimal).Sum());
         }
 
         if (Array.TrueForAll(values, x => x is double))
         {
-            return Result<object?>.Success(values.Select(Convert.ToDouble).Sum());
+            return Result.Success<object?>(values.Select(Convert.ToDouble).Sum());
         }
 
         if (Array.TrueForAll(values, x => x is float))
         {
-            return Result<object?>.Success(values.Select(Convert.ToSingle).Sum());
+            return Result.Success<object?>(values.Select(Convert.ToSingle).Sum());
         }
 
         if (Array.TrueForAll(values, x => x is long))
         {
-            return Result<object?>.Success(values.Select(Convert.ToInt64).Sum());
+            return Result.Success<object?>(values.Select(Convert.ToInt64).Sum());
         }
 
         if (Array.TrueForAll(values, x => x is int || x is short || x is byte))
         {
-            return Result<object?>.Success(values.Select(Convert.ToInt32).Sum());
+            return Result.Success<object?>(values.Select(Convert.ToInt32).Sum());
         }
 
-        return Result<object?>.Invalid("Could only compute sum of numeric values");
+        return Result.Invalid<object?>("Could only compute sum of numeric values");
     }
 }

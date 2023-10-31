@@ -13,8 +13,8 @@ public abstract class AggregatorParserBase : IFunctionResultParser
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
         => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
-            ? Result<object?>.FromExistingResult(DoParse(functionParseResult, evaluator, parser))
-            : Result<object?>.Continue();
+            ? Result.FromExistingResult<object?>(DoParse(functionParseResult, evaluator, parser))
+            : Result.Continue<object?>();
 
     protected abstract Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 }

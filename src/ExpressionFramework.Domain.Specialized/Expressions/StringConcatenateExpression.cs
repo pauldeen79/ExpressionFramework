@@ -13,21 +13,21 @@
 public partial record StringConcatenateExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
     {
         var valueResults = Expressions.EvaluateTypedUntilFirstError(context, "Expressions must be of type string");
         if (valueResults.Length == 0)
         {
-            return Result<string>.Invalid("At least one expression is required");
+            return Result.Invalid<string>("At least one expression is required");
         }
 
         if (!valueResults[valueResults.Length - 1].IsSuccessful())
         {
-            return Result<string>.FromExistingResult(valueResults[valueResults.Length - 1]);
+            return Result.FromExistingResult<string>(valueResults[valueResults.Length - 1]);
         }
 
-        return Result<string>.Success(string.Concat(valueResults.Select(x => x.Value)));
+        return Result.Success<string>(string.Concat(valueResults.Select(x => x.Value)));
     }
 }

@@ -20,7 +20,7 @@ public partial record SwitchExpression
             var caseResult = EvaluateWithConditionResult(@case, context);
             if (!caseResult.IsSuccessful())
             {
-                return Result<object?>.FromExistingResult(caseResult);
+                return Result.FromExistingResult<object?>(caseResult);
             }
             if (caseResult.Value.ConditionResult)
             {
@@ -33,7 +33,7 @@ public partial record SwitchExpression
             return DefaultExpression.Evaluate(context);
         }
 
-        return Result<object?>.Success(null);
+        return Result.Success<object?>(null);
     }
 
     private Result<(bool ConditionResult, Result<object?> ExpressionResult)> EvaluateWithConditionResult(Case @case, object? context)
@@ -41,14 +41,14 @@ public partial record SwitchExpression
         var result = new EvaluatableExpression(@case.Condition, @case.Expression).EvaluateTyped(context);
         if (!result.IsSuccessful())
         {
-            return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.FromExistingResult(result);
+            return Result.FromExistingResult<(bool ConditionResult, Result<object?> ExpressionResult)>(result);
         }
 
         if (result.Value)
         {
-            return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((true, @case.Expression.Evaluate(context)));
+            return Result.Success<(bool ConditionResult, Result<object?> ExpressionResult)>((true, @case.Expression.Evaluate(context)));
         }
 
-        return Result<(bool ConditionResult, Result<object?> ExpressionResult)>.Success((false, Result<object?>.Success(null)));
+        return Result.Success<(bool ConditionResult, Result<object?> ExpressionResult)>((false, Result.Success<object?>(null)));
     }
 }

@@ -11,11 +11,11 @@
 public partial record StringLengthExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result<object?>.FromExistingResult(EvaluateTyped(context));
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<int> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result<int>.Success(result.Value!.Length)
-                : Result<int>.FromExistingResult(result));
+                ? Result.Success<int>(result.Value!.Length)
+                : Result.FromExistingResult<int>(result));
 }

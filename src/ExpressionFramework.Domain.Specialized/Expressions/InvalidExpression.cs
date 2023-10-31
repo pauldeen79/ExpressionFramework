@@ -13,25 +13,25 @@ public partial record InvalidExpression
         var errorMessageResult = ErrorMessageExpression.EvaluateTyped(context);
         if (!errorMessageResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(errorMessageResult);
+            return Result.FromExistingResult<object?>(errorMessageResult);
         }
         
         if (errorMessageResult.Value is not string errorMessage)
         {
-            return Result<object?>.Invalid();
+            return Result.Invalid<object?>();
         }
 
         if (!ValidationErrorExpressions.Any())
         {
-            return Result<object?>.Invalid(errorMessage);
+            return Result.Invalid<object?>(errorMessage);
         }
 
         var validationErrorResult = ValidationErrorExpressions.EvaluateTypedUntilFirstError(context, "ValidationErrorExpressions must be a collection of type string");
         if (!validationErrorResult[validationErrorResult.Length - 1].IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(validationErrorResult[validationErrorResult.Length - 1]);
+            return Result.FromExistingResult<object?>(validationErrorResult[validationErrorResult.Length - 1]);
         }
 
-        return Result<object?>.Invalid(errorMessage, validationErrorResult.Select(x => x.Value!));
+        return Result.Invalid<object?>(errorMessage, validationErrorResult.Select(x => x.Value!));
     }
 }

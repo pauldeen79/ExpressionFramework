@@ -6,17 +6,17 @@ public static class AggregatorBase
     {
         if (firstExpression is null)
         {
-            return Result<object?>.Invalid("First expression is required");
+            return Result.Invalid<object?>("First expression is required");
         }
 
         if (secondExpression is null)
         {
-            return Result<object?>.Invalid("Second expression is required");
+            return Result.Invalid<object?>("Second expression is required");
         }
 
         if (aggregateDelegate is null)
         {
-            return Result<object?>.Invalid("Aggregate expression is required");
+            return Result.Invalid<object?>("Aggregate expression is required");
         }
 
         var firstExpressionResult = firstExpression.Evaluate(context);
@@ -32,12 +32,12 @@ public static class AggregatorBase
         }
 
         var formatProviderExpressionResult = formatProviderExpression == null
-            ? Result<IFormatProvider>.Success(CultureInfo.InvariantCulture)
+            ? Result.Success<IFormatProvider>(CultureInfo.InvariantCulture)
             : formatProviderExpression.EvaluateTyped(context);
 
         if (!formatProviderExpressionResult.IsSuccessful())
         {
-            return Result<object?>.FromExistingResult(formatProviderExpressionResult);
+            return Result.FromExistingResult<object?>(formatProviderExpressionResult);
         }
 
         return aggregateDelegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value, formatProviderExpressionResult.Value!);

@@ -56,7 +56,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new TypedConstantExpression<string>("Ignored"), new[] { new TypedConstantResultExpression<ValidationError>(Result<ValidationError>.Error("Kaboom")) });
+        var sut = new InvalidExpression(new TypedConstantExpression<string>("Ignored"), new[] { new TypedConstantResultExpression<ValidationError>(Result.Error<ValidationError>("Kaboom")) });
 
         // Act
         var result = sut.Evaluate();
@@ -70,7 +70,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ValidationErrors_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result<string>.Error("Kaboom")), Enumerable.Empty<ITypedExpression<ValidationError>>());
+        var sut = new InvalidExpression(new TypedConstantResultExpression<string>(Result.Error<string>("Kaboom")), Enumerable.Empty<ITypedExpression<ValidationError>>());
 
         // Act
         var result = sut.Evaluate();

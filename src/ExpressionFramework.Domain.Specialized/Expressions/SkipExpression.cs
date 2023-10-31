@@ -10,11 +10,11 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "CountExpression is not of type integer, Expression is not of type IEnumerable")]
 public partial record SkipExpression
 {
-    public override Result<object?> Evaluate(object? context) => Result<object?>.FromExistingResult(EvaluateTyped(context), result => result);
+    public override Result<object?> Evaluate(object? context) => Result.FromExistingResult<IEnumerable<object?>, object?>(EvaluateTyped(context), result => result);
 
     public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Skip);
 
     private static IEnumerable<Result<object?>> Skip(IEnumerable<object?> e, Result<int> countResult) => e
         .Skip(countResult.Value)
-        .Select(Result<object?>.Success);
+        .Select(Result.Success);
 }

@@ -8,7 +8,7 @@ public abstract partial record Operator
 
         var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
         return nonSuccessfulResult != null
-            ? Result<bool>.FromExistingResult(nonSuccessfulResult)
+            ? Result.FromExistingResult<bool>(nonSuccessfulResult)
             : Evaluate(results[0].Value, results[1].Value);
     }
 

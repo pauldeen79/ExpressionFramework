@@ -18,7 +18,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var sut = Fixture.Create<IExpressionFrameworkParser>();
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
         sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
-           .Returns(Result<Expression>.Error("Kaboom"));
+           .Returns(Result.Error<Expression>("Kaboom"));
 
         // Act
         var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
@@ -35,7 +35,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var sut = Fixture.Create<IExpressionFrameworkParser>();
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
         sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
-           .Returns(Result<Expression>.Success(new TypedConstantExpression<string>("test")));
+           .Returns(Result.Success<Expression>(new TypedConstantExpression<string>("test")));
 
         // Act
         var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
@@ -52,7 +52,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var sut = Fixture.Create<IExpressionFrameworkParser>();
         var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
         sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
-           .Returns(Result<Expression>.Success(new TypedConstantExpression<int>(1)));
+           .Returns(Result.Success<Expression>(new TypedConstantExpression<int>(1)));
 
         // Act
         var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
