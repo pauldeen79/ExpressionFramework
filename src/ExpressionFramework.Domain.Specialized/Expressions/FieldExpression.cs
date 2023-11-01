@@ -53,6 +53,6 @@ public partial record FieldExpression
             type = returnValue.GetType();
         }
 
-        return Result.Success<object?>(returnValue);
+        return Result.Success(returnValue);
     }
 }

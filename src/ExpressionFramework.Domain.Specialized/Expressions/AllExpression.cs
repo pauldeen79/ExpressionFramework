@@ -21,7 +21,7 @@ public partial record AllExpression
             Expression,
             PredicateExpression,
             null!, // you can't get here... predicate is always checked
-            results => Result.Success<bool>(results.All(x => x.Result.Value)),
+            results => Result.Success(results.All(x => x.Result.Value)),
             predicateIsRequired: true
         );
 

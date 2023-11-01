@@ -8,5 +8,5 @@
 public partial record DelegateExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result.Success<object?>(Value.Invoke(context));
+        => Result.Success(Value.Invoke(context));
 }

@@ -8,5 +8,5 @@
 public partial record ConstantExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => Result.Success<object?>(Value);
+        => Result.Success(Value);
 }

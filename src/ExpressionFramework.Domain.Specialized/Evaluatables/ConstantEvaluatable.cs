@@ -7,7 +7,7 @@
 public partial record ConstantEvaluatable
 {
     public override Result<bool> Evaluate(object? context)
-        => Result.Success<bool>(Value);
+        => Result.Success(Value);
 }
 
 public partial record ConstantEvaluatableBase

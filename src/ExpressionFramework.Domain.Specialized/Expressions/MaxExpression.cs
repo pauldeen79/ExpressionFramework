@@ -4,7 +4,7 @@
 public partial record MaxExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetAggregateValue(context, Expression, x => Result.Success<object?>(x.Max()), SelectorExpression);
+        => EnumerableExpression.GetAggregateValue(context, Expression, x => Result.Success(x.Max()), SelectorExpression);
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor

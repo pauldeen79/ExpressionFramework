@@ -27,6 +27,6 @@ public partial record SequenceExpression
             return Result.FromExistingResult<IEnumerable<object?>>(values[values.Length - 1]);
         }
 
-        return Result.Success<IEnumerable<object?>>(values.Select(x => x.Value));
+        return Result.Success(values.Select(x => x.Value));
     }
 }

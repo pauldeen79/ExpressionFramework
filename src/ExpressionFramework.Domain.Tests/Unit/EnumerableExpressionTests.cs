@@ -14,7 +14,7 @@ public class EnumerableExpressionTests
     public void GetResultFromEnumerable_Returns_Invalid_On_Null_Expression()
     {
         // Act
-        var result = EnumerableExpression.GetResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success<object?>(x)));
+        var result = EnumerableExpression.GetResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success(x)));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -36,7 +36,7 @@ public class EnumerableExpressionTests
     public void GetTypedResultFromEnumerable_Ruturns_Invalid_On_Null_Expression()
     {
         // Act
-        var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success<object?>(x)));
+        var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success(x)));
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);

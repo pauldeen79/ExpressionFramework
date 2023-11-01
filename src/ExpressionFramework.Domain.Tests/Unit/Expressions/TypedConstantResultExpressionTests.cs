@@ -6,7 +6,7 @@ public class TypedConstantResultExpressionTests
     public void Can_Evaluate_Value()
     {
         // Arrange
-        var sut = new TypedConstantResultExpression<int>(Result.Success<int>(1));
+        var sut = new TypedConstantResultExpression<int>(Result.Success(1));
 
         // Act
         var result = sut.Evaluate();
@@ -20,7 +20,7 @@ public class TypedConstantResultExpressionTests
     public void Can_Evaluate_Value_Typed()
     {
         // Arrange
-        var sut = new TypedConstantResultExpression<int>(Result.Success<int>(1));
+        var sut = new TypedConstantResultExpression<int>(Result.Success(1));
 
         // Act
         var result = sut.EvaluateTyped(null);
@@ -34,7 +34,7 @@ public class TypedConstantResultExpressionTests
     public void Can_Convert_To_Untyped_ConstantExpression()
     {
         // Arrange
-        var sut = new TypedConstantResultExpression<int>(Result.Success<int>(1));
+        var sut = new TypedConstantResultExpression<int>(Result.Success(1));
 
         // Act
         var actual = sut.ToUntyped();
@@ -75,7 +75,7 @@ public class TypedConstantResultExpressionTests
     public void Can_Use_TypedConstantResultExpression_In_ExpressionBuilderFactory()
     {
         // Arrange
-        var sut = new TypedConstantResultExpression<int>(Result.Success<int>(1));
+        var sut = new TypedConstantResultExpression<int>(Result.Success(1));
 
         // Act
         var builder = ExpressionBuilderFactory.Create(sut);

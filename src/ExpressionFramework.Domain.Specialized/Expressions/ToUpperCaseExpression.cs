@@ -16,6 +16,6 @@ public partial record ToUpperCaseExpression
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<string>(result.Value!.ToUpper())
+                ? Result.Success(result.Value!.ToUpper())
                 : result);
 }

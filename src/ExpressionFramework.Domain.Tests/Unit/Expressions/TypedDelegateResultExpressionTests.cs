@@ -6,7 +6,7 @@ public class TypedDelegateResultExpressionTests
     public void Evaluate_Returns_Value_From_Delegate()
     {
         // Arrange
-        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success<int>(34));
+        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success(34));
 
         // Act
         var result = sut.Evaluate("not used");
@@ -20,7 +20,7 @@ public class TypedDelegateResultExpressionTests
     public void EvaluateTyped_Returns_Value_From_Delegate()
     {
         // Arrange
-        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success<int>(34));
+        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success(34));
 
         // Act
         var result = sut.EvaluateTyped("not used");
@@ -61,7 +61,7 @@ public class TypedDelegateResultExpressionTests
     public void Can_Use_TypedConstantExpression_In_ExpressionBuilderFactory()
     {
         // Arrange
-        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success<int>(34));
+        var sut = new TypedDelegateResultExpression<int>(_ => Result.Success(34));
 
         // Act
         var builder = ExpressionBuilderFactory.Create(sut);

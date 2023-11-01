@@ -35,7 +35,7 @@ public static class BooleanExpression
             return Result.FromExistingResult<bool>(secondExpressionResult);
         }
 
-        return Result.Success<bool>(@delegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value));
+        return Result.Success(@delegate.Invoke(firstExpressionResult.Value, secondExpressionResult.Value));
     }
 
     public static ExpressionDescriptor GetDescriptor(Type type,

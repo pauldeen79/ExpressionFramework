@@ -12,7 +12,7 @@ public static class ExpressionFrameworkParserExtensions
 
         if (result.Value is ITypedExpression<T> t)
         {
-            return Result.Success<ITypedExpression<T>>(t);
+            return Result.Success(t);
         }
 
         return Result.Invalid<ITypedExpression<T>>($"Expression is not a typed expression of type {typeof(T).FullName}");

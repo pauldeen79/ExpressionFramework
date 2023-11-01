@@ -64,7 +64,7 @@ public class ReflectionOperatorDescriptorProviderTests
     private sealed record SomeOperator : Operator
     {
         protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
-            => Result.Success<bool>(true);
+            => Result.Success(true);
 
         public object Parameter { get; } = "";
     }

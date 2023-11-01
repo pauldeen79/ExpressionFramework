@@ -16,7 +16,7 @@ public class ExpressionBuilderFactoryTests : TestBase
     public void CreateTyped_Returns_Correct_Result_On_TypedConstantResultExpression()
     {
         // Act
-        var result = ExpressionBuilderFactory.CreateTyped(new TypedConstantResultExpression<int>(Result.Success<int>(1)));
+        var result = ExpressionBuilderFactory.CreateTyped(new TypedConstantResultExpression<int>(Result.Success(1)));
 
         // Assert
         result.Should().BeOfType<TypedConstantResultExpressionBuilder<int>>();
@@ -36,7 +36,7 @@ public class ExpressionBuilderFactoryTests : TestBase
     public void CreateTyped_Returns_Correct_Result_On_TypedDelegateResultExpression()
     {
         // Act
-        var result = ExpressionBuilderFactory.CreateTyped(new TypedDelegateResultExpression<int>(_ => Result.Success<int>(1)));
+        var result = ExpressionBuilderFactory.CreateTyped(new TypedDelegateResultExpression<int>(_ => Result.Success(1)));
 
         // Assert
         result.Should().BeOfType<TypedDelegateResultExpressionBuilder<int>>();

@@ -78,12 +78,12 @@ public static class FunctionParseResultExtensions
         var value = argumentValueResult.GetValue();
         if (value is T t)
         {
-            return new TypedConstantResultExpression<T>(Result.Success<T>(t));
+            return new TypedConstantResultExpression<T>(Result.Success(t));
         }
 
         if (value == null && useDefaultValue)
         {
-            return new TypedConstantResultExpression<T>(Result.Success<T>(defaultValue!));
+            return new TypedConstantResultExpression<T>(Result.Success(defaultValue!));
         }
 
         if (typeof(T).IsEnum && value is string s)
@@ -91,7 +91,7 @@ public static class FunctionParseResultExtensions
 #pragma warning disable CA1031 // Do not catch general exception types
             try
             {
-                return new TypedConstantResultExpression<T>(Result.Success<T>((T)Enum.Parse(typeof(T), s)));
+                return new TypedConstantResultExpression<T>(Result.Success((T)Enum.Parse(typeof(T), s)));
             }
             catch (Exception ex)
             {

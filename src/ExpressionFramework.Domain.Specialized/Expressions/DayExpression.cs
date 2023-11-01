@@ -10,5 +10,5 @@ public partial record DayExpression
         => Result.FromExistingResult<DateTime, object?>(Expression.EvaluateTyped(context), x => x.Day);
 
     public Result<int> EvaluateTyped(object? context)
-        => Result.FromExistingResult<DateTime, int>(Expression.EvaluateTyped(context), x => x.Day);
+        => Result.FromExistingResult(Expression.EvaluateTyped(context), x => x.Day);
 }

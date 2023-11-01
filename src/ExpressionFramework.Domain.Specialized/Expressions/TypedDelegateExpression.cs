@@ -11,7 +11,7 @@ public partial record TypedDelegateExpression<T>
         => Result.Success<object?>(Value.Invoke(context));
 
     public Result<T> EvaluateTyped(object? context)
-        => Result.Success<T>(Value.Invoke(context));
+        => Result.Success(Value.Invoke(context));
 
     public Expression ToUntyped()
         => new DelegateExpression(context => Value.Invoke(context));

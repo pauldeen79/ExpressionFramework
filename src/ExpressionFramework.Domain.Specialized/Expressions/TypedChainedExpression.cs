@@ -20,7 +20,7 @@ public partial record TypedChainedExpression<T>
     {
         if (!Expressions.Any())
         {
-            return Result.Success<T>(context is T t ? t : default!);
+            return Result.Success(context is T t ? t : default!);
         }
 
         var result = Expressions.First().Evaluate(context);

@@ -16,6 +16,6 @@ public partial record NotExpression
     public Result<bool> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<bool>(!result.Value)
+                ? Result.Success(!result.Value)
                 : result);
 }

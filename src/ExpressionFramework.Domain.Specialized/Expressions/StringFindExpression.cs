@@ -26,7 +26,7 @@ public partial record StringFindExpression
 
         return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<int>(result.Value!.IndexOf(findExpressionResult.Value!))
+                ? Result.Success(result.Value!.IndexOf(findExpressionResult.Value!))
                 : Result.FromExistingResult<int>(result));
     }
 }

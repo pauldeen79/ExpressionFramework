@@ -74,7 +74,7 @@ public partial record ComposedEvaluatable : IValidatableObject
             }
         }
 
-        return Result.Success<bool>(true);
+        return Result.Success(true);
     }
 
     private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
@@ -99,7 +99,7 @@ public partial record ComposedEvaluatable : IValidatableObject
                    .Append(suffix);
         }
 
-        return Result.Success<bool>(EvaluateBooleanExpression(builder.ToString()));
+        return Result.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
     private Result<bool> IsItemValid(object? context, ComposableEvaluatable condition)

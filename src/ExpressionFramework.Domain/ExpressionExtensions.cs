@@ -14,7 +14,7 @@ public static class ExpressionExtensions
 
     public static Result<T> EvaluateTypedWithTypeCheck<T>(this ITypedExpression<T> instance, object? context = null, string? errorMessage = null)
         => instance.EvaluateTyped(context).Transform(result => result.IsSuccessful() && result.Value is T t
-            ? Result.FromExistingResult<T>(result, t) // use FromExistingResult because status might be Ok, Continue or another successful status
+            ? Result.FromExistingResult(result, t) // use FromExistingResult because status might be Ok, Continue or another successful status
             : result.Transform(x => x.IsSuccessful()
                 ? Result.Invalid<T>(CreateInvalidTypeErrorMessage<T>(errorMessage))
                 : x));

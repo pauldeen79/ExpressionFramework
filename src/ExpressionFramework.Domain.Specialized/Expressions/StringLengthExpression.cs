@@ -16,6 +16,6 @@ public partial record StringLengthExpression
     public Result<int> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<int>(result.Value!.Length)
+                ? Result.Success(result.Value!.Length)
                 : Result.FromExistingResult<int>(result));
 }

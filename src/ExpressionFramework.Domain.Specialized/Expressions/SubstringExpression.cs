@@ -35,7 +35,7 @@ public partial record SubstringExpression
 
         if (LengthExpression is null)
         {
-            return Result.Success<string>(s.Substring(indexResult.Value));
+            return Result.Success(s.Substring(indexResult.Value));
         }
 
         var lengthResult = LengthExpression!.EvaluateTyped(s);
@@ -45,7 +45,7 @@ public partial record SubstringExpression
         }
 
         return s.Length >= indexResult.Value + lengthResult.Value
-            ? Result.Success<string>(s.Substring(indexResult.Value, lengthResult.Value))
+            ? Result.Success(s.Substring(indexResult.Value, lengthResult.Value))
             : Result.Invalid<string>("Index and length must refer to a location within the string");
     }
 }

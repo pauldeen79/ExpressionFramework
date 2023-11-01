@@ -9,5 +9,5 @@ public partial record TrueExpression
         => Result.Success<object?>(true);
 
     public Result<bool> EvaluateTyped(object? context)
-        => Result.Success<bool>(true);
+        => Result.Success(true);
 }

@@ -21,7 +21,7 @@ public partial record TrimEndExpression
 
         if (TrimCharsExpression is null)
         {
-            return Result.Success<string>(s.TrimEnd());
+            return Result.Success(s.TrimEnd());
         }
 
         var trimCharsResult = TrimCharsExpression.EvaluateTyped(context);
@@ -32,10 +32,10 @@ public partial record TrimEndExpression
 
         if (trimCharsResult.Value == null)
         {
-            return Result.Success<string>(s.TrimEnd());
+            return Result.Success(s.TrimEnd());
         }
 
-        return Result.Success<string>(s.TrimEnd(trimCharsResult.Value!));
+        return Result.Success(s.TrimEnd(trimCharsResult.Value!));
     }
 
     public static ExpressionDescriptor GetExpressionDescriptor()

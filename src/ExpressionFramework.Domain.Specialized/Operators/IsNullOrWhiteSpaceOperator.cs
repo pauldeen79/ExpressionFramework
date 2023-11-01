@@ -8,5 +8,5 @@
 public partial record IsNullOrWhiteSpaceOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
-        => Result.Success<bool>(leftValue is null || leftValue.ToString().Trim().Length == 0);
+        => Result.Success(leftValue is null || leftValue.ToString().Trim().Length == 0);
 }

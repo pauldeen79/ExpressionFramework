@@ -9,8 +9,8 @@ public partial record FirstExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result.Success<object?>(results.First()),
-            results => Result.Success<object?>(results.First(x => x.Result.Value).Item)
+            results => Result.Success(results.First()),
+            results => Result.Success(results.First(x => x.Result.Value).Item)
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

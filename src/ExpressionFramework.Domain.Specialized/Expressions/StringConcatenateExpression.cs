@@ -28,6 +28,6 @@ public partial record StringConcatenateExpression
             return Result.FromExistingResult<string>(valueResults[valueResults.Length - 1]);
         }
 
-        return Result.Success<string>(string.Concat(valueResults.Select(x => x.Value)));
+        return Result.Success(string.Concat(valueResults.Select(x => x.Value)));
     }
 }

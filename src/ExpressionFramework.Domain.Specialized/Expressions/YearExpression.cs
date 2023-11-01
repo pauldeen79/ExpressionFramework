@@ -10,5 +10,5 @@ public partial record YearExpression
         => Result.FromExistingResult<DateTime, object?>(Expression.EvaluateTyped(context), x => x.Year);
 
     public Result<int> EvaluateTyped(object? context)
-        => Result.FromExistingResult<DateTime, int>(Expression.EvaluateTyped(context), x => x.Year);
+        => Result.FromExistingResult(Expression.EvaluateTyped(context), x => x.Year);
 }

@@ -11,7 +11,7 @@ public partial record EnumerableNotContainsOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => leftValue is IEnumerable enumerableLeft
-            ? Result.Success<bool>(!enumerableLeft.OfType<object>().Contains(rightValue))
+            ? Result.Success(!enumerableLeft.OfType<object>().Contains(rightValue))
             : Result.Invalid<bool>("Left value is not of type IEnumerable");
 }
 

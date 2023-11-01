@@ -32,7 +32,7 @@ public partial record StringReplaceExpression
 
         return Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<string>(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
+                ? Result.Success(result.Value!.Replace(findExpressionResult.Value!, replaceExpressionResult.Value!))
                 : Result.FromExistingResult<string>(result));
     }
 }

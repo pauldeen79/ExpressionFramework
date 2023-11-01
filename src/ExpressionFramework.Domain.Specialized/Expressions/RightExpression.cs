@@ -26,7 +26,7 @@ public partial record RightExpression
         }
 
         return s.Length >= lengthResult.Value
-            ? Result.Success<string>(s.Substring(s.Length - lengthResult.Value, lengthResult.Value))
+            ? Result.Success(s.Substring(s.Length - lengthResult.Value, lengthResult.Value))
             : Result.Invalid<string>("Length must refer to a location within the string");
     }
 

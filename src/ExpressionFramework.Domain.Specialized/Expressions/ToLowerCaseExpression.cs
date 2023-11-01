@@ -16,6 +16,6 @@ public partial record ToLowerCaseExpression
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<string>(result.Value!.ToLower())
+                ? Result.Success(result.Value!.ToLower())
                 : result);
 }

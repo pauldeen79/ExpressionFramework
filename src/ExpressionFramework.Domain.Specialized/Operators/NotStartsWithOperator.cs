@@ -11,6 +11,6 @@ public partial record NotStartsWithOperator
 {
     protected override Result<bool> Evaluate(object? leftValue, object? rightValue)
         => leftValue is string leftString && rightValue is string rightString
-            ? Result.Success<bool>(!leftString.StartsWith(rightString, StringComparison.CurrentCultureIgnoreCase))
+            ? Result.Success(!leftString.StartsWith(rightString, StringComparison.CurrentCultureIgnoreCase))
             : Result.Invalid<bool>("LeftValue and RightValue both need to be of type string");
 }

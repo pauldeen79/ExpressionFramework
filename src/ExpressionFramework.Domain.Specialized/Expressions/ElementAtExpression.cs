@@ -11,13 +11,13 @@ public partial record ElementAtExpression
             null,
             results => IndexExpression
                 .EvaluateTyped(context)
-                .Transform(indexResult => Result.Success<object?>(results.ElementAt(indexResult.Value))),
+                .Transform(indexResult => Result.Success(results.ElementAt(indexResult.Value))),
             selectorDelegate: items =>
                 IndexExpression
                     .EvaluateTyped(context)
                     .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => items.Count() >= index
-                            ? Result.Success<IEnumerable<object?>>(items)
+                            ? Result.Success(items)
                             : Result.Invalid<IEnumerable<object?>>("Index is outside the bounds of the array"))
                         : Result.FromExistingResult<IEnumerable<object?>>(indexResult))
         );

@@ -16,7 +16,7 @@ public partial record ToPascalCaseExpression
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success<string>(ToPascalCase(result.Value!))
+                ? Result.Success(ToPascalCase(result.Value!))
                 : result);
 
     private string ToPascalCase(string value)

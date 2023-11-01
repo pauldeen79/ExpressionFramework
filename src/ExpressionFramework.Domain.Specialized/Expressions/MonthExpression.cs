@@ -10,5 +10,5 @@ public partial record MonthExpression
         => Result.FromExistingResult<DateTime, object?>(Expression.EvaluateTyped(context), x => x.Month);
 
     public Result<int> EvaluateTyped(object? context)
-        => Result.FromExistingResult<DateTime, int>(Expression.EvaluateTyped(context), x => x.Month);
+        => Result.FromExistingResult(Expression.EvaluateTyped(context), x => x.Month);
 }

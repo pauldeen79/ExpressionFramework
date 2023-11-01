@@ -16,7 +16,7 @@ public partial record TypedContextExpression<T>
 
     public Result<T> EvaluateTyped(object? context)
         => context is T t
-            ? Result.Success<T>(t)
+            ? Result.Success(t)
             : Result.Invalid<T>($"Context is not of type {typeof(T).FullName}");
 }
 

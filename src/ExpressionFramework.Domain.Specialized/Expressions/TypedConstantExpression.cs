@@ -11,7 +11,7 @@ public partial record TypedConstantExpression<T>
         => Result.Success<object?>(Value);
 
     public Result<T> EvaluateTyped(object? context)
-        => Result.Success<T>(Value);
+        => Result.Success(Value);
 
     public Expression ToUntyped()
         => new ConstantExpression(Value);

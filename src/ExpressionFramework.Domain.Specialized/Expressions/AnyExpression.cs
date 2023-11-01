@@ -19,8 +19,8 @@ public partial record AnyExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result.Success<bool>(results.Any()),
-            results => Result.Success<bool>(results.Any(x => x.Result.Value))
+            results => Result.Success(results.Any()),
+            results => Result.Success(results.Any(x => x.Result.Value))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

@@ -9,11 +9,11 @@ public partial record SingleExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result.Success<object?>(results.Single()),
-            results => Result.Success<object?>(results.Single(x => x.Result.Value).Item),
+            results => Result.Success(results.Single()),
+            results => Result.Success(results.Single(x => x.Result.Value).Item),
             items => items.Count(x => PredicateExpression is null || PredicateExpression.EvaluateTyped(x).Value) > 1
                 ? Result.Invalid<IEnumerable<object?>>("Sequence contains more than one element")
-                : Result.Success<IEnumerable<object?>>(items)
+                : Result.Success(items)
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

@@ -4,7 +4,7 @@
 public partial record MinExpression
 {
     public override Result<object?> Evaluate(object? context)
-        => EnumerableExpression.GetAggregateValue(context, Expression, x => Result.Success<object?>(x.Min()), SelectorExpression);
+        => EnumerableExpression.GetAggregateValue(context, Expression, x => Result.Success(x.Min()), SelectorExpression);
 
     public static ExpressionDescriptor GetExpressionDescriptor()
         => EnumerableExpression.GetDescriptor

@@ -21,7 +21,7 @@ public partial record LeftExpression
         }
 
         return s.Length >= lengthResult.Value
-            ? Result.Success<string>(s.Substring(0, lengthResult.Value))
+            ? Result.Success(s.Substring(0, lengthResult.Value))
             : Result.Invalid<string>("Length must refer to a location within the string");
     }
 

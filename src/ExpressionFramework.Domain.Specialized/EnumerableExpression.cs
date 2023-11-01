@@ -98,7 +98,7 @@ public static class EnumerableExpression
             return Result.FromExistingResult<IEnumerable<object?>>(results[results.Length - 1]);
         }
 
-        return Result.Success<IEnumerable<object?>>(results.Select(x => x.Value));
+        return Result.Success(results.Select(x => x.Value));
     }
 
     public static Result<T> GetRequiredScalarValue<T>(object? context,
@@ -149,7 +149,7 @@ public static class EnumerableExpression
                                                  Expression? selectorExpression = null)
         => GetTypedResultFromEnumerable(enumerableExpression, context, x => x
             .Select(y => selectorExpression is null
-                ? Result.Success<object?>(y)
+                ? Result.Success(y)
                 : selectorExpression.EvaluateWithNullCheck(y))).Transform(result => result.IsSuccessful()
                     ? aggregateDelegate.Invoke(result.Value!)
                     : Result.FromExistingResult<T>(result));

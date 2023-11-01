@@ -7,7 +7,7 @@
 public partial record DelegateEvaluatable
 {
     public override Result<bool> Evaluate(object? context)
-        => Result.Success<bool>(Value.Invoke());
+        => Result.Success(Value.Invoke());
 }
 
 public partial record DelegateEvaluatableBase

@@ -19,8 +19,8 @@ public partial record CountExpression
             context,
             Expression,
             PredicateExpression,
-            results => Result.Success<int>(results.Count()),
-            results => Result.Success<int>(results.Count(x => x.Result.Value))
+            results => Result.Success(results.Count()),
+            results => Result.Success(results.Count(x => x.Result.Value))
         );
 
     public static ExpressionDescriptor GetExpressionDescriptor()

@@ -37,7 +37,7 @@ public partial record OrderByExpression
 
         if (!e.Any())
         {
-            return Result.Success<IEnumerable<object?>>(e);
+            return Result.Success(e);
         }
 
         var first = true;

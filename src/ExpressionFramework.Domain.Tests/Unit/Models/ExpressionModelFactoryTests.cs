@@ -16,7 +16,7 @@ public class ExpressionModelFactoryTests : TestBase
     public void CreateTyped_Returns_Correct_Result_On_TypedConstantResultExpression()
     {
         // Act
-        var result = ExpressionModelFactory.CreateTyped(new TypedConstantResultExpression<int>(Result.Success<int>(1)));
+        var result = ExpressionModelFactory.CreateTyped(new TypedConstantResultExpression<int>(Result.Success(1)));
 
         // Assert
         result.Should().BeOfType<TypedConstantResultExpressionModel<int>>();
@@ -36,7 +36,7 @@ public class ExpressionModelFactoryTests : TestBase
     public void CreateTyped_Returns_Correct_Result_On_TypedDelegateResultExpression()
     {
         // Act
-        var result = ExpressionModelFactory.CreateTyped(new TypedDelegateResultExpression<int>(_ => Result.Success<int>(1)));
+        var result = ExpressionModelFactory.CreateTyped(new TypedDelegateResultExpression<int>(_ => Result.Success(1)));
 
         // Assert
         result.Should().BeOfType<TypedDelegateResultExpressionModel<int>>();

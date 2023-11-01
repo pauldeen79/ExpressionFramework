@@ -13,7 +13,7 @@ public partial record ElementAtOrDefaultExpression
                 .EvaluateTyped(context)
                 .Transform(indexResult => indexResult.IsSuccessful()
                         ? indexResult.Value.Transform(index => results.Count() >= index
-                            ? Result.Success<object?>(results.ElementAt(index))
+                            ? Result.Success(results.ElementAt(index))
                             : EnumerableExpression.GetDefaultValue(DefaultExpression, context))
                         : Result.FromExistingResult<object?>(indexResult))
         );

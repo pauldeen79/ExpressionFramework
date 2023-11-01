@@ -54,7 +54,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 #pragma warning disable CA1031 // Do not catch general exception types
         try
         {
-            return Result.Success<Expression>((Expression)Activator.CreateInstance(expressionType.MakeGenericType(typeResult.Value!), valueResult.Value));
+            return Result.Success((Expression)Activator.CreateInstance(expressionType.MakeGenericType(typeResult.Value!), valueResult.Value));
         }
         catch (Exception ex)
         {
