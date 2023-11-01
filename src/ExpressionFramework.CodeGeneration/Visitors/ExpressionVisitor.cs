@@ -56,9 +56,9 @@ public class ExpressionVisitor : IVisitor
                 ? $" ?? new {Constants.Namespaces.DomainExpressions}.EmptyExpression()"
                 : string.Empty;
             
-            return $"return {typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>.Success({expressionProperties[0].Name}{typedSuffix}{nullableSuffix});";
+            return $"return {typeof(Result<>).WithoutGenerics()}.Success({expressionProperties[0].Name}{typedSuffix}{nullableSuffix});";
         }
 
-        return $"return {typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>.NotFound();";
+        return $"return {typeof(Result<>).WithoutGenerics()}.NotFound<{Constants.TypeNames.Expression}>();";
     }
 }
