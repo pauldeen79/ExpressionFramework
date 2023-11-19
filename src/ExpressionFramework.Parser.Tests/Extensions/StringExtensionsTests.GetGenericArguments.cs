@@ -9,8 +9,8 @@ public partial class StringExtensionsTests
         [InlineData("", "")]
         [InlineData("Foo", "")]
         [InlineData("Foo<Bar>", "Bar")]
-        public void GetGenericArguments_ShouldReturnCorrectResult(string input, string expectedResult)
-            => TestGetGenericArguments(input, expectedResult);
+        public void GetGenericArguments_ShouldReturnCorrectResult(string? input, string expectedResult)
+            => TestGetGenericArguments(input!, expectedResult);
 
         [Fact]
         public void GetGenericArguments_ShouldReturnEmptyString_WhenInputDoesNotContainOpeningAngleBracket()

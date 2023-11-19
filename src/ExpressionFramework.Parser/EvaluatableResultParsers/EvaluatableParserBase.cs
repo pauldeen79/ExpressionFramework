@@ -12,7 +12,7 @@ public abstract class EvaluatableParserBase : IFunctionResultParser
     }
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.ToUpperInvariant() == _functionName.ToUpperInvariant()
+        => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase)
             ? Result.FromExistingResult<object?>(DoParse(functionParseResult, evaluator, parser))
             : Result.Continue<object?>();
 

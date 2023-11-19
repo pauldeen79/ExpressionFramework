@@ -61,7 +61,7 @@ public class StringFindExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world".IndexOf("e"));
+        result.Value.Should().BeEquivalentTo("Hello world".IndexOf('e'));
     }
 
     [Fact]
@@ -104,6 +104,6 @@ public class StringFindExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world".IndexOf("e"));
+        result.Value.Should().Be("Hello world".IndexOf('e'));
     }
 }

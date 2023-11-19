@@ -13,7 +13,7 @@ public partial record ChainedExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        if (!Expressions.Any())
+        if (Expressions.Count == 0)
         {
             return Result.Success(context);
         }

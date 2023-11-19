@@ -17,7 +17,7 @@ public partial record AggregateExpression
 {
     public override Result<object?> Evaluate(object? context)
     {
-        if (!Expressions.Any())
+        if (Expressions.Count == 0)
         {
             return Result.Invalid<object?>("Sequence contains no elements");
         }

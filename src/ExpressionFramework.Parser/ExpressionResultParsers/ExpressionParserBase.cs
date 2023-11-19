@@ -30,7 +30,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     }
 
     protected virtual bool IsNameValid(string functionName)
-        => ArgumentGuard.IsNotNull(functionName, nameof(functionName)).ToUpperInvariant() == _functionName.ToUpperInvariant();
+        => ArgumentGuard.IsNotNull(functionName, nameof(functionName)).Equals(_functionName, StringComparison.OrdinalIgnoreCase);
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
