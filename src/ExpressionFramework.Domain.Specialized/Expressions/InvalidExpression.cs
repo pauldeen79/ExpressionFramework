@@ -21,7 +21,7 @@ public partial record InvalidExpression
             return Result.Invalid<object?>();
         }
 
-        if (!ValidationErrorExpressions.Any())
+        if (ValidationErrorExpressions.Count == 0)
         {
             return Result.Invalid<object?>(errorMessage);
         }

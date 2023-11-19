@@ -68,7 +68,7 @@ public static class FunctionParseResultExtensions
             : new Expression[] { new ConstantResultExpression(expressions) };
     }
 
-    private static ITypedExpression<T> ProcessArgumentResult<T>(string argumentName, Result argumentValueResult, bool useDefaultValue = false, T? defaultValue = default)
+    private static TypedConstantResultExpression<T> ProcessArgumentResult<T>(string argumentName, Result argumentValueResult, bool useDefaultValue = false, T? defaultValue = default)
     {
         if (!argumentValueResult.IsSuccessful())
         {

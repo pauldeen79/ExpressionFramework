@@ -18,7 +18,7 @@ public partial record TypedChainedExpression<T>
 
     public Result<T> EvaluateTyped(object? context)
     {
-        if (!Expressions.Any())
+        if (Expressions.Count == 0)
         {
             return Result.Success(context is T t ? t : default!);
         }
