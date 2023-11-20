@@ -18,7 +18,7 @@ public class TypedExpressionVisitor : IVisitor
         if (context.TypedInterfaceMap.TryGetValue(key, out var typedInterface))
         {
             typeBaseBuilder.AddInterfaces($"{Constants.Namespaces.DomainContracts}.{typeof(ITypedExpression<>).WithoutGenerics().GetClassName()}<{typedInterface.GetGenericArguments()}>");
-            if (!typeBaseBuilder.GenericTypeArguments.Any())
+            if (typeBaseBuilder.GenericTypeArguments.Count == 0)
             {
                 typeBaseBuilder.AddMethods(
                     new ClassMethodBuilder()

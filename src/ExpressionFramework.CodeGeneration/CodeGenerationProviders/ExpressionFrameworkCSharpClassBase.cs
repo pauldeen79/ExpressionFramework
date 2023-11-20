@@ -229,7 +229,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     private static void AddParseCodeStatements(ITypeBase typeBase, ClassMethodBuilder parseMethod, string entityNamespace, string type)
     {
-        if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.GenericTypeArguments.Any() && typeBase.Properties.Count == 1)
+        if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.GenericTypeArguments.Count > 0 && typeBase.Properties.Count == 1)
         {
             parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), 0, {typeBase.Properties.First().Name.CsharpFormat()}, functionParseResult, evaluator, parser);");
             return;

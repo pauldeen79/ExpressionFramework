@@ -16,10 +16,7 @@ public class TypedInterfaceVisitor : IVisitor
         }
 
         var key = typeBaseBuilder.GetFullName();
-        if (!context.TypedInterfaceMap.ContainsKey(key))
-        {
-            context.TypedInterfaceMap.Add(key, typedInterface);
-        }
+        context.TypedInterfaceMap.TryAdd(key, typedInterface);
     }
 
     private static string? GetTypedInterface<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
