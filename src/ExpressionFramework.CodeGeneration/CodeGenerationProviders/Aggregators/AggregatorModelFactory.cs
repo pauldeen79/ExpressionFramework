@@ -6,7 +6,7 @@ public class AggregatorModelFactory : ExpressionFrameworkModelClassBase
     public override string Path => Constants.Namespaces.DomainModels;
 
     public override object CreateModel()
-        => CreateBuilderFactoryModels(
+        => CreateBuilderFactories(
             GetOverrideModels(typeof(Models.IAggregator)),
             new(
                 Constants.Namespaces.DomainModels,

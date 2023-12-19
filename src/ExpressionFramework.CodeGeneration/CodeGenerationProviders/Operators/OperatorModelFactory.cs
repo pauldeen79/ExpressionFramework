@@ -6,7 +6,7 @@ public class OperatorModelFactory : ExpressionFrameworkModelClassBase
     public override string Path => Constants.Namespaces.DomainModels;
 
     public override object CreateModel()
-        => CreateBuilderFactoryModels(
+        => CreateBuilderFactories(
             GetOverrideModels(typeof(IOperator)),
             new(
                 Constants.Namespaces.DomainModels,
