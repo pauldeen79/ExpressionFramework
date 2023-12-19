@@ -1,6 +1,4 @@
-﻿using ExpressionFramework.Domain.OperatorDescriptorProviders;
-
-namespace ExpressionFramework.Domain.Tests.Unit.Operators;
+﻿namespace ExpressionFramework.Domain.Tests.Unit.Operators;
 
 public class NotEndsWithOperatorTests
 {
