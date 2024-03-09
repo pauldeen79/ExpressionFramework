@@ -6,7 +6,7 @@ public class ExpressionBuilderFactory : ExpressionFrameworkCSharpClassBase
     public override string Path => Constants.Namespaces.DomainBuilders;
 
     public override object CreateModel()
-        => CreateBuilderFactoryModels(
+        => CreateBuilderFactories(
             GetOverrideModels(typeof(IExpression)),
             new(
                 Constants.Namespaces.DomainBuilders,

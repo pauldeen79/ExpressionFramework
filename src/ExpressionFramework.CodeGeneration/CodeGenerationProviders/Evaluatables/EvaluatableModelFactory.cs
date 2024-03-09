@@ -6,7 +6,7 @@ public class EvaluatableModelFactory : ExpressionFrameworkModelClassBase
     public override string Path => Constants.Namespaces.DomainModels;
 
     public override object CreateModel()
-        => CreateBuilderFactoryModels(
+        => CreateBuilderFactories(
             GetOverrideModels(typeof(IEvaluatable)),
             new(
                 Constants.Namespaces.DomainModels,
