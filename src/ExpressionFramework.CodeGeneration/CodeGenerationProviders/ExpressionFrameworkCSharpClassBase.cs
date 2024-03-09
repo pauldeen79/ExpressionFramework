@@ -51,7 +51,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             var init = BuilderName == "Builder"
                 ? $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)"
                 : $"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)";
-            property.ConvertCollectionOnBuilderToEnumerable(false, collectionType: RecordConcreteCollectionType.WithoutGenerics());
+            property.ConvertCollectionOnBuilderToEnumerable(false, ValidateArgumentsInConstructor, collectionType: RecordConcreteCollectionType.WithoutGenerics());
             property.ConvertCollectionPropertyToBuilderOnBuilder
             (
                 $"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>>",
