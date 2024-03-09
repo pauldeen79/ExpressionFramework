@@ -57,13 +57,13 @@ public static class BooleanExpression
             null,
             new[]
             {
-            new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
-            new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
+                new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
+                new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
             },
             new[]
             {
-            new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
-            new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
+                new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
+                new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
             }.Where(x => invalidDescription != null || x.Status != ResultStatus.Invalid)
         );
     }
