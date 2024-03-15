@@ -1,7 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class ExtenstionParserExtensions : ExpressionFrameworkCSharpClassBase
+public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
 {
     public override string Path => Constants.Paths.Parser;
 
