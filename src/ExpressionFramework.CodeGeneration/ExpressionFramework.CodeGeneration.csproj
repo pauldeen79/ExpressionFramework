@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="3.3.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="3.3.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.DataTableDumper" Version="3.5.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="3.5.0" />
     <PackageReference Include="pauldeen79.ModelFramework.CodeGeneration" Version="0.8.3" />
   </ItemGroup>
 
