@@ -18,7 +18,9 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
     protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
     protected override Type RecordConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
     protected override string ProjectName => Constants.ProjectName;
-    protected override Type BuilderClassCollectionType => typeof(IEnumerable<>);
+    protected override Type BuilderClassCollectionType => typeof(List<>);
+    protected override bool UseLazyInitialization => false; // we don't want lazy stuff in models, just getters and setters
+    protected override bool ConvertStringToStringBuilderOnBuilders => false;
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Shared;
 
     protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
