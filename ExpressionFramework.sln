@@ -29,11 +29,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Models", "src\ExpressionFramework.Domain.Models\ExpressionFramework.Domain.Models.csproj", "{78BF691F-D045-43EA-A692-1B1C2060BCCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.CodeGeneration2", "src\ExpressionFramework.CodeGeneration2\ExpressionFramework.CodeGeneration2.csproj", "{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.CodeGeneration2", "src\ExpressionFramework.CodeGeneration2\ExpressionFramework.CodeGeneration2.csproj", "{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Domain2", "src\ExpressionFramework.Domain2\ExpressionFramework.Domain2.csproj", "{E7A030ED-1E7B-4A23-8E27-254B863E8209}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain2", "src\ExpressionFramework.Domain2\ExpressionFramework.Domain2.csproj", "{E7A030ED-1E7B-4A23-8E27-254B863E8209}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Parser2", "src\ExpressionFramework.Parser2\ExpressionFramework.Parser2.csproj", "{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2", "src\ExpressionFramework.Parser2\ExpressionFramework.Parser2.csproj", "{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassFramework.TemplateFramework", "..\ClassFramework\src\ClassFramework.TemplateFramework\ClassFramework.TemplateFramework.csproj", "{A45FFF42-FB17-4315-BAA1-268991CD9E6D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassFramework.Pipelines", "..\ClassFramework\src\ClassFramework.Pipelines\ClassFramework.Pipelines.csproj", "{E23DDEC4-9EF9-4C28-84A0-3E2983572BBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -85,6 +89,14 @@ Global
 		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A45FFF42-FB17-4315-BAA1-268991CD9E6D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A45FFF42-FB17-4315-BAA1-268991CD9E6D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A45FFF42-FB17-4315-BAA1-268991CD9E6D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A45FFF42-FB17-4315-BAA1-268991CD9E6D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E23DDEC4-9EF9-4C28-84A0-3E2983572BBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E23DDEC4-9EF9-4C28-84A0-3E2983572BBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E23DDEC4-9EF9-4C28-84A0-3E2983572BBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E23DDEC4-9EF9-4C28-84A0-3E2983572BBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
