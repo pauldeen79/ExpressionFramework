@@ -5,7 +5,7 @@ public class ItemResult
     public ItemResult(object? item, Result<bool> result)
     {
         Item = item;
-        Result = result;
+        Result = result.IsNotNull(nameof(result));
     }
 
     public object? Item { get; }
