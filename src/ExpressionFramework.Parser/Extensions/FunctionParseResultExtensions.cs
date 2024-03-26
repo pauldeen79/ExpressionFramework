@@ -81,7 +81,7 @@ public static class FunctionParseResultExtensions
             return new TypedConstantResultExpression<T>(Result.Success(t));
         }
 
-        if (value == null && useDefaultValue)
+        if (value is null && useDefaultValue)
         {
             return new TypedConstantResultExpression<T>(Result.Success(defaultValue!));
         }

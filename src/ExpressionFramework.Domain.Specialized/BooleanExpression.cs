@@ -64,7 +64,7 @@ public static class BooleanExpression
             {
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),
                 new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", typeof(object), invalidDescription!),
-            }.Where(x => invalidDescription != null || x.Status != ResultStatus.Invalid)
+            }.Where(x => invalidDescription is not null || x.Status != ResultStatus.Invalid)
         );
     }
 }

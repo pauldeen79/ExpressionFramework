@@ -30,7 +30,7 @@ public partial record TrimEndExpression
             return Result.FromExistingResult<string>(trimCharsResult);
         }
 
-        if (trimCharsResult.Value == null)
+        if (trimCharsResult.Value is null)
         {
             return Result.Success(s.TrimEnd());
         }

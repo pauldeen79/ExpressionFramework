@@ -14,8 +14,11 @@ public static partial class ExpressionModelFactory
 
     private static ITypedExpressionModel<T> CreateStandard<T>(ITypedExpression<T> source)
     {
-        var registration = registeredTypes.Select(kvp => new { kvp.Key, kvp.Value }).FirstOrDefault(keyValuePair => typeof(ITypedExpression<T>).IsAssignableFrom(keyValuePair.Key) && source.GetType().IsAssignableFrom(keyValuePair.Key));
-        return registration == null
+        var registration = registeredTypes
+            .Select(kvp => new { kvp.Key, kvp.Value })
+            .FirstOrDefault(keyValuePair => typeof(ITypedExpression<T>).IsAssignableFrom(keyValuePair.Key) && source.GetType().IsAssignableFrom(keyValuePair.Key));
+        
+        return registration is null
             ? throw new NotSupportedException($"Expression of type [{source.GetType()}] is not supported")
             : (ITypedExpressionModel<T>)registration.Value.Invoke((Expression)source);
     }

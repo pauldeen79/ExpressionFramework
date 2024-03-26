@@ -29,7 +29,7 @@ public partial record GroupByExpression
     private bool ItemSatisfiesKey(object? item, object? key)
     {
         var val = KeySelectorExpression.Evaluate(item).Value;
-        return (val is null && key is null) || (val != null && val.Equals(key));
+        return (val is null && key is null) || (val is not null && val.Equals(key));
     }
 
     [ExcludeFromCodeCoverage]

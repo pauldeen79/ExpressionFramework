@@ -23,6 +23,6 @@ public partial record OfTypeExpression
     }
 
     private static IEnumerable<Result<object?>> IsOfType(IEnumerable<object?> e, Result<Type> typeResult) => e
-        .Where(x => x != null && typeResult.Value!.IsInstanceOfType(x))
+        .Where(x => x is not null && typeResult.Value!.IsInstanceOfType(x))
         .Select(Result.Success);
 }

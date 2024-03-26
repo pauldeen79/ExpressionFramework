@@ -9,7 +9,7 @@ public class ReflectionExpressionDescriptorProvider : IExpressionDescriptorProvi
         type =ArgumentGuard.IsNotNull(type, nameof(type));
 
         var dynamicDesciptorProvider = type.GetCustomAttribute<DynamicDescriptorAttribute>()?.Type;
-        if (dynamicDesciptorProvider != null)
+        if (dynamicDesciptorProvider is not null)
         {
             _descriptor = (ExpressionDescriptor)type.GetMethod("GetExpressionDescriptor", BindingFlags.Public | BindingFlags.Static).Invoke(null, Array.Empty<object>());
         }

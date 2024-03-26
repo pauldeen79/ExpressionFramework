@@ -28,7 +28,7 @@ public partial record SwitchExpression
             }
         }
 
-        if (DefaultExpression != null)
+        if (DefaultExpression is not null)
         {
             return DefaultExpression.Evaluate(context);
         }

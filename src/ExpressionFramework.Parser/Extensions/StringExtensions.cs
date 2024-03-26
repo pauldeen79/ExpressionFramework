@@ -53,7 +53,7 @@ public static class StringExtensions
 
         var type = Type.GetType(typeName);
 
-        return type != null
+        return type is not null
             ? Result.Success(type)
             : Result.Invalid<Type>($"Unknown type: {typeName}");
     }

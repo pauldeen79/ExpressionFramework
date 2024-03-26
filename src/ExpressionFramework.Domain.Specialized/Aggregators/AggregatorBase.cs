@@ -31,7 +31,7 @@ public static class AggregatorBase
             return secondExpressionResult;
         }
 
-        var formatProviderExpressionResult = formatProviderExpression == null
+        var formatProviderExpressionResult = formatProviderExpression is null
             ? Result.Success<IFormatProvider>(CultureInfo.InvariantCulture)
             : formatProviderExpression.EvaluateTyped(context);
 

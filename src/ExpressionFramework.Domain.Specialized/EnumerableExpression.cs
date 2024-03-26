@@ -226,7 +226,7 @@ public static class EnumerableExpression
 
         if (predicateExpression is null)
         {
-            if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate != null)
+            if (!itemsResult.Value.Any() && defaultValueDelegateWithoutPredicate is not null)
             {
                 return defaultValueDelegateWithoutPredicate.Invoke(context);
             }
@@ -251,7 +251,7 @@ public static class EnumerableExpression
             return Result.FromExistingResult<T>(results.First(x => !x.Result.IsSuccessful()).Result);
         }
 
-        if (!Array.Exists(results, x => x.Result.Value) && defaultValueDelegateWithPredicate != null)
+        if (!Array.Exists(results, x => x.Result.Value) && defaultValueDelegateWithPredicate is not null)
         {
             return defaultValueDelegateWithPredicate.Invoke(context);
         }

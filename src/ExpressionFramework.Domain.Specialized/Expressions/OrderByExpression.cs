@@ -17,7 +17,7 @@ public partial record OrderByExpression
     public Result<IEnumerable<object?>> EvaluateTyped(object? context)
         => Expression.EvaluateTyped(context).Transform(result =>
             result.IsSuccessful()
-                ? result.Transform(x => x.Value == null
+                ? result.Transform(x => x.Value is null
                     ? Result.Invalid<IEnumerable<object?>>("Expression is not of type enumerable")
                     : GetSortedEnumerable(context, result.Value!.OfType<object?>()))
                 : Result.FromExistingResult<IEnumerable<object?>>(result));

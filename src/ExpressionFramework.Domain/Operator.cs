@@ -7,7 +7,7 @@ public abstract partial record Operator
         var results = new[] { leftExpression, rightExpression }.EvaluateUntilFirstError(context);
 
         var nonSuccessfulResult = Array.Find(results, x => !x.IsSuccessful());
-        return nonSuccessfulResult != null
+        return nonSuccessfulResult is not null
             ? Result.FromExistingResult<bool>(nonSuccessfulResult)
             : Evaluate(results[0].Value, results[1].Value);
     }

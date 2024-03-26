@@ -21,7 +21,7 @@ public partial record TryCastExpression<T>
             return Result.Success(t);
         }
 
-        if (DefaultExpression == null)
+        if (DefaultExpression is null)
         {
             return Result.Success<T>(default!);
         }
