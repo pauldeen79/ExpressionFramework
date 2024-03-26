@@ -28,7 +28,6 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     {
         type = type.IsNotNull(nameof(type));
 
-        //TODO: remove when overrides are present
         if (type.IsInterface && type.Namespace == $"{CodeGenerationRootNamespace}.Models" && type.Name.Substring(1).In(Constants.Types.Aggregator, Constants.Types.Evaluatable, Constants.Types.Expression, Constants.Types.Operator))
         {
             return true;
