@@ -9,7 +9,7 @@ public class ExpressionVisitor : IVisitor
     where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
     where TEntity : ITypeBase
     {
-        if (typeBaseBuilder.Namespace.ToString() != Constants.Namespaces.DomainExpressions)
+        if (typeBaseBuilder.Namespace != Constants.Namespaces.DomainExpressions)
         {
             return;
         }
@@ -39,7 +39,7 @@ public class ExpressionVisitor : IVisitor
     private static string GetSingleContainedExpressionStatements(TypeBaseBuilder typeBaseBuilder)
     {
         var expressionProperties = typeBaseBuilder.Properties
-            .Where(x => x.Name.ToString() == "Expression" && x.TypeName.ToString().WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
+            .Where(x => x.Name == "Expression" && x.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
             .ToArray();
 
         if (expressionProperties.Length == 1)
@@ -48,7 +48,7 @@ public class ExpressionVisitor : IVisitor
                 ? "?"
                 : string.Empty;
 
-            var typedSuffix = expressionProperties[0].TypeName.ToString().WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression
+            var typedSuffix = expressionProperties[0].TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression
                 ? $"{nullableTypedPrefix}.ToUntyped()"
                 : string.Empty;
 

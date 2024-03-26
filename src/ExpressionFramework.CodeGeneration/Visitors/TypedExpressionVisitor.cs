@@ -9,7 +9,7 @@ public class TypedExpressionVisitor : IVisitor
         where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
         where TEntity : ITypeBase
     {
-        if (typeBaseBuilder.Namespace.ToString() != Constants.Namespaces.DomainExpressions)
+        if (typeBaseBuilder.Namespace != Constants.Namespaces.DomainExpressions)
         {
             return;
         }

@@ -7,13 +7,13 @@ public static class BuilderVisitorBase
     where TBuilder : TypeBaseBuilder<TBuilder, TEntity>
     where TEntity : ITypeBase
     {
-        if (typeBaseBuilder.Namespace.ToString() != ns)
+        if (typeBaseBuilder.Namespace != ns)
         {
             return;
         }
 
-        var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name.ToString() == typedMethodName);
-        if (!context.TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.ToString().WithoutProcessedGenerics(), out var typedInterface))
+        var buildTypedMethod = typeBaseBuilder.Methods.First(x => x.Name == typedMethodName);
+        if (!context.TypedInterfaceMap.TryGetValue(buildTypedMethod.TypeName.WithoutProcessedGenerics(), out var typedInterface))
         {
             return;
         }

@@ -100,24 +100,24 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
         // we need the Value propery of Nullable<T> for value types...
         // for now, we only support int, long and boolean
-        var suffix = property.IsNullable && property.TypeName.ToString().GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
+        var suffix = property.IsNullable && property.TypeName.GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
             ? ".Value"
             : string.Empty;
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), CreateTypeName(property), property.IsNullable)
+                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), CreateTypeName(property), property.IsNullable)
                 .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()}{suffix});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()}{suffix});"
                 ).Build()
             );
 
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object).FullName}?, {CreateTypeName(property)}>", property.IsNullable)
+                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object).FullName}?, {CreateTypeName(property)}>", property.IsNullable)
                 .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}{BuilderName}<{property.TypeName.ToString().GetGenericArguments()}>().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
                 ).Build()
             );
     }
@@ -127,15 +127,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         // Add builder overload for IEnumerable<T> and T[], that maps to value.Select(x => new ConstantTypedExpression<T>().WithValue(x)) and value.Select(x => new ConstantDelegateExpression<T>().WithValue(x))
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{CreateTypeName(property)}>().WithValue(x)));")
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{CreateTypeName(property)}>().WithValue(x)));")
                 .Build()
         );
 
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>"))
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>"))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
                 .Build()
         );
     }
@@ -145,19 +145,19 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         // Add builder overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), typeof(object), property.IsNullable)
+                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), typeof(object), property.IsNullable)
                 .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
                 ).Build()
             );
 
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameter(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName(), $"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>", property.IsNullable)
+                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), $"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>", property.IsNullable)
                 .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()});"
+                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
+                    : $"{{2}} = new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
                 ).Build()
             );
     }
@@ -167,15 +167,15 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         // Add builder overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantExpressionBuilder().WithValue(value))
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(object[])).WithIsParamArray())
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue(x)));")
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(object[])).WithIsParamArray())
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue(x)));")
                 .Build()
         );
 
         property.AddBuilderOverload(
             new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(IEnumerable<object>)))
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToString().ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
+                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(IEnumerable<object>)))
+                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
                 .Build()
         );
     }
@@ -389,31 +389,31 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
     private static string CreateTypeName(ClassPropertyBuilder builder)
     {
-        if (builder.TypeName.ToString().WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
+        if (builder.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
-            if (builder.Name.ToString() == Constants.ArgumentNames.PredicateExpression)
+            if (builder.Name == Constants.ArgumentNames.PredicateExpression)
             {
                 // hacking here... we only want to allow to inject the typed expression
-                return builder.TypeName.ToString();
+                return builder.TypeName;
             }
             else
             {
-                return builder.TypeName.ToString().GetGenericArguments();
+                return builder.TypeName.GetGenericArguments();
             }
         }
 
-        if (builder.TypeName.ToString().GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}"))
+        if (builder.TypeName.GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}"))
         {
-            return builder.TypeName.ToString().GetGenericArguments().GetGenericArguments();
+            return builder.TypeName.GetGenericArguments().GetGenericArguments();
         }
 
-        if (builder.TypeName.ToString().GetClassName() == Constants.Types.Expression)
+        if (builder.TypeName.GetClassName() == Constants.Types.Expression)
         {
             // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
             return $"{typeof(object).FullName}?";
         }
 
-        return builder.TypeName.ToString();
+        return builder.TypeName;
     }
 
     private static readonly VisitorContext _context = new();
