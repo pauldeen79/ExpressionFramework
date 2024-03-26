@@ -27,7 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser.Tests", "src\ExpressionFramework.Parser.Tests\ExpressionFramework.Parser.Tests.csproj", "{27EB4107-7085-49CC-8834-58D706E3A00D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Domain.Models", "src\ExpressionFramework.Domain.Models\ExpressionFramework.Domain.Models.csproj", "{78BF691F-D045-43EA-A692-1B1C2060BCCF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Models", "src\ExpressionFramework.Domain.Models\ExpressionFramework.Domain.Models.csproj", "{78BF691F-D045-43EA-A692-1B1C2060BCCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.CodeGeneration2", "src\ExpressionFramework.CodeGeneration2\ExpressionFramework.CodeGeneration2.csproj", "{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Domain2", "src\ExpressionFramework.Domain2\ExpressionFramework.Domain2.csproj", "{E7A030ED-1E7B-4A23-8E27-254B863E8209}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Parser2", "src\ExpressionFramework.Parser2\ExpressionFramework.Parser2.csproj", "{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -67,6 +73,18 @@ Global
 		{78BF691F-D045-43EA-A692-1B1C2060BCCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78BF691F-D045-43EA-A692-1B1C2060BCCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78BF691F-D045-43EA-A692-1B1C2060BCCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7A030ED-1E7B-4A23-8E27-254B863E8209}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7A030ED-1E7B-4A23-8E27-254B863E8209}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7A030ED-1E7B-4A23-8E27-254B863E8209}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7A030ED-1E7B-4A23-8E27-254B863E8209}.Release|Any CPU.Build.0 = Release|Any CPU
+		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
