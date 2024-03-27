@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Aggregators;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Evaluatables;
 
 [ExcludeFromCodeCoverage]
 public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
@@ -7,14 +7,13 @@ public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
     {
     }
 
-    public override string Path => Constants.Paths.AggregatorBuilders;
+    public override string Path => Constants.Paths.EvaluatableBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override Class? BaseClass => CreateBaseclass(typeof(Models.IAggregator), Constants.Namespaces.Domain);
+    protected override Class? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain);
     protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
-    protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.None; // there are no properties in aggregators, so this is not necessary
 
     public override IEnumerable<TypeBase> Model
-        => GetBuilders(GetOverrideModels(typeof(Models.IAggregator)), CurrentNamespace, Constants.Namespaces.DomainAggregators);
+        => GetBuilders(GetOverrideModels(typeof(IEvaluatable)), CurrentNamespace, Constants.Namespaces.DomainEvaluatables);
 }
