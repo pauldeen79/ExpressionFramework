@@ -1,6 +1,4 @@
-﻿using ClassFramework.Domain.Extensions;
-
-namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
@@ -30,8 +28,8 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
                         .AddStringCodeStatements(GetOverrideModels(typeof(IExpression))
                             .SelectMany(x => new[]
                             {
-                                $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name.WithoutGenerics()}Parser>();",
-                                $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name.WithoutGenerics()}Parser>();"
+                                $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name}Parser>();",
+                                $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name}Parser>();"
                             })
                         )
                         .AddStringCodeStatements(GetOverrideModels(typeof(Models.IAggregator))
