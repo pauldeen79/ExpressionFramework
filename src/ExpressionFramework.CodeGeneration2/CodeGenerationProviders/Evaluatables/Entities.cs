@@ -8,7 +8,6 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     }
 
     public override string Path => Constants.Paths.Evaluatables;
-    public override string LastGeneratedFilesFilename => string.Empty;
 
     protected override string FilenameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;

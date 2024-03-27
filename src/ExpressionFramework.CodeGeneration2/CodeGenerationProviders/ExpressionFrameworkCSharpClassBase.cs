@@ -1,4 +1,6 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿using ClassFramework.Pipelines.Builders;
+
+namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorPipelineCodeGenerationProviderBase
@@ -22,6 +24,16 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool CopyInterfaces => true;
     protected override bool CreateRecord => true;
 
+    protected override bool SkipNamespaceOnTypenameMappings(string @namespace)
+        => @namespace == $"{CodeGenerationRootNamespace}.Models.Contracts";
+
+    protected override IEnumerable<TypenameMappingBuilder> CreateAdditionalTypenameMappings()
+    {
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression")
+            .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression");
+    }
+
     protected TypeBase[] GetTemplateFrameworkModels()
         => GetNonCoreModels($"{CodeGenerationRootNamespace}.Models.TemplateFramework");
 
@@ -37,25 +49,25 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     }
 
     protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace)
-    => new ClassBuilder()
-        .WithNamespace(CurrentNamespace)
-        .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
-        .WithBaseClass($"{type}ParserBase")
-        .AddConstructors(
-            new ConstructorBuilder()
-                .WithChainCall($"base({CsharpExpressionDumper.Dump(name)})")
-        )
-        .AddMethods(new MethodBuilder()
-            .WithName("DoParse")
-            .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
-            .AddParameter("functionParseResult", typeof(FunctionParseResult))
-            .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-            .AddParameter("parser", typeof(IExpressionParser))
-            .WithProtected()
-            .WithOverride()
-            .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type))
-        )
-        .With(x => AddIsSupportedOverride(typeBase, x));
+        => new ClassBuilder()
+            .WithNamespace(CurrentNamespace)
+            .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
+            .WithBaseClass($"{type}ParserBase")
+            .AddConstructors(
+                new ConstructorBuilder()
+                    .WithChainCall($"base({CsharpExpressionDumper.Dump(name)})")
+            )
+            .AddMethods(new MethodBuilder()
+                .WithName("DoParse")
+                .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
+                .AddParameter("functionParseResult", typeof(FunctionParseResult))
+                .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
+                .AddParameter("parser", typeof(IExpressionParser))
+                .WithProtected()
+                .WithOverride()
+                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type))
+            )
+            .With(x => AddIsSupportedOverride(typeBase, x));
 
     protected static bool IsSupportedPropertyForGeneratedParser(Property parserProperty)
         => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
