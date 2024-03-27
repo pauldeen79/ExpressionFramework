@@ -7,17 +7,17 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     {
     }
 
-    public override string Path => $"{Constants.Namespaces.Domain}/{nameof(Operators)}";
-    public override string LastGeneratedFilesFilename => string.Empty;
-
+    public override string Path => Constants.Paths.Operators;
+    
     protected override string FilenameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
+    protected override bool SkipWhenFileExists => true; // scaffold instead of generate
 
     public override IEnumerable<TypeBase> Model
         => GetOverrideModels(typeof(IOperator))
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
-                .WithName(x.Name)
+                .WithName(x.WithoutInterfacePrefix())
                 .WithPartial()
                 .WithRecord()
                 .AddMethods(new MethodBuilder()

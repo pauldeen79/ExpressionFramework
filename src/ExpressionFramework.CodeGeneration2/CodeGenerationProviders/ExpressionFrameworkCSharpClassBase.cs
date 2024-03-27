@@ -14,6 +14,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override Type EntityCollectionType => typeof(IReadOnlyCollection<>);
     protected override Type EntityConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
     protected override Type BuilderCollectionType => typeof(ObservableCollection<>);
+    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Domain2", ".Domain").Replace(".Parser2", ".Parser"); //TODO: remove this later on
 
     protected override string ProjectName => "ExpressionFramework";
     protected override string CoreNamespace => "ExpressionFramework.Domain";
@@ -38,7 +39,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace)
     => new ClassBuilder()
         .WithNamespace(CurrentNamespace)
-        .WithName($"{typeBase.Name}Parser")
+        .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
         .WithBaseClass($"{type}ParserBase")
         .AddConstructors(
             new ConstructorBuilder()
@@ -117,8 +118,8 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
 
         var initializer = typeBase.GenericTypeArguments.Count switch
         {
-            0 => $"new {entityNamespace}.{typeBase.Name}({CreateParseArguments(typeBase, type)})",
-            1 => $"({Constants.Namespaces.Domain}.{type})Activator.CreateInstance(typeof({entityNamespace}.{typeBase.Name}<>).MakeGenericType(typeResult.Value!))",
+            0 => $"new {entityNamespace}.{typeBase.WithoutInterfacePrefix()}({CreateParseArguments(typeBase, type)})",
+            1 => $"({Constants.Namespaces.Domain}.{type})Activator.CreateInstance(typeof({entityNamespace}.{typeBase.WithoutInterfacePrefix()}<>).MakeGenericType(typeResult.Value!))",
             _ => throw new NotSupportedException("Expressions with multiple generic type arguments are not supported")
         };
 
