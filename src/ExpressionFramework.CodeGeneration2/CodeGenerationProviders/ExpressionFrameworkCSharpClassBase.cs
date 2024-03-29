@@ -1,4 +1,5 @@
-﻿using ClassFramework.Pipelines.Builders;
+﻿using ClassFramework.Pipelines;
+using ClassFramework.Pipelines.Builders;
 
 namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
@@ -32,10 +33,21 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         yield return new TypenameMappingBuilder()
             .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression")
             .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression");
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
+            .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
+            .AddMetadata
+            (
+                new MetadataBuilder().WithValue($"{CoreNamespace}.Builders").WithName(MetadataNames.CustomBuilderNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderName),
+                new MetadataBuilder().WithValue($"{ProjectName}.Domain.Contracts.Builders").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderInterfaceName),
+                new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
+                new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+                new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
+                new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{ProjectName}.Domain.Contracts.ITypedExpression")
+            );
     }
-
-    protected TypeBase[] GetTemplateFrameworkModels()
-        => GetNonCoreModels($"{CodeGenerationRootNamespace}.Models.TemplateFramework");
 
     protected override bool IsAbstractType(Type type)
     {
