@@ -3,5 +3,5 @@
 public interface ITypedExpression<T> : IUntypedExpressionProvider
 {
     Result<T> EvaluateTyped(object? context);
-    ITypedExpressionBuilder<T> ToBuilder();
+    ITypedExpressionBuilder<T> ToTypedExpressionBuilder();
 }
