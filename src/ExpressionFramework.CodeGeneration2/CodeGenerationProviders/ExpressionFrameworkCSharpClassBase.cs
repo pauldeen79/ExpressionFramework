@@ -28,7 +28,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override IEnumerable<TypenameMappingBuilder> CreateAdditionalTypenameMappings()
     {
         yield return new TypenameMappingBuilder()
-            .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression")
+            .WithSourceTypeName(typeof(ITypedExpression<>).WithoutGenerics())
             .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression");
         yield return new TypenameMappingBuilder()
             .WithSourceTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
@@ -44,6 +44,42 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
+
+        //yield return new TypenameMappingBuilder()
+        //    .WithSourceTypeName(typeof(IMultipleTypedExpressions<>).WithoutGenerics())
+        //    .WithTargetTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions");
+        //yield return new TypenameMappingBuilder()
+        //    .WithSourceTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions")
+        //    .WithTargetTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions")
+        //    .AddMetadata
+        //    (
+        //        new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderNamespace),
+        //        new MetadataBuilder().WithValue("System.Collections.Generic.IEnumerable<ITypedExpressionBuilder<{TypeName.GenericArgumentsWithoutBrackets}>").WithName(MetadataNames.CustomBuilderName),
+        //        new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+        //        new MetadataBuilder().WithValue("System.Collections.Generic.IEnumerable<ITypedExpressionBuilder<{TypeName.GenericArgumentsWithoutBrackets}>").WithName(MetadataNames.CustomBuilderInterfaceName),
+        //        new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
+        //        //new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+        //        new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
+        //        new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"System.Collections.Generic.IEnumerable<{CoreNamespace}.Contracts.ITypedExpression<{{TypeName.GenericArgumentsWithoutBrackets}}>>")
+        //    );
+
+        //yield return new TypenameMappingBuilder()
+        //    .WithSourceTypeName(typeof(ITypedExpression<>).WithoutGenerics())
+        //    .WithTargetTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions");
+        //yield return new TypenameMappingBuilder()
+        //    .WithSourceTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions")
+        //    .WithTargetTypeName("ExpressionFramework.Domain.Contracts.IMultipleTypedExpressions")
+        //    .AddMetadata
+        //    (
+        //        new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderNamespace),
+        //        new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderName),
+        //        new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+        //        new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderInterfaceName),
+        //        new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
+        //        //new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+        //        new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
+        //        new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
+        //    );
     }
 
     protected override bool IsAbstractType(Type type)
@@ -164,11 +200,11 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         {
             return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
-        else if (property.TypeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
-        {
-            // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
-            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{$"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{property.TypeName.GetGenericArguments()}>>"}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
-        }
+        //else if (property.TypeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
+        //{
+        //    // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
+        //    return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{$"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{property.TypeName.GetGenericArguments()}>>"}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+        //}
         else
         {
             var typeName = property.TypeName.WithoutProcessedGenerics() switch
