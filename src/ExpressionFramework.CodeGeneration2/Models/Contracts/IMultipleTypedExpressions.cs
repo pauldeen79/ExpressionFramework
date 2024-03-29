@@ -4,5 +4,5 @@
 // Which is probably a shortcoming in the overrides on the ExpressionFrameworkCodeGenerationBase, but it's a little hard to tackle this problem... So for now, we stick with this work-around
 public interface IMultipleTypedExpressions<T> : ITypedExpression<IEnumerable<T>>
 {
-    IReadOnlyCollection<T> Expressions { get; }
+    [Required] IReadOnlyCollection<T> Expressions { get; }
 }
