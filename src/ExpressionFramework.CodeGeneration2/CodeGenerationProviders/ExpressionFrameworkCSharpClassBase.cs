@@ -35,14 +35,14 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
             .AddMetadata
             (
-                new MetadataBuilder().WithValue($"{CoreNamespace}.Builders").WithName(MetadataNames.CustomBuilderNamespace),
-                new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderName),
-                new MetadataBuilder().WithValue($"{ProjectName}.Domain.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
-                new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderInterfaceName),
+                new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderName),
+                new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderInterfaceName),
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
-                new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+                //new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
-                new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{ProjectName}.Domain.Contracts.ITypedExpression")
+                new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
     }
 
