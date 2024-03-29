@@ -37,7 +37,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             (
                 new MetadataBuilder().WithValue($"{CoreNamespace}.Builders").WithName(MetadataNames.CustomBuilderNamespace),
                 new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderName),
-                new MetadataBuilder().WithValue($"{ProjectName}.Domain.Contracts.Builders").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+                new MetadataBuilder().WithValue($"{ProjectName}.Domain.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
                 new MetadataBuilder().WithValue("{TypeName.ClassName}Builder").WithName(MetadataNames.CustomBuilderInterfaceName),
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
                 new MetadataBuilder().WithValue(new Literal($"new {CoreNamespace}.Builders.TypedExpressionBuilder()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
