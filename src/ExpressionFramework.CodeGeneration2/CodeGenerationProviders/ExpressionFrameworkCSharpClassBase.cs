@@ -1,7 +1,4 @@
-﻿using ClassFramework.Pipelines;
-using ClassFramework.Pipelines.Builders;
-
-namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorPipelineCodeGenerationProviderBase
