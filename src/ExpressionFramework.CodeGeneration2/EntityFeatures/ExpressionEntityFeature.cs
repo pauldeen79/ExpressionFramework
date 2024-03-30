@@ -50,6 +50,7 @@ public class ExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilder, En
 
         return $"return {typeof(Result<>).WithoutGenerics()}.NotFound<{Constants.TypeNames.Expression}>();";
     }
+
     public IBuilder<IPipelineFeature<IConcreteTypeBuilder, EntityContext>> ToBuilder()
         => new ExpressionEntityFeatureBuilder();
 }

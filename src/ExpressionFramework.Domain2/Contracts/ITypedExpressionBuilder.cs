@@ -2,5 +2,5 @@
 
 public interface ITypedExpressionBuilder<T>
 {
-    ITypedExpression<T> BuildAsTypedExpression();
+    ITypedExpression<T> Build();
 }

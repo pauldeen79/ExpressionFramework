@@ -15,6 +15,7 @@ internal static class Program
         var services = new ServiceCollection()
             .AddParsers()
             .AddPipelines()
+            .AddScoped<IBuilderFeatureBuilder, BuilderFeatures.ExpressionBuilderBuilderFeatureBuilder>()
             .AddScoped<IEntityFeatureBuilder, EntityFeatures.ExpressionEntityFeatureBuilder>()
             .AddScoped<IEntityFeatureBuilder, EntityFeatures.TypedExpressionEntityFeatureBuilder>()
             .AddTemplateFramework()
