@@ -16,6 +16,7 @@ internal static class Program
             .AddParsers()
             .AddPipelines()
             .AddScoped<IEntityFeatureBuilder, EntityFeatures.ExpressionEntityFeatureBuilder>()
+            .AddScoped<IEntityFeatureBuilder, EntityFeatures.TypedExpressionEntityFeatureBuilder>()
             .AddTemplateFramework()
             .AddTemplateFrameworkChildTemplateProvider()
             .AddTemplateFrameworkCodeGeneration()
