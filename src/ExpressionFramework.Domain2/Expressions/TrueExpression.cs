@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("Returns true")]
+[UsesContext(false)]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "true", "This result will always be returned")]
+public partial record TrueExpression
 {
-#nullable enable
-    public partial record TrueExpression
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context)
+        => Result.Success<object?>(true);
+
+    public Result<bool> EvaluateTyped(object? context)
+        => Result.Success(true);
 }

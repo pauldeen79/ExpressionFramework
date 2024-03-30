@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("Skips a number of items on an enumerable context value")]
+[ContextType(typeof(IEnumerable))]
+[ContextDescription("The enumerable value to skip elements from")]
+[ContextRequired(true)]
+[ParameterDescription(nameof(CountExpression), "Number of items to skip")]
+[ParameterRequired(nameof(CountExpression), true)]
+[ReturnValue(ResultStatus.Ok, typeof(IEnumerable), "Enumerable with skipped items", "This result will be returned when the context is enumerable")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "CountExpression is not of type integer, Expression is not of type IEnumerable")]
+public partial record SkipExpression
 {
-#nullable enable
-    public partial record SkipExpression
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context) => Result.FromExistingResult<IEnumerable<object?>, object?>(EvaluateTyped(context), result => result);
+
+    public Result<IEnumerable<object?>> EvaluateTyped(object? context) => EnumerableExpression.GetTypedResultFromEnumerableWithCount(Expression, CountExpression, context, Skip);
+
+    private static IEnumerable<Result<object?>> Skip(IEnumerable<object?> e, Result<int> countResult) => e
+        .Skip(countResult.Value)
+        .Select(Result.Success);
 }

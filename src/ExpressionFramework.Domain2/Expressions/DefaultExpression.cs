@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("This expression always returns the default value for the specified type")]
+[UsesContext(false)]
+[ReturnValue(ResultStatus.Ok, "Default value of the specified type", "This result will always be returned")]
+public partial record DefaultExpression<T>
 {
-#nullable enable
-    public partial record DefaultExpression<T>
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context) => Result.Success<object?>(default(T));
+
+    public Result<T> EvaluateTyped(object? context) => Result.Success<T>(default!);
+
+    public Expression ToUntyped() => new ConstantExpression(default(T));
 }

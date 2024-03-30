@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("Returns a constant value")]
+[UsesContext(false)]
+[ParameterDescription(nameof(Value), "Value to use")]
+[ParameterRequired(nameof(Value), true)]
+[ReturnValue(ResultStatus.Ok, typeof(object), "The value that is supplied with the Value parameter", "This result will always be returned")]
+public partial record ConstantExpression
 {
-#nullable enable
-    public partial record ConstantExpression
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context)
+        => Result.Success(Value);
 }

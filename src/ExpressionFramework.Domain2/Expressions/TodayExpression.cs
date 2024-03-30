@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("Gets the current date")]
+[ReturnValue(ResultStatus.Ok, typeof(DateTime), "Current date", "This is always returned")]
+public partial record TodayExpression
 {
-#nullable enable
-    public partial record TodayExpression
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context)
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
+
+    public Result<DateTime> EvaluateTyped(object? context)
+        => Result.Success(DateTimeProvider is null
+            ? DateTime.Today
+            : DateTimeProvider.GetCurrentDateTime().Date);
 }

@@ -1,17 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[DynamicDescriptor(typeof(TrimStartExpression))]
+public partial record TrimStartExpression
 {
-#nullable enable
-    public partial record TrimStartExpression
+    public override Result<object?> Evaluate(object? context)
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
+
+    public Result<string> EvaluateTyped(object? context)
+        => Expression.EvaluateTyped(context).Transform(result =>
+            result.IsSuccessful()
+                ? TrimStart(context, result.Value!)
+                : result);
+
+    private Result<string> TrimStart(object? context, string s)
     {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
+        if (s is null)
         {
-            throw new System.NotImplementedException();
+            return Result.Invalid<string>("Expression is not of type string");
         }
+
+        if (TrimCharsExpression is null)
+        {
+            return Result.Success(s.TrimStart());
+        }
+
+        var trimCharsResult = TrimCharsExpression.EvaluateTyped(context);
+        if (!trimCharsResult.IsSuccessful())
+        {
+            return Result.FromExistingResult<string>(trimCharsResult);
+        }
+
+        if (trimCharsResult.Value is null)
+        {
+            return Result.Success(s.TrimStart());
+        }
+
+        return Result.Success(s.TrimStart(trimCharsResult.Value));
     }
-#nullable restore
+
+    public static ExpressionDescriptor GetExpressionDescriptor()
+        => StringExpression.GetStringTrimDescriptor(
+            typeof(TrimStartExpression),
+            "Trims the start characters of the expression",
+            "String to get the trimmed value for",
+            "The trim start value of the expression",
+            "This result will be returned when the expression is of type string");
 }

@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[ExpressionDescription("Returns the inverted value of the boolean value")]
+[UsesContext(true)]
+[ContextDescription("Context to use on expression evaluation")]
+[ParameterDescription(nameof(Expression), "Boolean to invert")]
+[ParameterRequired(nameof(Expression), true)]
+[ParameterType(nameof(Expression), typeof(bool))]
+[ReturnValue(ResultStatus.Ok, typeof(bool), "Inverted value of the boolean context value", "This result will be returned when the expression is a boolean value")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type boolean")]
+public partial record NotExpression
 {
-#nullable enable
-    public partial record NotExpression
-    {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<object?> Evaluate(object? context)
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
+
+    public Result<bool> EvaluateTyped(object? context)
+        => Expression.EvaluateTyped(context).Transform(result =>
+            result.IsSuccessful()
+                ? Result.Success(!result.Value)
+                : result);
 }

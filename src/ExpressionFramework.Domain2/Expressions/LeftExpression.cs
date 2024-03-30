@@ -1,17 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿namespace ExpressionFramework.Domain.Expressions;
 
-namespace ExpressionFramework.Domain.Expressions
+[DynamicDescriptor(typeof(LeftExpression))]
+public partial record LeftExpression
 {
-#nullable enable
-    public partial record LeftExpression
+    public override Result<object?> Evaluate(object? context)
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
+
+    public Result<string> EvaluateTyped(object? context)
+        => Expression.EvaluateTyped(context).Transform(result =>
+            result.IsSuccessful()
+                ? GetLeftValueFromString(result.Value!)
+                : result);
+
+    private Result<string> GetLeftValueFromString(string s)
     {
-        public override CrossCutting.Common.Results.Result<object?> Evaluate(object? context)
+        var lengthResult = LengthExpression.EvaluateTyped(s);
+        if (!lengthResult.IsSuccessful())
         {
-            throw new System.NotImplementedException();
+            return Result.FromExistingResult<string>(lengthResult);
         }
+
+        return s.Length >= lengthResult.Value
+            ? Result.Success(s.Substring(0, lengthResult.Value))
+            : Result.Invalid<string>("Length must refer to a location within the string");
     }
-#nullable restore
+
+    public static ExpressionDescriptor GetExpressionDescriptor()
+        => StringExpression.GetStringEdgeDescriptor(
+            typeof(LeftExpression),
+            "Gets a number of characters of the start of a string value of the context",
+            "String to get the first characters for",
+            "The first characters of the expression",
+            "This result will be returned when the context is of type string");
 }
