@@ -13,7 +13,8 @@ public class TypedExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilde
         context = context.IsNotNull(nameof(context));
 
         if (context.Context.SourceModel.Namespace == Constants.Namespaces.DomainExpressions
-            && context.Context.SourceModel.Interfaces.Any(x => x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression"))
+            && context.Context.SourceModel.Interfaces.Any(x => x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression")
+            && context.Context.SourceModel.GenericTypeArguments.Count == 0)
         {
             context.Model.AddMethods(new MethodBuilder()
                 .WithName("ToUntyped")
