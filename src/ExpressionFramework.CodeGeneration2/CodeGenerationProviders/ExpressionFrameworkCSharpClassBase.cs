@@ -58,7 +58,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         return base.IsAbstractType(type);
     }
 
-    protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace)
+    protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace, PipelineSettings settings)
         => new ClassBuilder()
             .WithNamespace(CurrentNamespace)
             .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
@@ -75,9 +75,15 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 .AddParameter("parser", typeof(IExpressionParser))
                 .WithProtected()
                 .WithOverride()
-                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type))
+                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
             .With(x => AddIsSupportedOverride(typeBase, x));
+
+    protected PipelineSettings CreateSettings()
+        => new PipelineSettingsBuilder()
+            .AddTypenameMappings(CreateTypenameMappings())
+            .AddNamespaceMappings(CreateNamespaceMappings())
+            .Build();
 
     protected static bool IsSupportedPropertyForGeneratedParser(Property parserProperty)
         => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
@@ -99,17 +105,17 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         }
     }
 
-    private void AddParseCodeStatements(TypeBase typeBase, MethodBuilder parseMethod, string entityNamespace, string type)
+    private void AddParseCodeStatements(TypeBase typeBase, MethodBuilder parseMethod, string entityNamespace, string type, PipelineSettings settings)
     {
         if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.GenericTypeArguments.Count > 0 && typeBase.Properties.Count == 1)
         {
-            parseMethod.AddStringCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), 0, {CsharpExpressionDumper.Dump(typeBase.Properties.First().Name)}, functionParseResult, evaluator, parser);");
+            parseMethod.AddStringCodeStatements($"return ParseTypedExpression(typeof({typeBase.WithoutInterfacePrefix()}<>), 0, {CsharpExpressionDumper.Dump(typeBase.Properties.First().Name)}, functionParseResult, evaluator, parser);");
             return;
         }
 
         if (typeBase.Properties.Any(x => !IsSupportedPropertyForGeneratedParser(x)))
         {
-            parseMethod.AddStringCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateParseResultVariable(x.Item, x.Index)));
+            parseMethod.AddStringCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateParseResultVariable(x.Item, x.Index, settings)));
             parseMethod.AddStringCodeStatements
             (
                 "var error = new Result[]",
@@ -150,7 +156,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         parseMethod.AddStringCodeStatements("#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
     }
 
-    private string CreateParseResultVariable(Property property, int index)
+    private string CreateParseResultVariable(Property property, int index, PipelineSettings settings)
     {
         var defaultValueSuffix = property.IsNullable
             ? ", default"
@@ -171,7 +177,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             {
                 "System.Nullable" => property.TypeName.GetGenericArguments(),
                 "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments()}>",
-                _ => property.TypeName
+                _ => property.TypeName.MapTypeName(settings)
             };
             return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }

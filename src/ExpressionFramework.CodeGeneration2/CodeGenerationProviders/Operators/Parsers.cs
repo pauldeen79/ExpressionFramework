@@ -10,6 +10,12 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
     public override string Path => Constants.Paths.ParserOperatorResultParsers;
 
     public override IEnumerable<TypeBase> Model
-        => GetOverrideModels(typeof(IOperator))
-            .Select(x => CreateParserClass(x, Constants.Types.Operator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainOperators).Build());
+    {
+        get
+        {
+            var settings = CreateSettings();
+            return GetOverrideModels(typeof(IOperator))
+                .Select(x => CreateParserClass(x, Constants.Types.Operator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainOperators, settings).Build());
+        }
+    }
 }
