@@ -11,6 +11,5 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
 
     public override IEnumerable<TypeBase> Model
         => GetOverrideModels(typeof(IEvaluatable))
-            .Select(x => CreateParserClass(x, Constants.Types.Evaluatable, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainEvaluatables)
-            .Build());
+            .Select(x => CreateParserClass(x, Constants.Types.Evaluatable, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainEvaluatables).Build());
 }

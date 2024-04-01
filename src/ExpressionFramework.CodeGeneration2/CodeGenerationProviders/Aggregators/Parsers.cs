@@ -11,6 +11,5 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
 
     public override IEnumerable<TypeBase> Model
         => GetOverrideModels(typeof(Models.IAggregator))
-            .Select(x => CreateParserClass(x, Constants.Types.Aggregator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainAggregators)
-            .Build());
+            .Select(x => CreateParserClass(x, Constants.Types.Aggregator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainAggregators).Build());
 }
