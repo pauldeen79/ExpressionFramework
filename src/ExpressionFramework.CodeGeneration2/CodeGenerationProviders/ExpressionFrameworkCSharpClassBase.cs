@@ -175,8 +175,8 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         {
             var typeName = property.TypeName.WithoutProcessedGenerics() switch
             {
-                "System.Nullable" => property.TypeName.GetGenericArguments(),
-                "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments()}>",
+                "System.Nullable" => property.TypeName.GetGenericArguments().MapTypeName(settings),
+                "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments().MapTypeName(settings)}>",
                 _ => property.TypeName.MapTypeName(settings)
             };
             return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
