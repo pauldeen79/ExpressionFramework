@@ -257,33 +257,4 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
-
-    private static string CreateTypeName(PropertyBuilder builder)
-    {
-        if (builder.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
-        {
-            if (builder.Name == Constants.ArgumentNames.PredicateExpression)
-            {
-                // hacking here... we only want to allow to inject the typed expression
-                return builder.TypeName;
-            }
-            else
-            {
-                return builder.TypeName.GetGenericArguments();
-            }
-        }
-
-        if (builder.TypeName.GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}"))
-        {
-            return builder.TypeName.GetGenericArguments().GetGenericArguments();
-        }
-
-        if (builder.TypeName.GetClassName() == Constants.Types.Expression)
-        {
-            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
-            return $"{typeof(object).FullName}?";
-        }
-
-        return builder.TypeName;
-    }
 }
