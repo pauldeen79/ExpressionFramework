@@ -10,12 +10,12 @@
 [ReturnValue(ResultStatus.Ok, typeof(bool), "true when the condition itself evaluates to true, otherwise false", "This result will be returned when evaluation of the expressions succeed")]
 public partial record ComposableEvaluatable
 {
-    public ComposableEvaluatable(object? leftExpression, Operator @operator, object? rightExpression, bool startGroup = false, bool endGroup = false, Combination combination = Domains.Combination.And)
+    public ComposableEvaluatable(object? leftExpression, Operator @operator, object? rightExpression, Combination? combination = null, bool? startGroup = null, bool? endGroup = null)
         : this(new ConstantExpression(leftExpression), @operator, new ConstantExpression(rightExpression), combination, startGroup, endGroup)
     {
     }
     
-    public ComposableEvaluatable(Func<object?, object?> leftExpression, Func<Operator> @operator, Func<object?, object?> rightExpression, bool startGroup = false, bool endGroup = false, Combination combination = Domains.Combination.And)
+    public ComposableEvaluatable(Func<object?, object?> leftExpression, Func<Operator> @operator, Func<object?, object?> rightExpression, Combination combination = Domains.Combination.And, bool startGroup = false, bool endGroup = false)
         : this(new DelegateExpression(leftExpression), ArgumentGuard.IsNotNull(@operator, nameof(@operator)).Invoke(), new DelegateExpression(rightExpression), combination, startGroup, endGroup)
     {
     }
