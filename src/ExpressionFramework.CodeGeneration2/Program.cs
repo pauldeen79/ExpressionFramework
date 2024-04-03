@@ -10,6 +10,7 @@ internal static class Program
         var basePath = currentDirectory.EndsWith("ExpressionFramework")
             ? Path.Combine(currentDirectory, @"src/")
             : Path.Combine(currentDirectory, @"../../../../");
+        Console.WriteLine($"Current directory is {currentDirectory}");
         Console.WriteLine($"Base path is {basePath}");
         var dryRun = false;
         var services = new ServiceCollection()
