@@ -1,11 +1,13 @@
 ﻿namespace ExpressionFramework.CodeGeneration.BuilderFeatures;
 
+[ExcludeFromCodeCoverage]
 public class ExpressionBuilderBuilderFeatureBuilder : IBuilderFeatureBuilder
 {
     public IPipelineFeature<IConcreteTypeBuilder, BuilderContext> Build()
         => new ExpressionBuilderBuilderFeature();
 }
 
+[ExcludeFromCodeCoverage] 
 public class ExpressionBuilderBuilderFeature : IPipelineFeature<IConcreteTypeBuilder, BuilderContext>
 {
     public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context)

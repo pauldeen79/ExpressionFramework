@@ -1,11 +1,13 @@
 ﻿namespace ExpressionFramework.CodeGeneration.EntityFeatures;
 
+[ExcludeFromCodeCoverage]
 public class TypedExpressionEntityFeatureBuilder : IEntityFeatureBuilder
 {
     public IPipelineFeature<IConcreteTypeBuilder, EntityContext> Build()
         => new TypedExpressionEntityFeature();
 }
 
+[ExcludeFromCodeCoverage]
 public class TypedExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilder, EntityContext>
 {
     public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, EntityContext> context)
