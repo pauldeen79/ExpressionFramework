@@ -38,6 +38,7 @@ jobs:
           dotnet tool install -g pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd
           dotnet build -c Release --no-restore src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
           t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net8.0/ExpressionFramework.CodeGeneration.dll -p src/
+          dotnet run --project src/ExpressionFramework.CodeGeneration2/ExpressionFramework.CodeGeneration2.csproj
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
