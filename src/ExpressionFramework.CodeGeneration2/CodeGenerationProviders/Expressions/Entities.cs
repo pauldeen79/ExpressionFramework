@@ -12,6 +12,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     protected override string FilenameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
     protected override bool SkipWhenFileExists => true; // scaffold instead of generate
+    protected override bool GenerateMultipleFiles => true;
 
     public override IEnumerable<TypeBase> Model
         => GetOverrideModels(typeof(IExpression))

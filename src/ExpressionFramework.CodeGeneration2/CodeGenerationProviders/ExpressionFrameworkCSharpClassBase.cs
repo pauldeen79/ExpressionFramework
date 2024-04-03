@@ -21,6 +21,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool CopyAttributes => true;
     protected override bool CopyInterfaces => true;
     protected override bool CreateRecord => true;
+    protected override bool GenerateMultipleFiles => false;
 
     protected override bool SkipNamespaceOnTypenameMappings(string @namespace)
         => @namespace == $"{CodeGenerationRootNamespace}.Models.Contracts";
@@ -263,4 +264,9 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
+
+    public IGenerationEnvironment CreateGenerationEnvironment()
+        => GenerateMultipleFiles
+            ? new MultipleContentBuilderEnvironment()
+            : new StringBuilderEnvironment();
 }

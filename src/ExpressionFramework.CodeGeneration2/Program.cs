@@ -11,7 +11,6 @@ internal static class Program
             ? Path.Combine(currentDirectory, @"src/")
             : Path.Combine(currentDirectory, @"../../../../");
         var dryRun = false;
-        var codeGenerationSettings = new CodeGenerationSettings(basePath, "GeneratedCode.cs", dryRun);
         var services = new ServiceCollection()
             .AddParsers()
             .AddPipelines()
@@ -38,7 +37,7 @@ internal static class Program
         using var serviceProvider = services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
         var instances = generators
-            .Select(x => (ICodeGenerationProvider)scope.ServiceProvider.GetRequiredService(x))
+            .Select(x => (ExpressionFrameworkCSharpClassBase)scope.ServiceProvider.GetRequiredService(x))
             .ToArray();
         var engine = scope.ServiceProvider.GetRequiredService<ICodeGenerationEngine>();
 
@@ -46,18 +45,10 @@ internal static class Program
         var count = 0;
         foreach (var instance in instances)
         {
-            var generationEnvironment = new MultipleContentBuilderEnvironment();
+            var codeGenerationSettings = new CodeGenerationSettings(basePath, Path.Combine(instance.Path, $"{instance.GetType().Name}.template.generated.cs"), dryRun);
+            var generationEnvironment = instance.CreateGenerationEnvironment();
             engine.Generate(instance, generationEnvironment, codeGenerationSettings);
-            count += generationEnvironment.Builder.Contents.Count();
-            if (!codeGenerationSettings.DryRun)
-            {
-                generationEnvironment.SaveContents(instance, codeGenerationSettings.BasePath, codeGenerationSettings.DefaultFilename);
-            }
-
-            if (string.IsNullOrEmpty(basePath))
-            {
-                Console.WriteLine(generationEnvironment.Builder.ToString());
-            }
+            count ++;
         }
 
         // Log output to console
