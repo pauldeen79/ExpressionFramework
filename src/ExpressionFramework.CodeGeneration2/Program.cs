@@ -48,7 +48,15 @@ internal static class Program
             var codeGenerationSettings = new CodeGenerationSettings(basePath, Path.Combine(instance.Path, $"{instance.GetType().Name}.template.generated.cs"), dryRun);
             var generationEnvironment = instance.CreateGenerationEnvironment();
             engine.Generate(instance, generationEnvironment, codeGenerationSettings);
-            count ++;
+            var multipleEnv = generationEnvironment as MultipleContentBuilderEnvironment;
+            if (multipleEnv is not null)
+            {
+                count += multipleEnv.Builder.Contents.Count();
+            }
+            else
+            {
+                count++;
+            }
         }
 
         // Log output to console
