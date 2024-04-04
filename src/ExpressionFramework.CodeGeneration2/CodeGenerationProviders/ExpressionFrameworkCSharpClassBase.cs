@@ -93,9 +93,9 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             .Build();
 
     protected static bool IsSupportedPropertyForGeneratedParser(Property parserProperty)
-        => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
-        || parserProperty.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
-        || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>";
+        => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression)
+        || parserProperty.TypeName == $"{Constants.CodeGenerationRootNamespace}.Contracts.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
+        || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{Constants.Types.Expression}>";
 
     private static void AddIsSupportedOverride(TypeBase model, ClassBuilder parserClass)
     {
@@ -154,7 +154,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         var initializer = typeBase.GenericTypeArguments.Count switch
         {
             0 => $"new {entityNamespace}.{typeBase.WithoutInterfacePrefix()}({CreateParseArguments(typeBase, type)})",
-            1 => $"({Constants.Namespaces.Domain}.{type})Activator.CreateInstance(typeof({entityNamespace}.{typeBase.WithoutInterfacePrefix()}<>).MakeGenericType(typeResult.Value!))",
+            1 => $"({Constants.Namespaces.Domain}.{type}){typeof(Activator).FullName}.{nameof(Activator.CreateInstance)}(typeof({entityNamespace}.{typeBase.WithoutInterfacePrefix()}<>).MakeGenericType(typeResult.Value!))",
             _ => throw new NotSupportedException("Expressions with multiple generic type arguments are not supported")
         };
 
@@ -223,15 +223,15 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             builder.AppendLine(",").Append("    ");
         }
 
-        if (property.TypeName.GetClassName() == Constants.Types.Expression)
+        if (property.TypeName.GetClassName() == $"I{Constants.Types.Expression}")
         {
             builder.Append($"new TypedConstantResultExpression<{typeof(object).FullName}{nullableSuffix}>(functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
         }
-        else if (property.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>")
+        else if (property.TypeName == $"{typeof(ITypedExpression<>).WithoutGenerics()}<{typeof(IEnumerable).FullName}>")
         {
             builder.Append($"functionParseResult.GetTypedExpressionsArgumentValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
         }
-        else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
+        else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{type}>")
         {
             builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
         }

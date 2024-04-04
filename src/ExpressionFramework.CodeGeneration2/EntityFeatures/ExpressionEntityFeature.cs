@@ -30,7 +30,7 @@ public class ExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilder, En
     private static string GetSingleContainedExpressionStatements(IConcreteTypeBuilder typeBaseBuilder)
     {
         var expressionProperties = typeBaseBuilder.Properties
-            .Where(x => x.Name == "Expression" && x.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression))
+            .Where(x => x.Name == "Expression" && x.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression))
             .ToArray();
 
         if (expressionProperties.Length == 1)
