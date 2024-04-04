@@ -33,8 +33,4 @@
     <ProjectReference Include="..\ExpressionFramework.Domain2\ExpressionFramework.Domain2.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Using Include="Xunit" />
-  </ItemGroup>
-
 </Project>
