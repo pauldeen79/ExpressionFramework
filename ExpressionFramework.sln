@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain2.Tests", "src\ExpressionFramework.Domain2.Tests\ExpressionFramework.Domain2.Tests.csproj", "{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Parser2.Tests", "src\ExpressionFramework.Parser2.Tests\ExpressionFramework.Parser2.Tests.csproj", "{171F095B-A221-43B6-95E4-967F60FE8960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,10 @@ Global
 		{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{171F095B-A221-43B6-95E4-967F60FE8960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{171F095B-A221-43B6-95E4-967F60FE8960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{171F095B-A221-43B6-95E4-967F60FE8960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{171F095B-A221-43B6-95E4-967F60FE8960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
