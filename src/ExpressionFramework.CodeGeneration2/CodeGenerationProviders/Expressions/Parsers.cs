@@ -15,7 +15,14 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
         {
             var settings = CreateSettings();
             return GetOverrideModels(typeof(IExpression))
-                .Select(x => CreateParserClass(x, Constants.Types.Expression, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainExpressions, settings).Build());
+                .Select(x => CreateParserClass
+                (
+                    x,
+                    Constants.Types.Expression,
+                    x.WithoutInterfacePrefix().ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
+                    Constants.Namespaces.DomainExpressions,
+                    settings
+                ).Build());
         }
     }
 }
