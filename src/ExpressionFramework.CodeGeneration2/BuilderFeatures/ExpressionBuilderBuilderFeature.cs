@@ -51,87 +51,199 @@ public class ExpressionBuilderBuilderFeature : IPipelineFeature<IConcreteTypeBui
         }
 
         // Add builder overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
-        foreach (var property in context.Context.GetSourceProperties().Where(x => context.Context.IsValidForFluentMethod(x) && !x.TypeName.FixTypeName().IsCollectionTypeName() && x.TypeName.GetClassName() == Constants.Types.Expression))
+        foreach (var property in context.Context.GetSourceProperties().Where(context.Context.IsValidForFluentMethod))
         {
             var parentChildContext = new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings);
-
-            var results = context.Context.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, _formattableStringParser);
-
-            var error = Array.Find(results, x => !x.Result.IsSuccessful());
-            if (error is not null)
+            if (!property.TypeName.FixTypeName().IsCollectionTypeName())
             {
-                // Error in formattable string parsing
-                return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
-            }
+                var results = context.Context.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, _formattableStringParser);
 
-            var builder = new MethodBuilder()
-                .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
-                .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
-                      ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                      : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
-                .AddParameters
-                (
-                    new ParameterBuilder()
-                        .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
-                        .WithType(typeof(object))
-                        .WithIsNullable(property.IsNullable)
-                        .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
-                );
-
-            if (context.Context.Settings.AddNullChecks)
-            {
-                var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-                if (!string.IsNullOrEmpty(nullCheckStatement))
+                var error = Array.Find(results, x => !x.Result.IsSuccessful());
+                if (error is not null)
                 {
-                    builder.AddStringCodeStatements(nullCheckStatement);
+                    // Error in formattable string parsing
+                    return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
+                }
+
+                if (property.TypeName.GetClassName() == Constants.Types.Expression)
+                {
+                    AddOverloadsForExpression(context, property, results);
                 }
             }
-
-            builder.AddStringCodeStatements
-            (
-                property.IsNullable
-                    ? $"{property.Name} = {property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                    : $"{property.Name} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
-                context.Context.ReturnValueStatementForFluentMethod
-            );
-
-            context.Model.AddMethods(builder);
-
-            builder = new MethodBuilder()
-                .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
-                .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
-                      ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                      : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
-                .AddParameters
+            else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
+            {
+                var results = context.Context.GetResultsForBuilderCollectionProperties
                 (
-                    new ParameterBuilder()
-                        .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
-                        .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>")
-                        .WithIsNullable(property.IsNullable)
-                        .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
+                    property,
+                    parentChildContext,
+                    _formattableStringParser,
+                    GetCodeStatementsForEnumerableOverload(context, property, parentChildContext),
+                    GetCodeStatementsForArrayOverload(context, property, parentChildContext)
                 );
 
-            if (context.Context.Settings.AddNullChecks)
-            {
-                var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-                if (!string.IsNullOrEmpty(nullCheckStatement))
+                var error = Array.Find(results, x => !x.Result.IsSuccessful());
+                if (error is not null)
                 {
-                    builder.AddStringCodeStatements(nullCheckStatement);
+                    // Error in formattable string parsing
+                    return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
                 }
+
+                AddOverloadsForExpressions(context, property, results);
             }
-
-            builder.AddStringCodeStatements
-            (
-                property.IsNullable
-                    ? $"{property.Name} = {property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                    : $"{property.Name} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
-                context.Context.ReturnValueStatementForFluentMethod
-            );
-
-            context.Model.AddMethods(builder);
         }
 
         return Result.Continue<IConcreteTypeBuilder>();
+    }
+
+    private IEnumerable<Result<string>> GetCodeStatementsForEnumerableOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
+    {
+        if (context.Context.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
+        {
+            // When using IEnumerable<>, do not call ToArray because we want lazy evaluation
+            foreach (var statement in GetCodeStatementsForArrayOverload(context, property, parentChildContext))
+            {
+                yield return statement;
+            }
+
+            yield break;
+        }
+
+        // When not using IEnumerable<>, we can simply force ToArray because it's stored in a generic list or collection of some sort anyway.
+        // (in other words, materialization is always performed)
+        if (context.Context.Settings.AddNullChecks)
+        {
+            yield return Result.Success(context.Context.CreateArgumentNullException(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
+        }
+
+        yield return _formattableStringParser.Parse("return {BuilderAddMethodName}({NamePascalCsharpFriendlyName}.ToArray());", context.Context.FormatProvider, parentChildContext);
+    }
+
+    private IEnumerable<Result<string>> GetCodeStatementsForArrayOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
+    {
+        if (context.Context.Settings.AddNullChecks)
+        {
+            var argumentNullCheckResult = _formattableStringParser.Parse
+            (
+                context.Context.GetMappingMetadata(property.TypeName).GetStringValue(MetadataNames.CustomBuilderArgumentNullCheckExpression, "{NullCheck.Argument}"),
+                context.Context.FormatProvider,
+                new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings)
+            );
+
+            if (!string.IsNullOrEmpty(argumentNullCheckResult.Value) || !argumentNullCheckResult.IsSuccessful())
+            {
+                yield return argumentNullCheckResult;
+            }
+
+            if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
+            {
+                yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
+            }
+            else
+            {
+                yield return Result.NotSupported<string>($"Unsupported property typename: {property.TypeName}");
+            }
+        }
+    }
+
+    private static void AddOverloadsForExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
+    {
+        var builder = new MethodBuilder()
+            .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
+            .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
+                    ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
+                    : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
+            .AddParameters
+            (
+                new ParameterBuilder()
+                    .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
+                    .WithType(typeof(object))
+                    .WithIsNullable(property.IsNullable)
+                    .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
+            );
+
+        if (context.Context.Settings.AddNullChecks)
+        {
+            var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
+            if (!string.IsNullOrEmpty(nullCheckStatement))
+            {
+                builder.AddStringCodeStatements(nullCheckStatement);
+            }
+        }
+
+        builder.AddStringCodeStatements
+        (
+            property.IsNullable
+                ? $"{property.Name} = {property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+            context.Context.ReturnValueStatementForFluentMethod
+        );
+
+        context.Model.AddMethods(builder);
+
+        builder = new MethodBuilder()
+            .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
+            .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
+                  ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
+                  : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
+            .AddParameters
+            (
+                new ParameterBuilder()
+                    .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
+                    .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>")
+                    .WithIsNullable(property.IsNullable)
+                    .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
+            );
+
+        if (context.Context.Settings.AddNullChecks)
+        {
+            var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
+            if (!string.IsNullOrEmpty(nullCheckStatement))
+            {
+                builder.AddStringCodeStatements(nullCheckStatement);
+            }
+        }
+
+        builder.AddStringCodeStatements
+        (
+            property.IsNullable
+                ? $"{property.Name} = {property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+            context.Context.ReturnValueStatementForFluentMethod
+        );
+
+        context.Model.AddMethods(builder);
+    }
+
+    private static void AddOverloadsForExpressions(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
+    {
+        var returnType = context.Context.IsBuilderForAbstractEntity
+                            ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
+                            : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}";
+
+        context.Model.AddMethods(new MethodBuilder()
+            .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)
+            .WithReturnTypeName(returnType)
+            .AddParameters
+            (
+                new ParameterBuilder()
+                    .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
+                    .WithType(typeof(IEnumerable<object>))
+            )
+            .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!))
+        );
+
+        context.Model.AddMethods(new MethodBuilder()
+            .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)
+            .WithReturnTypeName(returnType)
+            .AddParameters
+            (
+                new ParameterBuilder()
+                    .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
+                    .WithType(typeof(object[]))
+                    .WithIsParamArray()
+            )
+            .AddStringCodeStatements(results.Where(x => x.Name == "ArrayOverload").Select(x => x.Result.Value!))
+        );
     }
 
     public IBuilder<IPipelineFeature<IConcreteTypeBuilder, BuilderContext>> ToBuilder()
