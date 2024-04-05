@@ -264,9 +264,4 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
-
-    public IGenerationEnvironment CreateGenerationEnvironment()
-        => GenerateMultipleFiles
-            ? new MultipleContentBuilderEnvironment()
-            : new StringBuilderEnvironment();
 }
