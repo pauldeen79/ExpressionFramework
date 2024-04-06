@@ -41,8 +41,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
                 new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderInterfaceName),
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()").WithName(MetadataNames.CustomBuilderSourceExpression),
-                new MetadataBuilder().WithValue(new Literal("new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder[Generics]()", null)).WithName(MetadataNames.CustomBuilderDefaultValue), //TODO: See if we can remove the [] work-around
-                //new MetadataBuilder().WithValue(new Literal("new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder{TypeName.GenericArgumentsWithBrackets}()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+                new MetadataBuilder().WithValue(new Literal("new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder{TypeName.GenericArgumentsWithBrackets}()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
@@ -264,9 +263,4 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
-
-    public IGenerationEnvironment CreateGenerationEnvironment()
-        => GenerateMultipleFiles
-            ? new MultipleContentBuilderEnvironment()
-            : new StringBuilderEnvironment();
 }
