@@ -60,6 +60,7 @@ public static class Constants
         public const string Evaluatable = $"{Namespaces.Domain}.Evaluatable";
         public const string Expression = $"{Namespaces.Domain}.Expression";
         public const string Operator = $"{Namespaces.Domain}.Operator";
+        public const string TypedExpression = $"{Namespaces.Domain}.Contracts.ITypedExpression";
 
         public static class Expressions
         {
