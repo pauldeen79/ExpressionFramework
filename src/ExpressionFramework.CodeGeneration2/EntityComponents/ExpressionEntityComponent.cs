@@ -1,14 +1,14 @@
-﻿namespace ExpressionFramework.CodeGeneration.EntityFeatures;
+﻿namespace ExpressionFramework.CodeGeneration.EntityComponents;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionEntityFeatureBuilder : IEntityFeatureBuilder
+public class ExpressionEntityComponentBuilder : IEntityComponentBuilder
 {
-    public IPipelineFeature<IConcreteTypeBuilder, EntityContext> Build()
-        => new ExpressionEntityFeature();
+    public IPipelineComponent<IConcreteTypeBuilder, EntityContext> Build()
+        => new ExpressionEntityComponent();
 }
 
 [ExcludeFromCodeCoverage]
-public class ExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilder, EntityContext>
+public class ExpressionEntityComponent : IPipelineComponent<IConcreteTypeBuilder, EntityContext>
 {
     public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, EntityContext> context)
     {
@@ -52,7 +52,4 @@ public class ExpressionEntityFeature : IPipelineFeature<IConcreteTypeBuilder, En
 
         return $"return {typeof(Result<>).WithoutGenerics()}.NotFound<{Constants.TypeNames.Expression}>();";
     }
-
-    public IBuilder<IPipelineFeature<IConcreteTypeBuilder, EntityContext>> ToBuilder()
-        => new ExpressionEntityFeatureBuilder();
 }

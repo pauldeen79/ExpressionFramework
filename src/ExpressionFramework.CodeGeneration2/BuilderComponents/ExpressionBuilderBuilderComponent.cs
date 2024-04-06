@@ -1,14 +1,14 @@
-﻿namespace ExpressionFramework.CodeGeneration.BuilderFeatures;
+﻿namespace ExpressionFramework.CodeGeneration.BuilderComponents;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionBuilderBuilderFeatureBuilder : IBuilderFeatureBuilder
+public class ExpressionBuilderBuilderComponentBuilder : IBuilderComponentBuilder
 {
-    public IPipelineFeature<IConcreteTypeBuilder, BuilderContext> Build()
-        => new ExpressionBuilderBuilderFeature();
+    public IPipelineComponent<IConcreteTypeBuilder, BuilderContext> Build()
+        => new ExpressionBuilderBuilderComponent();
 }
 
 [ExcludeFromCodeCoverage] 
-public class ExpressionBuilderBuilderFeature : IPipelineFeature<IConcreteTypeBuilder, BuilderContext>
+public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTypeBuilder, BuilderContext>
 {
     public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context)
     {
@@ -33,7 +33,4 @@ public class ExpressionBuilderBuilderFeature : IPipelineFeature<IConcreteTypeBui
 
         return Result.Continue<IConcreteTypeBuilder>();
     }
-
-    public IBuilder<IPipelineFeature<IConcreteTypeBuilder, BuilderContext>> ToBuilder()
-        => new ExpressionBuilderBuilderFeatureBuilder();
 }
