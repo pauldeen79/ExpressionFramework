@@ -80,7 +80,7 @@ public class ReflectionExpressionDescriptorProviderTests
     {
         public SomeExpressionBuilder(SomeExpression source) : base(source)
         {
-            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
         }
 
         public override SomeExpression BuildTyped()

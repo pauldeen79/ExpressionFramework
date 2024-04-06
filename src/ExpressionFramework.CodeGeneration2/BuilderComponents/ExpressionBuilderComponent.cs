@@ -1,26 +1,25 @@
 ﻿namespace ExpressionFramework.CodeGeneration.BuilderComponents;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionBuilderBuilderComponentBuilder : IBuilderComponentBuilder
+public class ExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 {
     private readonly IFormattableStringParser _formattableStringParser;
 
-    public ExpressionBuilderBuilderComponentBuilder(IFormattableStringParser formattableStringParser)
+    public ExpressionBuilderComponentBuilder(IFormattableStringParser formattableStringParser)
     {
         _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
     }
 
-
     public IPipelineComponent<IConcreteTypeBuilder, BuilderContext> Build()
-        => new ExpressionBuilderBuilderComponent(_formattableStringParser);
+        => new ExpressionBuilderComponent(_formattableStringParser);
 }
 
 [ExcludeFromCodeCoverage] 
-public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTypeBuilder, BuilderContext>
+public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilder, BuilderContext>
 {
     private readonly IFormattableStringParser _formattableStringParser;
 
-    public ExpressionBuilderBuilderComponent(IFormattableStringParser formattableStringParser)
+    public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser)
     {
         _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
     }
@@ -28,11 +27,6 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
     public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context)
     {
         context = context.IsNotNull(nameof(context));
-
-        if (context.Context.SourceModel.Namespace != Constants.Namespaces.DomainExpressions)
-        {
-            return Result.Continue<IConcreteTypeBuilder>();
-        }
 
         if (context.Context.SourceModel.Interfaces.Any(x => x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression"))
         {
@@ -54,7 +48,7 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
         foreach (var property in context.Context.GetSourceProperties().Where(context.Context.IsValidForFluentMethod))
         {
             var parentChildContext = new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings);
-            if (!property.TypeName.FixTypeName().IsCollectionTypeName())
+            if (!property.TypeName.FixTypeName().IsCollectionTypeName() && property.TypeName.GetClassName() == Constants.Types.Expression)
             {
                 var results = context.Context.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, _formattableStringParser);
 
@@ -65,10 +59,7 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
                     return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
                 }
 
-                if (property.TypeName.GetClassName() == Constants.Types.Expression)
-                {
-                    AddOverloadsForExpression(context, property, results);
-                }
+                AddOverloadsForExpression(context, property, results);
             }
             else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
             {
@@ -134,14 +125,7 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
                 yield return argumentNullCheckResult;
             }
 
-            if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
-            {
-                yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
-            }
-            else
-            {
-                yield return Result.NotSupported<string>($"Unsupported property typename: {property.TypeName}");
-            }
+            yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
         }
     }
 
@@ -150,8 +134,8 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
         var builder = new MethodBuilder()
             .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
             .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
-                    ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                    : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
+                ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
+                : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
             .AddParameters
             (
                 new ParameterBuilder()
@@ -217,8 +201,8 @@ public class ExpressionBuilderBuilderComponent : IPipelineComponent<IConcreteTyp
     private static void AddOverloadsForExpressions(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
     {
         var returnType = context.Context.IsBuilderForAbstractEntity
-                            ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                            : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}";
+            ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
+            : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}";
 
         context.Model.AddMethods(new MethodBuilder()
             .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)

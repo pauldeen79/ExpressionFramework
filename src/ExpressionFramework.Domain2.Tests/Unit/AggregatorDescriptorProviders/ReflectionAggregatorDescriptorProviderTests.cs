@@ -73,7 +73,7 @@ public class ReflectionAggregatorDescriptorProviderTests
     {
         public SomeAggregatorBuilder(SomeAggregator source) : base(source)
         {
-            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
         }
 
         public override SomeAggregator BuildTyped()

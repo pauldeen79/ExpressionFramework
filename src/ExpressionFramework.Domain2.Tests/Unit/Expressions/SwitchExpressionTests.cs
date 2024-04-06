@@ -137,7 +137,7 @@ public class SwitchExpressionTests
     {
         public ErrorEvaluatableBuilder(ErrorEvaluatable source) : base(source)
         {
-            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
         }
 
         public override ErrorEvaluatable BuildTyped()

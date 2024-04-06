@@ -78,7 +78,7 @@ public class ReflectionOperatorDescriptorProviderTests
     {
         public SomeOperatorBuilder(SomeOperator source) : base(source)
         {
-            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            ArgumentNullException.ThrowIfNull(source);
         }
 
         public override SomeOperator BuildTyped()
