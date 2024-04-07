@@ -218,7 +218,6 @@ public class TypedExpressionBuilderComponent : IPipelineComponent<IConcreteTypeB
             {
                 yield return argumentNullCheckResult;
             }
-
         }
         
         yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
