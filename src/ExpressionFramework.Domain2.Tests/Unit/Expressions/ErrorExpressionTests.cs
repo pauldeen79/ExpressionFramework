@@ -77,7 +77,7 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void Cannot_Build_ErrorExpression_From_Builder_With_Explicit_Null_Message()
+    public void Cannot_Set_ErrorExpression_To_Null()
     {
         // Arrange
         var builder = new ErrorExpressionBuilder();
