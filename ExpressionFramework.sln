@@ -37,7 +37,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain2.Tests", "src\ExpressionFramework.Domain2.Tests\ExpressionFramework.Domain2.Tests.csproj", "{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExpressionFramework.Parser2.Tests", "src\ExpressionFramework.Parser2.Tests\ExpressionFramework.Parser2.Tests.csproj", "{171F095B-A221-43B6-95E4-967F60FE8960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2.Tests", "src\ExpressionFramework.Parser2.Tests\ExpressionFramework.Parser2.Tests.csproj", "{171F095B-A221-43B6-95E4-967F60FE8960}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassFramework.TemplateFramework", "..\ClassFramework\src\ClassFramework.TemplateFramework\ClassFramework.TemplateFramework.csproj", "{C47E47CF-DDA1-4C8C-865A-8F6C778D4698}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClassFramework.Pipelines", "..\ClassFramework\src\ClassFramework.Pipelines\ClassFramework.Pipelines.csproj", "{99FEF3DC-4168-494F-A930-78C0D397D007}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,6 +101,14 @@ Global
 		{171F095B-A221-43B6-95E4-967F60FE8960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{171F095B-A221-43B6-95E4-967F60FE8960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{171F095B-A221-43B6-95E4-967F60FE8960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47E47CF-DDA1-4C8C-865A-8F6C778D4698}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47E47CF-DDA1-4C8C-865A-8F6C778D4698}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47E47CF-DDA1-4C8C-865A-8F6C778D4698}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47E47CF-DDA1-4C8C-865A-8F6C778D4698}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99FEF3DC-4168-494F-A930-78C0D397D007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99FEF3DC-4168-494F-A930-78C0D397D007}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99FEF3DC-4168-494F-A930-78C0D397D007}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99FEF3DC-4168-494F-A930-78C0D397D007}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
