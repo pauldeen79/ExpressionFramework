@@ -95,14 +95,14 @@ public class TypedExpressionBuilderComponent : IPipelineComponent<IConcreteTypeB
                     .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
             );
 
-        if (context.Context.Settings.AddNullChecks && !isValueType) //note that we need a hack here, because ArgumentNullCheck doesn't understnad ITypedExpression<bla> where bla is either value or reference type... again, this could be solved by proper support for generics, including a valuetype indicator
-        {
-            var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-            if (!string.IsNullOrEmpty(nullCheckStatement))
-            {
-                builder.AddStringCodeStatements(nullCheckStatement);
-            }
-        }
+        //if (context.Context.Settings.AddNullChecks && !isValueType && property.TypeName != "T") //note that we need a hack here, because ArgumentNullCheck doesn't understnad ITypedExpression<bla> where bla is either value or reference type... again, this could be solved by proper support for generics, including a valuetype indicator
+        //{
+        //    var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
+        //    if (!string.IsNullOrEmpty(nullCheckStatement))
+        //    {
+        //        builder.AddStringCodeStatements(nullCheckStatement);
+        //    }
+        //}
 
         builder.AddStringCodeStatements
         (
@@ -128,14 +128,14 @@ public class TypedExpressionBuilderComponent : IPipelineComponent<IConcreteTypeB
                     .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
             );
 
-        if (context.Context.Settings.AddNullChecks && !isValueType) //note that we need a hack here, because ArgumentNullCheck doesn't understnad ITypedExpression<bla> where bla is either value or reference type... again, this could be solved by proper support for generics, including a valuetype indicator
-        {
-            var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-            if (!string.IsNullOrEmpty(nullCheckStatement))
-            {
-                builder.AddStringCodeStatements(nullCheckStatement);
-            }
-        }
+        //if (context.Context.Settings.AddNullChecks && !isValueType && property.TypeName != "T") //note that we need a hack here, because ArgumentNullCheck doesn't understnad ITypedExpression<bla> where bla is either value or reference type... again, this could be solved by proper support for generics, including a valuetype indicator
+        //{
+        //    var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
+        //    if (!string.IsNullOrEmpty(nullCheckStatement))
+        //    {
+        //        builder.AddStringCodeStatements(nullCheckStatement);
+        //    }
+        //}
 
         builder.AddStringCodeStatements
         (
