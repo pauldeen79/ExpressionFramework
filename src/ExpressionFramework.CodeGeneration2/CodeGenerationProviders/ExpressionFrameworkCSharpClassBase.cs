@@ -46,17 +46,6 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
 
-        //// Default values for Expression and Evaluatable
-        //yield return new TypenameMappingBuilder()
-        //    .WithSourceTypeName("ExpressionFramework.Domain.Expression")
-        //    .WithTargetTypeName("ExpressionFramework.Domain.Expression")
-        //    .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomBuilderDefaultValue).WithValue(new Literal("new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder()", null)));
-
-        //yield return new TypenameMappingBuilder()
-        //    .WithSourceTypeName("ExpressionFramework.Domain.Evaluatable")
-        //    .WithTargetTypeName("ExpressionFramework.Domain.Evaluatable")
-        //    .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomBuilderDefaultValue).WithValue(new Literal("new ExpressionFramework.Domain.Builders.Evaluatables.ConstantEvaluatableBuilder()", null)));
-
         //HACK
         yield return new TypenameMappingBuilder()
             .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
