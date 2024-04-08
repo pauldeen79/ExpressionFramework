@@ -145,15 +145,6 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                     .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
             );
 
-        //if (context.Context.Settings.AddNullChecks)
-        //{
-        //    var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-        //    if (!string.IsNullOrEmpty(nullCheckStatement))
-        //    {
-        //        builder.AddStringCodeStatements(nullCheckStatement);
-        //    }
-        //}
-
         builder.AddStringCodeStatements
         (
             property.IsNullable
@@ -177,15 +168,6 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                     .WithIsNullable(property.IsNullable)
                     .WithDefaultValue(context.Context.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
             );
-
-        //if (context.Context.Settings.AddNullChecks)
-        //{
-        //    var nullCheckStatement = results.First(x => x.Name == "ArgumentNullCheck").Result.Value!;
-        //    if (!string.IsNullOrEmpty(nullCheckStatement))
-        //    {
-        //        builder.AddStringCodeStatements(nullCheckStatement);
-        //    }
-        //}
 
         builder.AddStringCodeStatements
         (
