@@ -124,9 +124,9 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
             {
                 yield return argumentNullCheckResult;
             }
-
-            yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
         }
+
+        yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
     }
 
     private static void AddOverloadsForExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
