@@ -9,7 +9,9 @@ public class CaseTests
         var builder = new CaseBuilder();
 
         // Act & Assert
-        builder.Invoking(x => x.Build()).Should().Throw<ValidationException>().WithMessage("The Condition field is required.");
+        builder
+            .Invoking(x => x.Build()).Should()
+            .Throw<ArgumentNullException>();
     }
 
     [Fact]

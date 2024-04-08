@@ -80,10 +80,12 @@ public class ErrorExpressionTests
     public void Cannot_Build_ErrorExpression_From_Builder_With_Explicit_Null_Message()
     {
         // Arrange
-        var builder = new ErrorExpressionBuilder().WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!);
-
+        var builder = new ErrorExpressionBuilder();
+        
         // Act & Assert
-        builder.Invoking(x => x.BuildTyped()).Should().Throw<ValidationException>().WithMessage("The ErrorMessageExpression field is required.");
+        builder
+            .Invoking(x => x.WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!))
+            .Should().Throw<ArgumentNullException>();
     }
 
     [Fact]
