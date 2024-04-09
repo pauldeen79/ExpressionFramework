@@ -46,11 +46,21 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
 
-        //HACK
+        //HACK for wrong detection of nullability of multiple or nested generic arguments
         yield return new TypenameMappingBuilder()
             .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
             .WithTargetTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
             .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object?>>"));
+
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("System.Func<System.Object?,System.Object>")
+            .WithTargetTypeName("System.Func<System.Object?,System.Object>")
+            .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("System.Func<System.Object?,System.Object?>"));
+
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object>>")
+            .WithTargetTypeName("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object>>")
+            .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object?>>"));
     }
 
     protected override bool IsAbstractType(Type type)
