@@ -73,11 +73,9 @@ public class TypedExpressionBuilderComponent : IPipelineComponent<IConcreteTypeB
     private static void AddOverloadsForTypedExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
     {
         // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
+
         // we need the Value propery of Nullable<T> for value types...
-        // for now, we only support int, long, decimal and boolean
-        var isValueType = property.TypeName.GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "System.Decimal", "System.DateTime", "int", "long", "bool", "decimal");
-        //TODO: Find a good solution in ClassFramework for checking on value types. For this, we have to add a property GenericTypeArguments to ITypeContainer, which is an IReadOnlyCollection of ITypeContainer instances...
-        var suffix = property.IsNullable && isValueType
+        var suffix = property.IsNullable && property.GenericTypeArguments.Count == 1 && property.GenericTypeArguments.First().IsValueType
             ? ".Value"
             : string.Empty;
 
