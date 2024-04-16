@@ -10,8 +10,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.8.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.8.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.9.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.9.0" />
   </ItemGroup>
 
   <ItemGroup>
