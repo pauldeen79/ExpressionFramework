@@ -74,8 +74,8 @@ public static class Constants
     [ExcludeFromCodeCoverage]
     public static class Paths
     {
-        public const string Domain = "ExpressionFramework.Domain2";
-        public const string DomainBuilders = "ExpressionFramework.Domain2/Builders";
+        public const string Domain = "ExpressionFramework.Domain";
+        public const string DomainBuilders = "ExpressionFramework.Domain/Builders";
 
         public const string Aggregators = $"{Domain}/{nameof(Aggregators)}";
         public const string Evaluatables = $"{Domain}/{nameof(Evaluatables)}";
@@ -87,7 +87,7 @@ public static class Constants
         public const string ExpressionBuilders = $"{DomainBuilders}/{nameof(Expressions)}";
         public const string OperatorBuilders = $"{DomainBuilders}/{nameof(Operators)}";
 
-        public const string Parser = "ExpressionFramework.Parser2";
+        public const string Parser = "ExpressionFramework.Parser";
         public const string ParserAggregatorResultParsers = $"{Parser}/AggregatorResultParsers";
         public const string ParserEvaluatableResultParsers = $"{Parser}/EvaluatableResultParsers";
         public const string ParserExpressionResultParsers = $"{Parser}/ExpressionResultParsers";
