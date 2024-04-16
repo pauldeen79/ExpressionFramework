@@ -32,7 +32,7 @@ jobs:
       - name: Restore
         run: dotnet restore
       - name: Run code generation
-        run: dotnet run --project src/ExpressionFramework.CodeGeneration2/ExpressionFramework.CodeGeneration.csproj
+        run: dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: Build
         run: dotnet build -c Release --no-restore
       - name: Test

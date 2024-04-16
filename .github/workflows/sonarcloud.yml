@@ -34,7 +34,7 @@ jobs:
           dotnet tool install --global dotnet-sonarscanner
       - name: Run code generation
         run: |
-          dotnet run --project src/ExpressionFramework.CodeGeneration2/ExpressionFramework.CodeGeneration.csproj
+          dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any

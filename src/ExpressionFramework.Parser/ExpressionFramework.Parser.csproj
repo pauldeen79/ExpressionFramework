@@ -12,6 +12,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionFramework.Domain2\ExpressionFramework.Domain.csproj" />
+    <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
   </ItemGroup>
 </Project>
