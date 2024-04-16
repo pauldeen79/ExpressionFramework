@@ -64,16 +64,6 @@ public class TakeExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new TakeExpressionBase(new TypedConstantExpression<IEnumerable>(new object[] { "A", "B", 1, "C" }), new TypedDelegateResultExpression<int>(_ => Result.Error<int>("Kaboom")));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

@@ -2,9 +2,7 @@
 
 public interface IIfExpression : IExpression
 {
-    [Required]
-    IEvaluatable Condition { get; }
-    [Required]
-    IExpression ResultExpression { get; }
-    IExpression? DefaultExpression { get; }
+    [Required][ValidateObject] IEvaluatable Condition { get; }
+    [Required][ValidateObject] IExpression ResultExpression { get; }
+    [ValidateObject] IExpression? DefaultExpression { get; }
 }

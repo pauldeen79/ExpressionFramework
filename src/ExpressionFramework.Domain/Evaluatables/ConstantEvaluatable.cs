@@ -9,8 +9,3 @@ public partial record ConstantEvaluatable
     public override Result<bool> Evaluate(object? context)
         => Result.Success(Value);
 }
-
-public partial record ConstantEvaluatableBase
-{
-    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
-}

@@ -69,5 +69,23 @@ public class ReflectionExpressionDescriptorProviderTests
         }
 
         public object Parameter { get; } = "";
+
+        public override ExpressionBuilder ToBuilder()
+        {
+            return new SomeExpressionBuilder(this);
+        }
+    }
+
+    private sealed class SomeExpressionBuilder : ExpressionBuilder<SomeExpressionBuilder, SomeExpression>
+    {
+        public SomeExpressionBuilder(SomeExpression source) : base(source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+        }
+
+        public override SomeExpression BuildTyped()
+        {
+            return new SomeExpression();
+        }
     }
 }

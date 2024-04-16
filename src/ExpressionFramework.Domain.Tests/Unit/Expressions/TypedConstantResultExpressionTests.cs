@@ -45,16 +45,6 @@ public class TypedConstantResultExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new TypedConstantResultExpressionBase<bool>(Result.Success<bool>(default));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
@@ -69,18 +59,5 @@ public class TypedConstantResultExpressionTests
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().ContainSingle();
         result.ContextIsRequired.Should().BeNull();
-    }
-
-    [Fact]
-    public void Can_Use_TypedConstantResultExpression_In_ExpressionBuilderFactory()
-    {
-        // Arrange
-        var sut = new TypedConstantResultExpression<int>(Result.Success(1));
-
-        // Act
-        var builder = ExpressionBuilderFactory.Create(sut);
-
-        // Assert
-        builder.Should().NotBeNull();
     }
 }

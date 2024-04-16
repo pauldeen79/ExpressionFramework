@@ -2,6 +2,5 @@
 
 public interface IErrorExpression : IExpression
 {
-    [Required]
-    ITypedExpression<string> ErrorMessageExpression { get; }
+    [Required][ValidateObject] ITypedExpression<string> ErrorMessageExpression { get; }
 }

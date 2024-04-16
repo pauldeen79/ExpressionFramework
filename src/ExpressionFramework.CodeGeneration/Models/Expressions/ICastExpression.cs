@@ -2,6 +2,5 @@
 
 public interface ICastExpression<T> : IExpression, ITypedExpression<T>
 {
-    [Required]
-    IExpression SourceExpression { get; }
+    [Required][ValidateObject] IExpression SourceExpression { get; }
 }

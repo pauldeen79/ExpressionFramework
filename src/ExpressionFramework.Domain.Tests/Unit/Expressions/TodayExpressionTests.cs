@@ -62,14 +62,4 @@ public class TodayExpressionTests : TestBase
         // Assert
         actual.Should().BeOfType<TodayExpression>();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new TodayExpressionBase(null);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

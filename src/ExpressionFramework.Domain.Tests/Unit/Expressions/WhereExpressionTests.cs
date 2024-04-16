@@ -110,16 +110,6 @@ public class WhereExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new WhereExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), new TypedDelegateExpression<bool>(_ => true));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

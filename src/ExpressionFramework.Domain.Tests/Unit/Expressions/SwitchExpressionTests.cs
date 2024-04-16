@@ -101,16 +101,6 @@ public class SwitchExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new SwitchExpressionBase(Enumerable.Empty<Case>(), null);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
@@ -137,5 +127,24 @@ public class SwitchExpressionTests
         
         public override Result<bool> Evaluate(object? context)
             => Result.Error<bool>(ErrorMessage);
+
+        public override EvaluatableBuilder ToBuilder()
+        {
+            return new ErrorEvaluatableBuilder(this);
+        }
+    }
+    private sealed class ErrorEvaluatableBuilder : EvaluatableBuilder<ErrorEvaluatableBuilder, ErrorEvaluatable>
+    {
+        public ErrorEvaluatableBuilder(ErrorEvaluatable source) : base(source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+        }
+
+        public override ErrorEvaluatable BuildTyped()
+        {
+            return new ErrorEvaluatable(ErrorMessage);
+        }
+
+        public string ErrorMessage { get; set; } = "";
     }
 }

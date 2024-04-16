@@ -31,16 +31,6 @@ public class TypedDelegateExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new TypedDelegateExpressionBase<bool>(_ => default);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
@@ -55,18 +45,5 @@ public class TypedDelegateExpressionTests
         result.Parameters.Should().ContainSingle();
         result.ReturnValues.Should().ContainSingle();
         result.ContextIsRequired.Should().BeNull();
-    }
-
-    [Fact]
-    public void Can_Use_TypedConstantExpression_In_ExpressionBuilderFactory()
-    {
-        // Arrange
-        var sut = new TypedDelegateExpression<int>(_ => 34);
-
-        // Act
-        var builder = ExpressionBuilderFactory.Create(sut);
-
-        // Assert
-        builder.Should().NotBeNull();
     }
 }

@@ -2,8 +2,6 @@
 
 public interface ISkipExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    ITypedExpression<int> CountExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<int> CountExpression { get; }
 }

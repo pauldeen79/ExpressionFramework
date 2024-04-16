@@ -2,8 +2,6 @@
 
 public interface IEvaluatableExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    IEvaluatable Condition { get; }
-    [Required]
-    IExpression Expression { get; }
+    [Required][ValidateObject] IEvaluatable Condition { get; }
+    [Required][ValidateObject] IExpression Expression { get; }
 }

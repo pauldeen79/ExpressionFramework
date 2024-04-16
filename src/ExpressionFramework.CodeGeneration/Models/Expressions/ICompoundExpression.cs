@@ -2,11 +2,8 @@
 
 public interface ICompoundExpression : IExpression
 {
-    [Required]
-    IExpression FirstExpression { get; }
-    [Required]
-    IExpression SecondExpression { get; }
-    [Required]
-    IAggregator Aggregator { get; }
-    ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
+    [Required][ValidateObject] IExpression FirstExpression { get; }
+    [Required][ValidateObject] IExpression SecondExpression { get; }
+    [Required][ValidateObject] IAggregator Aggregator { get; }
+    [ValidateObject] ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
 }

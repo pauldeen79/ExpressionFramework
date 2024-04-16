@@ -2,6 +2,5 @@
 
 public interface IComposedEvaluatable : IEvaluatable
 {
-    [Required]
-    IReadOnlyCollection<IComposableEvaluatable> Conditions { get; }
+    [Required][ValidateObject] IReadOnlyCollection<IComposableEvaluatable> Conditions { get; }
 }

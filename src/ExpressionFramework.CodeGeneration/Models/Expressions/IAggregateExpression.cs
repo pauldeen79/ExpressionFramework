@@ -2,9 +2,7 @@
 
 public interface IAggregateExpression : IExpression
 {
-    [Required]
-    IReadOnlyCollection<IExpression> Expressions { get; }
-    [Required]
-    IAggregator Aggregator { get; }
-    ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
+    [Required][ValidateObject] IReadOnlyCollection<IExpression> Expressions { get; }
+    [Required][ValidateObject] IAggregator Aggregator { get; }
+    [ValidateObject] ITypedExpression<IFormatProvider>? FormatProviderExpression { get; }
 }

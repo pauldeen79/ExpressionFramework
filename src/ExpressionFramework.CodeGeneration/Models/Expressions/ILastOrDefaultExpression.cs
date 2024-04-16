@@ -2,8 +2,7 @@
 
 public interface ILastOrDefaultExpression : IExpression
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    ITypedExpression<bool>? PredicateExpression { get; }
-    IExpression? DefaultExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [ValidateObject] ITypedExpression<bool>? PredicateExpression { get; }
+    [ValidateObject] IExpression? DefaultExpression { get; }
 }

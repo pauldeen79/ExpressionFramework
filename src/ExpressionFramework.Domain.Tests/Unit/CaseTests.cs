@@ -17,9 +17,10 @@ public class CaseTests
     {
         // Arrange
         var builder = new CaseBuilder();
+        var validationResults = new List<ValidationResult>();
 
         // Act
-        var validationResults = builder.Validate(new ValidationContext(builder));
+        _ = builder.TryValidate(validationResults);
 
         // Assert
         validationResults.Select(x => x.ErrorMessage).Should().BeEquivalentTo("The Condition field is required.", "The Expression field is required.");

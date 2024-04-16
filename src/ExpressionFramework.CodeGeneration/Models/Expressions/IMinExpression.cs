@@ -2,7 +2,6 @@
 
 public interface IMinExpression : IExpression
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    IExpression? SelectorExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [ValidateObject] IExpression? SelectorExpression { get; }
 }

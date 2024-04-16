@@ -2,6 +2,5 @@
 
 public interface IToUpperCaseExpression : IExpression, ITypedExpression<string>
 {
-    [Required]
-    ITypedExpression<string> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<string> Expression { get; }
 }

@@ -63,14 +63,4 @@ public class NowExpressionTests : TestBase
         // Assert
         actual.Should().BeOfType<NowExpression>();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new NowExpressionBase(null);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

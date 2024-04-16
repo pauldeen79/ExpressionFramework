@@ -1,18 +1,20 @@
-﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿
+namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => Constants.Namespaces.DomainBuilders;
+    public AbstractNonGenericBuilders(ICsharpExpressionDumper csharpExpressionDumper, IPipeline<IConcreteTypeBuilder, BuilderContext> builderPipeline, IPipeline<IConcreteTypeBuilder, BuilderExtensionContext> builderExtensionPipeline, IPipeline<IConcreteTypeBuilder, EntityContext> entityPipeline, IPipeline<TypeBaseBuilder, ReflectionContext> reflectionPipeline, IPipeline<InterfaceBuilder, InterfaceContext> interfacePipeline) : base(csharpExpressionDumper, builderPipeline, builderExtensionPipeline, entityPipeline, reflectionPipeline, interfacePipeline)
+    {
+    }
+
+    public override string Path => Constants.Paths.DomainBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override bool IsAbstract => true;
-    protected override string FileNameSuffix => ".nongeneric.template.generated";
+    protected override string FilenameSuffix => ".nongeneric.template.generated";
 
-    public override object CreateModel()
-        => GetImmutableNonGenericBuilderClasses(
-            GetAbstractModels(),
-            Constants.Namespaces.Domain,
-            Constants.Namespaces.DomainBuilders);
+    public override IEnumerable<TypeBase> Model
+        => GetNonGenericBuilders(GetAbstractModels().Result, Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain).Result;
 }

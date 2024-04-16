@@ -2,8 +2,6 @@
 
 public interface INotEqualsExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    IExpression FirstExpression { get; }
-    [Required]
-    IExpression SecondExpression { get; }
+    [Required][ValidateObject] IExpression FirstExpression { get; }
+    [Required][ValidateObject] IExpression SecondExpression { get; }
 }

@@ -3,39 +3,43 @@
 [ExcludeFromCodeCoverage]
 public class Entities : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => $"{Constants.Namespaces.DomainSpecialized}/{nameof(Expressions)}";
-    public override string LastGeneratedFilesFileName => string.Empty;
+    public Entities(ICsharpExpressionDumper csharpExpressionDumper, IPipeline<IConcreteTypeBuilder, BuilderContext> builderPipeline, IPipeline<IConcreteTypeBuilder, BuilderExtensionContext> builderExtensionPipeline, IPipeline<IConcreteTypeBuilder, EntityContext> entityPipeline, IPipeline<TypeBaseBuilder, ReflectionContext> reflectionPipeline, IPipeline<InterfaceBuilder, InterfaceContext> interfacePipeline) : base(csharpExpressionDumper, builderPipeline, builderExtensionPipeline, entityPipeline, reflectionPipeline, interfacePipeline)
+    {
+    }
 
-    protected override string FileNameSuffix => string.Empty;
+    public override string Path => Constants.Paths.Expressions;
+    
+    protected override string FilenameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
-    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Specialized", string.Empty);
+    protected override bool SkipWhenFileExists => true; // scaffold instead of generate
+    protected override bool GenerateMultipleFiles => true;
 
-    public override object CreateModel()
-        => GetOverrideModels(typeof(IExpression))
+    public override IEnumerable<TypeBase> Model
+        => GetOverrideModels(typeof(IExpression)).Result
             .Select(x =>
             {
                 var result = new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
-                .WithName(x.Name)
+                .WithName(x.WithoutInterfacePrefix())
                 .WithPartial()
                 .WithRecord()
-                .AddMethods(new ClassMethodBuilder()
+                .AddMethods(new MethodBuilder()
                     .WithName("Evaluate")
                     .WithOverride()
                     .AddParameter("context", typeof(object), isNullable: true)
-                    .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
-                    .AddNotImplementedException()
+                    .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
+                    .NotImplemented()
                 );
 
                 var typedInterface = x.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics()).FixTypeName();
                 if (!string.IsNullOrEmpty(typedInterface))
                 {
                     result
-                        .AddMethods(new ClassMethodBuilder()
+                        .AddMethods(new MethodBuilder()
                         .WithName("EvaluateTyped")
                         .AddParameter("context", typeof(object), isNullable: true)
-                        .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{typedInterface.GetGenericArguments()}>")
-                        .AddNotImplementedException()
+                        .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typedInterface.GetGenericArguments()}>")
+                        .NotImplemented()
                     );
                 }
 

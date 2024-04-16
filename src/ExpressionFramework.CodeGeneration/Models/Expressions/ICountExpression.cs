@@ -2,7 +2,6 @@
 
 public interface ICountExpression : IExpression, ITypedExpression<int>
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    ITypedExpression<bool>? PredicateExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [ValidateObject] ITypedExpression<bool>? PredicateExpression { get; }
 }

@@ -117,14 +117,4 @@ public class TryCastExpressionTests
         result.ContextTypeName.Should().NotBeEmpty();
         result.ContextIsRequired.Should().BeNull();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new TryCastExpressionBase<IEnumerable>(new EmptyExpression(), default);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

@@ -2,8 +2,6 @@
 
 public interface ITypedFieldExpression<T> : IExpression, ITypedExpression<T>
 {
-    [Required]
-    IExpression Expression { get; }
-    [Required]
-    ITypedExpression<string> FieldNameExpression { get; }
+    [Required][ValidateObject] IExpression Expression { get; }
+    [Required][ValidateObject] ITypedExpression<string> FieldNameExpression { get; }
 }

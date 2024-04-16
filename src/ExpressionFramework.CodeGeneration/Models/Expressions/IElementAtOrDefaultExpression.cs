@@ -2,9 +2,7 @@
 
 public interface IElementAtOrDefaultExpression : IExpression
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    ITypedExpression<int> IndexExpression { get; }
-    IExpression? DefaultExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<int> IndexExpression { get; }
+    [ValidateObject] IExpression? DefaultExpression { get; }
 }

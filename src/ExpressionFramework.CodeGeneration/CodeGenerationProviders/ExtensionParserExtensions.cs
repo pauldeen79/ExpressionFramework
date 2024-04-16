@@ -3,41 +3,45 @@
 [ExcludeFromCodeCoverage]
 public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
 {
+    public ExtensionParserExtensions(ICsharpExpressionDumper csharpExpressionDumper, IPipeline<IConcreteTypeBuilder, BuilderContext> builderPipeline, IPipeline<IConcreteTypeBuilder, BuilderExtensionContext> builderExtensionPipeline, IPipeline<IConcreteTypeBuilder, EntityContext> entityPipeline, IPipeline<TypeBaseBuilder, ReflectionContext> reflectionPipeline, IPipeline<InterfaceBuilder, InterfaceContext> interfacePipeline) : base(csharpExpressionDumper, builderPipeline, builderExtensionPipeline, entityPipeline, reflectionPipeline, interfacePipeline)
+    {
+    }
+
     public override string Path => Constants.Paths.Parser;
 
-    public override object CreateModel()
-        => new[]
-        {
+    public override IEnumerable<TypeBase> Model
+        =>
+        [
             new ClassBuilder()
                 .WithPartial()
                 .WithStatic()
                 .WithNamespace(Constants.Namespaces.Parser)
                 .WithName("ServiceCollectionExtensions")
                 .AddMethods(
-                    new ClassMethodBuilder()
+                    new MethodBuilder()
                         .WithVisibility(Visibility.Private)
                         .WithStatic()
                         .WithExtensionMethod()
                         .WithName("AddExpressionParsers")
                         .AddParameter("services", typeof(IServiceCollection))
-                        .WithType(typeof(IServiceCollection))
-                        .AddLiteralCodeStatements(GetOverrideModels(typeof(IExpression))
+                        .WithReturnType(typeof(IServiceCollection))
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IExpression)).Result
                             .SelectMany(x => new[]
                             {
-                                $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name}Parser>();",
-                                $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.Name}Parser>();"
+                                $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
+                                $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();"
                             })
                         )
-                        .AddLiteralCodeStatements(GetOverrideModels(typeof(Models.IAggregator))
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.Name}Parser>();")
+                        .AddStringCodeStatements(GetOverrideModels(typeof(Models.IAggregator)).Result
+                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
-                        .AddLiteralCodeStatements(GetOverrideModels(typeof(IOperator))
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.Name}Parser>();")
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IOperator)).Result
+                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
-                        .AddLiteralCodeStatements(GetOverrideModels(typeof(IEvaluatable))
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.Name}Parser>();")
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IEvaluatable)).Result
+                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
-                        .AddLiteralCodeStatements("return services;")
+                        .AddStringCodeStatements("return services;")
                 ).Build()
-        };
+        ];
 }

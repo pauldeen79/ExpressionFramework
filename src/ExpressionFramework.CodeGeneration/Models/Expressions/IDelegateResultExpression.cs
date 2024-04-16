@@ -2,6 +2,5 @@
 
 public interface IDelegateResultExpression : IExpression
 {
-    [Required]
-    Func<object?, Result<object?>> Result { get; }
+    [Required] Func<object?, Result<object?>> Result { get; }
 }

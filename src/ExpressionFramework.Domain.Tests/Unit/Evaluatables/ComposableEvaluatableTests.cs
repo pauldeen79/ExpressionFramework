@@ -225,29 +225,12 @@ public class ComposableEvaluatableTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var evaluatable = new ComposableEvaluatableBase
-        (
-            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
-            new EqualsOperator(),
-            new ConstantExpression(new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })),
-            Combination.And,
-            false,
-            false
-        );
-
-        // Act & Assert
-        evaluatable.Invoking(x => x.Evaluate()).Should().Throw<NotImplementedException>();
-    }
-
-    [Fact]
     public void Throws_On_Null_Delegate()
     {
         this.Invoking(_ => new ComposableEvaluatable(_ => null, @operator: null!, _ => null))
             .Should().Throw<ArgumentNullException>().WithParameterName("operator");
     }
+    
     private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)
         => new EvaluatableExpression(new ComposedEvaluatable(conditions), new EmptyExpression()).EvaluateTyped();
 }

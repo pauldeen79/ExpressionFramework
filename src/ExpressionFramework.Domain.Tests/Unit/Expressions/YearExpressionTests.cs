@@ -48,14 +48,4 @@ public class YearExpressionTests
         // Assert
         actual.Should().BeOfType<YearExpression>();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new YearExpressionBase(new TypedConstantExpression<DateTime>(DateTime.MinValue));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

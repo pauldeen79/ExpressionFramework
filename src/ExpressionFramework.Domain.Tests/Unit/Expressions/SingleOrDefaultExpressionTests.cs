@@ -153,16 +153,6 @@ public class SingleOrDefaultExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new SingleOrDefaultExpressionBase(new TypedConstantExpression<IEnumerable>(default(IEnumerable)!), null, null);
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

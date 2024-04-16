@@ -2,10 +2,7 @@
 
 public interface IStringReplaceExpression : IExpression, ITypedExpression<string>
 {
-    [Required]
-    ITypedExpression<string> Expression { get; }
-    [Required]
-    ITypedExpression<string> FindExpression { get; }
-    [Required]
-    ITypedExpression<string> ReplaceExpression { get; }
+    [Required][ValidateObject] ITypedExpression<string> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<string> FindExpression { get; }
+    [Required][ValidateObject] ITypedExpression<string> ReplaceExpression { get; }
 }

@@ -3,15 +3,16 @@
 [ExcludeFromCodeCoverage]
 public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public override string Path => Constants.Namespaces.DomainBuilders;
+    public AbstractBuilders(ICsharpExpressionDumper csharpExpressionDumper, IPipeline<IConcreteTypeBuilder, BuilderContext> builderPipeline, IPipeline<IConcreteTypeBuilder, BuilderExtensionContext> builderExtensionPipeline, IPipeline<IConcreteTypeBuilder, EntityContext> entityPipeline, IPipeline<TypeBaseBuilder, ReflectionContext> reflectionPipeline, IPipeline<InterfaceBuilder, InterfaceContext> interfacePipeline) : base(csharpExpressionDumper, builderPipeline, builderExtensionPipeline, entityPipeline, reflectionPipeline, interfacePipeline)
+    {
+    }
+
+    public override string Path => Constants.Paths.DomainBuilders;
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override bool IsAbstract => true;
 
-    public override object CreateModel()
-        => GetImmutableBuilderClasses(
-            GetAbstractModels(),
-            Constants.Namespaces.Domain,
-            Constants.Namespaces.DomainBuilders);
+    public override IEnumerable<TypeBase> Model
+        => GetBuilders(GetAbstractModels().Result, Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain).Result;
 }

@@ -11,7 +11,6 @@ public static class Constants
         public const string DomainContracts = "ExpressionFramework.Domain.Contracts";
         public const string DomainBuilders = "ExpressionFramework.Domain.Builders";
         public const string DomainModels = "ExpressionFramework.Domain.Models";
-        public const string DomainSpecialized = "ExpressionFramework.Domain.Specialized";
         public const string Parser = "ExpressionFramework.Parser";
 
         public const string ParserAggregatorResultParsers = "ExpressionFramework.Parser.AggregatorResultParsers";
@@ -61,6 +60,7 @@ public static class Constants
         public const string Evaluatable = $"{Namespaces.Domain}.Evaluatable";
         public const string Expression = $"{Namespaces.Domain}.Expression";
         public const string Operator = $"{Namespaces.Domain}.Operator";
+        public const string TypedExpression = $"{Namespaces.Domain}.Contracts.ITypedExpression";
 
         public static class Expressions
         {
@@ -74,26 +74,24 @@ public static class Constants
     [ExcludeFromCodeCoverage]
     public static class Paths
     {
-        public const string Aggregators = $"{Namespaces.DomainSpecialized}/{nameof(Aggregators)}";
-        public const string Evaluatables = $"{Namespaces.DomainSpecialized}/{nameof(Evaluatables)}";
-        public const string Expressions = $"{Namespaces.DomainSpecialized}/{nameof(Expressions)}";
-        public const string Operators = $"{Namespaces.DomainSpecialized}/{nameof(Operators)}";
+        public const string Domain = "ExpressionFramework.Domain";
+        public const string DomainBuilders = "ExpressionFramework.Domain/Builders";
 
-        public const string AggregatorBuilders = $"{Namespaces.DomainBuilders}/{nameof(Aggregators)}";
-        public const string EvaluatableBuilders = $"{Namespaces.DomainBuilders}/{nameof(Evaluatables)}";
-        public const string ExpressionBuilders = $"{Namespaces.DomainBuilders}/{nameof(Expressions)}";
-        public const string OperatorBuilders = $"{Namespaces.DomainBuilders}/{nameof(Operators)}";
+        public const string Aggregators = $"{Domain}/{nameof(Aggregators)}";
+        public const string Evaluatables = $"{Domain}/{nameof(Evaluatables)}";
+        public const string Expressions = $"{Domain}/{nameof(Expressions)}";
+        public const string Operators = $"{Domain}/{nameof(Operators)}";
 
-        public const string AggregatorModels = $"{Namespaces.DomainModels}/{nameof(Aggregators)}";
-        public const string EvaluatableModels = $"{Namespaces.DomainModels}/{nameof(Evaluatables)}";
-        public const string ExpressionModels = $"{Namespaces.DomainModels}/{nameof(Expressions)}";
-        public const string OperatorModels = $"{Namespaces.DomainModels}/{nameof(Operators)}";
+        public const string AggregatorBuilders = $"{DomainBuilders}/{nameof(Aggregators)}";
+        public const string EvaluatableBuilders = $"{DomainBuilders}/{nameof(Evaluatables)}";
+        public const string ExpressionBuilders = $"{DomainBuilders}/{nameof(Expressions)}";
+        public const string OperatorBuilders = $"{DomainBuilders}/{nameof(Operators)}";
 
-        public const string ParserAggregatorResultParsers = $"{Namespaces.Parser}/AggregatorResultParsers";
-        public const string ParserEvaluatableResultParsers = $"{Namespaces.Parser}/EvaluatableResultParsers";
-        public const string ParserExpressionResultParsers = $"{Namespaces.Parser}/ExpressionResultParsers";
-        public const string ParserOperatorResultParsers = $"{Namespaces.Parser}/OperatorResultParsers";
-        public const string Parser = Namespaces.Parser;
+        public const string Parser = "ExpressionFramework.Parser";
+        public const string ParserAggregatorResultParsers = $"{Parser}/AggregatorResultParsers";
+        public const string ParserEvaluatableResultParsers = $"{Parser}/EvaluatableResultParsers";
+        public const string ParserExpressionResultParsers = $"{Parser}/ExpressionResultParsers";
+        public const string ParserOperatorResultParsers = $"{Parser}/OperatorResultParsers";
     }
 
     public static class ArgumentNames

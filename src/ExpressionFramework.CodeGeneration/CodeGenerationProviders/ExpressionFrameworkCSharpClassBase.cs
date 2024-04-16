@@ -1,252 +1,143 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBase
+public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorPipelineCodeGenerationProviderBase
 {
-    public override void Initialize(bool generateMultipleFiles, bool skipWhenFileExists, string basePath)
+    protected ExpressionFrameworkCSharpClassBase(ICsharpExpressionDumper csharpExpressionDumper, IPipeline<IConcreteTypeBuilder, BuilderContext> builderPipeline, IPipeline<IConcreteTypeBuilder, BuilderExtensionContext> builderExtensionPipeline, IPipeline<IConcreteTypeBuilder, EntityContext> entityPipeline, IPipeline<TypeBaseBuilder, ReflectionContext> reflectionPipeline, IPipeline<InterfaceBuilder, InterfaceContext> interfacePipeline) : base(csharpExpressionDumper, builderPipeline, builderExtensionPipeline, entityPipeline, reflectionPipeline, interfacePipeline)
     {
-        // first argument: force generating multiple files
-        // second argument: skip overwriting files when scaffolding (this can be detected using the LastGeneratedFilesFileName)
-        base.Initialize(true, string.IsNullOrEmpty(LastGeneratedFilesFileName), basePath);
     }
 
     public override bool RecurseOnDeleteGeneratedFiles => false;
-    public override string DefaultFileName => string.Empty; // not used because we're using multiple files, but it's abstract so we need to fill ilt
+    public override string LastGeneratedFilesFilename => string.Empty;
+    public override Encoding Encoding => Encoding.UTF8;
 
-    protected override bool CreateCodeGenerationHeader => true;
-    protected override bool EnableNullableContext => true;
-    protected override Type RecordCollectionType => typeof(IReadOnlyCollection<>);
-    protected override Type RecordConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
-    protected override string ProjectName => Constants.ProjectName;
-    protected override Type BuilderClassCollectionType => typeof(List<>);
-    protected override bool UseLazyInitialization => false; // we don't want lazy stuff in models, just getters and setters
-    protected override bool ConvertStringToStringBuilderOnBuilders => false;
-    protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.Shared;
+    protected override Type EntityCollectionType => typeof(IReadOnlyCollection<>);
+    protected override Type EntityConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
+    protected override Type BuilderCollectionType => typeof(ObservableCollection<>);
 
-    protected override void FixImmutableBuilderProperty(ClassPropertyBuilder property, string typeName)
+    protected override string ProjectName => "ExpressionFramework";
+    protected override string CoreNamespace => "ExpressionFramework.Domain";
+    protected override bool CopyAttributes => true;
+    protected override bool CopyInterfaces => true;
+    protected override bool CreateRecord => true;
+    protected override bool GenerateMultipleFiles => false;
+
+    protected override bool SkipNamespaceOnTypenameMappings(string @namespace)
+        => @namespace == $"{CodeGenerationRootNamespace}.Models.Contracts";
+
+    protected override IEnumerable<TypenameMappingBuilder> CreateAdditionalTypenameMappings()
     {
-        if (typeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
-        {
-            var argumentType = $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>";
-            property.WithCustomBuilderConstructorInitializeExpressionSingleProperty(argumentType, CreateAssignment(property, typeName));
-            property.WithCustomBuilderArgumentTypeSingleProperty(argumentType, builderName: BuilderName);
-            property.WithCustomBuilderMethodParameterExpression(buildMethodName: BuilderBuildMethodName);
-
-            AddSingleTypedExpressionPropertyBuilderOverload(property);
-
-            if (!property.IsNullable)
-            {
-                // Allow a default value which implements ITypedExpression<T>, using a default constant value
-                if (BuilderName == "Model")
-                {
-                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable, property.IsValueType, EnableNullableContext)}))"));
-                }
-                else
-                {
-                    property.SetDefaultValueForBuilderClassConstructor(new Literal($"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(new {Constants.Namespaces.DomainExpressions}.TypedConstantExpression<{typeName.GetGenericArguments()}>({typeName.GetGenericArguments().GetDefaultValue(property.IsNullable, property.IsValueType, EnableNullableContext)}))"));
-                }
-            }
-        }
-        else if (typeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
-        {
-            // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
-            var init = BuilderName == "Builder"
-                ? $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)"
-                : $"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(x)";
-            property.ConvertCollectionOnBuilderToEnumerable(false, ValidateArgumentsInConstructor, collectionType: RecordConcreteCollectionType.WithoutGenerics());
-            property.ConvertCollectionPropertyToBuilderOnBuilder
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName(typeof(ITypedExpression<>).WithoutGenerics())
+            .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression");
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
+            .WithTargetTypeName("ExpressionFramework.Domain.Contracts.ITypedExpression")
+            .AddMetadata
             (
-                $"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}{BuilderName}<{typeName.GetGenericArguments()}>>",
-                "{0} = source.{0}.Select(x => " + init + ").ToList()",
-                builderCollectionTypeName: BuilderClassCollectionType.WithoutGenerics(),
-                builderName: BuilderName,
-                buildMethodName: BuilderBuildMethodName
+                new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderName),
+                new MetadataBuilder().WithValue($"{CoreNamespace}.Contracts").WithName(MetadataNames.CustomBuilderInterfaceNamespace),
+                new MetadataBuilder().WithValue("{TypeName.ClassName.NoGenerics}Builder{TypeName.GenericArgumentsWithBrackets}").WithName(MetadataNames.CustomBuilderInterfaceName),
+                new MetadataBuilder().WithValue("[Name][NullableSuffix].ToBuilder()[ForcedNullableSuffix]").WithName(MetadataNames.CustomBuilderSourceExpression),
+                new MetadataBuilder().WithValue(new Literal("new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder{TypeName.GenericArgumentsWithBrackets}()", null)).WithName(MetadataNames.CustomBuilderDefaultValue),
+                new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()[ForcedNullableSuffix]").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
+                new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
-            property.WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeName.GetGenericArguments()}>>");
 
-            AddEnumerableTypedExpressionPropertyBuilderOverload(property);
-        }
-        else if (typeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>")
+        //HACK for wrong detection of nullability of multiple or nested generic arguments
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
+            .WithTargetTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
+            .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object?>>"));
+
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("System.Func<System.Object?,System.Object>")
+            .WithTargetTypeName("System.Func<System.Object?,System.Object>")
+            .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("System.Func<System.Object?,System.Object?>"));
+
+        yield return new TypenameMappingBuilder()
+            .WithSourceTypeName("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object>>")
+            .WithTargetTypeName("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object>>")
+            .AddMetadata(new MetadataBuilder().WithName(MetadataNames.CustomTypeName).WithValue("System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object?>>"));
+    }
+
+    protected override bool IsAbstractType(Type type)
+    {
+        type = type.IsNotNull(nameof(type));
+
+        if (type.IsInterface && type.Namespace == $"{CodeGenerationRootNamespace}.Models" && type.Name.Substring(1).In(Constants.Types.Aggregator, Constants.Types.Evaluatable, Constants.Types.Expression, Constants.Types.Operator))
         {
-            AddEnumerableExpressionPropertyBuilderOverload(property);
+            return true;
         }
-        else if (typeName.GetClassName() == Constants.Types.Expression)
-        {
-            AddSingleExpressionPropertyBuilderOverload(property);
-        }
-        base.FixImmutableBuilderProperty(property, typeName);
+        return base.IsAbstractType(type);
     }
 
-    private string CreateAssignment(ClassPropertyBuilder property, string typeName)
-    {
-        var init = BuilderName == "Builder"
-            ? $"{Constants.Namespaces.DomainBuilders}.{nameof(Expressions.ExpressionBuilderFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(source.{{0}})"
-            : $"{Constants.Namespaces.DomainModels}.{nameof(Expressions.ExpressionModelFactory)}.CreateTyped<{typeName.GetGenericArguments()}>(source.{{0}})";
-
-        if (UseLazyInitialization)
-        {
-            return property.IsNullable
-                ? "_{1}Delegate = new (() => source.{0} == null ? null : " + init + ")"
-                : "_{1}Delegate = new (() => " + init + ")";
-        }
-
-        return property.IsNullable
-            ? "{0} = source.{0} == null ? null : " + init
-            : "{0} = " + init;
-    }
-
-    private void AddSingleTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
-    {
-        // Add builder overload that uses T instead of ITypedExpression<T>, and calls the other overload.
-        // we need the Value propery of Nullable<T> for value types...
-        // for now, we only support int, long and boolean
-        var suffix = property.IsNullable && property.TypeName.GetGenericArguments().In("System.Int32", "System.Int64", "System.Boolean", "int", "long", "bool")
-            ? ".Value"
-            : string.Empty;
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), CreateTypeName(property), property.IsNullable)
-                .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()}{suffix});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()}{suffix});"
-                ).Build()
-            );
-
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), $"System.Func<{typeof(object).FullName}?, {CreateTypeName(property)}>", property.IsNullable)
-                .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}{BuilderName}<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                ).Build()
-            );
-    }
-
-    private void AddEnumerableTypedExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
-    {
-        // Add builder overload for IEnumerable<T> and T[], that maps to value.Select(x => new ConstantTypedExpression<T>().WithValue(x)) and value.Select(x => new ConstantDelegateExpression<T>().WithValue(x))
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{CreateTypeName(property)}[]").WithIsParamArray())
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}{BuilderName}<{CreateTypeName(property)}>().WithValue(x)));")
-                .Build()
-        );
-
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>"))
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
-                .Build()
-        );
-    }
-
-    private void AddSingleExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
-    {
-        // Add builder overload with type object/object? that maps to new ConstantEvaluatableBuilder().WithValue(value)
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), typeof(object), property.IsNullable)
-                .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                ).Build()
-            );
-
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameter(property.Name.ToPascalCase().GetCsharpFriendlyName(), $"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>", property.IsNullable)
-                .WithInitializeExpression(property.IsNullable
-                    ? $"{{2}} = {property.Name.ToPascalCase().GetCsharpFriendlyName()} == null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                    : $"{{2}} = new {Constants.TypeNames.Expressions.DelegateExpression}{BuilderName}().WithValue({property.Name.ToPascalCase().GetCsharpFriendlyName()});"
-                ).Build()
-            );
-    }
-
-    private void AddEnumerableExpressionPropertyBuilderOverload(ClassPropertyBuilder property)
-    {
-        // Add builder overload with type IEnumerable that maps to value.OfType<object>().Select(x => new ConstantExpressionBuilder().WithValue(value))
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(object[])).WithIsParamArray())
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}{BuilderName}().WithValue(x)));")
-                .Build()
-        );
-
-        property.AddBuilderOverload(
-            new OverloadBuilder()
-                .AddParameters(new ParameterBuilder().WithName(property.Name.ToPascalCase().GetCsharpFriendlyName()).WithType(typeof(IEnumerable<object>)))
-                .WithInitializeExpression($"Add{{4}}({property.Name.ToPascalCase().GetCsharpFriendlyName()}.ToArray());")
-                .Build()
-        );
-    }
-
-    protected override void Visit<TBuilder, TEntity>(TypeBaseBuilder<TBuilder, TEntity> typeBaseBuilder)
-    {
-        foreach (var visitor in Visitors)
-        {
-            visitor.Visit(typeBaseBuilder, _context);
-        }
-    }
-
-    protected ClassBuilder CreateParserClass(ITypeBase typeBase, string type, string name, string entityNamespace)
+    protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace, PipelineSettings settings)
         => new ClassBuilder()
             .WithNamespace(CurrentNamespace)
-            .WithName($"{typeBase.Name}Parser")
+            .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
             .WithBaseClass($"{type}ParserBase")
             .AddConstructors(
-                new ClassConstructorBuilder()
-                    .WithChainCall($"base({name.CsharpFormat()})")
+                new ConstructorBuilder()
+                    .WithChainCall($"base({CsharpExpressionDumper.Dump(name)})")
             )
-            .AddMethods(new ClassMethodBuilder()
+            .AddMethods(new MethodBuilder()
                 .WithName("DoParse")
-                .WithTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
+                .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
                 .AddParameter("functionParseResult", typeof(FunctionParseResult))
                 .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
                 .AddParameter("parser", typeof(IExpressionParser))
                 .WithProtected()
                 .WithOverride()
-                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type))
+                .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
             .With(x => AddIsSupportedOverride(typeBase, x));
 
-    protected static bool IsSupportedPropertyForGeneratedParser(IClassProperty parserProperty)
-        => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In(Constants.Types.Expression, Constants.Types.ITypedExpression)
-        || parserProperty.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
-        || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{Constants.Types.Expression}>";
+    protected PipelineSettings CreateSettings()
+        => new PipelineSettingsBuilder()
+            .AddTypenameMappings(CreateTypenameMappings())
+            .AddNamespaceMappings(CreateNamespaceMappings())
+            .Build();
 
-    private static void AddIsSupportedOverride(ITypeBase model, ClassBuilder parserClass)
+    protected static bool IsSupportedPropertyForGeneratedParser(Property parserProperty)
+        => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression)
+        || parserProperty.TypeName == $"{Constants.CodeGenerationRootNamespace}.Contracts.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
+        || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{Constants.Types.Expression}>";
+
+    private static void AddIsSupportedOverride(TypeBase model, ClassBuilder parserClass)
     {
         if (model.GenericTypeArguments.Count > 0)
         {
             parserClass.AddMethods(
-                new ClassMethodBuilder()
+                new MethodBuilder()
                     .WithProtected()
                     .WithOverride()
-                    .WithType(typeof(bool))
+                    .WithReturnType(typeof(bool))
                     .WithName("IsNameValid")
                     .AddParameter("functionName", typeof(string))
-                    .AddLiteralCodeStatements("return base.IsNameValid(functionName.WithoutGenerics());"));
+                    .AddStringCodeStatements("return base.IsNameValid(functionName.WithoutGenerics());"));
         }
     }
 
-    private static void AddParseCodeStatements(ITypeBase typeBase, ClassMethodBuilder parseMethod, string entityNamespace, string type)
+    private void AddParseCodeStatements(TypeBase typeBase, MethodBuilder parseMethod, string entityNamespace, string type, PipelineSettings settings)
     {
         if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.GenericTypeArguments.Count > 0 && typeBase.Properties.Count == 1)
         {
-            parseMethod.AddLiteralCodeStatements($"return ParseTypedExpression(typeof({typeBase.Name}<>), 0, {typeBase.Properties.First().Name.CsharpFormat()}, functionParseResult, evaluator, parser);");
+            parseMethod.AddStringCodeStatements($"return ParseTypedExpression(typeof({typeBase.WithoutInterfacePrefix()}<>), 0, {CsharpExpressionDumper.Dump(typeBase.Properties.First().Name)}, functionParseResult, evaluator, parser);");
             return;
         }
 
         if (typeBase.Properties.Any(x => !IsSupportedPropertyForGeneratedParser(x)))
         {
-            parseMethod.AddLiteralCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateParseResultVariable(x.Item, x.Index)));
-            parseMethod.AddLiteralCodeStatements
+            parseMethod.AddStringCodeStatements(typeBase.Properties.Select((item, index) => new { Index = index, Item = item }).Where(x => !IsSupportedPropertyForGeneratedParser(x.Item)).Select(x => CreateParseResultVariable(x.Item, x.Index, settings)));
+            parseMethod.AddStringCodeStatements
             (
                 "var error = new Result[]",
                 "{"
             );
-            parseMethod.AddLiteralCodeStatements(typeBase.Properties.Where(x => !IsSupportedPropertyForGeneratedParser(x)).Select(x => $"    {x.Name.ToPascalCase()}Result,"));
-            parseMethod.AddLiteralCodeStatements
+            parseMethod.AddStringCodeStatements(typeBase.Properties.Where(x => !IsSupportedPropertyForGeneratedParser(x)).Select(x => $"    {x.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result,"));
+            parseMethod.AddStringCodeStatements
             (
                 "}.FirstOrDefault(x => !x.IsSuccessful());",
                 "if (error != null)",
@@ -258,7 +149,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         if (typeBase.GenericTypeArguments.Count == 1)
         {
-            parseMethod.AddLiteralCodeStatements
+            parseMethod.AddStringCodeStatements
             (
                 "var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();",
                 "if (!typeResult.IsSuccessful())",
@@ -270,49 +161,44 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
 
         var initializer = typeBase.GenericTypeArguments.Count switch
         {
-            0 => $"new {entityNamespace}.{typeBase.Name}({CreateParseArguments(typeBase, type)})",
-            1 => $"({Constants.Namespaces.Domain}.{type})Activator.CreateInstance(typeof({entityNamespace}.{typeBase.Name}<>).MakeGenericType(typeResult.Value!))",
+            0 => $"new {entityNamespace}.{typeBase.WithoutInterfacePrefix()}({CreateParseArguments(typeBase, type)})",
+            1 => $"({Constants.Namespaces.Domain}.{type}){typeof(Activator).FullName}.{nameof(Activator.CreateInstance)}(typeof({entityNamespace}.{typeBase.WithoutInterfacePrefix()}<>).MakeGenericType(typeResult.Value!))",
             _ => throw new NotSupportedException("Expressions with multiple generic type arguments are not supported")
         };
 
-        parseMethod.AddLiteralCodeStatements("#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
-        parseMethod.AddLiteralCodeStatements($"return Result.Success<{Constants.Namespaces.Domain}.{type}>({initializer});");
-        parseMethod.AddLiteralCodeStatements("#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
+        parseMethod.AddStringCodeStatements("#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
+        parseMethod.AddStringCodeStatements($"return Result.Success<{Constants.Namespaces.Domain}.{type}>({initializer});");
+        parseMethod.AddStringCodeStatements("#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.");
     }
 
-    private static string CreateParseResultVariable(IClassProperty prop, int index)
+    private string CreateParseResultVariable(Property property, int index, PipelineSettings settings)
     {
-        var defaultValueSuffix = prop.IsNullable
+        var defaultValueSuffix = property.IsNullable
             ? ", default"
             : string.Empty;
 
-        var genericType = GetCustomType(prop.TypeName.GetGenericArguments());
-        if (prop.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
+        var genericType = GetCustomType(property.TypeName.GetGenericArguments());
+        if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
         {
-            return $"var {prop.Name.ToPascalCase()}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
-        else if (prop.TypeName == typeof(object).FullName || prop.TypeName == "object")
+        else if (property.TypeName == typeof(object).FullName || property.TypeName == "object")
         {
-            return $"var {prop.Name.ToPascalCase()}Result = functionParseResult.GetArgumentValueResult({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
-        }
-        else if (prop.TypeName.WithoutProcessedGenerics().GetClassName() == typeof(IMultipleTypedExpressions<>).WithoutGenerics().GetClassName())
-        {
-            // This is an ugly hack to transform IMultipleTypedExpression<T> in the code generation model to IEnumerable<ITypedExpression<T>> in the domain model.
-            return $"var {prop.Name.ToPascalCase()}Result = functionParseResult.GetArgumentExpressionResult<{$"{typeof(IEnumerable<>).WithoutGenerics()}<{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{prop.TypeName.GetGenericArguments()}>>"}>({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
         else
         {
-            var typeName = prop.TypeName.WithoutProcessedGenerics() switch
+            var typeName = property.TypeName.WithoutProcessedGenerics() switch
             {
-                "System.Nullable" => prop.TypeName.GetGenericArguments(),
-                "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{prop.TypeName.GetGenericArguments()}>",
-                _ => prop.TypeName
+                "System.Nullable" => property.TypeName.GetGenericArguments().MapTypeName(settings),
+                "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments().MapTypeName(settings)}>",
+                _ => property.TypeName.MapTypeName(settings)
             };
-            return $"var {prop.Name.ToPascalCase()}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {prop.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
     }
 
-    private static string CreateParseArguments(ITypeBase typeBase, string type)
+    private string CreateParseArguments(TypeBase typeBase, string type)
     {
         var builder = new StringBuilder();
         builder.AppendLine().Append("    ");
@@ -326,7 +212,7 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
         return builder.ToString();
     }
 
-    private static void CreateParseArgument(StringBuilder builder, int index, IClassProperty property, string type)
+    private void CreateParseArgument(StringBuilder builder, int index, Property property, string type)
     {
         var defaultValueSuffix = property.IsNullable
             ? ", default"
@@ -345,33 +231,33 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             builder.AppendLine(",").Append("    ");
         }
 
-        if (property.TypeName.GetClassName() == Constants.Types.Expression)
+        if (property.TypeName.GetClassName() == $"I{Constants.Types.Expression}")
         {
-            builder.Append($"new TypedConstantResultExpression<{typeof(object).FullName}{nullableSuffix}>(functionParseResult.GetArgumentValueResult({index}, {property.Name.CsharpFormat()}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
+            builder.Append($"new TypedConstantResultExpression<{typeof(object).FullName}{nullableSuffix}>(functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
         }
-        else if (property.TypeName == $"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>")
+        else if (property.TypeName == $"{typeof(ITypedExpression<>).WithoutGenerics()}<{typeof(IEnumerable).FullName}>")
         {
-            builder.Append($"functionParseResult.GetTypedExpressionsArgumentValueExpression({index}, {property.Name.CsharpFormat()}, evaluator, parser)");
+            builder.Append($"functionParseResult.GetTypedExpressionsArgumentValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
         }
-        else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
+        else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{type}>")
         {
-            builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {property.Name.CsharpFormat()}, evaluator, parser)");
+            builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
         }
         else if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
             var genericType = GetCustomType(property.TypeName.GetGenericArguments());
             if (!string.IsNullOrEmpty(genericType.MethodType))
             {
-                builder.Append($"functionParseResult.GetArgument{genericType.MethodType}ValueExpression({index}, {property.Name.CsharpFormat()}, evaluator, parser{defaultValueSuffix})");
+                builder.Append($"functionParseResult.GetArgument{genericType.MethodType}ValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser{defaultValueSuffix})");
             }
             else
             {
-                builder.Append($"functionParseResult.GetArgumentValueExpression<{property.TypeName.GetGenericArguments()}>({index}, {property.Name.CsharpFormat()}, evaluator, parser{defaultValueSuffix})");
+                builder.Append($"functionParseResult.GetArgumentValueExpression<{property.TypeName.GetGenericArguments()}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser{defaultValueSuffix})");
             }
         }
         else
         {
-            builder.Append($"{property.Name.ToPascalCase()}Result.Value{nullableBangSuffix}");
+            builder.Append($"{property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result.Value{nullableBangSuffix}");
         }
     }
 
@@ -386,41 +272,4 @@ public abstract partial class ExpressionFrameworkCSharpClassBase : CSharpClassBa
             "System.String" or "string" => ("string", "String"),
             _ => (string.Empty, string.Empty)
         };
-
-    private static string CreateTypeName(ClassPropertyBuilder builder)
-    {
-        if (builder.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
-        {
-            if (builder.Name == Constants.ArgumentNames.PredicateExpression)
-            {
-                // hacking here... we only want to allow to inject the typed expression
-                return builder.TypeName;
-            }
-            else
-            {
-                return builder.TypeName.GetGenericArguments();
-            }
-        }
-
-        if (builder.TypeName.GetGenericArguments().StartsWith($"{Constants.Namespaces.DomainContracts}.{Constants.Types.ITypedExpression}"))
-        {
-            return builder.TypeName.GetGenericArguments().GetGenericArguments();
-        }
-
-        if (builder.TypeName.GetClassName() == Constants.Types.Expression)
-        {
-            // note that you might expect to check for the nullability of the property, but the Expression itself may be required although it's evaluation can result in null
-            return $"{typeof(object).FullName}?";
-        }
-
-        return builder.TypeName;
-    }
-
-    private static readonly VisitorContext _context = new();
-
-    private static readonly IVisitor[] Visitors = typeof(ExpressionFrameworkCSharpClassBase).Assembly.GetExportedTypes().Where(t => typeof(IVisitor).IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract)
-        .Select(Activator.CreateInstance)
-        .Cast<IVisitor>()
-        .OrderBy(x => x.Order)
-        .ToArray();
 }

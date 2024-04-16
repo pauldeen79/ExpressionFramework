@@ -2,6 +2,5 @@
 
 public interface ISequenceExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required]
-    IReadOnlyCollection<IExpression> Expressions { get; }
+    [Required][ValidateObject] IReadOnlyCollection<IExpression> Expressions { get; }
 }

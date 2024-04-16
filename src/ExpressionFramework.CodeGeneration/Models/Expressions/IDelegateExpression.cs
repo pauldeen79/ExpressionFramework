@@ -2,7 +2,6 @@
 
 public interface IDelegateExpression : IExpression
 {
-    [Required]
-    Func<object?, object?> Value { get; }
+    [Required] Func<object?, object?> Value { get; }
 }
 

@@ -2,6 +2,5 @@
 
 public interface IMonthExpression : IExpression, ITypedExpression<int>
 {
-    [Required]
-    ITypedExpression<DateTime> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<DateTime> Expression { get; }
 }

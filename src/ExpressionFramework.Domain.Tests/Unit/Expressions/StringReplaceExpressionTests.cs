@@ -136,14 +136,4 @@ public class StringReplaceExpressionTests
         // Assert
         actual.Should().BeOfType<StringReplaceExpression>();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new StringReplaceExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<string>(string.Empty));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

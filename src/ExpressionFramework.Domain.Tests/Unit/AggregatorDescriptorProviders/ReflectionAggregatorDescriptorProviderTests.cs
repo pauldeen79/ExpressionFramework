@@ -61,6 +61,24 @@ public class ReflectionAggregatorDescriptorProviderTests
         public override Result<object?> Aggregate(object? context, Expression firstExpression, Expression secondExpression, ITypedExpression<IFormatProvider>? formatProviderExpression)
             => Result.Success<object?>("some value");
 
+        public override AggregatorBuilder ToBuilder()
+        {
+            return new SomeAggregatorBuilder(this);
+        }
+
         public object Parameter { get; } = "";
+    }
+
+    private sealed class SomeAggregatorBuilder : AggregatorBuilder<SomeAggregatorBuilder, SomeAggregator>
+    {
+        public SomeAggregatorBuilder(SomeAggregator source) : base(source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+        }
+
+        public override SomeAggregator BuildTyped()
+        {
+            return new SomeAggregator();
+        }
     }
 }

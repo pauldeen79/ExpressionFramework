@@ -2,6 +2,5 @@
 
 public interface INotExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    ITypedExpression<bool> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<bool> Expression { get; }
 }

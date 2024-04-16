@@ -2,7 +2,6 @@
 
 public interface ITrimExpression : IExpression, ITypedExpression<string>
 {
-    [Required]
-    ITypedExpression<string> Expression { get; }
-    ITypedExpression<char[]>? TrimCharsExpression { get; }
+    [Required][ValidateObject] ITypedExpression<string> Expression { get; }
+    [ValidateObject] ITypedExpression<char[]>? TrimCharsExpression { get; }
 }

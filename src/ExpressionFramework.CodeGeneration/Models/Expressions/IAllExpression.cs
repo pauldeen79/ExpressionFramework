@@ -2,8 +2,6 @@
 
 public interface IAllExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    ITypedExpression<bool> PredicateExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<bool> PredicateExpression { get; }
 }

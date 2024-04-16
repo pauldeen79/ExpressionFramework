@@ -2,6 +2,5 @@
 
 public interface IStringConcatenateExpression : IExpression, ITypedExpression<string>
 {
-    [Required]
-    IMultipleTypedExpressions<string> Expressions { get; }
+    [Required][ValidateObject] IReadOnlyCollection<ITypedExpression<string>> Expressions { get; }
 }

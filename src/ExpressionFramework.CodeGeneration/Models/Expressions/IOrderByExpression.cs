@@ -2,8 +2,6 @@
 
 public interface IOrderByExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    IMultipleTypedExpressions<ISortOrder> SortOrderExpressions { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] IReadOnlyCollection<ITypedExpression<ISortOrder>> SortOrderExpressions { get; }
 }

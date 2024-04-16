@@ -2,7 +2,5 @@
 
 public interface ITypedDelegateExpression<T> : IExpression, ITypedExpression<T>
 {
-    [Required]
-    Func<object?, T> Value { get; }
+    [Required] Func<object?, T> Value { get; }
 }
-

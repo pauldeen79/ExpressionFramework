@@ -2,6 +2,5 @@
 
 public interface IConstantResultExpression : IExpression
 {
-    [Required]
-    Result Value { get; }
+    [Required][ValidateObject] Result Value { get; }
 }

@@ -2,8 +2,6 @@
 
 public interface IOrExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    ITypedExpression<bool> FirstExpression { get; }
-    [Required]
-    ITypedExpression<bool> SecondExpression { get; }
+    [Required][ValidateObject] ITypedExpression<bool> FirstExpression { get; }
+    [Required][ValidateObject] ITypedExpression<bool> SecondExpression { get; }
 }

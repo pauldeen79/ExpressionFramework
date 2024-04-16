@@ -67,5 +67,23 @@ public class ReflectionOperatorDescriptorProviderTests
             => Result.Success(true);
 
         public object Parameter { get; } = "";
+
+        public override OperatorBuilder ToBuilder()
+        {
+            return new SomeOperatorBuilder(this);
+        }
+    }
+
+        private sealed class SomeOperatorBuilder : OperatorBuilder<SomeOperatorBuilder, SomeOperator>
+    {
+        public SomeOperatorBuilder(SomeOperator source) : base(source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+        }
+
+        public override SomeOperator BuildTyped()
+        {
+            return new SomeOperator();
+        }
     }
 }

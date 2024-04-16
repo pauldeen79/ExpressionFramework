@@ -2,8 +2,6 @@
 
 public interface IGroupByExpression : IExpression
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    IExpression KeySelectorExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] IExpression KeySelectorExpression { get; }
 }

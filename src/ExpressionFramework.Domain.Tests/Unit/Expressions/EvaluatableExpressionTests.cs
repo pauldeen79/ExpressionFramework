@@ -72,16 +72,6 @@ public class EvaluatableExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new EvaluatableExpressionBase(new SingleEvaluatable(new EmptyExpression(), new EqualsOperator(), new EmptyExpression()), new EmptyExpression());
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

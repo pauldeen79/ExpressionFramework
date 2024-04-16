@@ -193,16 +193,6 @@ public class SubstringExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new SubstringExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<int>(1), new TypedConstantExpression<int>(1));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange

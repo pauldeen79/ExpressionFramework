@@ -2,8 +2,6 @@
 
 public interface IInvalidExpression : IExpression
 {
-    [Required]
-    ITypedExpression<string> ErrorMessageExpression { get; }
-    [Required]
-    IMultipleTypedExpressions<ValidationError> ValidationErrorExpressions { get; }
+    [Required][ValidateObject] ITypedExpression<string> ErrorMessageExpression { get; }
+    [Required][ValidateObject] IReadOnlyCollection<ITypedExpression<ValidationError>> ValidationErrorExpressions { get; }
 }

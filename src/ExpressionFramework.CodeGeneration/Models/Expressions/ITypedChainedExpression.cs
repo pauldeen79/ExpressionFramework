@@ -2,6 +2,5 @@
 
 public interface ITypedChainedExpression<T> : IExpression, ITypedExpression<T>
 {
-    [Required]
-    IReadOnlyCollection<IExpression> Expressions { get; }
+    [Required][ValidateObject] IReadOnlyCollection<IExpression> Expressions { get; }
 }

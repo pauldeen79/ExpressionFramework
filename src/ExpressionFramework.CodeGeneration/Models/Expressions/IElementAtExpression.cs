@@ -2,8 +2,6 @@
 
 public interface IElementAtExpression : IExpression
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    ITypedExpression<int> IndexExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<int> IndexExpression { get; }
 }

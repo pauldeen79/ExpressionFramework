@@ -45,16 +45,6 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new ErrorExpressionBase(new TypedConstantExpression<string>(string.Empty));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void Can_Determine_Descriptor_Provider()
     {
         // Arrange
@@ -87,13 +77,15 @@ public class ErrorExpressionTests
     }
 
     [Fact]
-    public void Cannot_Build_ErrorExpression_From_Builder_With_Explicit_Null_Message()
+    public void Cannot_Set_ErrorExpression_To_Null()
     {
         // Arrange
-        var builder = new ErrorExpressionBuilder().WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!);
-
+        var builder = new ErrorExpressionBuilder();
+        
         // Act & Assert
-        builder.Invoking(x => x.BuildTyped()).Should().Throw<ValidationException>().WithMessage("The ErrorMessageExpression field is required.");
+        builder
+            .Invoking(x => x.WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!))
+            .Should().Throw<ArgumentNullException>();
     }
 
     [Fact]

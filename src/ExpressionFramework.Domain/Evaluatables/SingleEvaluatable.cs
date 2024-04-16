@@ -16,8 +16,3 @@ public partial record SingleEvaluatable
     public SingleEvaluatable(object? leftExpression, Operator @operator, object? rightExpression) : this(new ConstantExpression(leftExpression), @operator, new ConstantExpression(rightExpression)) { }
     public SingleEvaluatable(Func<object?, object?> leftExpression, Operator @operator, Func<object?, object?> rightExpression) : this(new DelegateExpression(leftExpression), @operator, new DelegateExpression(rightExpression)) { }
 }
-
-public partial record SingleEvaluatableBase
-{
-    public override Result<bool> Evaluate(object? context) => throw new NotImplementedException();
-}

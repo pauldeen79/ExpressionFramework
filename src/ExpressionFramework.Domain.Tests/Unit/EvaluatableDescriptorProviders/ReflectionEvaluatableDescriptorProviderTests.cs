@@ -31,7 +31,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
     public void Get_Returns_Non_Default_Values_When_Attributes_Are_Found()
     {
         // Assert
-        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(SomeAggregator));
+        var sut = new ReflectionEvaluatableDescriptorProvider(typeof(SomeEvaluatable));
 
         // Act
         var actual = sut.Get();
@@ -45,7 +45,7 @@ public class ReflectionEvaluatableDescriptorProviderTests
         actual.Parameters.Should().ContainSingle();
         actual.Parameters.Single().TypeName.Should().Be(typeof(string).FullName);
         actual.Parameters.Single().Description.Should().Be("Some other description");
-        actual.Parameters.Single().Name.Should().Be(nameof(SomeAggregator.Parameter));
+        actual.Parameters.Single().Name.Should().Be(nameof(SomeEvaluatable.Parameter));
         actual.ReturnValues.Should().ContainSingle();
         actual.ReturnValues.Single().Description.Should().Be("Some description");
         actual.ReturnValues.Single().Value.Should().Be("Some value");
@@ -61,11 +61,29 @@ public class ReflectionEvaluatableDescriptorProviderTests
     [ParameterRequired(nameof(Parameter), true)]
     [ParameterDescription(nameof(Parameter), "Some other description")]
     [ReturnValue(ResultStatus.Ok, typeof(bool), "Some value", "Some description")]
-    private sealed record SomeAggregator : Evaluatable
+    private sealed record SomeEvaluatable : Evaluatable
     {
         public override Result<bool> Evaluate(object? context)
             => Result.Success(true);
 
         public object Parameter { get; } = "";
+
+        public override EvaluatableBuilder ToBuilder()
+        {
+            return new SomeEvaluatableBuilder(this);
+        }
+    }
+
+    private sealed class SomeEvaluatableBuilder : EvaluatableBuilder<SomeEvaluatableBuilder, SomeEvaluatable>
+    {
+        public SomeEvaluatableBuilder(SomeEvaluatable source) : base(source)
+        {
+            ArgumentNullException.ThrowIfNull(source);
+        }
+
+        public override SomeEvaluatable BuildTyped()
+        {
+            return new SomeEvaluatable();
+        }
     }
 }

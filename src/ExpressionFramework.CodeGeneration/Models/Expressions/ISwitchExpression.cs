@@ -2,7 +2,6 @@
 
 public interface ISwitchExpression : IExpression
 {
-    [Required]
-    IReadOnlyCollection<ICase> Cases { get; }
-    IExpression? DefaultExpression { get; }
+    [Required][ValidateObject] IReadOnlyCollection<ICase> Cases { get; }
+    [ValidateObject] IExpression? DefaultExpression { get; }
 }

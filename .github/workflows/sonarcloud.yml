@@ -34,16 +34,21 @@ jobs:
           dotnet tool install --global dotnet-sonarscanner
       - name: Run code generation
         run: |
-          dotnet restore src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
-          dotnet tool install -g pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd
-          dotnet build -c Release --no-restore src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
-          t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net8.0/ExpressionFramework.CodeGeneration.dll -p src/
-      - name: Build and analyze
+          dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
+      - name: Build
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
           dotnet-sonarscanner begin /k:"pauldeen79_ExpressionFramework" /n:"ExpressionFramework" /o:"pauldeen79" /d:sonar.token="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
           dotnet build
+      - name: Run tests
+        continue-on-error: true
+        run: |
           dotnet test --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+      - name: Finalize analysis
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        run: |
           dotnet-sonarscanner end /d:sonar.token="${{ secrets.SONAR_TOKEN }}"

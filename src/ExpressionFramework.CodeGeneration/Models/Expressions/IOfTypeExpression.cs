@@ -2,8 +2,6 @@
 
 public interface IOfTypeExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required]
-    ITypedExpression<IEnumerable> Expression { get; }
-    [Required]
-    ITypedExpression<Type> TypeExpression { get; }
+    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<Type> TypeExpression { get; }
 }

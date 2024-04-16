@@ -3,8 +3,7 @@
 public interface IReturnValueDescriptor
 {
     ResultStatus Status { get; }
-    [Required]
-    string Value { get; }
+    [Required]string Value { get; }
     Type? ValueType { get; }
     string Description { get; }
 }

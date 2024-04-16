@@ -2,6 +2,6 @@
 
 public interface ISortOrder
 {
-    IExpression SortExpression { get; }
+    [ValidateObject] IExpression SortExpression { get; }
     SortOrderDirection Direction { get; }
 }

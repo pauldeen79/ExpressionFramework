@@ -2,9 +2,7 @@
 
 public interface IOperatorExpression : IExpression, ITypedExpression<bool>
 {
-    [Required]
-    IExpression LeftExpression { get; }
-    [Required]
-    IExpression RightExpression { get; }
-    IOperator Operator { get; }
+    [Required][ValidateObject] IExpression LeftExpression { get; }
+    [Required][ValidateObject] IExpression RightExpression { get; }
+    [Required][ValidateObject] IOperator Operator { get; }
 }

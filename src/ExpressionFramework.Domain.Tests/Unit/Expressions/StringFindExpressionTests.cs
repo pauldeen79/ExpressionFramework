@@ -81,16 +81,6 @@ public class StringFindExpressionTests
     }
 
     [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new StringFindExpressionBase(new TypedConstantExpression<string>(string.Empty), new TypedConstantExpression<string>(string.Empty));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
-
-    [Fact]
     public void EvaluateTyped_Returns_Position_Of_FindExpression_When_Both_Expressions_Are_String()
     {
         // Arrange

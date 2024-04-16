@@ -48,14 +48,4 @@ public class MonthExpressionTests
         // Assert
         actual.Should().BeOfType<MonthExpression>();
     }
-
-    [Fact]
-    public void BaseClass_Cannot_Evaluate()
-    {
-        // Arrange
-        var expression = new MonthExpressionBase(new TypedConstantExpression<DateTime>(DateTime.Today));
-
-        // Act & Assert
-        expression.Invoking(x => x.Evaluate()).Should().Throw<NotSupportedException>();
-    }
 }

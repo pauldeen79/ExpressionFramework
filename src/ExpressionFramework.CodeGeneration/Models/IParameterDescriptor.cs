@@ -2,10 +2,8 @@
 
 public interface IParameterDescriptor
 {
-    [Required]
-    string Name { get; }
-    [Required]
-    string TypeName { get; }
+    [Required] string Name { get; }
+    [Required] string TypeName { get; }
     string Description { get; }
     bool Required { get; }
 }

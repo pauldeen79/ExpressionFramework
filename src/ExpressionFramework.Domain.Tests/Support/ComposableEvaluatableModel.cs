@@ -11,7 +11,7 @@ public class ComposableEvaluatableModel
     public ComposableEvaluatable ToEvaluatable() =>
         new ComposableEvaluatableBuilder()
             .WithLeftExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(LeftExpression)))
-            .WithOperator(OperatorBuilderFactory.Create(OperatorExpressionParser.Parse(Operator)))
+            .WithOperator(OperatorExpressionParser.Parse(Operator).ToBuilder())
             .WithRightExpression(new ConstantExpressionBuilder().WithValue(StringExpressionParser.Parse(RightExpression)))
             .WithStartGroup(StartGroup)
             .WithEndGroup(EndGroup)

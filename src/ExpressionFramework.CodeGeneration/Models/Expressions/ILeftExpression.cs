@@ -2,8 +2,6 @@
 
 public interface ILeftExpression : IExpression, ITypedExpression<string>
 {
-    [Required]
-    ITypedExpression<string> Expression { get; }
-    [Required]
-    ITypedExpression<int> LengthExpression { get; }
+    [Required][ValidateObject] ITypedExpression<string> Expression { get; }
+    [Required][ValidateObject] ITypedExpression<int> LengthExpression { get; }
 }
