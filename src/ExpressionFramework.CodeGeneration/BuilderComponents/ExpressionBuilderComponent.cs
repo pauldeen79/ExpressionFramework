@@ -15,13 +15,12 @@ public class ExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 }
 
 [ExcludeFromCodeCoverage] 
-public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilder, BuilderContext>
+public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<IConcreteTypeBuilder, BuilderContext>
 {
-    private readonly IFormattableStringParser _formattableStringParser;
+    private const string ExpressionTemplate = $"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
 
-    public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser)
+    public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
     {
-        _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
     }
 
     public Task<Result<IConcreteTypeBuilder>> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, CancellationToken token)
@@ -50,7 +49,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
             var parentChildContext = new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings);
             if (!property.TypeName.FixTypeName().IsCollectionTypeName() && property.TypeName.GetClassName() == Constants.Types.Expression)
             {
-                var results = context.Context.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, _formattableStringParser);
+                var results = context.Context.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, FormattableStringParser);
 
                 var error = Array.Find(results, x => !x.Result.IsSuccessful());
                 if (error is not null)
@@ -67,9 +66,9 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                 (
                     property,
                     parentChildContext,
-                    _formattableStringParser,
-                    GetCodeStatementsForEnumerableOverload(context, property, parentChildContext),
-                    GetCodeStatementsForArrayOverload(context, property, parentChildContext)
+                    FormattableStringParser,
+                    GetCodeStatementsForEnumerableOverload(context, property, parentChildContext, ExpressionTemplate),
+                    GetCodeStatementsForArrayOverload(context, property, parentChildContext, ExpressionTemplate)
                 );
 
                 var error = Array.Find(results, x => !x.Result.IsSuccessful());
@@ -84,49 +83,6 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
         }
 
         return Task.FromResult(Result.Continue<IConcreteTypeBuilder>());
-    }
-
-    private IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
-    {
-        if (context.Context.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
-        {
-            // When using IEnumerable<>, do not call ToArray because we want lazy evaluation
-            foreach (var statement in GetCodeStatementsForArrayOverload(context, property, parentChildContext))
-            {
-                yield return statement;
-            }
-
-            yield break;
-        }
-
-        // When not using IEnumerable<>, we can simply force ToArray because it's stored in a generic list or collection of some sort anyway.
-        // (in other words, materialization is always performed)
-        if (context.Context.Settings.AddNullChecks)
-        {
-            yield return Result.Success<FormattableStringParserResult>(context.Context.CreateArgumentNullException(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
-        }
-
-        yield return _formattableStringParser.Parse("return {BuilderAddMethodName}({NamePascalCsharpFriendlyName}.ToArray());", context.Context.FormatProvider, parentChildContext);
-    }
-
-    private IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
-    {
-        if (context.Context.Settings.AddNullChecks)
-        {
-            var argumentNullCheckResult = _formattableStringParser.Parse
-            (
-                context.Context.GetMappingMetadata(property.TypeName).GetStringValue(MetadataNames.CustomBuilderArgumentNullCheckExpression, "{NullCheck.Argument}"),
-                context.Context.FormatProvider,
-                new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings)
-            );
-
-            if (!argumentNullCheckResult.IsSuccessful() || !string.IsNullOrEmpty(argumentNullCheckResult.Value!))
-            {
-                yield return argumentNullCheckResult;
-            }
-        }
-
-        yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
     }
 
     private static void AddOverloadsForExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)
