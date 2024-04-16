@@ -15,7 +15,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     protected override bool GenerateMultipleFiles => true;
 
     public override IEnumerable<TypeBase> Model
-        => GetOverrideModels(typeof(IExpression))
+        => GetOverrideModels(typeof(IExpression)).Result
             .Select(x =>
             {
                 var result = new ClassBuilder()

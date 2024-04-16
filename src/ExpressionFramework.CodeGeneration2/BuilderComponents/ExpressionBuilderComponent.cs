@@ -24,7 +24,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
         _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
     }
 
-    public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context)
+    public Task<Result<IConcreteTypeBuilder>> Process(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, CancellationToken token)
     {
         context = context.IsNotNull(nameof(context));
 
@@ -56,7 +56,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                 if (error is not null)
                 {
                     // Error in formattable string parsing
-                    return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
+                    return Task.FromResult(Result.FromExistingResult<IConcreteTypeBuilder>(error.Result));
                 }
 
                 AddOverloadsForExpression(context, property, results);
@@ -76,17 +76,17 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                 if (error is not null)
                 {
                     // Error in formattable string parsing
-                    return Result.FromExistingResult<IConcreteTypeBuilder>(error.Result);
+                    return Task.FromResult(Result.FromExistingResult<IConcreteTypeBuilder>(error.Result));
                 }
 
                 AddOverloadsForExpressions(context, property, results);
             }
         }
 
-        return Result.Continue<IConcreteTypeBuilder>();
+        return Task.FromResult(Result.Continue<IConcreteTypeBuilder>());
     }
 
-    private IEnumerable<Result<string>> GetCodeStatementsForEnumerableOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
+    private IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
     {
         if (context.Context.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
         {
@@ -103,13 +103,13 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
         // (in other words, materialization is always performed)
         if (context.Context.Settings.AddNullChecks)
         {
-            yield return Result.Success(context.Context.CreateArgumentNullException(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
+            yield return Result.Success<FormattableStringParserResult>(context.Context.CreateArgumentNullException(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
         }
 
         yield return _formattableStringParser.Parse("return {BuilderAddMethodName}({NamePascalCsharpFriendlyName}.ToArray());", context.Context.FormatProvider, parentChildContext);
     }
 
-    private IEnumerable<Result<string>> GetCodeStatementsForArrayOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
+    private IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext)
     {
         if (context.Context.Settings.AddNullChecks)
         {
@@ -120,7 +120,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                 new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings)
             );
 
-            if (!string.IsNullOrEmpty(argumentNullCheckResult.Value) || !argumentNullCheckResult.IsSuccessful())
+            if (!argumentNullCheckResult.IsSuccessful() || !string.IsNullOrEmpty(argumentNullCheckResult.Value!))
             {
                 yield return argumentNullCheckResult;
             }
@@ -129,13 +129,13 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
         yield return _formattableStringParser.Parse($"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));", context.Context.FormatProvider, parentChildContext);
     }
 
-    private static void AddOverloadsForExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
+    private static void AddOverloadsForExpression(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)
     {
         var builder = new MethodBuilder()
             .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
             .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
                 ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
+                : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
             .AddParameters
             (
                 new ParameterBuilder()
@@ -159,7 +159,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
             .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
             .WithReturnTypeName(context.Context.IsBuilderForAbstractEntity
                   ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-                  : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
+                  : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}")
             .AddParameters
             (
                 new ParameterBuilder()
@@ -180,11 +180,11 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
         context.Model.AddMethods(builder);
     }
 
-    private static void AddOverloadsForExpressions(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<string>>[] results)
+    private static void AddOverloadsForExpressions(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)
     {
         var returnType = context.Context.IsBuilderForAbstractEntity
             ? $"TBuilder{context.Context.SourceModel.GetGenericTypeArgumentsString()}"
-            : $"{results.First(x => x.Name == "Namespace").Result.Value.AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}";
+            : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Context.SourceModel.GetGenericTypeArgumentsString()}";
 
         context.Model.AddMethods(new MethodBuilder()
             .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)
@@ -195,7 +195,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                     .WithName(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()))
                     .WithType(typeof(IEnumerable<object>))
             )
-            .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!))
+            .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!.ToString()))
         );
 
         context.Model.AddMethods(new MethodBuilder()
@@ -208,7 +208,7 @@ public class ExpressionBuilderComponent : IPipelineComponent<IConcreteTypeBuilde
                     .WithType(typeof(object[]))
                     .WithIsParamArray()
             )
-            .AddStringCodeStatements(results.Where(x => x.Name == "ArrayOverload").Select(x => x.Result.Value!))
+            .AddStringCodeStatements(results.Where(x => x.Name == "ArrayOverload").Select(x => x.Result.Value!.ToString()))
         );
     }
 }

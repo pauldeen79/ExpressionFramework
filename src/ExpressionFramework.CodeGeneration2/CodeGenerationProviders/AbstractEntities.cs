@@ -15,5 +15,5 @@ public class AbstractEntities : ExpressionFrameworkCSharpClassBase
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.None; // not needed for abstract entities, because each derived class will do its own validation
 
     public override IEnumerable<TypeBase> Model
-        => GetEntities(GetAbstractModels(), Constants.Namespaces.Domain);
+        => GetEntities(GetAbstractModels().Result, Constants.Namespaces.Domain).Result;
 }

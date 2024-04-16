@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="4.0.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

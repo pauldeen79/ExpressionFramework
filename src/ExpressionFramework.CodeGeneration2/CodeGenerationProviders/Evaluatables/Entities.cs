@@ -15,7 +15,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     protected override bool GenerateMultipleFiles => true;
 
     public override IEnumerable<TypeBase> Model
-        => GetOverrideModels(typeof(IEvaluatable))
+        => GetOverrideModels(typeof(IEvaluatable)).Result
             .Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName(x.WithoutInterfacePrefix())

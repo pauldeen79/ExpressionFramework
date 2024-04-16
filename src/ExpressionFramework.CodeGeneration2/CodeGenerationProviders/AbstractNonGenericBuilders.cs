@@ -16,5 +16,5 @@ public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
     protected override string FilenameSuffix => ".nongeneric.template.generated";
 
     public override IEnumerable<TypeBase> Model
-        => GetNonGenericBuilders(GetAbstractModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
+        => GetNonGenericBuilders(GetAbstractModels().Result, Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain).Result;
 }

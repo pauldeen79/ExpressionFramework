@@ -25,20 +25,20 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
                         .WithName("AddExpressionParsers")
                         .AddParameter("services", typeof(IServiceCollection))
                         .WithReturnType(typeof(IServiceCollection))
-                        .AddStringCodeStatements(GetOverrideModels(typeof(IExpression))
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IExpression)).Result
                             .SelectMany(x => new[]
                             {
                                 $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
                                 $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();"
                             })
                         )
-                        .AddStringCodeStatements(GetOverrideModels(typeof(Models.IAggregator))
+                        .AddStringCodeStatements(GetOverrideModels(typeof(Models.IAggregator)).Result
                             .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
-                        .AddStringCodeStatements(GetOverrideModels(typeof(IOperator))
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IOperator)).Result
                             .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
-                        .AddStringCodeStatements(GetOverrideModels(typeof(IEvaluatable))
+                        .AddStringCodeStatements(GetOverrideModels(typeof(IEvaluatable)).Result
                             .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements("return services;")

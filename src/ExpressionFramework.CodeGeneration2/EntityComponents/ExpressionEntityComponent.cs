@@ -10,7 +10,7 @@ public class ExpressionEntityComponentBuilder : IEntityComponentBuilder
 [ExcludeFromCodeCoverage]
 public class ExpressionEntityComponent : IPipelineComponent<IConcreteTypeBuilder, EntityContext>
 {
-    public Result<IConcreteTypeBuilder> Process(PipelineContext<IConcreteTypeBuilder, EntityContext> context)
+    public Task<Result<IConcreteTypeBuilder>> Process(PipelineContext<IConcreteTypeBuilder, EntityContext> context, CancellationToken token)
     {
         context = context.IsNotNull(nameof(context));
 
@@ -24,7 +24,7 @@ public class ExpressionEntityComponent : IPipelineComponent<IConcreteTypeBuilder
             );
         }
 
-        return Result.Continue<IConcreteTypeBuilder>();
+        return Task.FromResult(Result.Continue<IConcreteTypeBuilder>());
     }
 
     private static string GetSingleContainedExpressionStatements(IConcreteTypeBuilder typeBaseBuilder)

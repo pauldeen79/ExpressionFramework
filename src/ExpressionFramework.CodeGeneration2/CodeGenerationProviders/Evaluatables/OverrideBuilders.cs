@@ -11,9 +11,9 @@ public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override Class? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain);
+    protected override Class? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain).Result;
     protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
 
     public override IEnumerable<TypeBase> Model
-        => GetBuilders(GetOverrideModels(typeof(IEvaluatable)), CurrentNamespace, Constants.Namespaces.DomainEvaluatables);
+        => GetBuilders(GetOverrideModels(typeof(IEvaluatable)).Result, CurrentNamespace, Constants.Namespaces.DomainEvaluatables).Result;
 }

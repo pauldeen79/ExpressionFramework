@@ -14,7 +14,7 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
         get
         {
             var settings = CreateSettings();
-            return GetOverrideModels(typeof(IOperator))
+            return GetOverrideModels(typeof(IOperator)).Result
                 .Select(x => CreateParserClass(x, Constants.Types.Operator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainOperators, settings).Build());
         }
     }

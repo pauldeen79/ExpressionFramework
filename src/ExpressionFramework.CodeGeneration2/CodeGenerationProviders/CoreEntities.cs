@@ -9,5 +9,5 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.Domain;
 
-    public override IEnumerable<TypeBase> Model => GetEntities(GetCoreModels(), Constants.Namespaces.Domain);
+    public override IEnumerable<TypeBase> Model => GetEntities(GetCoreModels().Result, Constants.Namespaces.Domain).Result;
 }
