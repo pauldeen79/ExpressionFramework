@@ -31,13 +31,7 @@ jobs:
           dotnet-version: 8.0.x
       - name: Restore
         run: dotnet restore
-      - name: Install T4Plus
-        run: dotnet tool install -g pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd
-      - name: Build code generation artifacts
-        run: dotnet build -c Release --no-restore src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
       - name: Run code generation
-        run: t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net8.0/ExpressionFramework.CodeGeneration.dll -p src/
-      - name: Run code generation (v2)
         run: dotnet run --project src/ExpressionFramework.CodeGeneration2/ExpressionFramework.CodeGeneration2.csproj
       - name: Build
         run: dotnet build -c Release --no-restore
@@ -94,10 +88,6 @@ jobs:
           echo Version: $VERSION
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
-          dotnet tool install -g pauldeen79.TextTemplateTransformationFramework.T4.Plus.Cmd
-          dotnet restore
-          dotnet build -c Release src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
-          t4plus assembly -a src/ExpressionFramework.CodeGeneration/bin/Release/net8.0/ExpressionFramework.CodeGeneration.dll -p src/
           dotnet pack -v normal -c Release --include-symbols --include-source --no-restore -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed
         run: |
