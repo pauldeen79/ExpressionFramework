@@ -14,7 +14,6 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override Type EntityCollectionType => typeof(IReadOnlyCollection<>);
     protected override Type EntityConcreteCollectionType => typeof(ReadOnlyValueCollection<>);
     protected override Type BuilderCollectionType => typeof(ObservableCollection<>);
-    protected override string CurrentNamespace => base.CurrentNamespace.Replace(".Domain2", ".Domain").Replace(".Parser2", ".Parser"); //TODO: remove this later on
 
     protected override string ProjectName => "ExpressionFramework";
     protected override string CoreNamespace => "ExpressionFramework.Domain";

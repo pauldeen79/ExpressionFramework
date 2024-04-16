@@ -10,15 +10,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		TODO.md = TODO.md
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.CodeGeneration2", "src\ExpressionFramework.CodeGeneration2\ExpressionFramework.CodeGeneration2.csproj", "{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.CodeGeneration", "src\ExpressionFramework.CodeGeneration2\ExpressionFramework.CodeGeneration.csproj", "{CAA25C3C-14F4-4B86-9E3B-20E7CB7D900D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain2", "src\ExpressionFramework.Domain2\ExpressionFramework.Domain2.csproj", "{E7A030ED-1E7B-4A23-8E27-254B863E8209}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain", "src\ExpressionFramework.Domain2\ExpressionFramework.Domain.csproj", "{E7A030ED-1E7B-4A23-8E27-254B863E8209}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2", "src\ExpressionFramework.Parser2\ExpressionFramework.Parser2.csproj", "{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser", "src\ExpressionFramework.Parser2\ExpressionFramework.Parser.csproj", "{703C58C4-7C7E-4C6D-AF5A-6D51A563DBE1}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain2.Tests", "src\ExpressionFramework.Domain2.Tests\ExpressionFramework.Domain2.Tests.csproj", "{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Domain.Tests", "src\ExpressionFramework.Domain2.Tests\ExpressionFramework.Domain.Tests.csproj", "{A43EA99C-3CBD-4FF0-88DE-394AFF3061B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser2.Tests", "src\ExpressionFramework.Parser2.Tests\ExpressionFramework.Parser2.Tests.csproj", "{171F095B-A221-43B6-95E4-967F60FE8960}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpressionFramework.Parser.Tests", "src\ExpressionFramework.Parser2.Tests\ExpressionFramework.Parser.Tests.csproj", "{171F095B-A221-43B6-95E4-967F60FE8960}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
