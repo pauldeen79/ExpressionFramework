@@ -28,6 +28,6 @@ global using ExpressionFramework.Domain.Operators;
 global using ExpressionFramework.SpecFlow.Tests.Support;
 global using FluentAssertions;
 global using NSubstitute;
-global using TechTalk.SpecFlow;
-global using TechTalk.SpecFlow.Assist;
+global using Reqnroll;
+global using Reqnroll.Assist;
 global using Xunit;
