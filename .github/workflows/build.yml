@@ -88,6 +88,7 @@ jobs:
           echo Version: $VERSION
           VERSION="${VERSION//v}"
           echo Clean Version: $VERSION
+          dotnet restore
           dotnet run --project src/ExpressionFramework.CodeGeneration/ExpressionFramework.CodeGeneration.csproj
           dotnet pack -v normal -c Release --include-symbols --include-source -p:PackageVersion=$VERSION -p:Version=$VERSION -o nupkg
       - name: Push to GitHub Feed
