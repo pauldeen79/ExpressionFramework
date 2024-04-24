@@ -11,8 +11,8 @@ public class OverrideEntities : ExpressionFrameworkCSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override Class? BaseClass => CreateBaseclass(typeof(IEvaluatable), Constants.Namespaces.Domain).Result;
+    protected override async Task<Class?> GetBaseClass() => await CreateBaseClass(typeof(IEvaluatable), Constants.Namespaces.Domain);
 
-    public override IEnumerable<TypeBase> Model
-        => GetEntities(GetOverrideModels(typeof(IEvaluatable)).Result, CurrentNamespace).Result;
+    public override async Task<IEnumerable<TypeBase>> GetModel()
+        => await GetEntities(await GetOverrideModels(typeof(IEvaluatable)), CurrentNamespace);
 }

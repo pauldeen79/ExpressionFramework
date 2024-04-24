@@ -9,6 +9,6 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.DomainBuilders;
 
-    public override IEnumerable<TypeBase> Model
-        => GetBuilders(GetCoreModels().Result, Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain).Result;
+    public override async Task<IEnumerable<TypeBase>> GetModel()
+        => await GetBuilders(await GetCoreModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
 }

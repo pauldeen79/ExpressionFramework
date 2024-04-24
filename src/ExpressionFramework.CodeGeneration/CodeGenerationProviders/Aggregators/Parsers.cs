@@ -9,13 +9,10 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.ParserAggregatorResultParsers;
 
-    public override IEnumerable<TypeBase> Model
+    public override async Task<IEnumerable<TypeBase>> GetModel()
     {
-        get
-        {
-            var settings = CreateSettings();
-            return GetOverrideModels(typeof(Models.IAggregator)).Result
-                .Select(x => CreateParserClass(x, Constants.Types.Aggregator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainAggregators, settings).Build());
-        }
+        var settings = CreateSettings();
+        return (await GetOverrideModels(typeof(Models.IAggregator)))
+            .Select(x => CreateParserClass(x, Constants.Types.Aggregator, x.WithoutInterfacePrefix(), Constants.Namespaces.DomainAggregators, settings).Build());
     }
 }

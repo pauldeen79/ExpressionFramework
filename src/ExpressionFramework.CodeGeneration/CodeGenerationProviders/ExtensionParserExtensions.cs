@@ -9,8 +9,8 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.Parser;
 
-    public override IEnumerable<TypeBase> Model
-        =>
+    public override Task<IEnumerable<TypeBase>> GetModel()
+        => Task.FromResult<IEnumerable<TypeBase>>(
         [
             new ClassBuilder()
                 .WithPartial()
@@ -43,5 +43,5 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
                         )
                         .AddStringCodeStatements("return services;")
                 ).Build()
-        ];
+        ]);
 }
