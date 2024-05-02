@@ -3,28 +3,28 @@
 [ExcludeFromCodeCoverage]
 public class ExpressionEntityComponentBuilder : IEntityComponentBuilder
 {
-    public IPipelineComponent<IConcreteTypeBuilder, EntityContext> Build()
+    public IPipelineComponent<EntityContext> Build()
         => new ExpressionEntityComponent();
 }
 
 [ExcludeFromCodeCoverage]
-public class ExpressionEntityComponent : IPipelineComponent<IConcreteTypeBuilder, EntityContext>
+public class ExpressionEntityComponent : IPipelineComponent<EntityContext>
 {
-    public Task<Result<IConcreteTypeBuilder>> Process(PipelineContext<IConcreteTypeBuilder, EntityContext> context, CancellationToken token)
+    public Task<Result> Process(PipelineContext<EntityContext> context, CancellationToken token)
     {
         context = context.IsNotNull(nameof(context));
 
-        if (context.Context.SourceModel.Namespace == Constants.Namespaces.DomainExpressions)
+        if (context.Request.SourceModel.Namespace == Constants.Namespaces.DomainExpressions)
         {
-            context.Model.AddMethods(new MethodBuilder()
+            context.Request.Builder.AddMethods(new MethodBuilder()
                 .WithOverride()
                 .WithName("GetSingleContainedExpression")
                 .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.TypeNames.Expression}>")
-                .AddStringCodeStatements(GetSingleContainedExpressionStatements(context.Model))
+                .AddStringCodeStatements(GetSingleContainedExpressionStatements(context.Request.Builder))
             );
         }
 
-        return Task.FromResult(Result.Continue<IConcreteTypeBuilder>());
+        return Task.FromResult(Result.Continue());
     }
 
     private static string GetSingleContainedExpressionStatements(IConcreteTypeBuilder typeBaseBuilder)

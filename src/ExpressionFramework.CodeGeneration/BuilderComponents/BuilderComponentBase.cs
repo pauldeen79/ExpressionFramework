@@ -10,9 +10,9 @@ public abstract class BuilderComponentBase
         FormattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
     }
 
-    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext, string expressionTemplate)
+    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
     {
-        if (context.Context.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
+        if (context.Request.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
         {
             // When using IEnumerable<>, do not call ToArray because we want lazy evaluation
             foreach (var statement in GetCodeStatementsForArrayOverload(context, property, parentChildContext, expressionTemplate))
@@ -25,23 +25,23 @@ public abstract class BuilderComponentBase
 
         // When not using IEnumerable<>, we can simply force ToArray because it's stored in a generic list or collection of some sort anyway.
         // (in other words, materialization is always performed)
-        if (context.Context.Settings.AddNullChecks)
+        if (context.Request.Settings.AddNullChecks)
         {
-            yield return Result.Success<FormattableStringParserResult>(context.Context.CreateArgumentNullException(property.Name.ToPascalCase(context.Context.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
+            yield return Result.Success<FormattableStringParserResult>(context.Request.CreateArgumentNullException(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
         }
 
-        yield return FormattableStringParser.Parse("return {BuilderAddMethodName}({NamePascalCsharpFriendlyName}.ToArray());", context.Context.FormatProvider, parentChildContext);
+        yield return FormattableStringParser.Parse("return {BuilderAddMethodName}({NamePascalCsharpFriendlyName}.ToArray());", context.Request.FormatProvider, parentChildContext);
     }
 
-    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<IConcreteTypeBuilder, BuilderContext> context, Property property, ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property> parentChildContext, string expressionTemplate)
+    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
     {
-        if (context.Context.Settings.AddNullChecks)
+        if (context.Request.Settings.AddNullChecks)
         {
             var argumentNullCheckResult = FormattableStringParser.Parse
             (
-                context.Context.GetMappingMetadata(property.TypeName).GetStringValue(MetadataNames.CustomBuilderArgumentNullCheckExpression, "{NullCheck.Argument}"),
-                context.Context.FormatProvider,
-                new ParentChildContext<PipelineContext<IConcreteTypeBuilder, BuilderContext>, Property>(context, property, context.Context.Settings)
+                context.Request.GetMappingMetadata(property.TypeName).GetStringValue(MetadataNames.CustomBuilderArgumentNullCheckExpression, "{NullCheck.Argument}"),
+                context.Request.FormatProvider,
+                new ParentChildContext<PipelineContext<BuilderContext>, Property>(context, property, context.Request.Settings)
             );
 
             if (!argumentNullCheckResult.IsSuccessful() || !string.IsNullOrEmpty(argumentNullCheckResult.Value!))
@@ -50,6 +50,6 @@ public abstract class BuilderComponentBase
             }
         }
 
-        yield return FormattableStringParser.Parse(expressionTemplate, context.Context.FormatProvider, parentChildContext);
+        yield return FormattableStringParser.Parse(expressionTemplate, context.Request.FormatProvider, parentChildContext);
     }
 }
