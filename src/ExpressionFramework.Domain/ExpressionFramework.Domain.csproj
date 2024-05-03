@@ -8,12 +8,19 @@
     <AnalysisLevel>latest-All</AnalysisLevel>
     <PackageId>pauldeen79.ExpressionFramework.Domain</PackageId>
     <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.10.0" />
     <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.10.0" />
     <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
   </ItemGroup>
 
 </Project>

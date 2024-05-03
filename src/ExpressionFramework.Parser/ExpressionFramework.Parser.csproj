@@ -7,6 +7,8 @@
     <AnalysisLevel>latest-All</AnalysisLevel>
     <PackageId>pauldeen79.ExpressionFramework.Parser</PackageId>
     <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,4 +19,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ExpressionFramework.Domain\ExpressionFramework.Domain.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
 </Project>
