@@ -1,6 +1,7 @@
 # ExpressionFramework
 
-Evaluates expressions.
+Evaluates dynamic expressions at run-time without reflection or dynamic code compilation.
+This allows you to validate data at a specific level. (code injection safe)
 
 Example:
 
@@ -9,6 +10,14 @@ var expression = new FieldExpression("Name");
 var context = new { Name = "Hello world!" };
 var result = expression.Evaluate(context).Value;
 // generates: Hello world!
+```
+
+We also support evaluating expression string, like this:
+
+```C#
+var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+var result = parser.Parse("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
+// generates: Hello
 ```
 
 See unit tests for more examples.
