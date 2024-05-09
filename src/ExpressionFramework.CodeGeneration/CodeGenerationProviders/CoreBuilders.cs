@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class CoreBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public CoreBuilders(IMediator mediator, ICsharpExpressionDumper csharpExpressionDumper) : base(mediator, csharpExpressionDumper)
+    public CoreBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
     {
     }
 

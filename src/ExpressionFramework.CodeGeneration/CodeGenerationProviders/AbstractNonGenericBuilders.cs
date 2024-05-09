@@ -4,7 +4,7 @@ namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 [ExcludeFromCodeCoverage]
 public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
 {
-    public AbstractNonGenericBuilders(IMediator mediator, ICsharpExpressionDumper csharpExpressionDumper) : base(mediator, csharpExpressionDumper)
+    public AbstractNonGenericBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
     {
     }
 

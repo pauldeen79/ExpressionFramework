@@ -3,7 +3,7 @@
 [ExcludeFromCodeCoverage]
 public class Parsers : ExpressionFrameworkCSharpClassBase
 {
-    public Parsers(IMediator mediator, ICsharpExpressionDumper csharpExpressionDumper) : base(mediator, csharpExpressionDumper)
+    public Parsers(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
     {
     }
 

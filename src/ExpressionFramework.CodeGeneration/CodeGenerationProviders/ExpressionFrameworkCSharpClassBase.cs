@@ -3,8 +3,9 @@
 [ExcludeFromCodeCoverage]
 public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorPipelineCodeGenerationProviderBase
 {
-    protected ExpressionFrameworkCSharpClassBase(IMediator mediator, ICsharpExpressionDumper csharpExpressionDumper) : base(mediator, csharpExpressionDumper)
+    protected ExpressionFrameworkCSharpClassBase(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService)
     {
+        CsharpExpressionDumper = csharpExpressionDumper;
     }
 
     public override bool RecurseOnDeleteGeneratedFiles => false;
@@ -21,6 +22,8 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool CopyInterfaces => true;
     protected override bool CreateRecord => true;
     protected override bool GenerateMultipleFiles => false;
+
+    protected ICsharpExpressionDumper CsharpExpressionDumper { get; }
 
     protected override bool SkipNamespaceOnTypenameMappings(string @namespace)
         => @namespace == $"{CodeGenerationRootNamespace}.Models.Contracts";
