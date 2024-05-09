@@ -11,6 +11,7 @@ public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
+    protected override bool CreateAsObservable => true;
     protected override async Task<TypeBase?> GetBaseClass() => await CreateBaseClass(typeof(IOperator), Constants.Namespaces.Domain);
     protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.None; // there are no properties in operators, so this is not necessary

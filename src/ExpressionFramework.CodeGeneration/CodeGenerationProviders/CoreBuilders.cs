@@ -11,4 +11,6 @@ public class CoreBuilders : ExpressionFrameworkCSharpClassBase
 
     public override async Task<IEnumerable<TypeBase>> GetModel()
         => await GetBuilders(await GetCoreModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
+
+    protected override bool CreateAsObservable => true;
 }
