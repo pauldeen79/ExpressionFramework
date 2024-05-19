@@ -36,16 +36,12 @@ internal static class Program
 
         using var serviceProvider = services.BuildServiceProvider();
         using var scope = serviceProvider.CreateScope();
-        var instances = generators
-            .Select(x => (ExpressionFrameworkCSharpClassBase)scope.ServiceProvider.GetRequiredService(x))
-            .ToArray();
         var engine = scope.ServiceProvider.GetRequiredService<ICodeGenerationEngine>();
 
         // Generate code
-        var tasks = instances
-            .Select(x => engine.Generate(x, new MultipleContentBuilderEnvironment(), new CodeGenerationSettings(basePath, Path.Combine(x.Path, $"{x.GetType().Name}.template.generated.cs"))))
-            .ToArray();
-        await Task.WhenAll(tasks);
+        await Task.WhenAll(generators
+            .Select(x => (ExpressionFrameworkCSharpClassBase)scope.ServiceProvider.GetRequiredService(x))
+            .Select(x => engine.Generate(x, new MultipleContentBuilderEnvironment(), new CodeGenerationSettings(basePath, Path.Combine(x.Path, $"{x.GetType().Name}.template.generated.cs")))));
 
         // Log output to console
         if (!string.IsNullOrEmpty(basePath))
