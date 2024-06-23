@@ -12,7 +12,7 @@ internal static class Program
             : Path.Combine(currentDirectory, @"../../../../");
         var services = new ServiceCollection()
             .AddParsers()
-            .AddPipelines()
+            .AddClassFrameworkPipelines()
             .AddScoped<IBuilderComponentBuilder, BuilderComponents.ExpressionBuilderComponentBuilder>()
             .AddScoped<IBuilderComponentBuilder, BuilderComponents.TypedExpressionBuilderComponentBuilder>()
             .AddScoped<IEntityComponentBuilder, EntityComponents.ExpressionEntityComponentBuilder>()
