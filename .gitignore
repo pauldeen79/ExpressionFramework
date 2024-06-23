@@ -363,8 +363,5 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 
-# ModelFramework generated files
-*.template.generated.cs
-
 # SpecFlow generated files
 *.feature.cs
