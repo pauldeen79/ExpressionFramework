@@ -24,8 +24,8 @@ See unit tests for more examples.
 
 # Code generation
 
-I am currently not storing generated files in the code repository.
-To generate, simply run the console project from either Visual Studio (hit F5) or a command prompt.
+I am currently storing generated files in the code repository.
+To re-generate, simply run the CodeGneration project from either Visual Studio (hit F5) or a command prompt.
 This will replace almost all generated code.
 
 There are some files (evaluatables, expressions, operators and aggregators) being generated for the first time only.
