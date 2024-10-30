@@ -31,4 +31,4 @@ Scenario: Chained pascal case
     Then the expression evaluation result should contain the content
         | Field  | Value       |
         | Status | Ok          |
-        | Value  | hello world |
+        | Value  | Hello world |

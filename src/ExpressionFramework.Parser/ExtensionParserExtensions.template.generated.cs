@@ -129,6 +129,8 @@ namespace ExpressionFramework.Parser
             services.AddSingleton<ExpressionFramework.Parser.Contracts.IExpressionResolver, ExpressionFramework.Parser.ExpressionResultParsers.SwitchExpressionParser>();
             services.AddSingleton<CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.ExpressionResultParsers.TakeExpressionParser>();
             services.AddSingleton<ExpressionFramework.Parser.Contracts.IExpressionResolver, ExpressionFramework.Parser.ExpressionResultParsers.TakeExpressionParser>();
+            services.AddSingleton<CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.ExpressionResultParsers.ToCamelCaseExpressionParser>();
+            services.AddSingleton<ExpressionFramework.Parser.Contracts.IExpressionResolver, ExpressionFramework.Parser.ExpressionResultParsers.ToCamelCaseExpressionParser>();
             services.AddSingleton<CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.ExpressionResultParsers.TodayExpressionParser>();
             services.AddSingleton<ExpressionFramework.Parser.Contracts.IExpressionResolver, ExpressionFramework.Parser.ExpressionResultParsers.TodayExpressionParser>();
             services.AddSingleton<CrossCutting.Utilities.Parsers.Contracts.IFunctionResultParser, ExpressionFramework.Parser.ExpressionResultParsers.ToLowerCaseExpressionParser>();

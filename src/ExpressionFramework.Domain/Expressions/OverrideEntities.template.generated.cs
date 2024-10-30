@@ -2126,6 +2126,41 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    public partial record ToCamelCaseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
+    {
+        [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
+        {
+            get;
+        }
+
+        public ToCamelCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression) : base()
+        {
+            this.Expression = expression;
+            System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
+        }
+
+        public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder ToTypedBuilder()
+        {
+            return new ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder(this);
+        }
+
+        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
+        {
+            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
+        }
+
+        public Expression ToUntyped()
+        {
+            return this;
+        }
+    }
     public partial record TodayExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>
     {
         public CrossCutting.Common.Abstractions.IDateTimeProvider? DateTimeProvider

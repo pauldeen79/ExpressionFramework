@@ -1,14 +1,14 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Converts the expression to pascal case")]
+[ExpressionDescription("Converts the expression to camel case")]
 [UsesContext(true)]
 [ContextDescription("Context to use on expression evaluation")]
-[ParameterDescription(nameof(Expression), "String to get the pascal case for")]
+[ParameterDescription(nameof(Expression), "String to get the camel case for")]
 [ParameterRequired(nameof(Expression), true)]
 [ParameterType(nameof(Expression), typeof(string))]
-[ReturnValue(ResultStatus.Ok, typeof(string), "The value of the expression converted to pascal case", "This result will be returned when the expression is of type string")]
+[ReturnValue(ResultStatus.Ok, typeof(string), "The value of the expression converted to camel case", "This result will be returned when the expression is of type string")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string")]
-public partial record ToPascalCaseExpression
+public partial record ToCamelCaseExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result.FromExistingResult<object?>(EvaluateTyped(context));
@@ -16,6 +16,6 @@ public partial record ToPascalCaseExpression
     public Result<string> EvaluateTyped(object? context)
         => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
             result.IsSuccessful()
-                ? Result.Success(result.Value!.ToPascalCase(CultureInfo.InvariantCulture))
+                ? Result.Success(result.Value!.ToCamelCase(CultureInfo.InvariantCulture))
                 : result);
 }

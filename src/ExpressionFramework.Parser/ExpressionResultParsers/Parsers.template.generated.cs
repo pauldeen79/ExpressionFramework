@@ -970,6 +970,20 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    public class ToCamelCaseExpressionParser : ExpressionParserBase
+    {
+        public ToCamelCaseExpressionParser() : base(@"ToCamelCase")
+        {
+        }
+
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        {
+            #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+            return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+            #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
+        }
+    }
     public class TodayExpressionParser : ExpressionParserBase
     {
         public TodayExpressionParser() : base(@"Today")

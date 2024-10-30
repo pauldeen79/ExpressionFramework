@@ -4814,6 +4814,68 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             return this;
         }
     }
+    public partial class ToCamelCaseExpressionBuilder : ExpressionFramework.Domain.Builders.ExpressionBuilder<ToCamelCaseExpressionBuilder, ExpressionFramework.Domain.Expressions.ToCamelCaseExpression>, ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string>
+    {
+        private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
+
+        [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> Expression
+        {
+            get
+            {
+                return _expression;
+            }
+            set
+            {
+                _expression = value ?? throw new System.ArgumentNullException(nameof(value));
+                HandlePropertyChanged(nameof(Expression));
+            }
+        }
+
+        public ToCamelCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToCamelCaseExpression source) : base(source)
+        {
+            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            _expression = source.Expression.ToBuilder();
+        }
+
+        public ToCamelCaseExpressionBuilder() : base()
+        {
+            _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
+            SetDefaultValues();
+        }
+
+        public override ExpressionFramework.Domain.Expressions.ToCamelCaseExpression BuildTyped()
+        {
+            return new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(Expression.Build());
+        }
+
+        partial void SetDefaultValues();
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithExpression(ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> expression)
+        {
+            if (expression is null) throw new System.ArgumentNullException(nameof(expression));
+            Expression = expression;
+            return this;
+        }
+
+        ExpressionFramework.Domain.Contracts.ITypedExpression<string> ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.String>.Build()
+        {
+            return BuildTyped();
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithExpression(string expression)
+        {
+            Expression = new TypedConstantExpressionBuilder<System.String>().WithValue(expression);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithExpression(System.Func<object?, string> expression)
+        {
+            Expression = new TypedDelegateExpressionBuilder<System.String>().WithValue(expression);
+            return this;
+        }
+    }
     public partial class TodayExpressionBuilder : ExpressionFramework.Domain.Builders.ExpressionBuilder<TodayExpressionBuilder, ExpressionFramework.Domain.Expressions.TodayExpression>, ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.DateTime>
     {
         private CrossCutting.Common.Abstractions.IDateTimeProvider? _dateTimeProvider;
