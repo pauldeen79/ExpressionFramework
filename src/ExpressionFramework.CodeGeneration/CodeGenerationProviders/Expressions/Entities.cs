@@ -19,19 +19,19 @@ public class Entities : ExpressionFrameworkCSharpClassBase
             .Select(x =>
             {
                 var result = new ClassBuilder()
-                .WithNamespace(CurrentNamespace)
-                .WithName(x.WithoutInterfacePrefix())
-                .WithPartial()
-                .WithRecord()
-                .AddMethods(new MethodBuilder()
-                    .WithName("Evaluate")
-                    .WithOverride()
-                    .AddParameter("context", typeof(object), isNullable: true)
-                    .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
-                    .NotImplemented()
-                );
+                    .WithNamespace(CurrentNamespace)
+                    .WithName(x.WithoutInterfacePrefix())
+                    .WithPartial()
+                    .WithRecord()
+                    .AddMethods(new MethodBuilder()
+                        .WithName("Evaluate")
+                        .WithOverride()
+                        .AddParameter("context", typeof(object), isNullable: true)
+                        .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
+                        .NotImplemented()
+                    );
 
-                var typedInterface = x.Interfaces.FirstOrDefault(x => x != null && x.WithoutProcessedGenerics() == typeof(ITypedExpression<>).WithoutGenerics()).FixTypeName();
+                var typedInterface = x.Interfaces.FirstOrDefault(x => x is not null && x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression").FixTypeName();
                 if (!string.IsNullOrEmpty(typedInterface))
                 {
                     result
