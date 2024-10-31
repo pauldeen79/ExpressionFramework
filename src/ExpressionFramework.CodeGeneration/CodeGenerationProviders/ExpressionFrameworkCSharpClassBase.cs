@@ -50,10 +50,6 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
 
-        yield return new TypenameMappingBuilder()
-            .WithSourceType(typeof(ExpressionNameAttribute))
-            .WithTargetTypeName($"ExpressionFramework.Domain.Attributes.{nameof(ExpressionNameAttribute)}");
-
         //HACK for wrong detection of nullability of multiple or nested generic arguments
         yield return new TypenameMappingBuilder()
             .WithSourceTypeName("ExpressionFramework.CodeGeneration.Models.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<System.Object>>")
