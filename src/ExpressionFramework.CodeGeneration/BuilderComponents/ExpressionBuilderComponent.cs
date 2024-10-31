@@ -17,7 +17,7 @@ public class ExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 [ExcludeFromCodeCoverage] 
 public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<BuilderContext>
 {
-    private const string ExpressionTemplate = $"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
+    private const string ExpressionTemplate = $"return {{BuilderAddMethodName}}({{NameCamelCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
 
     public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
     {
@@ -95,7 +95,7 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithType(typeof(object))
                     .WithIsNullable(property.IsNullable)
                     .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
@@ -104,8 +104,8 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
         builder.AddStringCodeStatements
         (
             property.IsNullable
-                ? $"{property.Name} = {property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
             context.Request.ReturnValueStatementForFluentMethod
         );
 
@@ -119,7 +119,7 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>")
                     .WithIsNullable(property.IsNullable)
                     .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
@@ -128,8 +128,8 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
         builder.AddStringCodeStatements
         (
             property.IsNullable
-                ? $"{property.Name} = {property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.DelegateExpression}Builder().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
             context.Request.ReturnValueStatementForFluentMethod
         );
 
@@ -148,7 +148,7 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithType(typeof(IEnumerable<object>))
             )
             .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!.ToString()))
@@ -160,7 +160,7 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithType(typeof(object[]))
                     .WithIsParamArray()
             )

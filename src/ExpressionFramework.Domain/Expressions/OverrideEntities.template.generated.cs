@@ -1830,6 +1830,7 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [ExpressionFramework.Domain.Attributes.ExpressionNameAttribute(@"Find", @"String")]
     public partial record StringFindExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]

@@ -17,7 +17,7 @@ public class TypedExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 [ExcludeFromCodeCoverage]
 public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<BuilderContext>
 {
-    private string GetExpressionTemplate(Property property) => $"return {{BuilderAddMethodName}}({{NamePascalCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));";
+    private string GetExpressionTemplate(Property property) => $"return {{BuilderAddMethodName}}({{NameCamelCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));";
 
     public TypedExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
     {
@@ -87,7 +87,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithTypeName(CreateTypeName(property))
                     .WithIsNullable(property.IsNullable)
                     .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
@@ -96,8 +96,8 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
         builder.AddStringCodeStatements
         (
             property.IsNullable
-                ? $"{property.Name} = {property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});",
+                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});",
             context.Request.ReturnValueStatementForFluentMethod
         );
 
@@ -111,7 +111,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {CreateTypeName(property)}>")
                     .WithIsNullable(property.IsNullable)
                     .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
@@ -120,8 +120,8 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
         builder.AddStringCodeStatements
         (
             property.IsNullable
-                ? $"{property.Name} = {property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
             context.Request.ReturnValueStatementForFluentMethod
         );
 
@@ -140,7 +140,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>")
             )
             .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!.ToString()))
@@ -152,7 +152,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
             .AddParameters
             (
                 new ParameterBuilder()
-                    .WithName(property.Name.ToPascalCase(context.Request.FormatProvider.ToCultureInfo()))
+                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithTypeName($"{typeof(IEnumerable<>).WithoutGenerics()}<{CreateTypeName(property)}>".ConvertTypeNameToArray())
                     .WithIsParamArray()
             )

@@ -22,6 +22,8 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool CopyInterfaces => true;
     protected override bool CreateRecord => true;
     protected override bool GenerateMultipleFiles => false;
+    //protected override Predicate<ClassFramework.Domain.Attribute>? CopyAttributePredicate =>
+    //    attr => attr.Name != typeof(ExpressionNameAttribute).FullName;
 
     protected ICsharpExpressionDumper CsharpExpressionDumper { get; }
 
@@ -47,6 +49,10 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 new MetadataBuilder().WithValue("[Name][NullableSuffix].Build()[ForcedNullableSuffix]").WithName(MetadataNames.CustomBuilderMethodParameterExpression),
                 new MetadataBuilder().WithName(MetadataNames.CustomEntityInterfaceTypeName).WithValue($"{CoreNamespace}.Contracts.ITypedExpression")
             );
+
+        yield return new TypenameMappingBuilder()
+            .WithSourceType(typeof(ExpressionNameAttribute))
+            .WithTargetTypeName($"ExpressionFramework.Domain.Attributes.{nameof(ExpressionNameAttribute)}");
 
         //HACK for wrong detection of nullability of multiple or nested generic arguments
         yield return new TypenameMappingBuilder()
@@ -78,12 +84,12 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
 
     protected ClassBuilder CreateParserClass(TypeBase typeBase, string type, string name, string entityNamespace, PipelineSettings settings)
         => new ClassBuilder()
-            .WithNamespace(CurrentNamespace)
+            .WithNamespace(base.CurrentNamespace)
             .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
             .WithBaseClass($"{type}ParserBase")
             .AddConstructors(
                 new ConstructorBuilder()
-                    .WithChainCall($"base({CsharpExpressionDumper.Dump(name)})")
+                    .WithChainCall(CreateChainCall(typeBase, name))
             )
             .AddMethods(new MethodBuilder()
                 .WithName("DoParse")
@@ -96,6 +102,17 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
             .With(x => AddIsSupportedOverride(typeBase, x));
+
+    private string CreateChainCall(TypeBase typeBase, string name)
+    {
+        var attr = typeBase.Attributes.FirstOrDefault(x => x.Name.GetClassName() == nameof(ExpressionNameAttribute));
+        if (attr is not null)
+        {
+            return $"base({CsharpExpressionDumper.Dump(attr.Parameters.First().Value)}, {CsharpExpressionDumper.Dump(attr.Parameters.Last().Value)})";
+        }
+
+        return $"base({CsharpExpressionDumper.Dump(name)})";
+    }
 
     protected PipelineSettings CreateSettings()
         => new PipelineSettingsBuilder()
@@ -139,7 +156,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 "var error = new Result[]",
                 "{"
             );
-            parseMethod.AddStringCodeStatements(typeBase.Properties.Where(x => !IsSupportedPropertyForGeneratedParser(x)).Select(x => $"    {x.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result,"));
+            parseMethod.AddStringCodeStatements(typeBase.Properties.Where(x => !IsSupportedPropertyForGeneratedParser(x)).Select(x => $"    {x.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result,"));
             parseMethod.AddStringCodeStatements
             (
                 "}.FirstOrDefault(x => !x.IsSuccessful());",
@@ -183,11 +200,11 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         var genericType = GetCustomType(property.TypeName.GetGenericArguments());
         if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
         {
-            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
         else if (property.TypeName == typeof(object).FullName || property.TypeName == "object")
         {
-            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
         else
         {
@@ -197,7 +214,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                 "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments().MapTypeName(settings)}>",
                 _ => property.TypeName.MapTypeName(settings)
             };
-            return $"var {property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
     }
 
@@ -260,7 +277,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         }
         else
         {
-            builder.Append($"{property.Name.ToPascalCase(CultureInfo.InvariantCulture)}Result.Value{nullableBangSuffix}");
+            builder.Append($"{property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result.Value{nullableBangSuffix}");
         }
     }
 

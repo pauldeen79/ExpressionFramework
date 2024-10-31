@@ -4100,6 +4100,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             return AddExpressions(expressions.Select(x => new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>().WithValue(x)));
         }
     }
+    [ExpressionFramework.Domain.Attributes.ExpressionNameAttribute(@"Find", @"String")]
     public partial class StringFindExpressionBuilder : ExpressionFramework.Domain.Builders.ExpressionBuilder<StringFindExpressionBuilder, ExpressionFramework.Domain.Expressions.StringFindExpression>, ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int>
     {
         private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
