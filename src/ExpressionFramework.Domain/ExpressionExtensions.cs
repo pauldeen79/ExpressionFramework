@@ -15,9 +15,9 @@ public static class ExpressionExtensions
     public static Result<T> EvaluateTypedWithTypeCheck<T>(this ITypedExpression<T> instance, object? context = null, string? errorMessage = null)
         => instance.EvaluateTyped(context).Transform(result => result.IsSuccessful() && result.Value is T t
             ? Result.FromExistingResult(result, t) // use FromExistingResult because status might be Ok, Continue or another successful status
-            : result.Transform(x => x.IsSuccessful()
-                ? Result.Invalid<T>(CreateInvalidTypeErrorMessage<T>(errorMessage))
-                : x));
+            : result.Either(
+                error => error,
+                _ => Result.Invalid<T>(CreateInvalidTypeErrorMessage<T>(errorMessage))));
 
     public static string CreateInvalidTypeErrorMessage<T>(string? errorMessage = null)
         => errorMessage.WhenNullOrEmpty(() => $"Expression is not of type {GetTypeName(typeof(T))}");
