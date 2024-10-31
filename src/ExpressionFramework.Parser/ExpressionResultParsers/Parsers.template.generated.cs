@@ -28,7 +28,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 aggregatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -128,7 +128,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 aggregatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -154,7 +154,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -177,7 +177,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -266,7 +266,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -289,7 +289,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 resultResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -386,7 +386,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 conditionResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -485,7 +485,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 conditionResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -510,7 +510,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 validationErrorExpressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -653,7 +653,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 dateTimeProviderResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -691,7 +691,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 operatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -716,7 +716,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 sortOrderExpressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -845,7 +845,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 expressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -944,7 +944,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 casesResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -997,7 +997,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 dateTimeProviderResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }

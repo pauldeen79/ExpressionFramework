@@ -143,7 +143,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             parseMethod.AddStringCodeStatements
             (
                 "}.FirstOrDefault(x => !x.IsSuccessful());",
-                "if (error != null)",
+                "if (error is not null)",
                 "{",
                 $"    return Result.FromExistingResult<{Constants.Namespaces.Domain}.{type}>(error);",
                 "}"

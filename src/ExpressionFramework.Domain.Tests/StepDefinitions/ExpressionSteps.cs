@@ -12,7 +12,7 @@ public sealed class ExpressionSteps
     private ChainedExpressionBuilder ChainedExpressionBuilder => _expressionBuilder as ChainedExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a chained expression?");
     private IfExpressionBuilder IfExpressionBuilder => _expressionBuilder as IfExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized an if expression?");
     private SwitchExpressionBuilder SwitchExpressionBuilder => _expressionBuilder as SwitchExpressionBuilder ?? throw new InvalidOperationException("Are you sure you initialized a switch expression?");
-    private Expression Expression => _expressionBuilder != null
+    private Expression Expression => _expressionBuilder is not null
         ? _expressionBuilder.Build()
         : throw new InvalidOperationException("First initialize the expression using 'Given I have a ... expression'");
 

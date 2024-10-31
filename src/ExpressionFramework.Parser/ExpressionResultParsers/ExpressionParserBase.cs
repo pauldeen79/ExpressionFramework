@@ -24,13 +24,16 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     {
         functionParseResult = ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
 
-        return IsNameValid(functionParseResult.FunctionName)
+        return IsFunctionValid(functionParseResult)
             ? DoParse(functionParseResult, evaluator, parser)
             : Result.Continue<Expression>();
     }
 
     protected virtual bool IsNameValid(string functionName)
         => ArgumentGuard.IsNotNull(functionName, nameof(functionName)).Equals(_functionName, StringComparison.OrdinalIgnoreCase);
+
+    protected virtual bool IsFunctionValid(FunctionParseResult functionParseResult)
+        => IsNameValid(ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName);
 
     protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
 
