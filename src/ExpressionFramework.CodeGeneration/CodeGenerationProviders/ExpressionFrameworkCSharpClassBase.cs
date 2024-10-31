@@ -22,8 +22,6 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool CopyInterfaces => true;
     protected override bool CreateRecord => true;
     protected override bool GenerateMultipleFiles => false;
-    //protected override Predicate<ClassFramework.Domain.Attribute>? CopyAttributePredicate =>
-    //    attr => attr.Name != typeof(ExpressionNameAttribute).FullName;
 
     protected ICsharpExpressionDumper CsharpExpressionDumper { get; }
 
