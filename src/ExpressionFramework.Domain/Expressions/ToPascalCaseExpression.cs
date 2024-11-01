@@ -14,8 +14,5 @@ public partial record ToPascalCaseExpression
         => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
-            result.IsSuccessful()
-                ? Result.Success(result.Value!.ToPascalCase(CultureInfo.InvariantCulture))
-                : result);
+        => StringExpression.EvaluateCultureExpression(Expression, Culture, context, (culture, value) => value.ToPascalCase(culture), value => value.ToPascalCase(CultureInfo.CurrentCulture));
 }

@@ -108,7 +108,7 @@ public class ToUpperCaseExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ToUpperCaseExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

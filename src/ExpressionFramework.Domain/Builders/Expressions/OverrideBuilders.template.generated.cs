@@ -4818,6 +4818,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
     {
         private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
 
+        private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? _culture;
+
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> Expression
@@ -4833,21 +4835,37 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
+        [System.ComponentModel.DefaultValueAttribute(null)]
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
+        {
+            get
+            {
+                return _culture;
+            }
+            set
+            {
+                _culture = value;
+                HandlePropertyChanged(nameof(Culture));
+            }
+        }
+
         public ToCamelCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToCamelCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression.ToBuilder();
+            _culture = source.Culture?.ToBuilder()!;
         }
 
         public ToCamelCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
+            _culture = null;
             SetDefaultValues();
         }
 
         public override ExpressionFramework.Domain.Expressions.ToCamelCaseExpression BuildTyped()
         {
-            return new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(Expression.Build());
+            return new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(Expression.Build(), Culture?.Build()!);
         }
 
         partial void SetDefaultValues();
@@ -4856,6 +4874,12 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (expression is null) throw new System.ArgumentNullException(nameof(expression));
             Expression = expression;
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithCulture(ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture;
             return this;
         }
 
@@ -4873,6 +4897,18 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithExpression(System.Func<object?, string> expression)
         {
             Expression = new TypedDelegateExpressionBuilder<System.String>().WithValue(expression);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithCulture(System.Globalization.CultureInfo? culture)
+        {
+            Culture = culture is null ? null : new TypedConstantExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder WithCulture(System.Func<object?, System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture is null ? null : new TypedDelegateExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
             return this;
         }
     }
@@ -4926,6 +4962,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
     {
         private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
 
+        private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? _culture;
+
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> Expression
@@ -4941,21 +4979,37 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
+        [System.ComponentModel.DefaultValueAttribute(null)]
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
+        {
+            get
+            {
+                return _culture;
+            }
+            set
+            {
+                _culture = value;
+                HandlePropertyChanged(nameof(Culture));
+            }
+        }
+
         public ToLowerCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToLowerCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression.ToBuilder();
+            _culture = source.Culture?.ToBuilder()!;
         }
 
         public ToLowerCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
+            _culture = null;
             SetDefaultValues();
         }
 
         public override ExpressionFramework.Domain.Expressions.ToLowerCaseExpression BuildTyped()
         {
-            return new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(Expression.Build());
+            return new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(Expression.Build(), Culture?.Build()!);
         }
 
         partial void SetDefaultValues();
@@ -4964,6 +5018,12 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (expression is null) throw new System.ArgumentNullException(nameof(expression));
             Expression = expression;
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder WithCulture(ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture;
             return this;
         }
 
@@ -4983,10 +5043,24 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             Expression = new TypedDelegateExpressionBuilder<System.String>().WithValue(expression);
             return this;
         }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder WithCulture(System.Globalization.CultureInfo? culture)
+        {
+            Culture = culture is null ? null : new TypedConstantExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder WithCulture(System.Func<object?, System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture is null ? null : new TypedDelegateExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
     }
     public partial class ToPascalCaseExpressionBuilder : ExpressionFramework.Domain.Builders.ExpressionBuilder<ToPascalCaseExpressionBuilder, ExpressionFramework.Domain.Expressions.ToPascalCaseExpression>, ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string>
     {
         private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
+
+        private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? _culture;
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
@@ -5003,21 +5077,37 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
+        [System.ComponentModel.DefaultValueAttribute(null)]
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
+        {
+            get
+            {
+                return _culture;
+            }
+            set
+            {
+                _culture = value;
+                HandlePropertyChanged(nameof(Culture));
+            }
+        }
+
         public ToPascalCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToPascalCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression.ToBuilder();
+            _culture = source.Culture?.ToBuilder()!;
         }
 
         public ToPascalCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
+            _culture = null;
             SetDefaultValues();
         }
 
         public override ExpressionFramework.Domain.Expressions.ToPascalCaseExpression BuildTyped()
         {
-            return new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(Expression.Build());
+            return new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(Expression.Build(), Culture?.Build()!);
         }
 
         partial void SetDefaultValues();
@@ -5026,6 +5116,12 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (expression is null) throw new System.ArgumentNullException(nameof(expression));
             Expression = expression;
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder WithCulture(ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture;
             return this;
         }
 
@@ -5045,10 +5141,24 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             Expression = new TypedDelegateExpressionBuilder<System.String>().WithValue(expression);
             return this;
         }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder WithCulture(System.Globalization.CultureInfo? culture)
+        {
+            Culture = culture is null ? null : new TypedConstantExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder WithCulture(System.Func<object?, System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture is null ? null : new TypedDelegateExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
     }
     public partial class ToUpperCaseExpressionBuilder : ExpressionFramework.Domain.Builders.ExpressionBuilder<ToUpperCaseExpressionBuilder, ExpressionFramework.Domain.Expressions.ToUpperCaseExpression>, ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string>
     {
         private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> _expression;
+
+        private ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? _culture;
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
@@ -5065,21 +5175,37 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
+        [System.ComponentModel.DefaultValueAttribute(null)]
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
+        {
+            get
+            {
+                return _culture;
+            }
+            set
+            {
+                _culture = value;
+                HandlePropertyChanged(nameof(Culture));
+            }
+        }
+
         public ToUpperCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToUpperCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression.ToBuilder();
+            _culture = source.Culture?.ToBuilder()!;
         }
 
         public ToUpperCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
+            _culture = null;
             SetDefaultValues();
         }
 
         public override ExpressionFramework.Domain.Expressions.ToUpperCaseExpression BuildTyped()
         {
-            return new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(Expression.Build());
+            return new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(Expression.Build(), Culture?.Build()!);
         }
 
         partial void SetDefaultValues();
@@ -5088,6 +5214,12 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (expression is null) throw new System.ArgumentNullException(nameof(expression));
             Expression = expression;
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder WithCulture(ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture;
             return this;
         }
 
@@ -5105,6 +5237,18 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder WithExpression(System.Func<object?, string> expression)
         {
             Expression = new TypedDelegateExpressionBuilder<System.String>().WithValue(expression);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder WithCulture(System.Globalization.CultureInfo? culture)
+        {
+            Culture = culture is null ? null : new TypedConstantExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
+            return this;
+        }
+
+        public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder WithCulture(System.Func<object?, System.Globalization.CultureInfo>? culture)
+        {
+            Culture = culture is null ? null : new TypedDelegateExpressionBuilder<System.Globalization.CultureInfo>().WithValue(culture);
             return this;
         }
     }

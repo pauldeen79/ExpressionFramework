@@ -14,8 +14,5 @@ public partial record ToCamelCaseExpression
         => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
     public Result<string> EvaluateTyped(object? context)
-        => Expression.EvaluateTypedWithTypeCheck(context).Transform(result =>
-            result.IsSuccessful()
-                ? Result.Success(result.Value!.ToCamelCase(CultureInfo.InvariantCulture))
-                : result);
+        => StringExpression.EvaluateCultureExpression(Expression, Culture, context, (culture, value) => value.ToCamelCase(culture), value => value.ToCamelCase(CultureInfo.CurrentCulture));
 }

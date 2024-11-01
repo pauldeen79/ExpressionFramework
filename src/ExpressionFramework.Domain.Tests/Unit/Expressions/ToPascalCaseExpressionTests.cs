@@ -108,7 +108,7 @@ public class ToPascalCaseExpressionTests
         // Assert
         result.Should().NotBeNull();
         result.Name.Should().Be(nameof(ToPascalCaseExpression));
-        result.Parameters.Should().ContainSingle();
+        result.Parameters.Should().HaveCount(2);
         result.ReturnValues.Should().HaveCount(2);
         result.ContextDescription.Should().NotBeEmpty();
         result.ContextTypeName.Should().NotBeEmpty();

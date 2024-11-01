@@ -980,7 +980,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1017,7 +1018,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1031,7 +1033,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1045,7 +1048,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
