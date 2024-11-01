@@ -2135,7 +2135,6 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -2210,7 +2209,6 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -2252,7 +2250,6 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -2294,7 +2291,6 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;

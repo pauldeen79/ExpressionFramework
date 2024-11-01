@@ -4835,7 +4835,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
         {
             get
@@ -4859,7 +4858,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToCamelCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
-            _culture = null;
             SetDefaultValues();
         }
 
@@ -4979,7 +4977,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
         {
             get
@@ -5003,7 +5000,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToLowerCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
-            _culture = null;
             SetDefaultValues();
         }
 
@@ -5077,7 +5073,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
         {
             get
@@ -5101,7 +5096,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToPascalCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
-            _culture = null;
             SetDefaultValues();
         }
 
@@ -5175,7 +5169,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             }
         }
 
-        [System.ComponentModel.DefaultValueAttribute(null)]
         public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Globalization.CultureInfo>? Culture
         {
             get
@@ -5199,7 +5192,6 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToUpperCaseExpressionBuilder() : base()
         {
             _expression = new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<System.String>()!;
-            _culture = null;
             SetDefaultValues();
         }
 
