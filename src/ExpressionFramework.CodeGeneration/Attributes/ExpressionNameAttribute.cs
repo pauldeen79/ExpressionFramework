@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Attributes;
 
 [AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+[ExcludeFromCodeCoverage]
 public sealed class ExpressionNameAttribute : System.Attribute
 {
     public string Name { get; }
