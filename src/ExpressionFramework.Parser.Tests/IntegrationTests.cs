@@ -37,13 +37,13 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Namespaced_Expression()
+    public void Can_Parse_Function_With_StringFind_Expression()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=String.Find(\"Hello\", \"e\")", CultureInfo.InvariantCulture);
+        var result = parser.Parse("=StringFind(\"Hello\", \"e\")", CultureInfo.InvariantCulture);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);

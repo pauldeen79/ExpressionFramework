@@ -857,7 +857,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     public class StringFindExpressionParser : ExpressionParserBase
     {
-        public StringFindExpressionParser() : base(@"Find", @"String")
+        public StringFindExpressionParser() : base(@"StringFind")
         {
         }
 
