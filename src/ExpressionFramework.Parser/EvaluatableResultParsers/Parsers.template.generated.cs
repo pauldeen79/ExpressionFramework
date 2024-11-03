@@ -34,7 +34,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
                 startGroupResult,
                 endGroupResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Evaluatable>(error);
             }
@@ -62,7 +62,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             {
                 conditionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Evaluatable>(error);
             }
@@ -85,7 +85,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Evaluatable>(error);
             }
@@ -108,7 +108,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Evaluatable>(error);
             }
@@ -131,7 +131,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             {
                 operatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Evaluatable>(error);
             }

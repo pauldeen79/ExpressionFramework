@@ -2135,9 +2135,15 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        public ToCamelCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression) : base()
+        public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
+        {
+            get;
+        }
+
+        public ToCamelCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? culture) : base()
         {
             this.Expression = expression;
+            this.Culture = culture;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
         }
 
@@ -2203,9 +2209,15 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        public ToLowerCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression) : base()
+        public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
+        {
+            get;
+        }
+
+        public ToLowerCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? culture) : base()
         {
             this.Expression = expression;
+            this.Culture = culture;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
         }
 
@@ -2238,9 +2250,15 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        public ToPascalCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression) : base()
+        public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
+        {
+            get;
+        }
+
+        public ToPascalCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? culture) : base()
         {
             this.Expression = expression;
+            this.Culture = culture;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
         }
 
@@ -2273,9 +2291,15 @@ namespace ExpressionFramework.Domain.Expressions
             get;
         }
 
-        public ToUpperCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression) : base()
+        public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
+        {
+            get;
+        }
+
+        public ToUpperCaseExpression(ExpressionFramework.Domain.Contracts.ITypedExpression<string> expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? culture) : base()
         {
             this.Expression = expression;
+            this.Culture = culture;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
         }
 

@@ -36,7 +36,7 @@ public class SelectExpressionTests
     public void Evaluate_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>(), default));
 
         // Act
         var result = sut.Evaluate();
@@ -80,7 +80,7 @@ public class SelectExpressionTests
     public void EvaluateTyped_Returns_Projected_Sequence_When_All_Is_Well()
     {
         // Arrange
-        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>()));
+        var sut = new SelectExpression(new TypedConstantExpression<IEnumerable>(new[] { "a", "b", "c" }), new ToUpperCaseExpression(new TypedContextExpression<string>(), default));
 
         // Act
         var result = sut.EvaluateTyped();

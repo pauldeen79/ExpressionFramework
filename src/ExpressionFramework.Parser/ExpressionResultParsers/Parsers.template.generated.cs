@@ -28,7 +28,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 aggregatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -128,7 +128,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 aggregatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -154,7 +154,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -177,7 +177,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -266,7 +266,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 valueResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -289,7 +289,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 resultResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -386,7 +386,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 conditionResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -485,7 +485,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 conditionResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -510,7 +510,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 validationErrorExpressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -653,7 +653,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 dateTimeProviderResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -691,7 +691,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 operatorResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -716,7 +716,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 sortOrderExpressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -845,7 +845,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 expressionsResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -944,7 +944,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 casesResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -980,7 +980,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -997,7 +998,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             {
                 dateTimeProviderResult,
             }.FirstOrDefault(x => !x.IsSuccessful());
-            if (error != null)
+            if (error is not null)
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(error);
             }
@@ -1017,7 +1018,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1031,7 +1033,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1045,7 +1048,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }

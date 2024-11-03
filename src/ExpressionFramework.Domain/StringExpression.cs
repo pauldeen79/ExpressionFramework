@@ -38,6 +38,33 @@ public static class StringExpression
             false,
             "Expression must be of type string");
 
+    public static Result<string> EvaluateCultureExpression(
+        ITypedExpression<string> expression,
+        ITypedExpression<CultureInfo>? cultureExpression,
+        object? context,
+        Func<CultureInfo, string, string> cultureDelegate,
+        Func<string, string> noCultureDelegate)
+    {
+        if (cultureExpression is null)
+        {
+            return expression.EvaluateTypedWithTypeCheck(context).Either(
+                error => error,
+                success => Result.Success(noCultureDelegate(success.Value!))
+            );
+        }
+
+        var cultureResult = cultureExpression.EvaluateTyped();
+        if (!cultureResult.IsSuccessful())
+        {
+            return Result.FromExistingResult<string>(cultureResult);
+        }
+
+        return expression.EvaluateTypedWithTypeCheck(context).Either(
+                error => error,
+                success => Result.Success(cultureDelegate(cultureResult.Value!, success.Value!))
+            );
+    }
+
 #pragma warning disable S107 // Methods should not have too many parameters
     private static ExpressionDescriptor GetDescriptor(
         Type type,
