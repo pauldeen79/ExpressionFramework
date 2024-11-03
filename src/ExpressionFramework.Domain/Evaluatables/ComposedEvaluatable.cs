@@ -51,14 +51,14 @@ public partial record ComposedEvaluatable : IValidatableObject
         }
     }
 
-    private bool CanEvaluateSimpleConditions(IEnumerable<ComposableEvaluatable> conditions)
+    private static bool CanEvaluateSimpleConditions(IEnumerable<ComposableEvaluatable> conditions)
         => !conditions.Any(x =>
             (x.Combination ?? Combination.And) == Combination.Or
             || x.StartGroup
             || x.EndGroup
         );
 
-    private Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
+    private static Result<bool> EvaluateSimpleConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
         foreach (var evaluatable in conditions)
         {
@@ -77,7 +77,7 @@ public partial record ComposedEvaluatable : IValidatableObject
         return Result.Success(true);
     }
 
-    private Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
+    private static Result<bool> EvaluateComplexConditions(object? context, IEnumerable<ComposableEvaluatable> conditions)
     {
         var builder = new StringBuilder();
         foreach (var evaluatable in conditions)
@@ -102,7 +102,7 @@ public partial record ComposedEvaluatable : IValidatableObject
         return Result.Success(EvaluateBooleanExpression(builder.ToString()));
     }
 
-    private Result<bool> IsItemValid(object? context, ComposableEvaluatable condition)
+    private static Result<bool> IsItemValid(object? context, ComposableEvaluatable condition)
         => condition.Evaluate(context);
 
     private static bool EvaluateBooleanExpression(string expression)
