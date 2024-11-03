@@ -43,11 +43,16 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
     {
         functionName = ArgumentGuard.IsNotNull(functionName, nameof(functionName));
 
+        if (_aliases.Length > 0 && Array.Exists(_aliases, x => functionName.Equals(x, StringComparison.OrdinalIgnoreCase)))
+        {
+            return true;
+        }
+
         var lastDot = functionName.LastIndexOf('.');
         if (lastDot == -1)
         {
             // no namespace qualifier
-            return _namespace.Length == 0 && (functionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase) || Array.Exists(_aliases, x => functionName.Equals(x, StringComparison.OrdinalIgnoreCase)));
+            return _namespace.Length == 0 && functionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase);
         }
 
         // namespace qualifier

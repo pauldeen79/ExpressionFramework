@@ -8,6 +8,7 @@ global using CrossCutting.Utilities.Parsers.Builders.FunctionParseResultArgument
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using CrossCutting.Utilities.Parsers.Extensions;
 global using ExpressionFramework.Domain;
+global using ExpressionFramework.Domain.Builders;
 global using ExpressionFramework.Domain.Contracts;
 global using ExpressionFramework.Domain.Expressions;
 global using ExpressionFramework.Parser.AggregatorResultParsers;

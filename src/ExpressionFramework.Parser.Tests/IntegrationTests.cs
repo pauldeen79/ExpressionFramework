@@ -17,6 +17,8 @@ public sealed class IntegrationTests : IDisposable
             .AddParsers()
             .AddExpressionParser()
             .AddSingleton(_functionResultParserMock)
+            .AddSingleton<IFunctionResultParser, MyNamespacedExpressionParser>()
+            .AddSingleton<IExpressionResolver, MyNamespacedExpressionParser>()
             .BuildServiceProvider(true);
 
         _scope = _provider.CreateScope();
@@ -37,17 +39,29 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_StringFind_Expression()
+    public void Can_Parse_Function_With_Namespaced_Expression()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
 
         // Act
-        var result = parser.Parse("=StringFind(\"Hello\", \"e\")", CultureInfo.InvariantCulture);
+        var result = parser.Parse("=My.Expression()", CultureInfo.InvariantCulture);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1);
+    }
+
+    [Fact]
+    public void Can_Parse_Function_With_Namespaced_Expression_Using_Alias()
+    {
+        // Arrange
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+
+        // Act
+        var result = parser.Parse("=MyAlias()", CultureInfo.InvariantCulture);
+
+        // Assert
+        result.Status.Should().Be(ResultStatus.Ok);
     }
 
     [Fact]
@@ -193,5 +207,35 @@ public sealed class IntegrationTests : IDisposable
     {
         _scope.Dispose();
         _provider.Dispose();
+    }
+
+    private sealed record MyNamespacedExpression : Expression
+    {
+        public override Result<object?> Evaluate(object? context)
+        {
+            return Result.Success<object?>(default);
+        }
+
+        public override Result<Expression> GetSingleContainedExpression()
+        {
+            throw new NotImplementedException();
+        }
+
+        public override ExpressionBuilder ToBuilder()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    private sealed class MyNamespacedExpressionParser : ExpressionParserBase
+    {
+        public MyNamespacedExpressionParser() : base("Expression", "My", "MyAlias")
+        {
+        }
+
+        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        {
+            return Result.Success<Expression>(new MyNamespacedExpression());
+        }
     }
 }
