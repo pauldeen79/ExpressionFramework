@@ -4,18 +4,21 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
 {
     private readonly string _functionName;
     private readonly string _namespace;
+    private readonly string[] _aliases;
 
-    protected ExpressionParserBase(string functionName) : this(functionName, string.Empty)
+    protected ExpressionParserBase(string functionName, params string[] aliases) : this(functionName, string.Empty, aliases)
     {
     }
 
-    protected ExpressionParserBase(string functionName, string @namespace)
+    protected ExpressionParserBase(string functionName, string @namespace, params string[] aliases)
     {
         ArgumentGuard.IsNotNull(functionName, nameof(functionName));
         ArgumentGuard.IsNotNull(@namespace, nameof(@namespace));
+        ArgumentGuard.IsNotNull(aliases, nameof(aliases));
 
         _functionName = functionName;
         _namespace = @namespace;
+        _aliases = aliases;
     }
 
     public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
@@ -44,7 +47,7 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
         if (lastDot == -1)
         {
             // no namespace qualifier
-            return _namespace.Length == 0 && functionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase);
+            return _namespace.Length == 0 && (functionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase) || Array.Exists(_aliases, x => functionName.Equals(x, StringComparison.OrdinalIgnoreCase)));
         }
 
         // namespace qualifier
