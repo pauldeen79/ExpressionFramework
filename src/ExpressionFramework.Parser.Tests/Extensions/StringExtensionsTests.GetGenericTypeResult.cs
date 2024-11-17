@@ -16,7 +16,7 @@ public partial class StringExtensionsTests
             // Assert
             result.Should().NotBeNull();
             result.IsSuccessful().Should().BeTrue();
-            result.GetValueOrThrow().Should().Be(typeof(int));
+            result.GetValueOrThrow().Should().Be<int>();
         }
 
         [Fact]

@@ -205,7 +205,7 @@ public class ExpressionParserBaseTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Could not create TypedConstantExpression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedConstantExpression`1[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
+        result.ErrorMessage.Should().Be("Could not create TypedConstantExpression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedConstantExpression`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public class ExpressionParserBaseTests
             => Result.FromExistingResult<Expression>(evaluator.Evaluate(functionParseResult, parser));
 
         public Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-          => ParseTypedExpression(expressionType, index, argumentName, functionParseResult, evaluator, parser);
+            => ParseTypedExpression(expressionType, index, argumentName, functionParseResult, evaluator, parser);
 
         public bool IsNameValidPublic(string functionName) => IsNameValid(functionName);
     }
