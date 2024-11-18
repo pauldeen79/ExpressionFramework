@@ -27,7 +27,7 @@ public class ExpressionEntityComponent : IPipelineComponent<EntityContext>
         return Task.FromResult(Result.Continue());
     }
 
-    private static string GetSingleContainedExpressionStatements(IConcreteTypeBuilder typeBaseBuilder)
+    private static string GetSingleContainedExpressionStatements(ClassBuilder typeBaseBuilder)
     {
         var expressionProperties = typeBaseBuilder.Properties
             .Where(x => x.Name == "Expression" && x.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression))
