@@ -9,8 +9,8 @@ public sealed class ExpressionNameAttribute : System.Attribute
 
     public ExpressionNameAttribute(string name, string @namespace)
     {
-        ArgumentGuard.IsNotNull(name, nameof(name));
-        ArgumentGuard.IsNotNull(@namespace, nameof(@namespace));
+        ArgumentNullException.ThrowIfNull(name);
+        ArgumentNullException.ThrowIfNull(@namespace);
 
         Name = name;
         Namespace = @namespace;
