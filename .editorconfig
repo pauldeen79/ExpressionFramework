@@ -122,6 +122,15 @@ dotnet_analyzer_diagnostic.severity = warning
 # Default severity for analyzer diagnostics with category 'Style'
 dotnet_analyzer_diagnostic.category-Style.severity = silent
 
+# Use expression body for methods
+dotnet_diagnostic.IDE0022.severity = silent
+# Expression value is never used
+dotnet_diagnostic.IDE0058.severity = silent
+# use 'var' instead of explicit type
+# dotnet_diagnostic.IDE0007.severity = silent
+# If statement can be simplified
+dotnet_diagnostic.IDE0046.severity = silent
+
 # Specific exclusions
 # Do not nest type x. Alternatively, change its accessibility so that it is not externally visible. (I'm using this in unit tests extensively)
 dotnet_diagnostic.CA1034.severity = none
