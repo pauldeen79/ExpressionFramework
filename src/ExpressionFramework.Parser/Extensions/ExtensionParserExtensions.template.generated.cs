@@ -8,7 +8,7 @@
 // </auto-generated>
 // ------------------------------------------------------------------------------
 #nullable enable
-namespace ExpressionFramework.Parser
+namespace ExpressionFramework.Parser.Extensions
 {
     public static partial class ServiceCollectionExtensions
     {

@@ -12,6 +12,7 @@ public static class Constants
         public const string DomainBuilders = "ExpressionFramework.Domain.Builders";
         public const string DomainModels = "ExpressionFramework.Domain.Models";
         public const string Parser = "ExpressionFramework.Parser";
+        public const string ParserExtensions = "ExpressionFramework.Parser.Extensions";
 
         public const string ParserAggregatorResultParsers = "ExpressionFramework.Parser.AggregatorResultParsers";
         public const string ParserEvaluatableResultParsers = "ExpressionFramework.Parser.EvaluatableResultParsers";
@@ -88,6 +89,7 @@ public static class Constants
         public const string OperatorBuilders = $"{DomainBuilders}/{nameof(Operators)}";
 
         public const string Parser = "ExpressionFramework.Parser";
+        public const string ParserExtensions = $"{Parser}/Extensions";
         public const string ParserAggregatorResultParsers = $"{Parser}/AggregatorResultParsers";
         public const string ParserEvaluatableResultParsers = $"{Parser}/EvaluatableResultParsers";
         public const string ParserExpressionResultParsers = $"{Parser}/ExpressionResultParsers";
