@@ -17,7 +17,7 @@ public class TypedExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 [ExcludeFromCodeCoverage]
 public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<BuilderContext>
 {
-    private static string GetExpressionTemplate(Property property) => $"return {{BuilderAddMethodName}}({{NameCamelCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));";
+    private static string GetExpressionTemplate(Property property) => $"return {{$addMethodNameFormatString}}({{CsharpFriendlyName(ToCamelCase($property.Name))}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{CreateTypeName(property)}>().WithValue(x)));";
 
     public TypedExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
     {

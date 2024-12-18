@@ -17,7 +17,7 @@ public class ExpressionBuilderComponentBuilder : IBuilderComponentBuilder
 [ExcludeFromCodeCoverage] 
 public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<BuilderContext>
 {
-    private const string ExpressionTemplate = $"return {{BuilderAddMethodName}}({{NameCamelCsharpFriendlyName}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
+    private const string ExpressionTemplate = $"return {{$addMethodNameFormatString}}({{CsharpFriendlyName(ToCamelCase($property.Name))}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
 
     public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
     {

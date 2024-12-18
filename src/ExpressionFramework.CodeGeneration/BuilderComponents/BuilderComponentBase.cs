@@ -30,7 +30,7 @@ public abstract class BuilderComponentBase
             yield return Result.Success<FormattableStringParserResult>(context.Request.CreateArgumentNullException(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
         }
 
-        yield return FormattableStringParser.Parse("return {BuilderAddMethodName}({NameCamelCsharpFriendlyName}.ToArray());", context.Request.FormatProvider, parentChildContext);
+        yield return FormattableStringParser.Parse("return {$addMethodNameFormatString}({CsharpFriendlyName(ToCamelCase($property.Name))}.ToArray());", context.Request.FormatProvider, parentChildContext);
     }
 
     protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)

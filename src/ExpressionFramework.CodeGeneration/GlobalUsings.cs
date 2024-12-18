@@ -39,6 +39,7 @@ global using ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 global using ExpressionFramework.CodeGeneration.Models;
 global using ExpressionFramework.CodeGeneration.Models.Contracts;
 global using ExpressionFramework.CodeGeneration.Models.Domains;
+global using ExpressionFramework.Parser;
 global using Microsoft.Extensions.DependencyInjection;
 global using TemplateFramework.Abstractions.CodeGeneration;
 global using TemplateFramework.Abstractions.Extensions;
