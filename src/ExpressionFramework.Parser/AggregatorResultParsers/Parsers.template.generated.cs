@@ -20,7 +20,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.AddAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -34,7 +34,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.DivideAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -48,7 +48,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.EnumerableConcatenateAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -62,7 +62,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.ModulusAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -76,7 +76,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.MultiplyAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -90,7 +90,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.PowerAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -104,7 +104,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.StringConcatenateAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -118,7 +118,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Aggregator>(new ExpressionFramework.Domain.Aggregators.SubtractAggregator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }

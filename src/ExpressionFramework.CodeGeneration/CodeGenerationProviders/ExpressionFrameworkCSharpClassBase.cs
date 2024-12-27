@@ -216,7 +216,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     private string CreateParseArguments(TypeBase typeBase, string type)
     {
         var builder = new StringBuilder();
-        builder.AppendLine().Append("    ");
+        builder.AppendLine().Append("                ");
         var index = 0;
         foreach (var property in typeBase.Properties)
         {
@@ -243,7 +243,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
 
         if (index > 0)
         {
-            builder.AppendLine(",").Append("    ");
+            builder.AppendLine(",").Append("                ");
         }
 
         if (property.TypeName.GetClassName() == $"I{Constants.Types.Expression}")

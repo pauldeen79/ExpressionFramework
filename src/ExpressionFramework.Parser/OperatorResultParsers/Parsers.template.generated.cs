@@ -20,7 +20,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EndsWithOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -34,7 +34,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EnumerableContainsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -48,7 +48,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EnumerableNotContainsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -62,7 +62,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EqualsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -76,7 +76,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsGreaterOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -90,7 +90,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsGreaterOrEqualOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -104,7 +104,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -118,7 +118,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOrEmptyOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -132,7 +132,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOrWhiteSpaceOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -146,7 +146,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -160,7 +160,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOrEmptyOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -174,7 +174,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOrWhiteSpaceOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -188,7 +188,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsSmallerOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -202,7 +202,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsSmallerOrEqualOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -216,7 +216,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotEndsWithOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -230,7 +230,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotEqualsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -244,7 +244,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotStartsWithOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -258,7 +258,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StartsWithOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -272,7 +272,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StringContainsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -286,7 +286,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StringNotContainsOperator(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }

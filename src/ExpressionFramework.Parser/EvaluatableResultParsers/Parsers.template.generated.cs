@@ -35,12 +35,12 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.ComposableEvaluatable(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
-    operatorResult.Value!,
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser)),
-    combinationResult.Value,
-    startGroupResult.Value!,
-    endGroupResult.Value!));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
+                operatorResult.Value!,
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser)),
+                combinationResult.Value,
+                startGroupResult.Value!,
+                endGroupResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -63,7 +63,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.ComposedEvaluatable(
-    conditionsResult.Value!));
+                conditionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -86,7 +86,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.ConstantEvaluatable(
-    valueResult.Value!));
+                valueResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -109,7 +109,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.DelegateEvaluatable(
-    valueResult.Value!));
+                valueResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -132,9 +132,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.SingleEvaluatable(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
-    operatorResult.Value!,
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
+                operatorResult.Value!,
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }

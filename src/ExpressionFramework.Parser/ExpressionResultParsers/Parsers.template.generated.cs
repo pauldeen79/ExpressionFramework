@@ -29,9 +29,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AggregateExpression(
-    functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser),
-    aggregatorResult.Value!,
-    functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(2, @"FormatProviderExpression", evaluator, parser, default)));
+                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser),
+                aggregatorResult.Value!,
+                functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(2, @"FormatProviderExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -45,8 +45,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AllExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -60,8 +60,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AndExpression(
-    functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
+                functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -75,8 +75,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AnyExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -106,7 +106,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ChainedExpression(
-    functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
+                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -129,10 +129,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.CompoundExpression(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser)),
-    aggregatorResult.Value!,
-    functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(3, @"FormatProviderExpression", evaluator, parser, default)));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser)),
+                aggregatorResult.Value!,
+                functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(3, @"FormatProviderExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -155,7 +155,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ConstantExpression(
-    valueResult.Value));
+                valueResult.Value));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -178,7 +178,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ConstantResultExpression(
-    valueResult.Value!));
+                valueResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -192,7 +192,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ContextExpression(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -206,8 +206,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.CountExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -221,7 +221,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.DayExpression(
-    functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -267,7 +267,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.DelegateExpression(
-    valueResult.Value!));
+                valueResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -290,7 +290,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.DelegateResultExpression(
-    resultResult.Value!));
+                resultResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -304,8 +304,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ElementAtExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -319,9 +319,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ElementAtOrDefaultExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -335,7 +335,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EmptyExpression(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -349,8 +349,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EqualsExpression(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -364,7 +364,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ErrorExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -387,8 +387,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EvaluatableExpression(
-    conditionResult.Value!,
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"Expression", functionParseResult.Context, evaluator, parser))));
+                conditionResult.Value!,
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"Expression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -402,7 +402,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FalseExpression(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -416,8 +416,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FieldExpression(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser)),
-    functionParseResult.GetArgumentStringValueExpression(1, @"FieldNameExpression", evaluator, parser)));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser)),
+                functionParseResult.GetArgumentStringValueExpression(1, @"FieldNameExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -431,8 +431,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FirstExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -446,9 +446,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FirstOrDefaultExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -462,8 +462,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.GroupByExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"KeySelectorExpression", functionParseResult.Context, evaluator, parser))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"KeySelectorExpression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -486,9 +486,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.IfExpression(
-    conditionResult.Value!,
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"ResultExpression", functionParseResult.Context, evaluator, parser)),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                conditionResult.Value!,
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"ResultExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -511,8 +511,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.InvalidExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser),
-    validationErrorExpressionsResult.Value!));
+                functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser),
+                validationErrorExpressionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -526,8 +526,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LastExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -541,9 +541,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LastOrDefaultExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -557,8 +557,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LeftExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -572,8 +572,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MaxExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -587,8 +587,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MinExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -602,7 +602,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MonthExpression(
-    functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -616,8 +616,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.NotEqualsExpression(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -631,7 +631,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.NotExpression(
-    functionParseResult.GetArgumentBooleanValueExpression(0, @"Expression", evaluator, parser)));
+                functionParseResult.GetArgumentBooleanValueExpression(0, @"Expression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -654,7 +654,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.NowExpression(
-    dateTimeProviderResult.Value));
+                dateTimeProviderResult.Value));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -668,8 +668,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OfTypeExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Type>(1, @"TypeExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Type>(1, @"TypeExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -692,9 +692,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OperatorExpression(
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"RightExpression", functionParseResult.Context, evaluator, parser)),
-    operatorResult.Value!));
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"RightExpression", functionParseResult.Context, evaluator, parser)),
+                operatorResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -717,8 +717,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OrderByExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    sortOrderExpressionsResult.Value!));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                sortOrderExpressionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -732,8 +732,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OrExpression(
-    functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
+                functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -747,8 +747,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.RightExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -762,8 +762,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SelectExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -777,7 +777,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SequenceExpression(
-    functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
+                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -791,8 +791,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SingleExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -806,9 +806,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SingleOrDefaultExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -822,8 +822,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SkipExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -846,7 +846,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringConcatenateExpression(
-    expressionsResult.Value!));
+                expressionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -860,8 +860,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringFindExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -875,7 +875,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringLengthExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -889,9 +889,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringReplaceExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser),
-    functionParseResult.GetArgumentStringValueExpression(2, @"ReplaceExpression", evaluator, parser)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser),
+                functionParseResult.GetArgumentStringValueExpression(2, @"ReplaceExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -905,9 +905,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SubstringExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(2, @"LengthExpression", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(2, @"LengthExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -921,8 +921,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SumExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -945,8 +945,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SwitchExpression(
-    casesResult.Value!,
-    new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                casesResult.Value!,
+                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -960,8 +960,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TakeExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -975,8 +975,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -999,7 +999,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TodayExpression(
-    dateTimeProviderResult.Value));
+                dateTimeProviderResult.Value));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1013,8 +1013,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1028,8 +1028,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1043,8 +1043,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1058,8 +1058,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimEndExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1073,8 +1073,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1088,8 +1088,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimStartExpression(
-    functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1103,7 +1103,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrueExpression(
-    ));
+                ));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1266,8 +1266,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.WhereExpression(
-    functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-    functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
+                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
@@ -1281,7 +1281,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.YearExpression(
-    functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
