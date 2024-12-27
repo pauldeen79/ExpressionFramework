@@ -16,6 +16,7 @@ internal static class Program
             .AddScoped<IBuilderComponentBuilder, BuilderComponents.ExpressionBuilderComponentBuilder>()
             .AddScoped<IBuilderComponentBuilder, BuilderComponents.RemoveExpressionNameAttributeComponentBuilder>()
             .AddScoped<IBuilderComponentBuilder, BuilderComponents.TypedExpressionBuilderComponentBuilder>()
+            .AddScoped<IEntityComponentBuilder, EntityComponents.ExpressionEntityComponentBuilder>()
             .AddScoped<IEntityComponentBuilder, EntityComponents.RemoveExpressionNameAttributeComponentBuilder>()
             .AddScoped<IEntityComponentBuilder, EntityComponents.TypedExpressionEntityComponentBuilder>()
             .AddTemplateFramework()

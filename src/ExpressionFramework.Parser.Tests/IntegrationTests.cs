@@ -216,6 +216,11 @@ public sealed class IntegrationTests : IDisposable
             return Result.Success<object?>(default);
         }
 
+        public override Result<Expression> GetSingleContainedExpression()
+        {
+            throw new NotImplementedException();
+        }
+
         public override ExpressionBuilder ToBuilder()
         {
             throw new NotImplementedException();
