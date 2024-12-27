@@ -15,7 +15,7 @@ public partial record InvalidExpression
         {
             return Result.FromExistingResult<object?>(errorMessageResult);
         }
-        
+
         if (errorMessageResult.Value is not string errorMessage)
         {
             return Result.Invalid<object?>();

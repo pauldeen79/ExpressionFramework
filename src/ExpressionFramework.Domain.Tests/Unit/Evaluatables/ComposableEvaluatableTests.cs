@@ -230,7 +230,7 @@ public class ComposableEvaluatableTests
         this.Invoking(_ => new ComposableEvaluatable(_ => null, @operator: null!, _ => null))
             .Should().Throw<ArgumentNullException>().WithParameterName("operator");
     }
-    
+
     private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)
         => new EvaluatableExpression(new ComposedEvaluatable(conditions), new EmptyExpression()).EvaluateTyped();
 }

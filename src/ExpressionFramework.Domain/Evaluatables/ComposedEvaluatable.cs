@@ -32,7 +32,7 @@ public partial record ComposedEvaluatable : IValidatableObject
             }
             if (groupCounter < 0)
             {
-                yield return new ValidationResult($"EndGroup not valid at index {index}, because there is no corresponding StartGroup", [ nameof(Conditions) ]);
+                yield return new ValidationResult($"EndGroup not valid at index {index}, because there is no corresponding StartGroup", [nameof(Conditions)]);
                 break;
             }
 
@@ -41,13 +41,13 @@ public partial record ComposedEvaluatable : IValidatableObject
 
         if (groupCounter == 1)
         {
-            yield return new ValidationResult("Missing EndGroup", [ nameof(Conditions) ]);
+            yield return new ValidationResult("Missing EndGroup", [nameof(Conditions)]);
         }
 #pragma warning disable S2583 // false positive!
         else if (groupCounter > 1)
 #pragma warning restore S2583 // false positive!
         {
-            yield return new ValidationResult($"{groupCounter} missing EndGroups", [ nameof(Conditions) ]);
+            yield return new ValidationResult($"{groupCounter} missing EndGroups", [nameof(Conditions)]);
         }
     }
 

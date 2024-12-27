@@ -101,5 +101,5 @@ public static class FunctionParseResultExtensions
         }
 
         return new TypedConstantResultExpression<T>(Result.Invalid<T>($"{argumentName} is not of type {typeof(T).FullName}"));
-    }    
+    }
 }

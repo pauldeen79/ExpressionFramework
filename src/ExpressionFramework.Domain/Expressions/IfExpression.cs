@@ -22,7 +22,7 @@ public partial record IfExpression
         {
             return Result.FromExistingResult<object?>(result);
         }
-        
+
         if (result.Value)
         {
             return ResultExpression.Evaluate(context);

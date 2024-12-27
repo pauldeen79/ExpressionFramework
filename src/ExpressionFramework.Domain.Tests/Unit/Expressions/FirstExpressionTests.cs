@@ -33,7 +33,7 @@ public class FirstExpressionTests
         result.Status.Should().Be(ResultStatus.Invalid);
         result.ErrorMessage.Should().Be("Enumerable is empty");
     }
-    
+
     [Fact]
     public void Evaluate_Returns_Invalid_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {

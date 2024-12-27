@@ -15,7 +15,7 @@ public partial record StringFindExpression
 {
     public override Result<object?> Evaluate(object? context)
         => Result.FromExistingResult<object?>(EvaluateTyped(context));
-    
+
     public Result<int> EvaluateTyped(object? context)
     {
         var findExpressionResult = FindExpression.EvaluateTypedWithTypeCheck(context, "FindExpression is not of type string");

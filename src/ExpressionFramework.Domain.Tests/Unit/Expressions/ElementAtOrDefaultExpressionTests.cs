@@ -121,7 +121,7 @@ public class ElementAtOrDefaultExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("default");
     }
-    
+
     [Fact]
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable()
     {

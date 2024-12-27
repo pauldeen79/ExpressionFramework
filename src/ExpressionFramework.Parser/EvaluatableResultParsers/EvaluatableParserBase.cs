@@ -7,7 +7,7 @@ public abstract class EvaluatableParserBase : IFunctionResultParser
     protected EvaluatableParserBase(string functionName)
     {
         ArgumentGuard.IsNotNull(functionName, nameof(functionName));
-        
+
         _functionName = functionName;
     }
 

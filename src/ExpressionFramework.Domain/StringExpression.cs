@@ -12,7 +12,7 @@ public static class StringExpression
             ArgumentGuard.IsNotNull(type, nameof(type)),
             description,
             expressionDescription,
-            okValue, 
+            okValue,
             okDescription,
             "LengthExpression",
             "Number of characters to use",

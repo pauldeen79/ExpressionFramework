@@ -16,7 +16,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
         => (await GetOverrideModels(typeof(Models.IAggregator)))
-            .OnSuccess(result => 
+            .OnSuccess(result =>
                 Result.Success(result.Value!.Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName(x.WithoutInterfacePrefix())

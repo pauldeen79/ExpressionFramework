@@ -14,7 +14,7 @@ public partial record ComposableEvaluatable
         : this(new ConstantExpression(leftExpression), @operator, new ConstantExpression(rightExpression), combination, startGroup, endGroup)
     {
     }
-    
+
     public ComposableEvaluatable(Func<object?, object?> leftExpression, Func<Operator> @operator, Func<object?, object?> rightExpression, Combination? combination = null, bool startGroup = false, bool endGroup = false)
         : this(new DelegateExpression(leftExpression), ArgumentGuard.IsNotNull(@operator, nameof(@operator)).Invoke(), new DelegateExpression(rightExpression), combination, startGroup, endGroup)
     {

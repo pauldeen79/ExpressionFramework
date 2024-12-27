@@ -81,7 +81,7 @@ public class ErrorExpressionTests
     {
         // Arrange
         var builder = new ErrorExpressionBuilder();
-        
+
         // Act & Assert
         builder
             .Invoking(x => x.WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!))

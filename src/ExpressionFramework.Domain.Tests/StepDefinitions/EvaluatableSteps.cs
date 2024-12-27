@@ -4,7 +4,7 @@
 public sealed class EvaluatableSteps
 {
     private readonly ContextSteps _contextSteps;
-    
+
     private Result<bool>? _result;
     private readonly ComposedEvaluatableBuilder _composedEvaluatableBuilder = new ComposedEvaluatableBuilder();
 

@@ -50,7 +50,7 @@ public class FirstOrDefaultExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("default value");
     }
-    
+
     [Fact]
     public void Evaluate_Returns_Default_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression_No_DefaultValue()
     {
@@ -85,7 +85,7 @@ public class FirstOrDefaultExpressionTests
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeEquivalentTo("default");
     }
-    
+
     [Fact]
     public void Evaluate_Returns_Correct_Result_On_Filled_Enumerable_Without_Predicate()
     {

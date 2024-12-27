@@ -23,7 +23,7 @@ public sealed class IntegrationTests : IDisposable
 
         _scope = _provider.CreateScope();
     }
-    
+
     [Fact]
     public void Can_Parse_Function_With_Expression()
     {

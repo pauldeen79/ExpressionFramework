@@ -8,7 +8,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     }
 
     public override string Path => Constants.Paths.Expressions;
-    
+
     protected override string FilenameSuffix => string.Empty;
     protected override bool CreateCodeGenerationHeader => false;
     protected override bool SkipWhenFileExists => true; // scaffold instead of generate

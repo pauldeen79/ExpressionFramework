@@ -32,7 +32,7 @@ public class CountExpressionTests
         result.Value.Should().BeEquivalentTo(0);
     }
 
-        [Fact]
+    [Fact]
     public void Evaluate_Returns_Zero_When_Enumerable_Expression_Does_Not_Contain_Any_Item_That_Conforms_To_PredicateExpression()
     {
         // Arrange

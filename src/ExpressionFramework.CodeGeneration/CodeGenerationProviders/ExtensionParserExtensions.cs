@@ -32,7 +32,7 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
         var error = results
             .Select(x => new { x.Key, x.Value })
             .FirstOrDefault(x => !x.Value.IsSuccessful());
-        
+
         if (error is not null)
         {
             return error.Value;

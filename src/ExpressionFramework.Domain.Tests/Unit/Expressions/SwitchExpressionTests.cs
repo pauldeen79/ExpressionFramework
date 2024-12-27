@@ -124,7 +124,7 @@ public class SwitchExpressionTests
         public ErrorEvaluatable(string errorMessage) => ErrorMessage = errorMessage;
 
         public string ErrorMessage { get; }
-        
+
         public override Result<bool> Evaluate(object? context)
             => Result.Error<bool>(ErrorMessage);
 

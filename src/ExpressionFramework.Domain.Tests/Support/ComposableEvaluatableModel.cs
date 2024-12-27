@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Tests.Support;
 
-public class ComposableEvaluatableModel 
+public class ComposableEvaluatableModel
 {
     public string LeftExpression { get; set; } = "";
     public string Operator { get; set; } = "Equals";

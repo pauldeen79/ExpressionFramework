@@ -74,7 +74,7 @@ public class ReflectionOperatorDescriptorProviderTests
         }
     }
 
-        private sealed class SomeOperatorBuilder : OperatorBuilder<SomeOperatorBuilder, SomeOperator>
+    private sealed class SomeOperatorBuilder : OperatorBuilder<SomeOperatorBuilder, SomeOperator>
     {
         public SomeOperatorBuilder(SomeOperator source) : base(source)
         {

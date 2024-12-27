@@ -166,7 +166,7 @@ public class ExpressionParserBaseTests
         var functionParseResult = new FunctionParseResultBuilder()
             .WithFunctionName("Correct")
             .Build();
-        
+
         // Act
         var result = new MyExpressionParser().DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", functionParseResult, _evaluatorMock, _parserMock);
 
