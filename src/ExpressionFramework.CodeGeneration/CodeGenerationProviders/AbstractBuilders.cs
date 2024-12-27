@@ -13,6 +13,6 @@ public class AbstractBuilders : ExpressionFrameworkCSharpClassBase
     protected override bool EnableBuilderInhericance => true;
     protected override bool IsAbstract => true;
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
-        => await GetBuilders(await GetAbstractModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
+    public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
+        => GetBuilders(GetAbstractModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
 }

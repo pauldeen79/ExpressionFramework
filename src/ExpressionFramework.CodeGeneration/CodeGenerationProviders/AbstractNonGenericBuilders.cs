@@ -1,5 +1,4 @@
-﻿
-namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
@@ -16,6 +15,6 @@ public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
     protected override bool CreateAsObservable => true;
     protected override string FilenameSuffix => ".nongeneric.template.generated";
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
-        => await GetNonGenericBuilders(await GetAbstractModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
+    public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
+        => GetNonGenericBuilders(GetAbstractModels(), Constants.Namespaces.DomainBuilders, Constants.Namespaces.Domain);
 }

@@ -9,6 +9,6 @@ public class CoreEntities : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.Domain;
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
-        => await GetEntities(await GetCoreModels(), Constants.Namespaces.Domain);
+    public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
+        => GetEntities(GetCoreModels(), Constants.Namespaces.Domain);
 }

@@ -14,9 +14,10 @@ public class Entities : ExpressionFrameworkCSharpClassBase
     protected override bool SkipWhenFileExists => true; // scaffold instead of generate
     protected override bool GenerateMultipleFiles => true;
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
+    public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
         => (await GetOverrideModels(typeof(Models.IAggregator)))
-            .Select(x => new ClassBuilder()
+            .OnSuccess(result => 
+                Result.Success(result.Value!.Select(x => new ClassBuilder()
                 .WithNamespace(CurrentNamespace)
                 .WithName(x.WithoutInterfacePrefix())
                 .WithPartial()
@@ -29,6 +30,6 @@ public class Entities : ExpressionFrameworkCSharpClassBase
                     .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .NotImplemented()
                 )
-                .Build());
+                .Build())));
 
 }

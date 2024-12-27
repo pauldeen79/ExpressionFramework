@@ -12,9 +12,9 @@ public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override bool CreateAsObservable => true;
-    protected override async Task<TypeBase?> GetBaseClass() => await CreateBaseClass(typeof(IExpression), Constants.Namespaces.Domain);
+    protected override Task<Result<TypeBase>> GetBaseClass() => CreateBaseClass(typeof(IExpression), Constants.Namespaces.Domain);
     protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
-        => await GetBuilders(await GetOverrideModels(typeof(IExpression)), CurrentNamespace, Constants.Namespaces.DomainExpressions);
+    public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
+        => GetBuilders(GetOverrideModels(typeof(IExpression)), CurrentNamespace, Constants.Namespaces.DomainExpressions);
 }

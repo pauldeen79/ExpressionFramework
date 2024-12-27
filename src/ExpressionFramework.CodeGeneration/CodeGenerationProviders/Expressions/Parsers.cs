@@ -9,17 +9,18 @@ public class Parsers : ExpressionFrameworkCSharpClassBase
 
     public override string Path => Constants.Paths.ParserExpressionResultParsers;
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
+    public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
     {
         var settings = CreateSettings();
         return (await GetOverrideModels(typeof(IExpression)))
-            .Select(x => CreateParserClass
-            (
-                x,
-                Constants.Types.Expression,
-                x.WithoutInterfacePrefix().ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
-                Constants.Namespaces.DomainExpressions,
-                settings
-            ).Build());
+            .OnSuccess(result =>
+                Result.Success(result.Value!.Select(x => CreateParserClass
+                (
+                    x,
+                    Constants.Types.Expression,
+                    x.WithoutInterfacePrefix().ReplaceSuffix(Constants.Types.Expression, string.Empty, StringComparison.InvariantCulture),
+                    Constants.Namespaces.DomainExpressions,
+                    settings
+                ).Build())));
     }
 }

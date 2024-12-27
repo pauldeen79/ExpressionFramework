@@ -11,9 +11,9 @@ public class OverrideEntities : ExpressionFrameworkCSharpClassBase
 
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
-    protected override async Task<TypeBase?> GetBaseClass() => await CreateBaseClass(typeof(Models.IAggregator), Constants.Namespaces.Domain);
+    protected override Task<Result<TypeBase>> GetBaseClass() => CreateBaseClass(typeof(Models.IAggregator), Constants.Namespaces.Domain);
     protected override ArgumentValidationType ValidateArgumentsInConstructor => ArgumentValidationType.None; // there are no properties in aggregators, so this is not necessary
 
-    public override async Task<IEnumerable<TypeBase>> GetModel()
-        => await GetEntities(await GetOverrideModels(typeof(Models.IAggregator)), CurrentNamespace);
+    public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
+        => GetEntities(GetOverrideModels(typeof(Models.IAggregator)), CurrentNamespace);
 }
