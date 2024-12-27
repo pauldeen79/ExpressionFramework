@@ -1,6 +1,7 @@
 ﻿global using System.Globalization;
 global using AutoFixture;
 global using AutoFixture.AutoNSubstitute;
+global using ClassFramework.Domain.Extensions;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Builders;

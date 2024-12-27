@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.0" />
+    <PackageReference Include="pauldeen79.ClassFramework.Domain" Version="0.19.1" />
     <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="6.2.0" />
   </ItemGroup>
 

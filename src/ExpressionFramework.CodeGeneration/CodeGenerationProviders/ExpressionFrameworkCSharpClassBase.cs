@@ -131,7 +131,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
                     .WithReturnType(typeof(bool))
                     .WithName("IsNameValid")
                     .AddParameter("functionName", typeof(string))
-                    .AddStringCodeStatements("return base.IsNameValid(functionName.WithoutGenerics());"));
+                    .AddStringCodeStatements("return base.IsNameValid(functionName.WithoutProcessedGenerics());"));
         }
     }
 
