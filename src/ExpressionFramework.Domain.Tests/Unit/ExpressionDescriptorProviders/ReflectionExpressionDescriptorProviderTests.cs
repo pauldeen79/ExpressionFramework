@@ -63,11 +63,6 @@ public class ReflectionExpressionDescriptorProviderTests
         public override Result<object?> Evaluate(object? context)
             => Result.Success<object?>("some value");
 
-        public override Result<Expression> GetSingleContainedExpression()
-        {
-            throw new NotImplementedException();
-        }
-
         public object Parameter { get; } = "";
 
         public override ExpressionBuilder ToBuilder()

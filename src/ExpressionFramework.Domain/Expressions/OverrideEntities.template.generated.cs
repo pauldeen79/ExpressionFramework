@@ -49,11 +49,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.AggregateExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record AllExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
@@ -86,11 +81,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.AllExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.AllExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -131,11 +121,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.AndExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -173,11 +158,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.AnyExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -207,11 +187,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.CastExpressionBuilder<T>(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record ChainedExpression : ExpressionFramework.Domain.Expression
     {
@@ -236,11 +211,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ChainedExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ChainedExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record CompoundExpression : ExpressionFramework.Domain.Expression
@@ -290,11 +260,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.CompoundExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record ConstantExpression : ExpressionFramework.Domain.Expression
     {
@@ -317,11 +282,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ConstantExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ConstantExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record ConstantResultExpression : ExpressionFramework.Domain.Expression
@@ -348,11 +308,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ConstantResultExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record ContextExpression : ExpressionFramework.Domain.Expression
     {
@@ -369,11 +324,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ContextExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ContextExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record CountExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
@@ -408,11 +358,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.CountExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -443,11 +388,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.DayExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -468,11 +408,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.DefaultExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.DefaultExpressionBuilder<T>(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record DelegateExpression : ExpressionFramework.Domain.Expression
@@ -498,11 +433,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.DelegateExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record DelegateResultExpression : ExpressionFramework.Domain.Expression
     {
@@ -526,11 +456,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.DelegateResultExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.DelegateResultExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record ElementAtExpression : ExpressionFramework.Domain.Expression
@@ -564,11 +489,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ElementAtExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ElementAtExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
     }
     public partial record ElementAtOrDefaultExpression : ExpressionFramework.Domain.Expression
@@ -610,11 +530,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ElementAtOrDefaultExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record EmptyExpression : ExpressionFramework.Domain.Expression
     {
@@ -631,11 +546,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record EqualsExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
@@ -671,11 +581,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.EqualsExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -704,11 +609,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ErrorExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ErrorExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record EvaluatableExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
@@ -744,11 +644,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.EvaluatableExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -769,11 +664,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.FalseExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.FalseExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -813,11 +703,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.FieldExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record FirstExpression : ExpressionFramework.Domain.Expression
     {
@@ -849,11 +734,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.FirstExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.FirstExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
     }
     public partial record FirstOrDefaultExpression : ExpressionFramework.Domain.Expression
@@ -894,11 +774,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.FirstOrDefaultExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record GroupByExpression : ExpressionFramework.Domain.Expression
     {
@@ -931,11 +806,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.GroupByExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.GroupByExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
     }
     public partial record IfExpression : ExpressionFramework.Domain.Expression
@@ -977,11 +847,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.IfExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record InvalidExpression : ExpressionFramework.Domain.Expression
     {
@@ -1015,11 +880,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.InvalidExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record LastExpression : ExpressionFramework.Domain.Expression
     {
@@ -1051,11 +911,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.LastExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.LastExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
     }
     public partial record LastOrDefaultExpression : ExpressionFramework.Domain.Expression
@@ -1096,11 +951,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.LastOrDefaultExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record LeftExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
@@ -1133,11 +983,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.LeftExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.LeftExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1176,11 +1021,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.MaxExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record MinExpression : ExpressionFramework.Domain.Expression
     {
@@ -1213,11 +1053,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.MinExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record MonthExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
@@ -1242,11 +1077,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.MonthExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.MonthExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1287,11 +1117,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.NotEqualsExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1322,11 +1147,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.NotExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1353,11 +1173,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.NowExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.NowExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -1396,11 +1211,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.OfTypeExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OfTypeExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1449,11 +1259,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.OperatorExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1490,11 +1295,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.OrderByExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OrderByExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1535,11 +1335,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.OrExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1576,11 +1371,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.RightExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.RightExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1621,11 +1411,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SelectExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1654,11 +1439,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.SequenceExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SequenceExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -1696,11 +1476,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.SingleExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SingleExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
     }
     public partial record SingleOrDefaultExpression : ExpressionFramework.Domain.Expression
@@ -1741,11 +1516,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SingleOrDefaultExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record SkipExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
@@ -1780,11 +1550,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SkipExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1813,11 +1578,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.StringConcatenateExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringConcatenateExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -1858,11 +1618,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.StringFindExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1891,11 +1646,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.StringLengthExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringLengthExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -1944,11 +1694,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.StringReplaceExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -1994,11 +1739,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SubstringExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2035,11 +1775,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SumExpressionBuilder(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
     }
     public partial record SwitchExpression : ExpressionFramework.Domain.Expression
     {
@@ -2071,11 +1806,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.SwitchExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SwitchExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record TakeExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
@@ -2109,11 +1839,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TakeExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TakeExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -2152,11 +1877,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2183,11 +1903,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TodayExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TodayExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -2226,11 +1941,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2267,11 +1977,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2306,11 +2011,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -2350,11 +2050,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TrimEndExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2390,11 +2085,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TrimExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrimExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
@@ -2434,11 +2124,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TrimStartExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2459,11 +2144,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TrueExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrueExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
 
         public Expression ToUntyped()
@@ -2502,11 +2182,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TryCastExpressionBuilder<T>(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record TypedChainedExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
@@ -2532,11 +2207,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedChainedExpressionBuilder<T>(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record TypedConstantExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
@@ -2559,11 +2229,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<T>(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record TypedConstantResultExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
@@ -2589,11 +2254,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantResultExpressionBuilder<T>(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record TypedContextExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
@@ -2610,11 +2270,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TypedContextExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedContextExpressionBuilder<T>(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record TypedDelegateExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
@@ -2640,11 +2295,6 @@ namespace ExpressionFramework.Domain.Expressions
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateExpressionBuilder<T>(this);
         }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
-        }
     }
     public partial record TypedDelegateResultExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
@@ -2668,11 +2318,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TypedDelegateResultExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateResultExpressionBuilder<T>(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record TypedFieldExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
@@ -2706,11 +2351,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.TypedFieldExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedFieldExpressionBuilder<T>(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.NotFound<ExpressionFramework.Domain.Expression>();
         }
     }
     public partial record WhereExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
@@ -2746,11 +2386,6 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.WhereExpressionBuilder(this);
         }
 
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
-        }
-
         public Expression ToUntyped()
         {
             return this;
@@ -2779,11 +2414,6 @@ namespace ExpressionFramework.Domain.Expressions
         public ExpressionFramework.Domain.Builders.Expressions.YearExpressionBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.YearExpressionBuilder(this);
-        }
-
-        public override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> GetSingleContainedExpression()
-        {
-            return CrossCutting.Common.Results.Result.Success(Expression.ToUntyped());
         }
 
         public Expression ToUntyped()
