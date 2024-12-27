@@ -63,7 +63,7 @@ public class SequenceExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { 1, 2, 3 });
+        result.Value.Should().BeEquivalentTo([1, 2, 3]);
     }
 
     [Fact]
@@ -127,7 +127,7 @@ public class SequenceExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { 1, 2, 3 });
+        result.Value.Should().BeEquivalentTo([1, 2, 3]);
     }
 
     [Fact]

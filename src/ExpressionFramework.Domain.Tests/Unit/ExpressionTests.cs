@@ -37,11 +37,11 @@ public class ExpressionTests : TestBase
     {
         // Arrange
         var value = new { InnerProperty = new { Name = "Hello world" } };
-        var expression = new ChainedExpression(new[]
-        {
+        var expression = new ChainedExpression(
+        [
             new FieldExpression(new ConstantExpression(value), new TypedConstantExpression<string>("InnerProperty")),
             new FieldExpression(new ContextExpression(), new TypedConstantExpression<string>("Name"))
-        });
+        ]);
 
         // Act
         var result = expression.Evaluate();
@@ -55,11 +55,11 @@ public class ExpressionTests : TestBase
     public void Can_Add_Multiple_Numbers_Using_ChainedExpression()
     {
         // Arrange
-        var expression = new ChainedExpression(new Expression[]
-        {
+        var expression = new ChainedExpression(
+        [
             new CompoundExpression(new ConstantExpression(1), new TypedConstantExpression<int>(2), new AddAggregator(), default),
             new CompoundExpression(new ContextExpression(), new TypedConstantExpression<int>(3), new AddAggregator(), default)
-        });
+        ]);
 
         // Act
         var result = expression.Evaluate(null);
@@ -161,11 +161,11 @@ public class ExpressionTests : TestBase
         var dateTime = DateTime.Now;
         var dateTimeProvider = Fixture.Freeze<IDateTimeProvider>();
         dateTimeProvider.GetCurrentDateTime().Returns(dateTime);
-        var currentMonthExpression = new ChainedExpression(new Expression[]
-        {
+        var currentMonthExpression = new ChainedExpression(
+        [
             new TodayExpression(dateTimeProvider),
             new FieldExpression(new ContextExpression(), new TypedConstantExpression<string>("Month"))
-        });
+        ]);
 
         // Act
         var result = currentMonthExpression.Evaluate();

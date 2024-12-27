@@ -68,7 +68,7 @@ public class OrderByExpressionTests
     {
         // Arrange
         var data = new[] { "B", "C", "A" };
-        var expression = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[] { new TypedConstantResultExpression<SortOrder>(Result.Error<SortOrder>("Kaboom")) });
+        var expression = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), [new TypedConstantResultExpression<SortOrder>(Result.Error<SortOrder>("Kaboom"))]);
 
         // Act
         var result = expression.Evaluate();
@@ -107,7 +107,7 @@ public class OrderByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(new[] { "A", "B", "C" });
+        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["A", "B", "C"]);
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class OrderByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(new[] { "C", "B", "A" });
+        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C", "B", "A"]);
     }
 
     [Fact]
@@ -143,7 +143,7 @@ public class OrderByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(new[] { "C1", "C2", "B1", "B2", "A1", "A2" });
+        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C1", "C2", "B1", "B2", "A1", "A2"]);
     }
 
     [Fact]
@@ -163,7 +163,7 @@ public class OrderByExpressionTests
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(new[] { "C2", "C1", "B2", "B1", "A2", "A1" });
+        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C2", "C1", "B2", "B1", "A2", "A1"]);
     }
 
     [Fact]

@@ -86,15 +86,13 @@ public static class StringExpression
             null,
             null,
             null,
-            new[]
-            {
+            [
                 new ParameterDescriptor(customExpressionName, customExpressionType.FullName, customExpressionDescription, customExpressionRequired),
                 new ParameterDescriptor("Expression", typeof(string).FullName, expressionDescription, true),
-            },
-            new[]
-            {
+            ],
+            [
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(string), okDescription),
                 new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", null, invalidDescription),
-            }
+            ]
         );
 }

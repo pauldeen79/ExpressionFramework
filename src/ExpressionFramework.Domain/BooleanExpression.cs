@@ -55,11 +55,10 @@ public static class BooleanExpression
             null,
             "Context to use on expression evaluation",
             null,
-            new[]
-            {
+            [
                 new ParameterDescriptor("FirstExpression", typeof(bool).FullName, parameterDescription, true),
                 new ParameterDescriptor("SecondExpression", typeof(bool).FullName, parameterDescription, true),
-            },
+            ],
             new[]
             {
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, typeof(object), okDescription),

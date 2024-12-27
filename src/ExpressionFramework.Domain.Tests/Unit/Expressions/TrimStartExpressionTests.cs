@@ -21,7 +21,7 @@ public class TrimStartExpressionTests
         // Arrange
         var sut = new TrimStartExpressionBuilder()
             .WithExpression("0trim0")
-            .WithTrimCharsExpression(new[] { '0' })
+            .WithTrimCharsExpression(['0'])
             .Build();
 
         // Act
@@ -117,7 +117,7 @@ public class TrimStartExpressionTests
         // Arrange
         var sut = new TrimStartExpressionBuilder()
             .WithExpression("0trim0")
-            .WithTrimCharsExpression(new[] { '0' })
+            .WithTrimCharsExpression(['0'])
             .BuildTyped();
 
         // Act

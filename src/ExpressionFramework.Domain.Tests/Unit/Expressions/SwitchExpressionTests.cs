@@ -24,7 +24,7 @@ public class SwitchExpressionTests
     public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails_No_Default()
     {
         // Arrange
-        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, default);
+        var expression = new SwitchExpression([new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression())], default);
 
         // Act
         var actual = expression.Evaluate(default);
@@ -38,7 +38,7 @@ public class SwitchExpressionTests
     public void Evaluate_Returns_Error_When_ConditionEvaluation_Fails_Filled_Default()
     {
         // Arrange
-        var expression = new SwitchExpression(new[] { new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression()) }, null);
+        var expression = new SwitchExpression([new Case(new ErrorEvaluatable("Kaboom"), new EmptyExpression())], null);
 
         // Act
         var actual = expression.Evaluate(default);

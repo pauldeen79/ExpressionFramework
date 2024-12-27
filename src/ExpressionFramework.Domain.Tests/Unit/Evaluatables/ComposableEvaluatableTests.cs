@@ -8,13 +8,13 @@ public class ComposableEvaluatableTests
         // Arrange
         var evaluatable = new ComposableEvaluatable
         (
-            new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" }),
+            new ReadOnlyValueCollection<string>(["1", "2", "3"]),
             new EqualsOperator(),
-            new ReadOnlyValueCollection<string>(new[] { "1", "2", "3" })
+            new ReadOnlyValueCollection<string>(["1", "2", "3"])
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable });
+        var actual = Evaluate([evaluatable]);
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -32,7 +32,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable });
+        var actual = Evaluate([evaluatable]);
 
 
         // Assert
@@ -54,7 +54,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable });
+        var actual = Evaluate([evaluatable]);
 
         // Assert
         actual.Status.Should().Be(ResultStatus.Error);
@@ -76,7 +76,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable });
+        var actual = Evaluate([evaluatable]);
 
 
         // Assert
@@ -103,7 +103,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable1, evaluatable2 });
+        var actual = Evaluate([evaluatable1, evaluatable2]);
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -128,7 +128,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable1, evaluatable2 });
+        var actual = Evaluate([evaluatable1, evaluatable2]);
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -165,7 +165,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable1, evaluatable2, evaluatable3 });
+        var actual = Evaluate([evaluatable1, evaluatable2, evaluatable3]);
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();
@@ -202,7 +202,7 @@ public class ComposableEvaluatableTests
         );
 
         // Act
-        var actual = Evaluate(new[] { evaluatable1, evaluatable2, evaluatable3 });
+        var actual = Evaluate([evaluatable1, evaluatable2, evaluatable3]);
 
         // Assert
         actual.GetValueOrThrow().Should().BeTrue();

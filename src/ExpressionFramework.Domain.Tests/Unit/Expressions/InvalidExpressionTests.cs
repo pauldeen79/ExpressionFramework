@@ -8,7 +8,7 @@ public class InvalidExpressionTests
         // Assert
         var sut = new InvalidExpressionBuilder()
             .WithErrorMessageExpression("Error message")
-            .AddValidationErrorExpressions(new ValidationError("Validation error message", new[] { "Member" }))
+            .AddValidationErrorExpressions(new ValidationError("Validation error message", ["Member"]))
             .BuildTyped();
 
         // Act
@@ -56,7 +56,7 @@ public class InvalidExpressionTests
     public void Evaluate_Returns_Error_When_ErrorMessageExpression_Returns_Error()
     {
         // Assert
-        var sut = new InvalidExpression(new TypedConstantExpression<string>("Ignored"), new[] { new TypedConstantResultExpression<ValidationError>(Result.Error<ValidationError>("Kaboom")) });
+        var sut = new InvalidExpression(new TypedConstantExpression<string>("Ignored"), [new TypedConstantResultExpression<ValidationError>(Result.Error<ValidationError>("Kaboom"))]);
 
         // Act
         var result = sut.Evaluate();

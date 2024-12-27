@@ -23,7 +23,7 @@ public class TrimEndExpressionTests
         // Arrange
         var sut = new TrimEndExpressionBuilder()
             .WithExpression("0trim0")
-            .WithTrimCharsExpression(new[] { '0' })
+            .WithTrimCharsExpression(['0'])
             .Build();
 
         // Act
@@ -120,7 +120,7 @@ public class TrimEndExpressionTests
         // Arrange
         var sut = new TrimEndExpressionBuilder()
             .WithExpression("0trim0")
-            .WithTrimCharsExpression(new[] { '0' })
+            .WithTrimCharsExpression(['0'])
             .BuildTyped();
 
         // Act

@@ -87,7 +87,7 @@ public class SelectExpressionTests
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+        result.Value.Should().BeEquivalentTo(["A", "B", "C"]);
     }
 
     [Fact]

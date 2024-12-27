@@ -186,12 +186,11 @@ public static class EnumerableExpression
                 new ParameterDescriptor("PredicateExpression", typeof(bool).FullName, predicateIsRequired ? "Predicate to use" : "Optional predicate to use", predicateIsRequired),
                 new ParameterDescriptor("DefaultExpression", typeof(object).FullName, "Optional default value to use", false),
             }.Where(x => x.Name != "DefaultExpression" || hasDefaultExpression),
-            new[]
-            {
+            [
                 new ReturnValueDescriptor(ResultStatus.Ok, okValue, resultValueType, okDescription),
                 new ReturnValueDescriptor(ResultStatus.Invalid, "Empty", null, invalidDescription),
                 new ReturnValueDescriptor(ResultStatus.Error, "Empty", null, errorDescription),
-            });
+            ]);
     }
 
 #pragma warning disable S107 // Methods should not have too many parameters

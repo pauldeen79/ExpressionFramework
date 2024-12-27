@@ -19,7 +19,7 @@ public class TrimExpressionTests
     public void Evaluate_Returns_Trimmed_Expression_With_TrimChars_When_Expression_Is_NonEmptyString()
     {
         // Arrange
-        var sut = new TrimExpressionBuilder().WithExpression("0trim0").WithTrimCharsExpression(new[] { '0' }).Build();
+        var sut = new TrimExpressionBuilder().WithExpression("0trim0").WithTrimCharsExpression(['0']).Build();
 
         // Act
         var actual = sut.Evaluate();
@@ -116,7 +116,7 @@ public class TrimExpressionTests
         // Arrange
         var sut = new TrimExpressionBuilder()
             .WithExpression("0trim0")
-            .WithTrimCharsExpression(new[] { '0' })
+            .WithTrimCharsExpression(['0'])
             .BuildTyped();
 
         // Act
