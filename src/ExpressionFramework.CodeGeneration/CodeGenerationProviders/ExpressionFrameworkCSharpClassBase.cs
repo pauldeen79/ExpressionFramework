@@ -1,13 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorPipelineCodeGenerationProviderBase
+public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : CsharpClassGeneratorPipelineCodeGenerationProviderBase(pipelineService)
 {
-    protected ExpressionFrameworkCSharpClassBase(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService)
-    {
-        CsharpExpressionDumper = csharpExpressionDumper;
-    }
-
     public override bool RecurseOnDeleteGeneratedFiles => false;
     public override string LastGeneratedFilesFilename => string.Empty;
     public override Encoding Encoding => Encoding.UTF8;
@@ -24,7 +19,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
     protected override bool GenerateMultipleFiles => false;
     protected override bool EnableGlobalUsings => true;
 
-    protected ICsharpExpressionDumper CsharpExpressionDumper { get; }
+    protected ICsharpExpressionDumper CsharpExpressionDumper { get; } = csharpExpressionDumper;
 
     protected override bool SkipNamespaceOnTypenameMappings(string @namespace)
         => @namespace == $"{CodeGenerationRootNamespace}.Models.Contracts";

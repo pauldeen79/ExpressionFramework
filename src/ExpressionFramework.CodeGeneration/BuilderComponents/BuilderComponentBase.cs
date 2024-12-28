@@ -1,14 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.BuilderComponents;
 
 [ExcludeFromCodeCoverage]
-public abstract class BuilderComponentBase
+public abstract class BuilderComponentBase(IFormattableStringParser formattableStringParser)
 {
-    protected IFormattableStringParser FormattableStringParser { get; }
-
-    protected BuilderComponentBase(IFormattableStringParser formattableStringParser)
-    {
-        FormattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
-    }
+    protected IFormattableStringParser FormattableStringParser { get; } = formattableStringParser.IsNotNull(nameof(formattableStringParser));
 
     protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
     {

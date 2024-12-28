@@ -1,27 +1,18 @@
 ﻿namespace ExpressionFramework.CodeGeneration.BuilderComponents;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionBuilderComponentBuilder : IBuilderComponentBuilder
+public class ExpressionBuilderComponentBuilder(IFormattableStringParser formattableStringParser) : IBuilderComponentBuilder
 {
-    private readonly IFormattableStringParser _formattableStringParser;
-
-    public ExpressionBuilderComponentBuilder(IFormattableStringParser formattableStringParser)
-    {
-        _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
-    }
+    private readonly IFormattableStringParser _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
 
     public IPipelineComponent<BuilderContext> Build()
         => new ExpressionBuilderComponent(_formattableStringParser);
 }
 
 [ExcludeFromCodeCoverage]
-public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineComponent<BuilderContext>
+public class ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : BuilderComponentBase(formattableStringParser), IPipelineComponent<BuilderContext>
 {
     private const string ExpressionTemplate = $"return {{$addMethodNameFormatString}}({{CsharpFriendlyName(ToCamelCase($property.Name))}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
-
-    public ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : base(formattableStringParser)
-    {
-    }
 
     public Task<Result> Process(PipelineContext<BuilderContext> context, CancellationToken token)
     {
