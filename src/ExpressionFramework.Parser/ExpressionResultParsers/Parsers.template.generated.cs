@@ -93,7 +93,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class ChainedExpressionParser : ExpressionParserBase
@@ -245,7 +245,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class DelegateExpressionParser : ExpressionParserBase
@@ -1127,7 +1127,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedChainedExpressionParser : ExpressionParserBase
@@ -1143,7 +1143,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedConstantExpressionParser : ExpressionParserBase
@@ -1159,7 +1159,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedConstantResultExpressionParser : ExpressionParserBase
@@ -1175,7 +1175,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedContextExpressionParser : ExpressionParserBase
@@ -1198,7 +1198,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedDelegateExpressionParser : ExpressionParserBase
@@ -1214,7 +1214,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedDelegateResultExpressionParser : ExpressionParserBase
@@ -1230,7 +1230,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class TypedFieldExpressionParser : ExpressionParserBase
@@ -1253,7 +1253,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
 
         protected override bool IsNameValid(string functionName)
         {
-            return base.IsNameValid(functionName.WithoutProcessedGenerics());
+            return base.IsNameValid(functionName.WithoutGenerics());
         }
     }
     public class WhereExpressionParser : ExpressionParserBase

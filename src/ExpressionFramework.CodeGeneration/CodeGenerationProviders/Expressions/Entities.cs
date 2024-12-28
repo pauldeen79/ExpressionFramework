@@ -32,7 +32,7 @@ public class Entities : ExpressionFrameworkCSharpClassBase
                             .NotImplemented()
                         );
 
-                    var typedInterface = x.Interfaces.FirstOrDefault(x => x is not null && x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression").FixTypeName();
+                    var typedInterface = x.Interfaces.FirstOrDefault(x => x is not null && x.WithoutGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression").FixTypeName();
                     if (!string.IsNullOrEmpty(typedInterface))
                     {
                         result
