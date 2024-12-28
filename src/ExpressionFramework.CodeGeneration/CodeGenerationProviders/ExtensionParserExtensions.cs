@@ -19,7 +19,7 @@ public class ExtensionParserExtensions : ExpressionFrameworkCSharpClassBase
             typeof(IEvaluatable),
         };
 
-        var resultsArray = await Task.WhenAll(types.Select(GetOverrideModels)).ConfigureAwait(false);
+        var resultsArray = await Task.WhenAll(types.Select(GetOverrideModels));
         var results = types
             .Zip(resultsArray, (key, result) => new { key, result })
             .ToDictionary(x => x.key, x => x.result);
