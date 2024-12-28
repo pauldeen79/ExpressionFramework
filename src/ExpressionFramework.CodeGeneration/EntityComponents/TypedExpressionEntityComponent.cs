@@ -15,7 +15,7 @@ public class TypedExpressionEntityComponent : IPipelineComponent<EntityContext>
         context = context.IsNotNull(nameof(context));
 
         if (context.Request.SourceModel.Namespace == Constants.Namespaces.DomainExpressions
-            && context.Request.SourceModel.Interfaces.Any(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression)
+            && context.Request.SourceModel.Interfaces.Any(x => x.WithoutProcessedGenerics() == Constants.TypeNames.TypedExpression)
             && context.Request.SourceModel.GenericTypeArguments.Count == 0)
         {
             context.Request.Builder.AddMethods(new MethodBuilder()

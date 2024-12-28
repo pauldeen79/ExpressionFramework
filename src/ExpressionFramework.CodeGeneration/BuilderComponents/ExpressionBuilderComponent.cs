@@ -27,10 +27,10 @@ public class ExpressionBuilderComponent : BuilderComponentBase, IPipelineCompone
     {
         context = context.IsNotNull(nameof(context));
 
-        if (context.Request.SourceModel.Interfaces.Any(x => x.WithoutGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression"))
+        if (context.Request.SourceModel.Interfaces.Any(x => x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression"))
         {
             var generics = context.Request.SourceModel.Interfaces
-                .First(x => x.WithoutGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression")
+                .First(x => x.WithoutProcessedGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression")
                 .GetGenericArguments();
 
             context.Request.Builder.AddMethods

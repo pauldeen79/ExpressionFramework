@@ -116,7 +116,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             .Build();
 
     protected static bool IsSupportedPropertyForGeneratedParser(Property parserProperty)
-        => parserProperty.TypeName.WithoutGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression)
+        => parserProperty.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression)
         || parserProperty.TypeName == $"{Constants.CodeGenerationRootNamespace}.Contracts.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
         || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{Constants.Types.Expression}>";
 
@@ -193,7 +193,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
             : string.Empty;
 
         var genericType = GetCustomType(property.TypeName.GetGenericArguments());
-        if (property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
+        if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
         {
             return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
         }
@@ -203,7 +203,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         }
         else
         {
-            var typeName = property.TypeName.WithoutGenerics() switch
+            var typeName = property.TypeName.WithoutProcessedGenerics() switch
             {
                 "System.Nullable" => property.TypeName.GetGenericArguments().MapTypeName(settings),
                 "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments().MapTypeName(settings)}>",
@@ -258,7 +258,7 @@ public abstract class ExpressionFrameworkCSharpClassBase : CsharpClassGeneratorP
         {
             builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
         }
-        else if (property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression)
+        else if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
             var genericType = GetCustomType(property.TypeName.GetGenericArguments());
             if (!string.IsNullOrEmpty(genericType.MethodType))

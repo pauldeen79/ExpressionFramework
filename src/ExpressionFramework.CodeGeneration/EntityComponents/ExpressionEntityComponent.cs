@@ -30,7 +30,7 @@ public class ExpressionEntityComponent : IPipelineComponent<EntityContext>
     private static string GetSingleContainedExpressionStatements(ClassBuilder typeBaseBuilder)
     {
         var expressionProperties = typeBaseBuilder.Properties
-            .Where(x => x.Name == "Expression" && x.TypeName.WithoutGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression))
+            .Where(x => x.Name == "Expression" && x.TypeName.WithoutProcessedGenerics().GetClassName().In($"I{Constants.Types.Expression}", Constants.Types.ITypedExpression))
             .ToArray();
 
         if (expressionProperties.Length == 1)
@@ -39,7 +39,7 @@ public class ExpressionEntityComponent : IPipelineComponent<EntityContext>
                 ? "?"
                 : string.Empty;
 
-            var typedSuffix = expressionProperties[0].TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression
+            var typedSuffix = expressionProperties[0].TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression
                 ? $"{nullableTypedPrefix}.ToUntyped()"
                 : string.Empty;
 

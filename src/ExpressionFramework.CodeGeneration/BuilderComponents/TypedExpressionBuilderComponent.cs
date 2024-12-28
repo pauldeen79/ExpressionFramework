@@ -31,7 +31,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
         {
             var parentChildContext = new ParentChildContext<PipelineContext<BuilderContext>, Property>(context, property, context.Request.Settings);
 
-            if (!property.TypeName.FixTypeName().IsCollectionTypeName() && property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression)
+            if (!property.TypeName.FixTypeName().IsCollectionTypeName() && property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
             {
                 var results = context.Request.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, FormattableStringParser);
 
@@ -162,7 +162,7 @@ public class TypedExpressionBuilderComponent : BuilderComponentBase, IPipelineCo
 
     private static string CreateTypeName(Property property)
     {
-        if (property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression)
+        if (property.TypeName.WithoutProcessedGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
             if (property.Name == Constants.ArgumentNames.PredicateExpression)
             {
