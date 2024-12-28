@@ -1,12 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Aggregators.Aggregators;
 
 [ExcludeFromCodeCoverage]
-public class Parsers : ExpressionFrameworkCSharpClassBase
+public class Parsers(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
-    public Parsers(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
-    {
-    }
-
     public override string Path => Constants.Paths.ParserAggregatorResultParsers;
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)

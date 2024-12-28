@@ -1,12 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class AbstractNonGenericBuilders : ExpressionFrameworkCSharpClassBase
+public class AbstractNonGenericBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
-    public AbstractNonGenericBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
-    {
-    }
-
     public override string Path => Constants.Paths.DomainBuilders;
 
     protected override bool EnableEntityInheritance => true;

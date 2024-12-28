@@ -1,12 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
-public class CoreBuilders : ExpressionFrameworkCSharpClassBase
+public class CoreBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
-    public CoreBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
-    {
-    }
-
     public override string Path => Constants.Paths.DomainBuilders;
 
     public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)

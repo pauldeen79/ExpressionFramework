@@ -1,12 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Evaluatables;
 
 [ExcludeFromCodeCoverage]
-public class Entities : ExpressionFrameworkCSharpClassBase
+public class Entities(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
-    public Entities(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
-    {
-    }
-
     public override string Path => Constants.Paths.Evaluatables;
 
     protected override string FilenameSuffix => string.Empty;

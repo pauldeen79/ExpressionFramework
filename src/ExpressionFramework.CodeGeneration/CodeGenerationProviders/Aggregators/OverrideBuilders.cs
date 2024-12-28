@@ -1,12 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders.Aggregators;
 
 [ExcludeFromCodeCoverage]
-public class OverrideBuilders : ExpressionFrameworkCSharpClassBase
+public class OverrideBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
-    public OverrideBuilders(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : base(pipelineService, csharpExpressionDumper)
-    {
-    }
-
     public override string Path => Constants.Paths.AggregatorBuilders;
 
     protected override bool EnableEntityInheritance => true;
