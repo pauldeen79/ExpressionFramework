@@ -80,10 +80,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.AllExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.AllExpressionBuilder(this);
         }
@@ -123,10 +123,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.AndExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.AndExpressionBuilder(this);
         }
@@ -165,10 +165,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.AnyExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.AnyExpressionBuilder(this);
         }
@@ -200,10 +200,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.CastExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.CastExpressionBuilder<T>(this);
         }
@@ -400,10 +400,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.CountExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.CountExpressionBuilder(this);
         }
@@ -435,10 +435,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.DayExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.DayExpressionBuilder(this);
         }
@@ -462,10 +462,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.DefaultExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.DefaultExpressionBuilder<T>(this);
         }
@@ -663,10 +663,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.EqualsExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.EqualsExpressionBuilder(this);
         }
@@ -736,10 +736,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.EvaluatableExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.EvaluatableExpressionBuilder(this);
         }
@@ -763,10 +763,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.FalseExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.FalseExpressionBuilder(this);
         }
@@ -1127,10 +1127,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.LeftExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.LeftExpressionBuilder(this);
         }
@@ -1236,10 +1236,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.MonthExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.MonthExpressionBuilder(this);
         }
@@ -1279,10 +1279,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.NotEqualsExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.NotEqualsExpressionBuilder(this);
         }
@@ -1314,10 +1314,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.NotExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.NotExpressionBuilder(this);
         }
@@ -1347,10 +1347,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.NowExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.DateTime> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.NowExpressionBuilder(this);
         }
@@ -1390,10 +1390,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.OfTypeExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OfTypeExpressionBuilder(this);
         }
@@ -1441,10 +1441,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.OperatorExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OperatorExpressionBuilder(this);
         }
@@ -1484,10 +1484,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.OrderByExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OrderByExpressionBuilder(this);
         }
@@ -1527,10 +1527,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.OrExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.OrExpressionBuilder(this);
         }
@@ -1570,10 +1570,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.RightExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.RightExpressionBuilder(this);
         }
@@ -1613,10 +1613,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.SelectExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SelectExpressionBuilder(this);
         }
@@ -1648,10 +1648,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.SequenceExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SequenceExpressionBuilder(this);
         }
@@ -1772,10 +1772,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.SkipExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SkipExpressionBuilder(this);
         }
@@ -1807,10 +1807,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.StringConcatenateExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringConcatenateExpressionBuilder(this);
         }
@@ -1850,10 +1850,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.StringFindExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringFindExpressionBuilder(this);
         }
@@ -1885,10 +1885,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.StringLengthExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringLengthExpressionBuilder(this);
         }
@@ -1936,10 +1936,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.StringReplaceExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.StringReplaceExpressionBuilder(this);
         }
@@ -1986,10 +1986,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.SubstringExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.SubstringExpressionBuilder(this);
         }
@@ -2103,10 +2103,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TakeExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TakeExpressionBuilder(this);
         }
@@ -2144,10 +2144,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ToCamelCaseExpressionBuilder(this);
         }
@@ -2177,10 +2177,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TodayExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.DateTime> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TodayExpressionBuilder(this);
         }
@@ -2218,10 +2218,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ToLowerCaseExpressionBuilder(this);
         }
@@ -2259,10 +2259,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ToPascalCaseExpressionBuilder(this);
         }
@@ -2300,10 +2300,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.ToUpperCaseExpressionBuilder(this);
         }
@@ -2342,10 +2342,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TrimEndExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrimEndExpressionBuilder(this);
         }
@@ -2384,10 +2384,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TrimExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrimExpressionBuilder(this);
         }
@@ -2426,10 +2426,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TrimStartExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrimStartExpressionBuilder(this);
         }
@@ -2453,10 +2453,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TrueExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<bool> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TrueExpressionBuilder(this);
         }
@@ -2495,10 +2495,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TryCastExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TryCastExpressionBuilder<T>(this);
         }
@@ -2525,10 +2525,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedChainedExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedChainedExpressionBuilder<T>(this);
         }
@@ -2553,10 +2553,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<T>(this);
         }
@@ -2582,10 +2582,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedConstantResultExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantResultExpressionBuilder<T>(this);
         }
@@ -2604,10 +2604,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedContextExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedContextExpressionBuilder<T>(this);
         }
@@ -2633,10 +2633,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedDelegateExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateExpressionBuilder<T>(this);
         }
@@ -2662,10 +2662,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedDelegateResultExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateResultExpressionBuilder<T>(this);
         }
@@ -2700,10 +2700,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.TypedFieldExpressionBuilder<T> ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<T> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.TypedFieldExpressionBuilder<T>(this);
         }
@@ -2738,10 +2738,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.WhereExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<System.Collections.Generic.IEnumerable<object?>> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.WhereExpressionBuilder(this);
         }
@@ -2773,10 +2773,10 @@ namespace ExpressionFramework.Domain.Expressions
 
         public override ExpressionFramework.Domain.Builders.ExpressionBuilder ToBuilder()
         {
-            return ToTypedBuilder();
+            return (ExpressionFramework.Domain.Builders.ExpressionBuilder)ToTypedBuilder();
         }
 
-        public ExpressionFramework.Domain.Builders.Expressions.YearExpressionBuilder ToTypedBuilder()
+        public ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<int> ToTypedBuilder()
         {
             return new ExpressionFramework.Domain.Builders.Expressions.YearExpressionBuilder(this);
         }

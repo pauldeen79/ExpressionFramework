@@ -71,7 +71,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             _expressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Builders.ExpressionBuilder>();
             if (source.Expressions is not null) foreach (var item in source.Expressions.Select(x => x.ToBuilder())) _expressions.Add(item);
             _aggregator = source.Aggregator?.ToBuilder()!;
-            _formatProviderExpression = source.FormatProviderExpression?.ToBuilder()!;
+            _formatProviderExpression = source.FormatProviderExpression?.ToTypedBuilder()!;
         }
 
         public AggregateExpressionBuilder() : base()
@@ -179,8 +179,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public AllExpressionBuilder(ExpressionFramework.Domain.Expressions.AllExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression.ToTypedBuilder();
         }
 
         public AllExpressionBuilder() : base()
@@ -281,8 +281,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public AndExpressionBuilder(ExpressionFramework.Domain.Expressions.AndExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _firstExpression = source.FirstExpression.ToBuilder();
-            _secondExpression = source.SecondExpression.ToBuilder();
+            _firstExpression = source.FirstExpression.ToTypedBuilder();
+            _secondExpression = source.SecondExpression.ToTypedBuilder();
         }
 
         public AndExpressionBuilder() : base()
@@ -382,8 +382,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public AnyExpressionBuilder(ExpressionFramework.Domain.Expressions.AnyExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
         }
 
         public AnyExpressionBuilder() : base()
@@ -648,7 +648,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             _firstExpression = source.FirstExpression?.ToBuilder()!;
             _secondExpression = source.SecondExpression?.ToBuilder()!;
             _aggregator = source.Aggregator?.ToBuilder()!;
-            _formatProviderExpression = source.FormatProviderExpression?.ToBuilder()!;
+            _formatProviderExpression = source.FormatProviderExpression?.ToTypedBuilder()!;
         }
 
         public CompoundExpressionBuilder() : base()
@@ -876,8 +876,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public CountExpressionBuilder(ExpressionFramework.Domain.Expressions.CountExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
         }
 
         public CountExpressionBuilder() : base()
@@ -958,7 +958,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public DayExpressionBuilder(ExpressionFramework.Domain.Expressions.DayExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
         }
 
         public DayExpressionBuilder() : base()
@@ -1153,8 +1153,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ElementAtExpressionBuilder(ExpressionFramework.Domain.Expressions.ElementAtExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _indexExpression = source.IndexExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _indexExpression = source.IndexExpression.ToTypedBuilder();
         }
 
         public ElementAtExpressionBuilder() : base()
@@ -1267,8 +1267,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ElementAtOrDefaultExpressionBuilder(ExpressionFramework.Domain.Expressions.ElementAtOrDefaultExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _indexExpression = source.IndexExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _indexExpression = source.IndexExpression.ToTypedBuilder();
             _defaultExpression = source.DefaultExpression?.ToBuilder()!;
         }
 
@@ -1486,7 +1486,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ErrorExpressionBuilder(ExpressionFramework.Domain.Expressions.ErrorExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _errorMessageExpression = source.ErrorMessageExpression.ToBuilder();
+            _errorMessageExpression = source.ErrorMessageExpression.ToTypedBuilder();
         }
 
         public ErrorExpressionBuilder() : base()
@@ -1677,7 +1677,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression?.ToBuilder()!;
-            _fieldNameExpression = source.FieldNameExpression.ToBuilder();
+            _fieldNameExpression = source.FieldNameExpression.ToTypedBuilder();
         }
 
         public FieldExpressionBuilder() : base()
@@ -1772,8 +1772,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public FirstExpressionBuilder(ExpressionFramework.Domain.Expressions.FirstExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
         }
 
         public FirstExpressionBuilder() : base()
@@ -1883,8 +1883,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public FirstOrDefaultExpressionBuilder(ExpressionFramework.Domain.Expressions.FirstOrDefaultExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
             _defaultExpression = source.DefaultExpression?.ToBuilder()!;
         }
 
@@ -1997,7 +1997,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public GroupByExpressionBuilder(ExpressionFramework.Domain.Expressions.GroupByExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             _keySelectorExpression = source.KeySelectorExpression?.ToBuilder()!;
         }
 
@@ -2216,7 +2216,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _validationErrorExpressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<CrossCutting.Common.Results.ValidationError>>();
-            _errorMessageExpression = source.ErrorMessageExpression.ToBuilder();
+            _errorMessageExpression = source.ErrorMessageExpression.ToTypedBuilder();
             if (source.ValidationErrorExpressions is not null) foreach (var item in source.ValidationErrorExpressions.Select(x => x.ToBuilder())) _validationErrorExpressions.Add(item);
         }
 
@@ -2318,8 +2318,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public LastExpressionBuilder(ExpressionFramework.Domain.Expressions.LastExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
         }
 
         public LastExpressionBuilder() : base()
@@ -2429,8 +2429,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public LastOrDefaultExpressionBuilder(ExpressionFramework.Domain.Expressions.LastOrDefaultExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
             _defaultExpression = source.DefaultExpression?.ToBuilder()!;
         }
 
@@ -2543,8 +2543,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public LeftExpressionBuilder(ExpressionFramework.Domain.Expressions.LeftExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _lengthExpression = source.LengthExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _lengthExpression = source.LengthExpression.ToTypedBuilder();
         }
 
         public LeftExpressionBuilder() : base()
@@ -2644,7 +2644,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public MaxExpressionBuilder(ExpressionFramework.Domain.Expressions.MaxExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             _selectorExpression = source.SelectorExpression?.ToBuilder()!;
         }
 
@@ -2738,7 +2738,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public MinExpressionBuilder(ExpressionFramework.Domain.Expressions.MinExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             _selectorExpression = source.SelectorExpression?.ToBuilder()!;
         }
 
@@ -2815,7 +2815,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public MonthExpressionBuilder(ExpressionFramework.Domain.Expressions.MonthExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
         }
 
         public MonthExpressionBuilder() : base()
@@ -2980,7 +2980,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public NotExpressionBuilder(ExpressionFramework.Domain.Expressions.NotExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
         }
 
         public NotExpressionBuilder() : base()
@@ -3108,8 +3108,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public OfTypeExpressionBuilder(ExpressionFramework.Domain.Expressions.OfTypeExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _typeExpression = source.TypeExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _typeExpression = source.TypeExpression.ToTypedBuilder();
         }
 
         public OfTypeExpressionBuilder() : base()
@@ -3340,7 +3340,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _sortOrderExpressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<ExpressionFramework.Domain.SortOrder>>();
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             if (source.SortOrderExpressions is not null) foreach (var item in source.SortOrderExpressions.Select(x => x.ToBuilder())) _sortOrderExpressions.Add(item);
         }
 
@@ -3448,8 +3448,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public OrExpressionBuilder(ExpressionFramework.Domain.Expressions.OrExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _firstExpression = source.FirstExpression.ToBuilder();
-            _secondExpression = source.SecondExpression.ToBuilder();
+            _firstExpression = source.FirstExpression.ToTypedBuilder();
+            _secondExpression = source.SecondExpression.ToTypedBuilder();
         }
 
         public OrExpressionBuilder() : base()
@@ -3550,8 +3550,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public RightExpressionBuilder(ExpressionFramework.Domain.Expressions.RightExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _lengthExpression = source.LengthExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _lengthExpression = source.LengthExpression.ToTypedBuilder();
         }
 
         public RightExpressionBuilder() : base()
@@ -3652,7 +3652,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SelectExpressionBuilder(ExpressionFramework.Domain.Expressions.SelectExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             _selectorExpression = source.SelectorExpression?.ToBuilder()!;
         }
 
@@ -3823,8 +3823,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SingleExpressionBuilder(ExpressionFramework.Domain.Expressions.SingleExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
         }
 
         public SingleExpressionBuilder() : base()
@@ -3934,8 +3934,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SingleOrDefaultExpressionBuilder(ExpressionFramework.Domain.Expressions.SingleOrDefaultExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression?.ToTypedBuilder()!;
             _defaultExpression = source.DefaultExpression?.ToBuilder()!;
         }
 
@@ -4048,8 +4048,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SkipExpressionBuilder(ExpressionFramework.Domain.Expressions.SkipExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _countExpression = source.CountExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _countExpression = source.CountExpression.ToTypedBuilder();
         }
 
         public SkipExpressionBuilder() : base()
@@ -4220,8 +4220,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public StringFindExpressionBuilder(ExpressionFramework.Domain.Expressions.StringFindExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _findExpression = source.FindExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _findExpression = source.FindExpression.ToTypedBuilder();
         }
 
         public StringFindExpressionBuilder() : base()
@@ -4304,7 +4304,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public StringLengthExpressionBuilder(ExpressionFramework.Domain.Expressions.StringLengthExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
         }
 
         public StringLengthExpressionBuilder() : base()
@@ -4403,9 +4403,9 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public StringReplaceExpressionBuilder(ExpressionFramework.Domain.Expressions.StringReplaceExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _findExpression = source.FindExpression.ToBuilder();
-            _replaceExpression = source.ReplaceExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _findExpression = source.FindExpression.ToTypedBuilder();
+            _replaceExpression = source.ReplaceExpression.ToTypedBuilder();
         }
 
         public StringReplaceExpressionBuilder() : base()
@@ -4543,9 +4543,9 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SubstringExpressionBuilder(ExpressionFramework.Domain.Expressions.SubstringExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _indexExpression = source.IndexExpression.ToBuilder();
-            _lengthExpression = source.LengthExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _indexExpression = source.IndexExpression.ToTypedBuilder();
+            _lengthExpression = source.LengthExpression?.ToTypedBuilder()!;
         }
 
         public SubstringExpressionBuilder() : base()
@@ -4663,7 +4663,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public SumExpressionBuilder(ExpressionFramework.Domain.Expressions.SumExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
             _selectorExpression = source.SelectorExpression?.ToBuilder()!;
         }
 
@@ -4847,8 +4847,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public TakeExpressionBuilder(ExpressionFramework.Domain.Expressions.TakeExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _countExpression = source.CountExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _countExpression = source.CountExpression.ToTypedBuilder();
         }
 
         public TakeExpressionBuilder() : base()
@@ -4947,8 +4947,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToCamelCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToCamelCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _culture = source.Culture?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _culture = source.Culture?.ToTypedBuilder()!;
         }
 
         public ToCamelCaseExpressionBuilder() : base()
@@ -5092,8 +5092,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToLowerCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToLowerCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _culture = source.Culture?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _culture = source.Culture?.ToTypedBuilder()!;
         }
 
         public ToLowerCaseExpressionBuilder() : base()
@@ -5190,8 +5190,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToPascalCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToPascalCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _culture = source.Culture?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _culture = source.Culture?.ToTypedBuilder()!;
         }
 
         public ToPascalCaseExpressionBuilder() : base()
@@ -5288,8 +5288,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public ToUpperCaseExpressionBuilder(ExpressionFramework.Domain.Expressions.ToUpperCaseExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _culture = source.Culture?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _culture = source.Culture?.ToTypedBuilder()!;
         }
 
         public ToUpperCaseExpressionBuilder() : base()
@@ -5387,8 +5387,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public TrimEndExpressionBuilder(ExpressionFramework.Domain.Expressions.TrimEndExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _trimCharsExpression = source.TrimCharsExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _trimCharsExpression = source.TrimCharsExpression?.ToTypedBuilder()!;
         }
 
         public TrimEndExpressionBuilder() : base()
@@ -5486,8 +5486,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public TrimExpressionBuilder(ExpressionFramework.Domain.Expressions.TrimExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _trimCharsExpression = source.TrimCharsExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _trimCharsExpression = source.TrimCharsExpression?.ToTypedBuilder()!;
         }
 
         public TrimExpressionBuilder() : base()
@@ -5585,8 +5585,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public TrimStartExpressionBuilder(ExpressionFramework.Domain.Expressions.TrimStartExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _trimCharsExpression = source.TrimCharsExpression?.ToBuilder()!;
+            _expression = source.Expression.ToTypedBuilder();
+            _trimCharsExpression = source.TrimCharsExpression?.ToTypedBuilder()!;
         }
 
         public TrimStartExpressionBuilder() : base()
@@ -5709,7 +5709,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _sourceExpression = source.SourceExpression?.ToBuilder()!;
-            _defaultExpression = source.DefaultExpression?.ToBuilder()!;
+            _defaultExpression = source.DefaultExpression?.ToTypedBuilder()!;
         }
 
         public TryCastExpressionBuilder() : base()
@@ -6101,7 +6101,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expression = source.Expression?.ToBuilder()!;
-            _fieldNameExpression = source.FieldNameExpression.ToBuilder();
+            _fieldNameExpression = source.FieldNameExpression.ToTypedBuilder();
         }
 
         public TypedFieldExpressionBuilder() : base()
@@ -6202,8 +6202,8 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public WhereExpressionBuilder(ExpressionFramework.Domain.Expressions.WhereExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
-            _predicateExpression = source.PredicateExpression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
+            _predicateExpression = source.PredicateExpression.ToTypedBuilder();
         }
 
         public WhereExpressionBuilder() : base()
@@ -6286,7 +6286,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         public YearExpressionBuilder(ExpressionFramework.Domain.Expressions.YearExpression source) : base(source)
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
-            _expression = source.Expression.ToBuilder();
+            _expression = source.Expression.ToTypedBuilder();
         }
 
         public YearExpressionBuilder() : base()

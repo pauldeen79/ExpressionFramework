@@ -60,8 +60,10 @@ public static class Constants
         public const string Aggregator = $"{Namespaces.Domain}.Aggregator";
         public const string Evaluatable = $"{Namespaces.Domain}.Evaluatable";
         public const string Expression = $"{Namespaces.Domain}.Expression";
+        public const string ExpressionBuilder = $"{Namespaces.Domain}.Builders.ExpressionBuilder";
         public const string Operator = $"{Namespaces.Domain}.Operator";
         public const string TypedExpression = $"{Namespaces.Domain}.Contracts.ITypedExpression";
+        public const string TypedExpressionBuilder = $"{Namespaces.Domain}.Contracts.ITypedExpressionBuilder";
 
         public static class Expressions
         {
