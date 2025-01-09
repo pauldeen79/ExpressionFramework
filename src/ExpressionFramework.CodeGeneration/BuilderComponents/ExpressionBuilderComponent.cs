@@ -18,10 +18,10 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
     {
         context = context.IsNotNull(nameof(context));
 
-        if (context.Request.SourceModel.Interfaces.Any(x => x.WithoutGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression"))
+        if (context.Request.SourceModel.Interfaces.Any(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression))
         {
             var generics = context.Request.SourceModel.Interfaces
-                .First(x => x.WithoutGenerics() == "ExpressionFramework.Domain.Contracts.ITypedExpression")
+                .First(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression)
                 .GetGenericArguments();
 
             context.Request.Builder.AddMethods
@@ -73,7 +73,72 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
             }
         }
 
+        //quirks for ITypedExpression<T> / ITypedExpressionBuilder<T>
+        context.Request.Builder.Constructors.First(x => x.Parameters.Count == 1)
+            .With(ctorMethod =>
+            {
+                FixSingleProperty(context, ctorMethod);
+                FixCollectionProperty(context, ctorMethod);
+            });
+
         return Task.FromResult(Result.Continue());
+    }
+
+    private static void FixCollectionProperty(PipelineContext<BuilderContext> context, ConstructorBuilder ctorMethod)
+    {
+        foreach (var statement in ctorMethod.CodeStatements.OfType<StringCodeStatementBuilder>().Where(x => x.Statement.Contains(".Select(x => x.ToBuilder()))", StringComparison.Ordinal)))
+        {
+            var sourceIndex = statement.Statement.LastIndexOf("source.", StringComparison.Ordinal);
+            if (sourceIndex == -1)
+            {
+                continue;
+            }
+            var selectIndex = statement.Statement.IndexOf(".Select", sourceIndex, StringComparison.Ordinal);
+            if (selectIndex == -1)
+            {
+                continue;
+            }
+            var propertyName = statement.Statement.Substring(sourceIndex + 7, selectIndex - sourceIndex - 7);
+            var property = context.Request.Builder.Properties.FirstOrDefault(x => x.Name == propertyName);
+            if (property is null)
+            {
+                continue;
+            }
+            if (property.TypeName.GetGenericArguments().StartsWith("ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder"))
+            {
+                statement.Statement = statement.Statement.Replace(".Select(x => x.ToBuilder()))", ".Select(x => x.ToTypedBuilder()))", StringComparison.Ordinal);
+            }
+        }
+    }
+
+    private static void FixSingleProperty(PipelineContext<BuilderContext> context, ConstructorBuilder ctorMethod)
+    {
+        foreach (var statement in ctorMethod.CodeStatements.OfType<StringCodeStatementBuilder>().Where(x => x.Statement.StartsWith('_')))
+        {
+            var index = statement.Statement.IndexOf(" = ");
+            if (index == -1)
+            {
+                continue;
+            }
+            var propertyName = statement.Statement.Substring(1, index - 1).ToPascalCase(context.Request.FormatProvider.ToCultureInfo());
+            var property = context.Request.Builder.Properties.FirstOrDefault(x => x.Name == propertyName);
+            if (property is null)
+            {
+                continue;
+            }
+            if (property.TypeName.StartsWith("ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder"))
+            {
+                var nullPrefix = property.IsNullable
+                    ? "?"
+                    : string.Empty;
+
+                var nullSuffix = statement.Statement.EndsWith("!;")
+                    ? "!"
+                    : string.Empty;
+
+                statement.Statement = $"_{propertyName.ToCamelCase(context.Request.FormatProvider.ToCultureInfo())} = source.{propertyName}{nullPrefix}.ToTypedBuilder(){nullSuffix};";
+            }
+        }
     }
 
     private static void AddOverloadsForExpression(PipelineContext<BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)

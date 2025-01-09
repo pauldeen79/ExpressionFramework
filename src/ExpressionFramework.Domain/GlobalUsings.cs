@@ -13,6 +13,7 @@ global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Aggregators;
 global using CrossCutting.Utilities.Operators;
 global using ExpressionFramework.Domain.Attributes;
+global using ExpressionFramework.Domain.Builders;
 global using ExpressionFramework.Domain.Builders.Expressions;
 global using ExpressionFramework.Domain.Contracts;
 global using ExpressionFramework.Domain.Domains;
