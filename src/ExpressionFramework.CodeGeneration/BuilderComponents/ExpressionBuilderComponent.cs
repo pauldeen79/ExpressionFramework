@@ -122,7 +122,7 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
                     {
                         continue;
                     }
-                    if (property.TypeName.StartsWith("ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder"))
+                    if (property.TypeName.GetGenericArguments().StartsWith("ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder"))
                     {
                         statement.Statement = statement.Statement.Replace(".Select(x => x.ToBuilder()))", ".Select(x => x.ToTypedBuilder()))", StringComparison.Ordinal);
                     }

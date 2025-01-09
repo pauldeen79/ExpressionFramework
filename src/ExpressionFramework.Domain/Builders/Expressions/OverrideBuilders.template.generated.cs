@@ -2217,7 +2217,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _validationErrorExpressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<CrossCutting.Common.Results.ValidationError>>();
             _errorMessageExpression = source.ErrorMessageExpression.ToTypedBuilder();
-            if (source.ValidationErrorExpressions is not null) foreach (var item in source.ValidationErrorExpressions.Select(x => x.ToBuilder())) _validationErrorExpressions.Add(item);
+            if (source.ValidationErrorExpressions is not null) foreach (var item in source.ValidationErrorExpressions.Select(x => x.ToTypedBuilder())) _validationErrorExpressions.Add(item);
         }
 
         public InvalidExpressionBuilder() : base()
@@ -3341,7 +3341,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _sortOrderExpressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<ExpressionFramework.Domain.SortOrder>>();
             _expression = source.Expression.ToTypedBuilder();
-            if (source.SortOrderExpressions is not null) foreach (var item in source.SortOrderExpressions.Select(x => x.ToBuilder())) _sortOrderExpressions.Add(item);
+            if (source.SortOrderExpressions is not null) foreach (var item in source.SortOrderExpressions.Select(x => x.ToTypedBuilder())) _sortOrderExpressions.Add(item);
         }
 
         public OrderByExpressionBuilder() : base()
@@ -4133,7 +4133,7 @@ namespace ExpressionFramework.Domain.Builders.Expressions
         {
             if (source is null) throw new System.ArgumentNullException(nameof(source));
             _expressions = new System.Collections.ObjectModel.ObservableCollection<ExpressionFramework.Domain.Contracts.ITypedExpressionBuilder<string>>();
-            if (source.Expressions is not null) foreach (var item in source.Expressions.Select(x => x.ToBuilder())) _expressions.Add(item);
+            if (source.Expressions is not null) foreach (var item in source.Expressions.Select(x => x.ToTypedBuilder())) _expressions.Add(item);
         }
 
         public StringConcatenateExpressionBuilder() : base()
