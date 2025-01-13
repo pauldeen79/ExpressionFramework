@@ -1,82 +1,32 @@
 ﻿namespace ExpressionFramework.Parser.ExpressionResultParsers;
 
-public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionResolver
+public abstract class ExpressionParserBase : IFunction, IExpressionResolver
 {
-    private readonly string _functionName;
-    private readonly string _namespace;
-    private readonly string[] _aliases;
-
-    protected ExpressionParserBase(string functionName, params string[] aliases) : this(functionName, string.Empty, aliases)
+    protected ExpressionParserBase(string functionName)
     {
     }
 
-    protected ExpressionParserBase(string functionName, string @namespace, params string[] aliases)
+    private Result<Expression> Parse(FunctionCallContext context)
     {
-        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
-        ArgumentGuard.IsNotNull(@namespace, nameof(@namespace));
-        ArgumentGuard.IsNotNull(aliases, nameof(aliases));
+        context = ArgumentGuard.IsNotNull(context, nameof(context));
 
-        _functionName = functionName;
-        _namespace = @namespace;
-        _aliases = aliases;
+        return DoParse(context);
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-    {
-        var result = Parse(functionParseResult, evaluator, parser);
+    protected abstract Result<Expression> DoParse(FunctionCallContext context);
 
-        return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
-            : Result.FromExistingResult<object?>(result);
-    }
-
-    public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-    {
-        functionParseResult = ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
-
-        return IsFunctionValid(functionParseResult)
-            ? DoParse(functionParseResult, evaluator, parser)
-            : Result.Continue<Expression>();
-    }
-
-    protected virtual bool IsNameValid(string functionName)
-    {
-        functionName = ArgumentGuard.IsNotNull(functionName, nameof(functionName));
-
-        if (_aliases.Length > 0 && Array.Exists(_aliases, x => functionName.Equals(x, StringComparison.OrdinalIgnoreCase)))
-        {
-            return true;
-        }
-
-        var lastDot = functionName.LastIndexOf('.');
-        if (lastDot == -1)
-        {
-            // no namespace qualifier
-            return _namespace.Length == 0 && functionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase);
-        }
-
-        // namespace qualifier
-        return functionName.Substring(0, lastDot).Equals(_namespace, StringComparison.OrdinalIgnoreCase)
-            && functionName.Substring(lastDot + 1).Equals(_functionName, StringComparison.OrdinalIgnoreCase);
-    }
-
-    protected virtual bool IsFunctionValid(FunctionParseResult functionParseResult)
-        => IsNameValid(ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName);
-
-    protected abstract Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
-
-    protected static Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    protected static Result<Expression> ParseTypedExpression(Type expressionType, int index, string argumentName, FunctionCallContext context)
     {
         expressionType = ArgumentGuard.IsNotNull(expressionType, nameof(expressionType));
-        functionParseResult = ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
+        context = ArgumentGuard.IsNotNull(context, nameof(context));
 
-        var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
+        var typeResult = context.FunctionCall.Name.GetGenericTypeResult();
         if (!typeResult.IsSuccessful())
         {
             return Result.FromExistingResult<Expression>(typeResult);
         }
 
-        var valueResult = functionParseResult.GetArgumentValueResult(index, argumentName, functionParseResult.Context, evaluator, parser);
+        var valueResult = context.GetArgumentValueResult(index, argumentName);
         if (!valueResult.IsSuccessful())
         {
             return Result.FromExistingResult<Expression>(valueResult);
@@ -92,5 +42,24 @@ public abstract class ExpressionParserBase : IFunctionResultParser, IExpressionR
             return Result.Invalid<Expression>($"Could not create {expressionType.Name.Replace("`1", string.Empty)}. Error: {ex.Message}");
         }
 #pragma warning restore CA1031 // Do not catch general exception types
+    }
+
+    Result IFunction.Validate(FunctionCallContext context)
+    {
+        return Result.Success();
+    }
+
+    Result<object?> IFunction.Evaluate(FunctionCallContext context)
+    {
+        var result = Parse(context);
+
+        return result.IsSuccessful() && result.Status != ResultStatus.Continue
+            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
+            : Result.FromExistingResult<object?>(result);
+    }
+
+    Result<Expression> IExpressionResolver.Parse(FunctionCallContext context)
+    {
+        return Parse(context);
     }
 }

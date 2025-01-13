@@ -1,20 +1,17 @@
 ﻿namespace ExpressionFramework.Parser.AggregatorResultParsers;
 
-public abstract class AggregatorParserBase : IFunctionResultParser
+public abstract class AggregatorParserBase : IFunction
 {
-    private readonly string _functionName;
-
     protected AggregatorParserBase(string functionName)
     {
         ArgumentGuard.IsNotNull(functionName, nameof(functionName));
-
-        _functionName = functionName;
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase)
-            ? Result.FromExistingResult<object?>(DoParse(functionParseResult, evaluator, parser))
-            : Result.Continue<object?>();
+    public Result<object?> Evaluate(FunctionCallContext context)
+        => Result.FromExistingResult<object?>(DoParse(context));
 
-    protected abstract Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
+    public Result Validate(FunctionCallContext context)
+        => Result.Success();
+
+    protected abstract Result<Aggregator> DoParse(FunctionCallContext context);
 }
