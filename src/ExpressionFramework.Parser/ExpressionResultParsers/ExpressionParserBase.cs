@@ -2,11 +2,19 @@
 
 public abstract class ExpressionParserBase : IFunction, IExpressionResolver
 {
-    protected ExpressionParserBase(string functionName)
+    public Result<object?> Evaluate(FunctionCallContext context)
     {
+        var result = ParseExpression(context);
+
+        return result.IsSuccessful() && result.Status != ResultStatus.Continue
+            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
+            : Result.FromExistingResult<object?>(result);
     }
 
-    private Result<Expression> Parse(FunctionCallContext context)
+    public Result Validate(FunctionCallContext context)
+        => Result.Success();
+
+    public Result<Expression> ParseExpression(FunctionCallContext context)
     {
         context = ArgumentGuard.IsNotNull(context, nameof(context));
 
@@ -26,7 +34,7 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
             return Result.FromExistingResult<Expression>(typeResult);
         }
 
-        var valueResult = context.GetArgumentValueResult(index, argumentName);
+        var valueResult = context.FunctionCall.GetArgumentValueResult(index, argumentName, context);
         if (!valueResult.IsSuccessful())
         {
             return Result.FromExistingResult<Expression>(valueResult);
@@ -42,24 +50,5 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
             return Result.Invalid<Expression>($"Could not create {expressionType.Name.Replace("`1", string.Empty)}. Error: {ex.Message}");
         }
 #pragma warning restore CA1031 // Do not catch general exception types
-    }
-
-    Result IFunction.Validate(FunctionCallContext context)
-    {
-        return Result.Success();
-    }
-
-    Result<object?> IFunction.Evaluate(FunctionCallContext context)
-    {
-        var result = Parse(context);
-
-        return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
-            : Result.FromExistingResult<object?>(result);
-    }
-
-    Result<Expression> IExpressionResolver.Parse(FunctionCallContext context)
-    {
-        return Parse(context);
     }
 }

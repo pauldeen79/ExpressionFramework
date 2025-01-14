@@ -10,13 +10,10 @@
 #nullable enable
 namespace ExpressionFramework.Parser.OperatorResultParsers
 {
+    [FunctionName(@"EndsWithOperator")]
     public class EndsWithOperatorParser : OperatorParserBase
     {
-        public EndsWithOperatorParser() : base(@"EndsWithOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EndsWithOperator(
@@ -24,13 +21,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"EnumerableContainsOperator")]
     public class EnumerableContainsOperatorParser : OperatorParserBase
     {
-        public EnumerableContainsOperatorParser() : base(@"EnumerableContainsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EnumerableContainsOperator(
@@ -38,13 +32,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"EnumerableNotContainsOperator")]
     public class EnumerableNotContainsOperatorParser : OperatorParserBase
     {
-        public EnumerableNotContainsOperatorParser() : base(@"EnumerableNotContainsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EnumerableNotContainsOperator(
@@ -52,13 +43,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"EqualsOperator")]
     public class EqualsOperatorParser : OperatorParserBase
     {
-        public EqualsOperatorParser() : base(@"EqualsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.EqualsOperator(
@@ -66,13 +54,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsGreaterOperator")]
     public class IsGreaterOperatorParser : OperatorParserBase
     {
-        public IsGreaterOperatorParser() : base(@"IsGreaterOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsGreaterOperator(
@@ -80,13 +65,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsGreaterOrEqualOperator")]
     public class IsGreaterOrEqualOperatorParser : OperatorParserBase
     {
-        public IsGreaterOrEqualOperatorParser() : base(@"IsGreaterOrEqualOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsGreaterOrEqualOperator(
@@ -94,13 +76,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNotNullOperator")]
     public class IsNotNullOperatorParser : OperatorParserBase
     {
-        public IsNotNullOperatorParser() : base(@"IsNotNullOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOperator(
@@ -108,13 +87,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNotNullOrEmptyOperator")]
     public class IsNotNullOrEmptyOperatorParser : OperatorParserBase
     {
-        public IsNotNullOrEmptyOperatorParser() : base(@"IsNotNullOrEmptyOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOrEmptyOperator(
@@ -122,13 +98,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNotNullOrWhiteSpaceOperator")]
     public class IsNotNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
-        public IsNotNullOrWhiteSpaceOperatorParser() : base(@"IsNotNullOrWhiteSpaceOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNotNullOrWhiteSpaceOperator(
@@ -136,13 +109,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNullOperator")]
     public class IsNullOperatorParser : OperatorParserBase
     {
-        public IsNullOperatorParser() : base(@"IsNullOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOperator(
@@ -150,13 +120,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNullOrEmptyOperator")]
     public class IsNullOrEmptyOperatorParser : OperatorParserBase
     {
-        public IsNullOrEmptyOperatorParser() : base(@"IsNullOrEmptyOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOrEmptyOperator(
@@ -164,13 +131,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsNullOrWhiteSpaceOperator")]
     public class IsNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
-        public IsNullOrWhiteSpaceOperatorParser() : base(@"IsNullOrWhiteSpaceOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsNullOrWhiteSpaceOperator(
@@ -178,13 +142,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsSmallerOperator")]
     public class IsSmallerOperatorParser : OperatorParserBase
     {
-        public IsSmallerOperatorParser() : base(@"IsSmallerOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsSmallerOperator(
@@ -192,13 +153,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"IsSmallerOrEqualOperator")]
     public class IsSmallerOrEqualOperatorParser : OperatorParserBase
     {
-        public IsSmallerOrEqualOperatorParser() : base(@"IsSmallerOrEqualOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.IsSmallerOrEqualOperator(
@@ -206,13 +164,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"NotEndsWithOperator")]
     public class NotEndsWithOperatorParser : OperatorParserBase
     {
-        public NotEndsWithOperatorParser() : base(@"NotEndsWithOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotEndsWithOperator(
@@ -220,13 +175,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"NotEqualsOperator")]
     public class NotEqualsOperatorParser : OperatorParserBase
     {
-        public NotEqualsOperatorParser() : base(@"NotEqualsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotEqualsOperator(
@@ -234,13 +186,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"NotStartsWithOperator")]
     public class NotStartsWithOperatorParser : OperatorParserBase
     {
-        public NotStartsWithOperatorParser() : base(@"NotStartsWithOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.NotStartsWithOperator(
@@ -248,13 +197,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StartsWithOperator")]
     public class StartsWithOperatorParser : OperatorParserBase
     {
-        public StartsWithOperatorParser() : base(@"StartsWithOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StartsWithOperator(
@@ -262,13 +208,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringContainsOperator")]
     public class StringContainsOperatorParser : OperatorParserBase
     {
-        public StringContainsOperatorParser() : base(@"StringContainsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StringContainsOperator(
@@ -276,13 +219,10 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringNotContainsOperator")]
     public class StringNotContainsOperatorParser : OperatorParserBase
     {
-        public StringNotContainsOperatorParser() : base(@"StringNotContainsOperator")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Operator>(new ExpressionFramework.Domain.Operators.StringNotContainsOperator(

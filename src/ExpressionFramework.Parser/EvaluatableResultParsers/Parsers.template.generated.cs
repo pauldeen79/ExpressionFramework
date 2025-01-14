@@ -10,18 +10,21 @@
 #nullable enable
 namespace ExpressionFramework.Parser.EvaluatableResultParsers
 {
+    [FunctionName(@"ComposableEvaluatable")]
+    [FunctionArgument(@"LeftExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
+    [FunctionArgument(@"RightExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"Combination", typeof(System.Nullable<ExpressionFramework.Domain.Domains.Combination>))]
+    [FunctionArgument(@"StartGroup", typeof(System.Boolean))]
+    [FunctionArgument(@"EndGroup", typeof(System.Boolean))]
     public class ComposableEvaluatableParser : EvaluatableParserBase
     {
-        public ComposableEvaluatableParser() : base(@"ComposableEvaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var operatorResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(1, @"Operator", functionParseResult.Context, evaluator, parser);
-            var combinationResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Domains.Combination>(3, @"Combination", functionParseResult.Context, evaluator, parser, default);
-            var startGroupResult = functionParseResult.GetArgumentExpressionResult<System.Boolean>(4, @"StartGroup", functionParseResult.Context, evaluator, parser);
-            var endGroupResult = functionParseResult.GetArgumentExpressionResult<System.Boolean>(5, @"EndGroup", functionParseResult.Context, evaluator, parser);
+            var operatorResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(1, @"Operator");
+            var combinationResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Domains.Combination>(3, @"Combination", default);
+            var startGroupResult = context.GetArgumentExpressionResult<System.Boolean>(4, @"StartGroup");
+            var endGroupResult = context.GetArgumentExpressionResult<System.Boolean>(5, @"EndGroup");
             var error = new Result[]
             {
                 operatorResult,
@@ -35,24 +38,22 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.ComposableEvaluatable(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"LeftExpression")),
                 operatorResult.Value!,
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(2, @"RightExpression")),
                 combinationResult.Value,
                 startGroupResult.Value!,
                 endGroupResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ComposedEvaluatable")]
+    [FunctionArgument(@"Conditions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Evaluatables.ComposableEvaluatable>))]
     public class ComposedEvaluatableParser : EvaluatableParserBase
     {
-        public ComposedEvaluatableParser() : base(@"ComposedEvaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var conditionsResult = functionParseResult.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Evaluatables.ComposableEvaluatable>>(0, @"Conditions", functionParseResult.Context, evaluator, parser);
+            var conditionsResult = context.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Evaluatables.ComposableEvaluatable>>(0, @"Conditions");
             var error = new Result[]
             {
                 conditionsResult,
@@ -67,15 +68,13 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ConstantEvaluatable")]
+    [FunctionArgument(@"Value", typeof(System.Boolean))]
     public class ConstantEvaluatableParser : EvaluatableParserBase
     {
-        public ConstantEvaluatableParser() : base(@"ConstantEvaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var valueResult = functionParseResult.GetArgumentExpressionResult<System.Boolean>(0, @"Value", functionParseResult.Context, evaluator, parser);
+            var valueResult = context.GetArgumentExpressionResult<System.Boolean>(0, @"Value");
             var error = new Result[]
             {
                 valueResult,
@@ -90,15 +89,13 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"DelegateEvaluatable")]
+    [FunctionArgument(@"Value", typeof(System.Func<System.Boolean>))]
     public class DelegateEvaluatableParser : EvaluatableParserBase
     {
-        public DelegateEvaluatableParser() : base(@"DelegateEvaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var valueResult = functionParseResult.GetArgumentExpressionResult<System.Func<System.Boolean>>(0, @"Value", functionParseResult.Context, evaluator, parser);
+            var valueResult = context.GetArgumentExpressionResult<System.Func<System.Boolean>>(0, @"Value");
             var error = new Result[]
             {
                 valueResult,
@@ -113,15 +110,15 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"SingleEvaluatable")]
+    [FunctionArgument(@"LeftExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
+    [FunctionArgument(@"RightExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class SingleEvaluatableParser : EvaluatableParserBase
     {
-        public SingleEvaluatableParser() : base(@"SingleEvaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var operatorResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(1, @"Operator", functionParseResult.Context, evaluator, parser);
+            var operatorResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(1, @"Operator");
             var error = new Result[]
             {
                 operatorResult,
@@ -132,9 +129,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Evaluatable>(new ExpressionFramework.Domain.Evaluatables.SingleEvaluatable(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"LeftExpression")),
                 operatorResult.Value!,
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(2, @"RightExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(2, @"RightExpression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }

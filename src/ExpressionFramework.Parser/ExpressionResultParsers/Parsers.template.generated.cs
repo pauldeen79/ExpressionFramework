@@ -10,15 +10,15 @@
 #nullable enable
 namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
+    [FunctionName(@"Aggregate")]
+    [FunctionArgument(@"Expressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>))]
+    [FunctionArgument(@"Aggregator", typeof(ExpressionFramework.Domain.Aggregator))]
+    [FunctionArgument(@"FormatProviderExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.IFormatProvider>?))]
     public class AggregateExpressionParser : ExpressionParserBase
     {
-        public AggregateExpressionParser() : base(@"Aggregate")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var aggregatorResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Aggregator>(1, @"Aggregator", functionParseResult.Context, evaluator, parser);
+            var aggregatorResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Aggregator>(1, @"Aggregator");
             var error = new Result[]
             {
                 aggregatorResult,
@@ -29,96 +29,85 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AggregateExpression(
-                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser),
+                context.GetExpressionsArgumentValueResult(0, @"Expressions"),
                 aggregatorResult.Value!,
-                functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(2, @"FormatProviderExpression", evaluator, parser, default)));
+                context.GetArgumentValueExpression<System.IFormatProvider>(2, @"FormatProviderExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"All")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
     public class AllExpressionParser : ExpressionParserBase
     {
-        public AllExpressionParser() : base(@"All")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AllExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"And")]
+    [FunctionArgument(@"FirstExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
+    [FunctionArgument(@"SecondExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
     public class AndExpressionParser : ExpressionParserBase
     {
-        public AndExpressionParser() : base(@"And")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AndExpression(
-                functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
+                context.GetArgumentBooleanValueExpression(0, @"FirstExpression"),
+                context.GetArgumentBooleanValueExpression(1, @"SecondExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Any")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>?))]
     public class AnyExpressionParser : ExpressionParserBase
     {
-        public AnyExpressionParser() : base(@"Any")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.AnyExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Cast")]
+    [FunctionArgument(@"SourceExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class CastExpressionParser : ExpressionParserBase
     {
-        public CastExpressionParser() : base(@"Cast")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(CastExpression<>), 0, @"SourceExpression", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(CastExpression<>), 0, @"SourceExpression", context);
         }
     }
+    [FunctionName(@"Chained")]
+    [FunctionArgument(@"Expressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>))]
     public class ChainedExpressionParser : ExpressionParserBase
     {
-        public ChainedExpressionParser() : base(@"Chained")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ChainedExpression(
-                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
+                context.GetExpressionsArgumentValueResult(0, @"Expressions")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Compound")]
+    [FunctionArgument(@"FirstExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"SecondExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"Aggregator", typeof(ExpressionFramework.Domain.Aggregator))]
+    [FunctionArgument(@"FormatProviderExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.IFormatProvider>?))]
     public class CompoundExpressionParser : ExpressionParserBase
     {
-        public CompoundExpressionParser() : base(@"Compound")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var aggregatorResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Aggregator>(2, @"Aggregator", functionParseResult.Context, evaluator, parser);
+            var aggregatorResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Aggregator>(2, @"Aggregator");
             var error = new Result[]
             {
                 aggregatorResult,
@@ -129,22 +118,20 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.CompoundExpression(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"FirstExpression")),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"SecondExpression")),
                 aggregatorResult.Value!,
-                functionParseResult.GetArgumentValueExpression<System.IFormatProvider>(3, @"FormatProviderExpression", evaluator, parser, default)));
+                context.GetArgumentValueExpression<System.IFormatProvider>(3, @"FormatProviderExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Constant")]
+    [FunctionArgument(@"Value", typeof(System.Object))]
     public class ConstantExpressionParser : ExpressionParserBase
     {
-        public ConstantExpressionParser() : base(@"Constant")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var valueResult = functionParseResult.GetArgumentValueResult(0, @"Value", functionParseResult.Context, evaluator, parser, default);
+            var valueResult = context.GetArgumentValueResult(0, @"Value", default);
             var error = new Result[]
             {
                 valueResult,
@@ -159,15 +146,13 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ConstantResult")]
+    [FunctionArgument(@"Value", typeof(CrossCutting.Common.Results.Result))]
     public class ConstantResultExpressionParser : ExpressionParserBase
     {
-        public ConstantResultExpressionParser() : base(@"ConstantResult")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var valueResult = functionParseResult.GetArgumentExpressionResult<CrossCutting.Common.Results.Result>(0, @"Value", functionParseResult.Context, evaluator, parser);
+            var valueResult = context.GetArgumentExpressionResult<CrossCutting.Common.Results.Result>(0, @"Value");
             var error = new Result[]
             {
                 valueResult,
@@ -182,13 +167,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Context")]
     public class ContextExpressionParser : ExpressionParserBase
     {
-        public ContextExpressionParser() : base(@"Context")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ContextExpression(
@@ -196,44 +178,38 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Count")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>?))]
     public class CountExpressionParser : ExpressionParserBase
     {
-        public CountExpressionParser() : base(@"Count")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.CountExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Day")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>))]
     public class DayExpressionParser : ExpressionParserBase
     {
-        public DayExpressionParser() : base(@"Day")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.DayExpression(
-                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                context.GetArgumentDateTimeValueExpression(0, @"Expression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Default")]
     public class DefaultExpressionParser : ExpressionParserBase
     {
-        public DefaultExpressionParser() : base(@"Default")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
+            var typeResult = context.FunctionName.GetGenericTypeResult();
             if (!typeResult.IsSuccessful())
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(typeResult);
@@ -242,21 +218,14 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return Result.Success<ExpressionFramework.Domain.Expression>((ExpressionFramework.Domain.Expression)System.Activator.CreateInstance(typeof(ExpressionFramework.Domain.Expressions.DefaultExpression<>).MakeGenericType(typeResult.Value!)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
-        }
     }
+    [FunctionName(@"Delegate")]
+    [FunctionArgument(@"Value", typeof(System.Func<System.Object?,System.Object?>))]
     public class DelegateExpressionParser : ExpressionParserBase
     {
-        public DelegateExpressionParser() : base(@"Delegate")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var valueResult = functionParseResult.GetArgumentExpressionResult<System.Func<System.Object?,System.Object?>>(0, @"Value", functionParseResult.Context, evaluator, parser);
+            var valueResult = context.GetArgumentExpressionResult<System.Func<System.Object?,System.Object?>>(0, @"Value");
             var error = new Result[]
             {
                 valueResult,
@@ -271,15 +240,13 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"DelegateResult")]
+    [FunctionArgument(@"Result", typeof(System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object?>>))]
     public class DelegateResultExpressionParser : ExpressionParserBase
     {
-        public DelegateResultExpressionParser() : base(@"DelegateResult")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var resultResult = functionParseResult.GetArgumentExpressionResult<System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object?>>>(0, @"Result", functionParseResult.Context, evaluator, parser);
+            var resultResult = context.GetArgumentExpressionResult<System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Object?>>>(0, @"Result");
             var error = new Result[]
             {
                 resultResult,
@@ -294,44 +261,40 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ElementAt")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"IndexExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
     public class ElementAtExpressionParser : ExpressionParserBase
     {
-        public ElementAtExpressionParser() : base(@"ElementAt")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ElementAtExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"IndexExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ElementAtOrDefault")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"IndexExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class ElementAtOrDefaultExpressionParser : ExpressionParserBase
     {
-        public ElementAtOrDefaultExpressionParser() : base(@"ElementAtOrDefault")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ElementAtOrDefaultExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"IndexExpression"),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(2, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Empty")]
     public class EmptyExpressionParser : ExpressionParserBase
     {
-        public EmptyExpressionParser() : base(@"Empty")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EmptyExpression(
@@ -339,44 +302,40 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Equals")]
+    [FunctionArgument(@"FirstExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"SecondExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class EqualsExpressionParser : ExpressionParserBase
     {
-        public EqualsExpressionParser() : base(@"Equals")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EqualsExpression(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"FirstExpression")),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"SecondExpression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Error")]
+    [FunctionArgument(@"ErrorMessageExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class ErrorExpressionParser : ExpressionParserBase
     {
-        public ErrorExpressionParser() : base(@"Error")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ErrorExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"ErrorMessageExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Evaluatable")]
+    [FunctionArgument(@"Condition", typeof(ExpressionFramework.Domain.Evaluatable))]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Expression))]
     public class EvaluatableExpressionParser : ExpressionParserBase
     {
-        public EvaluatableExpressionParser() : base(@"Evaluatable")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var conditionResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Evaluatable>(0, @"Condition", functionParseResult.Context, evaluator, parser);
+            var conditionResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Evaluatable>(0, @"Condition");
             var error = new Result[]
             {
                 conditionResult,
@@ -388,17 +347,14 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.EvaluatableExpression(
                 conditionResult.Value!,
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"Expression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"Expression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"False")]
     public class FalseExpressionParser : ExpressionParserBase
     {
-        public FalseExpressionParser() : base(@"False")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FalseExpression(
@@ -406,76 +362,73 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Field")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"FieldNameExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class FieldExpressionParser : ExpressionParserBase
     {
-        public FieldExpressionParser() : base(@"Field")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FieldExpression(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"Expression", functionParseResult.Context, evaluator, parser)),
-                functionParseResult.GetArgumentStringValueExpression(1, @"FieldNameExpression", evaluator, parser)));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"Expression")),
+                context.GetArgumentStringValueExpression(1, @"FieldNameExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"First")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>?))]
     public class FirstExpressionParser : ExpressionParserBase
     {
-        public FirstExpressionParser() : base(@"First")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FirstExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"FirstOrDefault")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class FirstOrDefaultExpressionParser : ExpressionParserBase
     {
-        public FirstOrDefaultExpressionParser() : base(@"FirstOrDefault")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.FirstOrDefaultExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(2, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"GroupBy")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"KeySelectorExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class GroupByExpressionParser : ExpressionParserBase
     {
-        public GroupByExpressionParser() : base(@"GroupBy")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.GroupByExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"KeySelectorExpression", functionParseResult.Context, evaluator, parser))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"KeySelectorExpression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"If")]
+    [FunctionArgument(@"Condition", typeof(ExpressionFramework.Domain.Evaluatable))]
+    [FunctionArgument(@"ResultExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class IfExpressionParser : ExpressionParserBase
     {
-        public IfExpressionParser() : base(@"If")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var conditionResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Evaluatable>(0, @"Condition", functionParseResult.Context, evaluator, parser);
+            var conditionResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Evaluatable>(0, @"Condition");
             var error = new Result[]
             {
                 conditionResult,
@@ -487,20 +440,19 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.IfExpression(
                 conditionResult.Value!,
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"ResultExpression", functionParseResult.Context, evaluator, parser)),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"ResultExpression")),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(2, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Invalid")]
+    [FunctionArgument(@"ErrorMessageExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"ValidationErrorExpressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Contracts.ITypedExpression<CrossCutting.Common.Results.ValidationError>>))]
     public class InvalidExpressionParser : ExpressionParserBase
     {
-        public InvalidExpressionParser() : base(@"Invalid")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var validationErrorExpressionsResult = functionParseResult.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<CrossCutting.Common.Results.ValidationError>>>(1, @"ValidationErrorExpressions", functionParseResult.Context, evaluator, parser);
+            var validationErrorExpressionsResult = context.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<CrossCutting.Common.Results.ValidationError>>>(1, @"ValidationErrorExpressions");
             var error = new Result[]
             {
                 validationErrorExpressionsResult,
@@ -511,139 +463,128 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.InvalidExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"ErrorMessageExpression", evaluator, parser),
+                context.GetArgumentStringValueExpression(0, @"ErrorMessageExpression"),
                 validationErrorExpressionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Last")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>?))]
     public class LastExpressionParser : ExpressionParserBase
     {
-        public LastExpressionParser() : base(@"Last")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LastExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"LastOrDefault")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class LastOrDefaultExpressionParser : ExpressionParserBase
     {
-        public LastOrDefaultExpressionParser() : base(@"LastOrDefault")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LastOrDefaultExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(2, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Left")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"LengthExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
     public class LeftExpressionParser : ExpressionParserBase
     {
-        public LeftExpressionParser() : base(@"Left")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.LeftExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"LengthExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Max")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"SelectorExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class MaxExpressionParser : ExpressionParserBase
     {
-        public MaxExpressionParser() : base(@"Max")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MaxExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(1, @"SelectorExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Min")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"SelectorExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class MinExpressionParser : ExpressionParserBase
     {
-        public MinExpressionParser() : base(@"Min")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MinExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(1, @"SelectorExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Month")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>))]
     public class MonthExpressionParser : ExpressionParserBase
     {
-        public MonthExpressionParser() : base(@"Month")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.MonthExpression(
-                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                context.GetArgumentDateTimeValueExpression(0, @"Expression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"NotEquals")]
+    [FunctionArgument(@"FirstExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"SecondExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class NotEqualsExpressionParser : ExpressionParserBase
     {
-        public NotEqualsExpressionParser() : base(@"NotEquals")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.NotEqualsExpression(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"FirstExpression", functionParseResult.Context, evaluator, parser)),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SecondExpression", functionParseResult.Context, evaluator, parser))));
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"FirstExpression")),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"SecondExpression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Not")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
     public class NotExpressionParser : ExpressionParserBase
     {
-        public NotExpressionParser() : base(@"Not")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.NotExpression(
-                functionParseResult.GetArgumentBooleanValueExpression(0, @"Expression", evaluator, parser)));
+                context.GetArgumentBooleanValueExpression(0, @"Expression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Now")]
+    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider))]
     public class NowExpressionParser : ExpressionParserBase
     {
-        public NowExpressionParser() : base(@"Now")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var dateTimeProviderResult = functionParseResult.GetArgumentExpressionResult<CrossCutting.Common.Abstractions.IDateTimeProvider>(0, @"DateTimeProvider", functionParseResult.Context, evaluator, parser, default);
+            var dateTimeProviderResult = context.GetArgumentExpressionResult<CrossCutting.Common.Abstractions.IDateTimeProvider>(0, @"DateTimeProvider", default);
             var error = new Result[]
             {
                 dateTimeProviderResult,
@@ -658,30 +599,29 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"OfType")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"TypeExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Type>))]
     public class OfTypeExpressionParser : ExpressionParserBase
     {
-        public OfTypeExpressionParser() : base(@"OfType")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OfTypeExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Type>(1, @"TypeExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Type>(1, @"TypeExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Operator")]
+    [FunctionArgument(@"LeftExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"RightExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
     public class OperatorExpressionParser : ExpressionParserBase
     {
-        public OperatorExpressionParser() : base(@"Operator")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var operatorResult = functionParseResult.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(2, @"Operator", functionParseResult.Context, evaluator, parser);
+            var operatorResult = context.GetArgumentExpressionResult<ExpressionFramework.Domain.Operator>(2, @"Operator");
             var error = new Result[]
             {
                 operatorResult,
@@ -692,21 +632,20 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OperatorExpression(
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(0, @"LeftExpression", functionParseResult.Context, evaluator, parser)),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"RightExpression", functionParseResult.Context, evaluator, parser)),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(0, @"LeftExpression")),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"RightExpression")),
                 operatorResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"OrderBy")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"SortOrderExpressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Contracts.ITypedExpression<ExpressionFramework.Domain.SortOrder>>))]
     public class OrderByExpressionParser : ExpressionParserBase
     {
-        public OrderByExpressionParser() : base(@"OrderBy")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var sortOrderExpressionsResult = functionParseResult.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<ExpressionFramework.Domain.SortOrder>>>(1, @"SortOrderExpressions", functionParseResult.Context, evaluator, parser);
+            var sortOrderExpressionsResult = context.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<ExpressionFramework.Domain.SortOrder>>>(1, @"SortOrderExpressions");
             var error = new Result[]
             {
                 sortOrderExpressionsResult,
@@ -717,125 +656,116 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             }
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OrderByExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
                 sortOrderExpressionsResult.Value!));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Or")]
+    [FunctionArgument(@"FirstExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
+    [FunctionArgument(@"SecondExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
     public class OrExpressionParser : ExpressionParserBase
     {
-        public OrExpressionParser() : base(@"Or")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.OrExpression(
-                functionParseResult.GetArgumentBooleanValueExpression(0, @"FirstExpression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"SecondExpression", evaluator, parser)));
+                context.GetArgumentBooleanValueExpression(0, @"FirstExpression"),
+                context.GetArgumentBooleanValueExpression(1, @"SecondExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Right")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"LengthExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
     public class RightExpressionParser : ExpressionParserBase
     {
-        public RightExpressionParser() : base(@"Right")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.RightExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"LengthExpression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"LengthExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Select")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"SelectorExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class SelectExpressionParser : ExpressionParserBase
     {
-        public SelectExpressionParser() : base(@"Select")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SelectExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                new TypedConstantResultExpression<System.Object>(context.GetArgumentValueResult(1, @"SelectorExpression"))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Sequence")]
+    [FunctionArgument(@"Expressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>))]
     public class SequenceExpressionParser : ExpressionParserBase
     {
-        public SequenceExpressionParser() : base(@"Sequence")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SequenceExpression(
-                functionParseResult.GetExpressionsArgumentValueResult(0, @"Expressions", evaluator, parser)));
+                context.GetExpressionsArgumentValueResult(0, @"Expressions")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Single")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>?))]
     public class SingleExpressionParser : ExpressionParserBase
     {
-        public SingleExpressionParser() : base(@"Single")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SingleExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"SingleOrDefault")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class SingleOrDefaultExpressionParser : ExpressionParserBase
     {
-        public SingleOrDefaultExpressionParser() : base(@"SingleOrDefault")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SingleOrDefaultExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser, default),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(2, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression", default),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(2, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Skip")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"CountExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
     public class SkipExpressionParser : ExpressionParserBase
     {
-        public SkipExpressionParser() : base(@"Skip")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SkipExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"CountExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringConcatenate")]
+    [FunctionArgument(@"Expressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>>))]
     public class StringConcatenateExpressionParser : ExpressionParserBase
     {
-        public StringConcatenateExpressionParser() : base(@"StringConcatenate")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var expressionsResult = functionParseResult.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>>>(0, @"Expressions", functionParseResult.Context, evaluator, parser);
+            var expressionsResult = context.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>>>(0, @"Expressions");
             var error = new Result[]
             {
                 expressionsResult,
@@ -850,91 +780,86 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringFind")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"FindExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class StringFindExpressionParser : ExpressionParserBase
     {
-        public StringFindExpressionParser() : base(@"StringFind")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringFindExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentStringValueExpression(1, @"FindExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringLength")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class StringLengthExpressionParser : ExpressionParserBase
     {
-        public StringLengthExpressionParser() : base(@"StringLength")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringLengthExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"Expression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"StringReplace")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"FindExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"ReplaceExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class StringReplaceExpressionParser : ExpressionParserBase
     {
-        public StringReplaceExpressionParser() : base(@"StringReplace")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.StringReplaceExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentStringValueExpression(1, @"FindExpression", evaluator, parser),
-                functionParseResult.GetArgumentStringValueExpression(2, @"ReplaceExpression", evaluator, parser)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentStringValueExpression(1, @"FindExpression"),
+                context.GetArgumentStringValueExpression(2, @"ReplaceExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Substring")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"IndexExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
+    [FunctionArgument(@"LengthExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>?))]
     public class SubstringExpressionParser : ExpressionParserBase
     {
-        public SubstringExpressionParser() : base(@"Substring")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SubstringExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"IndexExpression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(2, @"LengthExpression", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"IndexExpression"),
+                context.GetArgumentInt32ValueExpression(2, @"LengthExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Sum")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"SelectorExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class SumExpressionParser : ExpressionParserBase
     {
-        public SumExpressionParser() : base(@"Sum")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SumExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"SelectorExpression", functionParseResult.Context, evaluator, parser, default))));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(1, @"SelectorExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Switch")]
+    [FunctionArgument(@"Cases", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Case>))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Expression))]
     public class SwitchExpressionParser : ExpressionParserBase
     {
-        public SwitchExpressionParser() : base(@"Switch")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var casesResult = functionParseResult.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Case>>(0, @"Cases", functionParseResult.Context, evaluator, parser);
+            var casesResult = context.GetArgumentExpressionResult<System.Collections.Generic.IEnumerable<ExpressionFramework.Domain.Case>>(0, @"Cases");
             var error = new Result[]
             {
                 casesResult,
@@ -946,49 +871,45 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.SwitchExpression(
                 casesResult.Value!,
-                new TypedConstantResultExpression<System.Object?>(functionParseResult.GetArgumentValueResult(1, @"DefaultExpression", functionParseResult.Context, evaluator, parser, default))));
+                new TypedConstantResultExpression<System.Object?>(context.GetArgumentValueResult(1, @"DefaultExpression", default))));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Take")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"CountExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Int32>))]
     public class TakeExpressionParser : ExpressionParserBase
     {
-        public TakeExpressionParser() : base(@"Take")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TakeExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentInt32ValueExpression(1, @"CountExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentInt32ValueExpression(1, @"CountExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ToCamelCase")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"Culture", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>?))]
     public class ToCamelCaseExpressionParser : ExpressionParserBase
     {
-        public ToCamelCaseExpressionParser() : base(@"ToCamelCase")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToCamelCaseExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Today")]
+    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider))]
     public class TodayExpressionParser : ExpressionParserBase
     {
-        public TodayExpressionParser() : base(@"Today")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var dateTimeProviderResult = functionParseResult.GetArgumentExpressionResult<CrossCutting.Common.Abstractions.IDateTimeProvider>(0, @"DateTimeProvider", functionParseResult.Context, evaluator, parser, default);
+            var dateTimeProviderResult = context.GetArgumentExpressionResult<CrossCutting.Common.Abstractions.IDateTimeProvider>(0, @"DateTimeProvider", default);
             var error = new Result[]
             {
                 dateTimeProviderResult,
@@ -1003,103 +924,94 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ToLowerCase")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"Culture", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>?))]
     public class ToLowerCaseExpressionParser : ExpressionParserBase
     {
-        public ToLowerCaseExpressionParser() : base(@"ToLowerCase")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToLowerCaseExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ToPascalCase")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"Culture", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>?))]
     public class ToPascalCaseExpressionParser : ExpressionParserBase
     {
-        public ToPascalCaseExpressionParser() : base(@"ToPascalCase")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToPascalCaseExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"ToUpperCase")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"Culture", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>?))]
     public class ToUpperCaseExpressionParser : ExpressionParserBase
     {
-        public ToUpperCaseExpressionParser() : base(@"ToUpperCase")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.ToUpperCaseExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Globalization.CultureInfo>(1, @"Culture", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"TrimEnd")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Char[]>?))]
     public class TrimEndExpressionParser : ExpressionParserBase
     {
-        public TrimEndExpressionParser() : base(@"TrimEnd")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimEndExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Trim")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Char[]>?))]
     public class TrimExpressionParser : ExpressionParserBase
     {
-        public TrimExpressionParser() : base(@"Trim")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"TrimStart")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Char[]>?))]
     public class TrimStartExpressionParser : ExpressionParserBase
     {
-        public TrimStartExpressionParser() : base(@"TrimStart")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrimStartExpression(
-                functionParseResult.GetArgumentStringValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", evaluator, parser, default)));
+                context.GetArgumentStringValueExpression(0, @"Expression"),
+                context.GetArgumentValueExpression<System.Char[]>(1, @"TrimCharsExpression", default)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"True")]
     public class TrueExpressionParser : ExpressionParserBase
     {
-        public TrueExpressionParser() : base(@"True")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.TrueExpression(
@@ -1107,15 +1019,14 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"TryCast")]
+    [FunctionArgument(@"SourceExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<T>?))]
     public class TryCastExpressionParser : ExpressionParserBase
     {
-        public TryCastExpressionParser() : base(@"TryCast")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
+            var typeResult = context.FunctionName.GetGenericTypeResult();
             if (!typeResult.IsSuccessful())
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(typeResult);
@@ -1124,69 +1035,40 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return Result.Success<ExpressionFramework.Domain.Expression>((ExpressionFramework.Domain.Expression)System.Activator.CreateInstance(typeof(ExpressionFramework.Domain.Expressions.TryCastExpression<>).MakeGenericType(typeResult.Value!)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
-        }
     }
+    [FunctionName(@"TypedChained")]
+    [FunctionArgument(@"Expressions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression>))]
     public class TypedChainedExpressionParser : ExpressionParserBase
     {
-        public TypedChainedExpressionParser() : base(@"TypedChained")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(TypedChainedExpression<>), 0, @"Expressions", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(TypedChainedExpression<>), 0, @"Expressions", context);
         }
     }
+    [FunctionName(@"TypedConstant")]
+    [FunctionArgument(@"Value", typeof(T))]
     public class TypedConstantExpressionParser : ExpressionParserBase
     {
-        public TypedConstantExpressionParser() : base(@"TypedConstant")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(TypedConstantExpression<>), 0, @"Value", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(TypedConstantExpression<>), 0, @"Value", context);
         }
     }
+    [FunctionName(@"TypedConstantResult")]
+    [FunctionArgument(@"Value", typeof(CrossCutting.Common.Results.Result<T>))]
     public class TypedConstantResultExpressionParser : ExpressionParserBase
     {
-        public TypedConstantResultExpressionParser() : base(@"TypedConstantResult")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(TypedConstantResultExpression<>), 0, @"Value", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(TypedConstantResultExpression<>), 0, @"Value", context);
         }
     }
+    [FunctionName(@"TypedContext")]
     public class TypedContextExpressionParser : ExpressionParserBase
     {
-        public TypedContextExpressionParser() : base(@"TypedContext")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
+            var typeResult = context.FunctionName.GetGenericTypeResult();
             if (!typeResult.IsSuccessful())
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(typeResult);
@@ -1195,53 +1077,33 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return Result.Success<ExpressionFramework.Domain.Expression>((ExpressionFramework.Domain.Expression)System.Activator.CreateInstance(typeof(ExpressionFramework.Domain.Expressions.TypedContextExpression<>).MakeGenericType(typeResult.Value!)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
-        }
     }
+    [FunctionName(@"TypedDelegate")]
+    [FunctionArgument(@"Value", typeof(System.Func<System.Object?,T>))]
     public class TypedDelegateExpressionParser : ExpressionParserBase
     {
-        public TypedDelegateExpressionParser() : base(@"TypedDelegate")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(TypedDelegateExpression<>), 0, @"Value", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(TypedDelegateExpression<>), 0, @"Value", context);
         }
     }
+    [FunctionName(@"TypedDelegateResult")]
+    [FunctionArgument(@"Value", typeof(System.Func<System.Object?,CrossCutting.Common.Results.Result<T>>))]
     public class TypedDelegateResultExpressionParser : ExpressionParserBase
     {
-        public TypedDelegateResultExpressionParser() : base(@"TypedDelegateResult")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            return ParseTypedExpression(typeof(TypedDelegateResultExpression<>), 0, @"Value", functionParseResult, evaluator, parser);
-        }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
+            return ParseTypedExpression(typeof(TypedDelegateResultExpression<>), 0, @"Value", context);
         }
     }
+    [FunctionName(@"TypedField")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"FieldNameExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.String>))]
     public class TypedFieldExpressionParser : ExpressionParserBase
     {
-        public TypedFieldExpressionParser() : base(@"TypedField")
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
-        {
-            var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();
+            var typeResult = context.FunctionName.GetGenericTypeResult();
             if (!typeResult.IsSuccessful())
             {
                 return Result.FromExistingResult<ExpressionFramework.Domain.Expression>(typeResult);
@@ -1250,38 +1112,30 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return Result.Success<ExpressionFramework.Domain.Expression>((ExpressionFramework.Domain.Expression)System.Activator.CreateInstance(typeof(ExpressionFramework.Domain.Expressions.TypedFieldExpression<>).MakeGenericType(typeResult.Value!)));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
-
-        protected override bool IsNameValid(string functionName)
-        {
-            return base.IsNameValid(functionName.WithoutGenerics());
-        }
     }
+    [FunctionName(@"Where")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable>))]
+    [FunctionArgument(@"PredicateExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.Boolean>))]
     public class WhereExpressionParser : ExpressionParserBase
     {
-        public WhereExpressionParser() : base(@"Where")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.WhereExpression(
-                functionParseResult.GetTypedExpressionsArgumentValueExpression(0, @"Expression", evaluator, parser),
-                functionParseResult.GetArgumentBooleanValueExpression(1, @"PredicateExpression", evaluator, parser)));
+                context.GetTypedExpressionsArgumentValueExpression(0, @"Expression"),
+                context.GetArgumentBooleanValueExpression(1, @"PredicateExpression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
+    [FunctionName(@"Year")]
+    [FunctionArgument(@"Expression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>))]
     public class YearExpressionParser : ExpressionParserBase
     {
-        public YearExpressionParser() : base(@"Year")
-        {
-        }
-
-        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionParseResult functionParseResult, CrossCutting.Utilities.Parsers.Contracts.IFunctionParseResultEvaluator evaluator, CrossCutting.Utilities.Parsers.Contracts.IExpressionParser parser)
+        protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             return Result.Success<ExpressionFramework.Domain.Expression>(new ExpressionFramework.Domain.Expressions.YearExpression(
-                functionParseResult.GetArgumentDateTimeValueExpression(0, @"Expression", evaluator, parser)));
+                context.GetArgumentDateTimeValueExpression(0, @"Expression")));
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
