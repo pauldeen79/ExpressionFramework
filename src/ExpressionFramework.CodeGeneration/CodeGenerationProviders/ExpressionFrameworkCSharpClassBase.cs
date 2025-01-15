@@ -104,11 +104,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         var isOptional = typeName.EndsWith('?');
         typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
 
-        if (typeName == Constants.TypeNames.Expression)
-        {
-            typeName = WellKnownTypes.Object;
-        }
-        else if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
+        if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
         {
             typeName = typeName.GetGenericArguments();
         }
@@ -120,20 +116,29 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
             typeName = WellKnownTypes.Object;
         }
 
-        var genericArguments = typeName.GetGenericArguments();
-        if (genericArguments == "T")
+        if (typeName == Constants.TypeNames.Expression)
         {
-            // Something<T>
-            // Cannot be determined at compile time, so assume System.Object
-            typeName = typeName.WithoutGenerics().MakeGenericTypeName(WellKnownTypes.Object);
+            typeName = WellKnownTypes.Object;
         }
-        else if (!string.IsNullOrEmpty(genericArguments))
+
+        if (typeName.WithoutGenerics() == typeof(IReadOnlyCollection<>).WithoutGenerics())
+        {
+            typeName = typeof(IEnumerable).FullName!;
+        }
+
+        var genericArguments = typeName.GetGenericArguments();
+        if (!string.IsNullOrEmpty(genericArguments))
         {
             // Something<Something, T, Something>
             var newGenericTypeArgs = new List<string>();
             foreach (var genericTypeArg in genericArguments.Split(','))
             {
-                newGenericTypeArgs.Add(genericTypeArg == "T" ? WellKnownTypes.Object : genericTypeArg);
+                newGenericTypeArgs.Add(genericTypeArg switch
+                {
+                    "T" => WellKnownTypes.Object,
+                    Constants.TypeNames.Expression => WellKnownTypes.Object,
+                    _ => genericTypeArg
+                });
             }
             typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
         }
