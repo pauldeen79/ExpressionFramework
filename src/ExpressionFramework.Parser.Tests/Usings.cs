@@ -4,7 +4,7 @@ global using AutoFixture.AutoNSubstitute;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Builders;
-global using CrossCutting.Utilities.Parsers.Builders.FunctionParseResultArguments;
+global using CrossCutting.Utilities.Parsers.Builders.FunctionCallArguments;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using CrossCutting.Utilities.Parsers.Extensions;
 global using ExpressionFramework.Domain;

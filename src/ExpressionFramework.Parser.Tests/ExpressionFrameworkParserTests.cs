@@ -19,10 +19,10 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void Parse_Returns_NotSupported_When_Expression_Is_Unknown()
     {
         // Arrange
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Unknown").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Unknown").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(functionParseResult);
+        var result = Parse(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.NotSupported);
@@ -32,10 +32,10 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void Parse_Returns_Success_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Alright()
     {
         // Arrange
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Context").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Context").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(functionParseResult);
+        var result = Parse(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -46,10 +46,10 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void Parse_Returns_Invalid_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Not_Alright()
     {
         // Arrange
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Delegate").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Delegate").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(functionParseResult);
+        var result = Parse(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);
@@ -60,13 +60,13 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void Can_Parse_Typed_Expression()
     {
         // Arrange
-        var functionParseResult = new FunctionParseResultBuilder()
-            .WithFunctionName("TypedConstant<System.String>")
-            .AddArguments(new LiteralArgumentBuilder().WithValue("Test"))
-            .Build();
+        var context = new FunctionCallContext(new FunctionCallBuilder()
+            .WithName("TypedConstant<System.String>")
+            .AddArguments(new ConstantArgumentBuilder().WithValue("Test"))
+            .Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse<string>(functionParseResult);
+        var result = Parse<string>(context);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -79,17 +79,11 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         _provider.Dispose();
     }
 
-    private Result<Expression> Parse(FunctionParseResult functionParseResult) => _provider
+    private Result<Expression> Parse(FunctionCallContext context) => _provider
         .GetRequiredService<IExpressionFrameworkParser>()
-        .Parse(
-            functionParseResult,
-            _scope.ServiceProvider.GetRequiredService<IFunctionParseResultEvaluator>(),
-            _scope.ServiceProvider.GetRequiredService<IExpressionParser>());
+        .ParseExpression(context);
 
-    private Result<ITypedExpression<T>> Parse<T>(FunctionParseResult functionParseResult) => _provider
+    private Result<ITypedExpression<T>> Parse<T>(FunctionCallContext context) => _provider
         .GetRequiredService<IExpressionFrameworkParser>()
-        .Parse<T>(
-            functionParseResult,
-            _scope.ServiceProvider.GetRequiredService<IFunctionParseResultEvaluator>(),
-            _scope.ServiceProvider.GetRequiredService<IExpressionParser>());
+        .ParseExpression<T>(context);
 }

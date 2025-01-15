@@ -2,81 +2,60 @@
 
 public class EvaluatableParserBaseTests
 {
-    private readonly IFunctionParseResultEvaluator _evaluatorMock = Substitute.For<IFunctionParseResultEvaluator>();
-    private readonly IExpressionParser _parserMock = Substitute.For<IExpressionParser>();
+    private readonly IFunctionEvaluator _functionEvaluatorMock = Substitute.For<IFunctionEvaluator>();
+    private readonly IExpressionEvaluator _expressionEvaluatorMock = Substitute.For<IExpressionEvaluator>();
 
     public EvaluatableParserBaseTests()
     {
-        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result.Success<object?>(Substitute.For<Evaluatable>()));
+        _functionEvaluatorMock
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<object?>())
+            .Returns(Result.Success<object?>(Substitute.For<Evaluatable>()));
     }
 
     [Fact]
-    public void Ctor_Throws_On_Null_FunctionName()
-    {
-        // Act & Assert
-        this.Invoking(_ => new MyEvaluatableParser(functionName: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
-    }
-
-    [Fact]
-    public void Parse_Throws_On_Null_FunctionParseResult()
+    public void Evaluate_Throws_On_Null_Context()
     {
         // Arrange
         var parser = new MyEvaluatableParser();
 
         // Act & Assert
-        this.Invoking(_ => Parse(parser, functionParseResult: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+        this.Invoking(_ => parser.Evaluate(context: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("context");
     }
 
     [Fact]
-    public void Parse_Returns_Continue_For_Wrong_FunctionName()
+    public void Evaluate_Returns_Continue_For_Wrong_FunctionName()
     {
         // Arrange
         var parser = new MyEvaluatableParser();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Wrong").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Wrong").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(parser, functionParseResult);
+        var result = parser.Evaluate(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Continue);
     }
 
     [Fact]
-    public void Parse_Returns_Success_For_Correct_FunctionName()
+    public void Evaluate_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
         var parser = new MyEvaluatableParser();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Correct").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(parser, functionParseResult);
+        var result = parser.Evaluate(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<Evaluatable>();
     }
 
-    private Result<object?> Parse(MyEvaluatableParser parser, FunctionParseResult functionParseResult)
-        => parser.Parse
-        (
-            functionParseResult,
-            null,
-            _evaluatorMock,
-            _parserMock
-        );
-
+    [FunctionName("Correct")]
     private sealed class MyEvaluatableParser : EvaluatableParserBase
     {
-        public MyEvaluatableParser(string functionName) : base(functionName)
-        {
-        }
-
-        public MyEvaluatableParser() : base("Correct") { }
-
         protected override Result<Evaluatable> DoParse(FunctionCallContext context)
-            => Result.FromExistingResult<Evaluatable>(evaluator.Evaluate(functionParseResult, parser));
+            => Result.FromExistingResult<Evaluatable>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
     }
 }

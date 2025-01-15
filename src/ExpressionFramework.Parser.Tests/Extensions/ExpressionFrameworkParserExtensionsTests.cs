@@ -2,13 +2,13 @@
 
 public class ExpressionFrameworkParserExtensionsTests : TestBase
 {
-    private IFunctionParseResultEvaluator Evaluator { get; }
-    private IExpressionParser ExpressionParser { get; }
+    private IFunctionEvaluator Evaluator { get; }
+    private IExpressionEvaluator ExpressionParser { get; }
 
     public ExpressionFrameworkParserExtensionsTests()
     {
-        Evaluator = Fixture.Freeze<IFunctionParseResultEvaluator>();
-        ExpressionParser = Fixture.Freeze<IExpressionParser>();
+        Evaluator = Fixture.Freeze<IFunctionEvaluator>();
+        ExpressionParser = Fixture.Freeze<IExpressionEvaluator>();
     }
 
     [Fact]
@@ -16,12 +16,12 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Error<Expression>("Kaboom"));
 
         // Act
-        var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
+        var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Error);
@@ -33,12 +33,12 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Success<Expression>(new TypedConstantExpression<string>("test")));
 
         // Act
-        var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
+        var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -50,12 +50,12 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("MyFunction").Build();
-        sut.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Success<Expression>(new TypedConstantExpression<int>(1)));
 
         // Act
-        var result = sut.Parse<string>(functionParseResult, Evaluator, ExpressionParser);
+        var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);

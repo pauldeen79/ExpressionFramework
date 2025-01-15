@@ -1,8 +1,4 @@
-﻿using System.Xml.Linq;
-using ClassFramework.Domain.Builders.Extensions;
-using CsharpExpressionDumper.Core;
-
-namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
+﻿namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 
 [ExcludeFromCodeCoverage]
 public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : CsharpClassGeneratorPipelineCodeGenerationProviderBase(pipelineService)
@@ -95,8 +91,8 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
     {
         yield return new AttributeBuilder().WithName("FunctionName").AddParameters(new AttributeParameterBuilder().WithValue(name));
         foreach (var attribute in typeBase.Properties.Select(x => new AttributeBuilder()
-                        .WithName("FunctionArgument")
-                        .AddParameters(CreateParameters(x, settings))))
+            .WithName("FunctionArgument")
+            .AddParameters(CreateParameters(x, settings))))
         {
             yield return attribute;
         }
@@ -104,9 +100,6 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
 
     private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property x, PipelineSettings settings)
     {
-        /*    [FunctionArgument(@"SourceExpression", typeof(ExpressionFramework.Domain.Expression))]
-    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<T>))]
-*/
         var typeName = x.TypeName.MapTypeName(settings);
         var isOptional = typeName.EndsWith('?');
         typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);

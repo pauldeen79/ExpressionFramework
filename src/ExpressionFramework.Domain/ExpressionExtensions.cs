@@ -8,9 +8,24 @@ public static class ExpressionExtensions
             : result);
 
     public static Result<T> EvaluateTyped<T>(this Expression instance, object? context = null, string? errorMessage = null)
-        => instance is ITypedExpression<T> typedExpression
-            ? typedExpression.EvaluateTyped(context)
-            : instance.Evaluate(context).TryCast<T>(errorMessage);
+    {
+        if (instance is ITypedExpression<T> typedExpression)
+        {
+            return typedExpression.EvaluateTyped(context);
+        }
+
+        var result = instance.Evaluate(context).TryCast<T>(errorMessage);
+
+        if (result.IsSuccessful() && result.GetValue() is null)
+        {
+            //HACK: Null values now work differently with TryCast. We need a new method on Result to fix this... For now, do a work-around.
+            return errorMessage is not null
+                ? Result.Invalid<T>(errorMessage)
+                : Result.Invalid<T>();
+        }
+
+        return result;
+    }
 
     public static Result<T> EvaluateTypedWithTypeCheck<T>(this ITypedExpression<T> instance, object? context = null, string? errorMessage = null)
         => instance.EvaluateTyped(context).Transform(result => result.IsSuccessful() && result.Value is T t

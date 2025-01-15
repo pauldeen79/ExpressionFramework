@@ -38,6 +38,14 @@ public partial record TypedChainedExpression<T>
             }
         }
 
-        return result.TryCast<T>(ExpressionExtensions.CreateInvalidTypeErrorMessage<T>());
+        var typedResult = result.TryCast<T>(ExpressionExtensions.CreateInvalidTypeErrorMessage<T>());
+
+        if (typedResult.IsSuccessful() && typedResult.GetValue() is null)
+        {
+            //HACK: Null values now work differently with TryCast. We need a new method on Result to fix this... For now, do a work-around.
+            return Result.Invalid<T>(ExpressionExtensions.CreateInvalidTypeErrorMessage<T>());
+        }
+
+        return typedResult;
     }
 }

@@ -18,8 +18,21 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
     {
         context = ArgumentGuard.IsNotNull(context, nameof(context));
 
-        return DoParse(context);
+        return IsFunctionValid(context)
+            ? DoParse(context)
+            : Result.Continue<Expression>();
     }
+
+    protected virtual bool IsNameValid(string functionName)
+    {
+        functionName = ArgumentGuard.IsNotNull(functionName, nameof(functionName));
+
+        //TODO: Check whether we can do this without reflection (generate with constructor argument again?)
+        return functionName.WithoutGenerics().Equals(GetType().GetCustomAttribute<FunctionNameAttribute>()?.Name, StringComparison.OrdinalIgnoreCase);
+    }
+
+    protected virtual bool IsFunctionValid(FunctionCallContext context)
+        => IsNameValid(ArgumentGuard.IsNotNull(context, nameof(context)).FunctionCall.Name);
 
     protected abstract Result<Expression> DoParse(FunctionCallContext context);
 
