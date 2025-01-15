@@ -157,7 +157,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Unknown_Expression_Gives_NotSupported()
+    public void Unknown_Expression_Gives_Invalid()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -166,7 +166,7 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=UNKNOWN()", CultureInfo.InvariantCulture, this);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
+        result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     public void Dispose()
