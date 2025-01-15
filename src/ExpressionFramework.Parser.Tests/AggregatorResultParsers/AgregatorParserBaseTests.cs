@@ -76,7 +76,7 @@ public class AggregatorParserBaseTests
 
         public MyAggregatorParser() : base("Correct") { }
 
-        protected override Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        protected override Result<Aggregator> DoParse(FunctionCallContext context)
             => Result.FromExistingResult<Aggregator>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

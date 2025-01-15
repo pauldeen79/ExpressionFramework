@@ -76,7 +76,7 @@ public class EvaluatableParserBaseTests
 
         public MyEvaluatableParser() : base("Correct") { }
 
-        protected override Result<Evaluatable> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        protected override Result<Evaluatable> DoParse(FunctionCallContext context)
             => Result.FromExistingResult<Evaluatable>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

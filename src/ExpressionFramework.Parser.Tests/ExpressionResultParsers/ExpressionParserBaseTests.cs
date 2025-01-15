@@ -241,10 +241,10 @@ public class ExpressionParserBaseTests
 
         public MyExpressionParser() : base("Correct") { }
 
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        protected override Result<Expression> DoParse(FunctionCallContext context)
             => Result.FromExistingResult<Expression>(evaluator.Evaluate(functionParseResult, parser));
 
-        public Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        public Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionCallContext context)
             => ParseTypedExpression(expressionType, index, argumentName, functionParseResult, evaluator, parser);
 
         public bool IsNameValidPublic(string functionName) => IsNameValid(functionName);

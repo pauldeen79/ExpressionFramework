@@ -228,7 +228,7 @@ public sealed class IntegrationTests : IDisposable
         {
         }
 
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        protected override Result<Expression> DoParse(FunctionCallContext context)
         {
             return Result.Success<Expression>(new MyNamespacedExpression());
         }

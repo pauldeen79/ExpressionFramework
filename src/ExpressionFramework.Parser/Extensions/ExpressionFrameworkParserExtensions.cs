@@ -2,9 +2,9 @@
 
 public static class ExpressionFrameworkParserExtensions
 {
-    public static Result<ITypedExpression<T>> Parse<T>(this IExpressionFrameworkParser instance, FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    public static Result<ITypedExpression<T>> Parse<T>(this IExpressionFrameworkParser instance, FunctionCallContext context)
     {
-        var result = instance.Parse(functionParseResult, evaluator, parser);
+        var result = instance.ParseExpression(context);
         if (!result.IsSuccessful())
         {
             return Result.FromExistingResult<ITypedExpression<T>>(result);

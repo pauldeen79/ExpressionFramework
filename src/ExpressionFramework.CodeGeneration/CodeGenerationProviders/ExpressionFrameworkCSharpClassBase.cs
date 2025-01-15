@@ -1,4 +1,5 @@
-﻿using ClassFramework.Domain.Builders.Extensions;
+﻿using System.Xml.Linq;
+using ClassFramework.Domain.Builders.Extensions;
 using CsharpExpressionDumper.Core;
 
 namespace ExpressionFramework.CodeGeneration.CodeGenerationProviders;
@@ -88,13 +89,71 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
                 .WithOverride()
                 .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
-            .AddAttributes(new AttributeBuilder().WithName("FunctionName").AddParameters(new AttributeParameterBuilder().WithValue(name)))
-            .AddAttributes(typeBase.Properties.Select(x => new AttributeBuilder()
-                .WithName("FunctionArgument")
-                .AddParameters(
-                    new AttributeParameterBuilder().WithValue(x.Name),
-                    new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({x.TypeName.MapTypeName(settings).ReplaceSuffix("?", string.Empty, StringComparison.Ordinal)})")))
-            ));
+            .AddAttributes(CreateAttributes(typeBase, settings, name));
+
+    private static IEnumerable<AttributeBuilder> CreateAttributes(TypeBase typeBase, PipelineSettings settings, string name)
+    {
+        yield return new AttributeBuilder().WithName("FunctionName").AddParameters(new AttributeParameterBuilder().WithValue(name));
+        foreach (var attribute in typeBase.Properties.Select(x => new AttributeBuilder()
+                        .WithName("FunctionArgument")
+                        .AddParameters(CreateParameters(x, settings))))
+        {
+            yield return attribute;
+        }
+    }
+
+    private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property x, PipelineSettings settings)
+    {
+        /*    [FunctionArgument(@"SourceExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"DefaultExpression", typeof(ExpressionFramework.Domain.Contracts.ITypedExpression<T>))]
+*/
+        var typeName = x.TypeName.MapTypeName(settings);
+        var isOptional = typeName.EndsWith('?');
+        typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
+
+        if (typeName == Constants.TypeNames.Expression)
+        {
+            typeName = WellKnownTypes.Object;
+        }
+        else if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
+        {
+            typeName = typeName.GetGenericArguments();
+        }
+
+        if (typeName == "T")
+        {
+            // ITypedExpression<T> / T
+            // Cannot be determined at compile time, so assume System.Object
+            typeName = WellKnownTypes.Object;
+        }
+
+        var genericArguments = typeName.GetGenericArguments();
+        if (genericArguments == "T")
+        {
+            // Something<T>
+            // Cannot be determined at compile time, so assume System.Object
+            typeName = typeName.WithoutGenerics().MakeGenericTypeName(WellKnownTypes.Object);
+        }
+        else if (!string.IsNullOrEmpty(genericArguments))
+        {
+            // Something<Something, T, Something>
+            var newGenericTypeArgs = new List<string>();
+            foreach (var genericTypeArg in genericArguments.Split(','))
+            {
+                newGenericTypeArgs.Add(genericTypeArg == "T" ? WellKnownTypes.Object : genericTypeArg);
+            }
+            typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
+        }
+
+        yield return new AttributeParameterBuilder().WithValue(x.Name);
+        yield return new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeName})"));
+
+        if (isOptional)
+        {
+            //required = false
+            yield return new AttributeParameterBuilder().WithValue(false);
+        }
+    }
 
     protected PipelineSettings CreateSettings()
         => new PipelineSettingsBuilder()
@@ -138,7 +197,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         {
             parseMethod.AddStringCodeStatements
             (
-                "var typeResult = context.FunctionName.GetGenericTypeResult();",
+                "var typeResult = context.FunctionCall.Name.GetGenericTypeResult();",
                 "if (!typeResult.IsSuccessful())",
                 "{",
                 $"    return Result.FromExistingResult<{Constants.Namespaces.Domain}.{type}>(typeResult);",

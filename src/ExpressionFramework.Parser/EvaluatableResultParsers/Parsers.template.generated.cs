@@ -11,9 +11,9 @@
 namespace ExpressionFramework.Parser.EvaluatableResultParsers
 {
     [FunctionName(@"ComposableEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"LeftExpression", typeof(object))]
     [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
-    [FunctionArgument(@"RightExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"RightExpression", typeof(object))]
     [FunctionArgument(@"Combination", typeof(System.Nullable<ExpressionFramework.Domain.Domains.Combination>))]
     [FunctionArgument(@"StartGroup", typeof(System.Boolean))]
     [FunctionArgument(@"EndGroup", typeof(System.Boolean))]
@@ -111,9 +111,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
         }
     }
     [FunctionName(@"SingleEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"LeftExpression", typeof(object))]
     [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
-    [FunctionArgument(@"RightExpression", typeof(ExpressionFramework.Domain.Expression))]
+    [FunctionArgument(@"RightExpression", typeof(object))]
     public class SingleEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

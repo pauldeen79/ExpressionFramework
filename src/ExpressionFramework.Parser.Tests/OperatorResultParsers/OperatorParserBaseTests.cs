@@ -76,7 +76,7 @@ public class OperatorParserBaseTests
 
         public MyOperatorParser() : base("Correct") { }
 
-        protected override Result<Operator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+        protected override Result<Operator> DoParse(FunctionCallContext context)
             => Result.FromExistingResult<Operator>(evaluator.Evaluate(functionParseResult, parser));
     }
 }

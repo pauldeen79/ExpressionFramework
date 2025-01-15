@@ -46,18 +46,18 @@ public class ExtensionParserExtensions(IPipelineService pipelineService, ICsharp
                         .AddStringCodeStatements(results[typeof(IExpression)].Value!
                             .SelectMany(x => new[]
                             {
-                                $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
+                                $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
                                 $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();"
                             })
                         )
                         .AddStringCodeStatements(results[typeof(Models.IAggregator)].Value!
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements(results[typeof(IOperator)].Value!
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements(results[typeof(IEvaluatable)].Value!
-                            .Select(x => $"services.AddSingleton<{typeof(IFunctionResultParser).FullName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements("return services;")
                         )

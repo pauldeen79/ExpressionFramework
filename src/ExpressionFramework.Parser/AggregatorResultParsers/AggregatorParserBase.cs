@@ -2,11 +2,6 @@
 
 public abstract class AggregatorParserBase : IFunction
 {
-    protected AggregatorParserBase(string functionName)
-    {
-        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
-    }
-
     public Result<object?> Evaluate(FunctionCallContext context)
         => Result.FromExistingResult<object?>(DoParse(context));
 
