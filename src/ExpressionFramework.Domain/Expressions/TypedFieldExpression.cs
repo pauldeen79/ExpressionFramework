@@ -17,15 +17,7 @@ public partial record TypedFieldExpression<T>
         var untypedResult = FieldExpression.Evaluate(context, Expression, FieldNameExpression);
         if (untypedResult.IsSuccessful())
         {
-            var typedResult = untypedResult.TryCast<T>($"Field is not of type [{typeof(T).FullName}]");
-
-            if (typedResult.IsSuccessful() && typedResult.GetValue() is null)
-            {
-                //HACK: Null values now work differently with TryCast. We need a new method on Result to fix this... For now, do a work-around.
-                return Result.Invalid<T>($"Field is not of type [{typeof(T).FullName}]");
-            }
-
-            return typedResult;
+            return untypedResult.TryCast<T>($"Field is not of type [{typeof(T).FullName}]");
         }
         else
         {
