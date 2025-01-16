@@ -7,7 +7,7 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
         var result = ParseExpression(context);
 
         return result.IsSuccessful() && result.Status != ResultStatus.Continue
-            ? result.Value?.Evaluate(context) ?? Result.Success<object?>(null)
+            ? result.Value?.Evaluate(context.Context) ?? Result.Success<object?>(null)
             : Result.FromExistingResult<object?>(result);
     }
 
