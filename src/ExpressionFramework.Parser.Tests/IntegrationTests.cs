@@ -176,6 +176,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [FunctionName("MyPredicate")]
+    [FunctionArgument("Expression", typeof(object), false)]
     private sealed class MyFunction : IFunction
     {
         public Result<object?> Evaluate(FunctionCallContext context)
