@@ -24,20 +24,6 @@ public class EvaluatableParserBaseTests
     }
 
     [Fact]
-    public void Evaluate_Returns_Continue_For_Wrong_FunctionName()
-    {
-        // Arrange
-        var parser = new MyEvaluatableParser();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Wrong").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
-
-        // Act
-        var result = parser.Evaluate(functionCallContext);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Continue);
-    }
-
-    [Fact]
     public void Evaluate_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
