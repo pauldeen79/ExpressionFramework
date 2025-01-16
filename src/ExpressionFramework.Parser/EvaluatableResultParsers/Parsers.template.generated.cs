@@ -14,7 +14,7 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
     [FunctionArgument(@"LeftExpression", typeof(object))]
     [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
     [FunctionArgument(@"RightExpression", typeof(object))]
-    [FunctionArgument(@"Combination", typeof(System.Nullable<ExpressionFramework.Domain.Domains.Combination>))]
+    [FunctionArgument(@"Combination", typeof(System.Nullable<ExpressionFramework.Domain.Domains.Combination>), false)]
     [FunctionArgument(@"StartGroup", typeof(System.Boolean))]
     [FunctionArgument(@"EndGroup", typeof(System.Boolean))]
     public class ComposableEvaluatableParser : EvaluatableParserBase

@@ -98,10 +98,10 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         }
     }
 
-    private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property x, PipelineSettings settings)
+    private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property property, PipelineSettings settings)
     {
-        var typeName = x.TypeName.MapTypeName(settings);
-        var isOptional = typeName.EndsWith('?');
+        var typeName = property.TypeName.MapTypeName(settings);
+        var isOptional = typeName.EndsWith('?') || property.IsNullable;
         typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
 
         if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
@@ -143,7 +143,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
             typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
         }
 
-        yield return new AttributeParameterBuilder().WithValue(x.Name);
+        yield return new AttributeParameterBuilder().WithValue(property.Name);
         yield return new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeName})"));
 
         if (isOptional)

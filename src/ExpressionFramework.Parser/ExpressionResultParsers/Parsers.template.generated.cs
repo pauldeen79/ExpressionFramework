@@ -126,7 +126,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Constant")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionArgument(@"Value", typeof(System.Object), false)]
     public class ConstantExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -278,7 +278,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     [FunctionName(@"ElementAtOrDefault")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
     [FunctionArgument(@"IndexExpression", typeof(System.Int32))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class ElementAtOrDefaultExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -392,8 +392,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"FirstOrDefault")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class FirstOrDefaultExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -423,7 +423,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     [FunctionName(@"If")]
     [FunctionArgument(@"Condition", typeof(ExpressionFramework.Domain.Evaluatable))]
     [FunctionArgument(@"ResultExpression", typeof(object))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class IfExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -484,8 +484,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"LastOrDefault")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class LastOrDefaultExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -514,7 +514,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"Max")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object))]
+    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
     public class MaxExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -528,7 +528,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"Min")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object))]
+    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
     public class MinExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -579,7 +579,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Now")]
-    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider))]
+    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider), false)]
     public class NowExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -731,8 +731,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"SingleOrDefault")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class SingleOrDefaultExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -840,7 +840,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"Sum")]
     [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object))]
+    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
     public class SumExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -854,7 +854,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"Switch")]
     [FunctionArgument(@"Cases", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"DefaultExpression", typeof(object))]
+    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
     public class SwitchExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -904,7 +904,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Today")]
-    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider))]
+    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider), false)]
     public class TodayExpressionParser : ExpressionParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Expression> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
