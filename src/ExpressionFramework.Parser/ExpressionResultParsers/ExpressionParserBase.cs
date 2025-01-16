@@ -2,6 +2,15 @@
 
 public abstract class ExpressionParserBase : IFunction, IExpressionResolver
 {
+    private readonly string _functionName;
+
+    protected ExpressionParserBase(string functionName)
+    {
+        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
+
+        _functionName = functionName;
+    }
+
     public Result<object?> Evaluate(FunctionCallContext context)
     {
         var result = ParseExpression(context);
@@ -27,8 +36,7 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
     {
         functionName = ArgumentGuard.IsNotNull(functionName, nameof(functionName));
 
-        //TODO: Check whether we can do this without reflection (generate with constructor argument again?)
-        return functionName.WithoutGenerics().Equals(GetType().GetCustomAttribute<FunctionNameAttribute>()?.Name, StringComparison.OrdinalIgnoreCase);
+        return functionName.WithoutGenerics().Equals(_functionName, StringComparison.OrdinalIgnoreCase);
     }
 
     protected virtual bool IsFunctionValid(FunctionCallContext context)

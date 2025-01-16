@@ -210,6 +210,10 @@ public class ExpressionParserBaseTests
     [FunctionName("Correct")]
     private sealed class MyExpressionParser : ExpressionParserBase
     {
+        public MyExpressionParser() : base("Correct")
+        {
+        }
+
         protected override Result<Expression> DoParse(FunctionCallContext context)
             => Result.FromExistingResult<Expression>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
 

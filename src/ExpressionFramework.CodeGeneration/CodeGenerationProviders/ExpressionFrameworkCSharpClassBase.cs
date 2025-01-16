@@ -77,6 +77,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
             .WithNamespace(base.CurrentNamespace)
             .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
             .WithBaseClass($"{type}ParserBase")
+            .AddConstructors(CreateConstructors(typeBase, name, type))
             .AddMethods(new MethodBuilder()
                 .WithName("DoParse")
                 .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
@@ -86,6 +87,21 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
                 .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
             .AddAttributes(CreateAttributes(typeBase, settings, name));
+
+    private IEnumerable<ConstructorBuilder> CreateConstructors(TypeBase typeBase, string name, string type)
+    {
+        if (type != Constants.Types.Expression)
+        {
+            yield break;
+        }
+
+        var attr = typeBase.Attributes.FirstOrDefault(x => x.Name.GetClassName() == nameof(ExpressionNameAttribute));
+        var code = attr is not null
+            ? $"base({CsharpExpressionDumper.Dump(attr.Parameters.First().Value)}, {CsharpExpressionDumper.Dump(attr.Parameters.Last().Value)})"
+            : $"base({CsharpExpressionDumper.Dump(name)})";
+
+        yield return new ConstructorBuilder().WithChainCall(code);
+    }
 
     private static IEnumerable<AttributeBuilder> CreateAttributes(TypeBase typeBase, PipelineSettings settings, string name)
     {
