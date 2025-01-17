@@ -3,6 +3,9 @@
 [ExcludeFromCodeCoverage]
 public class ExtensionParserExtensions(IPipelineService pipelineService, ICsharpExpressionDumper csharpExpressionDumper) : ExpressionFrameworkCSharpClassBase(pipelineService, csharpExpressionDumper)
 {
+    // Remove this after upgrade of ClassFramework packages, and replace with nameof(IFunction).FullName
+    private const string IFunctionTypeName = "CrossCutting.Utilities.Parsers.Contracts.IFunction";
+
     public override string Path => Constants.Paths.ParserExtensions;
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
@@ -46,18 +49,18 @@ public class ExtensionParserExtensions(IPipelineService pipelineService, ICsharp
                         .AddStringCodeStatements(results[typeof(IExpression)].Value!
                             .SelectMany(x => new[]
                             {
-                                $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
+                                $"services.AddSingleton<{IFunctionTypeName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",
                                 $"services.AddSingleton<{Constants.Namespaces.Parser}.Contracts.IExpressionResolver, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();"
                             })
                         )
                         .AddStringCodeStatements(results[typeof(Models.IAggregator)].Value!
-                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{IFunctionTypeName}, {Constants.Namespaces.ParserAggregatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements(results[typeof(IOperator)].Value!
-                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{IFunctionTypeName}, {Constants.Namespaces.ParserOperatorResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements(results[typeof(IEvaluatable)].Value!
-                            .Select(x => $"services.AddSingleton<{"CrossCutting.Utilities.Parsers.Contracts.IFunction"}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
+                            .Select(x => $"services.AddSingleton<{IFunctionTypeName}, {Constants.Namespaces.ParserEvaluatableResultParsers}.{x.WithoutInterfacePrefix()}Parser>();")
                         )
                         .AddStringCodeStatements("return services;")
                         )
