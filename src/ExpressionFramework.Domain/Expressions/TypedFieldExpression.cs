@@ -15,8 +15,13 @@ public partial record TypedFieldExpression<T>
     public Result<T> EvaluateTyped(object? context)
     {
         var untypedResult = FieldExpression.Evaluate(context, Expression, FieldNameExpression);
-        return untypedResult.IsSuccessful()
-            ? untypedResult.TryCast<T>($"Field is not of type [{typeof(T).FullName}]")
-            : Result.FromExistingResult<T>(untypedResult);
+        if (untypedResult.IsSuccessful())
+        {
+            return untypedResult.TryCast<T>($"Field is not of type [{typeof(T).FullName}]");
+        }
+        else
+        {
+            return Result.FromExistingResult<T>(untypedResult);
+        }
     }
 }

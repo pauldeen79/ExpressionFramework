@@ -11,15 +11,13 @@ public class ExpressionFrameworkParser : IExpressionFrameworkParser
         _resolvers = resolvers;
     }
 
-    public Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
+    public Result<Expression> ParseExpression(FunctionCallContext context)
     {
-        ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult));
-        ArgumentGuard.IsNotNull(evaluator, nameof(evaluator));
-        ArgumentGuard.IsNotNull(parser, nameof(parser));
+        context = ArgumentGuard.IsNotNull(context, nameof(context));
 
         return _resolvers
-            .Select(x => x.Parse(functionParseResult, evaluator, parser))
+            .Select(x => x.ParseExpression(context))
             .FirstOrDefault(x => x.Status != ResultStatus.Continue)
-                ?? Result.NotSupported<Expression>($"Unknown expression: {functionParseResult?.FunctionName}");
+                ?? Result.Invalid<Expression>($"Unknown expression: {context.FunctionCall.Name}");
     }
 }

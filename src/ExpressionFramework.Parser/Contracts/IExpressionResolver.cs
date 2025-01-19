@@ -2,5 +2,5 @@
 
 public interface IExpressionResolver
 {
-    Result<Expression> Parse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
+    Result<Expression> ParseExpression(FunctionCallContext context);
 }

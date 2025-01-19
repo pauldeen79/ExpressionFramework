@@ -2,81 +2,46 @@
 
 public class AggregatorParserBaseTests
 {
-    private readonly IFunctionParseResultEvaluator _evaluatorMock = Substitute.For<IFunctionParseResultEvaluator>();
-    private readonly IExpressionParser _parserMock = Substitute.For<IExpressionParser>();
+    private readonly IFunctionEvaluator _functionEvaluatorMock = Substitute.For<IFunctionEvaluator>();
+    private readonly IExpressionEvaluator _expressionEvaluatorMock = Substitute.For<IExpressionEvaluator>();
 
     public AggregatorParserBaseTests()
     {
-        _evaluatorMock.Evaluate(Arg.Any<FunctionParseResult>(), Arg.Any<IExpressionParser>(), Arg.Any<object?>())
-                      .Returns(Result.Success<object?>(Substitute.For<Aggregator>()));
+        _functionEvaluatorMock
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<object?>())
+            .Returns(Result.Success<object?>(Substitute.For<Aggregator>()));
     }
 
     [Fact]
-    public void Ctor_Throws_On_Null_FunctionName()
-    {
-        // Act & Assert
-        this.Invoking(_ => new MyAggregatorParser(functionName: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("functionName");
-    }
-
-    [Fact]
-    public void Parse_Throws_On_Null_FunctionParseResult()
+    public void Evaluate_Throws_On_Null_Context()
     {
         // Arrange
         var parser = new MyAggregatorParser();
 
         // Act & Assert
-        this.Invoking(_ => Parse(parser, functionParseResult: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("functionParseResult");
+        this.Invoking(_ => parser.Evaluate(context: null!))
+            .Should().Throw<ArgumentNullException>().WithParameterName("context");
     }
 
     [Fact]
-    public void Parse_Returns_Continue_For_Wrong_FunctionName()
+    public void Evaluate_Returns_Success_For_Correct_FunctionName()
     {
         // Arrange
         var parser = new MyAggregatorParser();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Wrong").Build();
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = Parse(parser, functionParseResult);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Continue);
-    }
-
-    [Fact]
-    public void Parse_Returns_Success_For_Correct_FunctionName()
-    {
-        // Arrange
-        var parser = new MyAggregatorParser();
-        var functionParseResult = new FunctionParseResultBuilder().WithFunctionName("Correct").Build();
-
-        // Act
-        var result = Parse(parser, functionParseResult);
+        var result = parser.Evaluate(functionCallContext);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
         result.Value.Should().BeAssignableTo<Aggregator>();
     }
 
-    private Result<object?> Parse(MyAggregatorParser parser, FunctionParseResult functionParseResult)
-        => parser.Parse
-        (
-            functionParseResult,
-            null,
-            _evaluatorMock,
-            _parserMock
-        );
-
+    [FunctionName("Correct")]
     private sealed class MyAggregatorParser : AggregatorParserBase
     {
-        public MyAggregatorParser(string functionName) : base(functionName!)
-        {
-        }
-
-        public MyAggregatorParser() : base("Correct") { }
-
-        protected override Result<Aggregator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-            => Result.FromExistingResult<Aggregator>(evaluator.Evaluate(functionParseResult, parser));
+        protected override Result<Aggregator> DoParse(FunctionCallContext context)
+            => Result.FromExistingResult<Aggregator>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
     }
 }

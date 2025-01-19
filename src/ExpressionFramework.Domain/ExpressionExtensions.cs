@@ -8,9 +8,14 @@ public static class ExpressionExtensions
             : result);
 
     public static Result<T> EvaluateTyped<T>(this Expression instance, object? context = null, string? errorMessage = null)
-        => instance is ITypedExpression<T> typedExpression
-            ? typedExpression.EvaluateTyped(context)
-            : instance.Evaluate(context).TryCast<T>(errorMessage);
+    {
+        if (instance is ITypedExpression<T> typedExpression)
+        {
+            return typedExpression.EvaluateTyped(context);
+        }
+
+        return instance.Evaluate(context).TryCast<T>(errorMessage);
+    }
 
     public static Result<T> EvaluateTypedWithTypeCheck<T>(this ITypedExpression<T> instance, object? context = null, string? errorMessage = null)
         => instance.EvaluateTyped(context).Transform(result => result.IsSuccessful() && result.Value is T t

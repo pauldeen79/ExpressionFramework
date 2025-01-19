@@ -6,9 +6,12 @@
 [ReturnValue(ResultStatus.Invalid, "Empty", "SourceExpression is not of type x")]
 public partial record CastExpression<T>
 {
-    public override Result<object?> Evaluate(object? context) => Result.FromExistingResult<object?>(EvaluateTyped(context));
+    public override Result<object?> Evaluate(object? context)
+        => Result.FromExistingResult<object?>(EvaluateTyped(context));
 
-    public Result<T> EvaluateTyped(object? context) => SourceExpression.Evaluate(context).TryCast<T>($"SourceExpression is not of type {typeof(T).FullName}");
+    public Result<T> EvaluateTyped(object? context)
+        => SourceExpression.Evaluate(context).TryCast<T>($"SourceExpression is not of type {typeof(T).FullName}");
 
-    public Expression ToUntyped() => SourceExpression;
+    public Expression ToUntyped()
+        => SourceExpression;
 }

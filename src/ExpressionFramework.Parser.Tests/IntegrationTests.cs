@@ -4,21 +4,13 @@ public sealed class IntegrationTests : IDisposable
 {
     private readonly ServiceProvider _provider;
     private readonly IServiceScope _scope;
-    private readonly IFunctionResultParser _functionResultParserMock = Substitute.For<IFunctionResultParser>();
 
     public IntegrationTests()
     {
-        _functionResultParserMock.Parse(Arg.Any<FunctionParseResult>(), Arg.Any<object?>(), Arg.Any<IFunctionParseResultEvaluator>(), Arg.Any<IExpressionParser>())
-            .Returns(x => x.ArgAt<FunctionParseResult>(0).FunctionName == "MyPredicate"
-                ? Result.Success<object?>(x[1] is int i && i > 2)
-                : Result.Continue<object?>());
-
         _provider = new ServiceCollection()
             .AddParsers()
             .AddExpressionParser()
-            .AddSingleton(_functionResultParserMock)
-            .AddSingleton<IFunctionResultParser, MyNamespacedExpressionParser>()
-            .AddSingleton<IExpressionResolver, MyNamespacedExpressionParser>()
+            .AddScoped<IFunction, MyFunction>()
             .BuildServiceProvider(true);
 
         _scope = _provider.CreateScope();
@@ -28,10 +20,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Expression()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
+        var result = parser.Evaluate("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -39,39 +31,13 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Namespaced_Expression()
-    {
-        // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
-
-        // Act
-        var result = parser.Parse("=My.Expression()", CultureInfo.InvariantCulture);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-    }
-
-    [Fact]
-    public void Can_Parse_Function_With_Namespaced_Expression_Using_Alias()
-    {
-        // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
-
-        // Act
-        var result = parser.Parse("=MyAlias()", CultureInfo.InvariantCulture);
-
-        // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-    }
-
-    [Fact]
     public void Can_Parse_Function_With_Expression_And_Using_FormattableStrings_As_Well()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
+        var result = parser.Evaluate("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -82,10 +48,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Nested_Expression()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
+        var result = parser.Evaluate("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -96,10 +62,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_Without_Nested_Expression()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -110,10 +76,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Context()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -124,10 +90,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Context_And_Operator()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
+        var result = parser.Evaluate("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -138,10 +104,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Generated_DefaultValue_On_Nullable_Property()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -152,10 +118,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Supplied_DefaultValue_On_Nullable_Property()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -166,10 +132,10 @@ public sealed class IntegrationTests : IDisposable
     public void Can_Parse_Function_With_Correct_Typed_Arguments()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=Constant(13)", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=Constant(13)", CultureInfo.InvariantCulture);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -180,10 +146,10 @@ public sealed class IntegrationTests : IDisposable
     public void Function_With_String_Argument_Preserves_WhiteSpace()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=ToUpperCase(\"  space  \")", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=ToUpperCase(\"  space  \")", CultureInfo.InvariantCulture);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -191,16 +157,16 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Unknown_Expression_Gives_NotSupported()
+    public void Unknown_Expression_Gives_Invalid()
     {
         // Arrange
-        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringParser>();
+        var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Parse("=UNKNOWN()", CultureInfo.InvariantCulture, this);
+        var result = parser.Evaluate("=UNKNOWN()", CultureInfo.InvariantCulture, this);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.NotSupported);
+        result.Status.Should().Be(ResultStatus.Invalid);
     }
 
     public void Dispose()
@@ -209,28 +175,16 @@ public sealed class IntegrationTests : IDisposable
         _provider.Dispose();
     }
 
-    private sealed record MyNamespacedExpression : Expression
+    [FunctionName("MyPredicate")]
+    [FunctionArgument("Expression", typeof(object), false)]
+    private sealed class MyFunction : IFunction
     {
-        public override Result<object?> Evaluate(object? context)
+        public Result<object?> Evaluate(FunctionCallContext context)
         {
-            return Result.Success<object?>(default);
+            return Result.Success<object?>(context.GetArgumentValueResult(0, "Expression", null).GetValue() is int i && i > 2);
         }
 
-        public override ExpressionBuilder ToBuilder()
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    private sealed class MyNamespacedExpressionParser : ExpressionParserBase
-    {
-        public MyNamespacedExpressionParser() : base("Expression", "My", "MyAlias")
-        {
-        }
-
-        protected override Result<Expression> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        {
-            return Result.Success<Expression>(new MyNamespacedExpression());
-        }
+        public Result Validate(FunctionCallContext context)
+            => Result.Success();
     }
 }

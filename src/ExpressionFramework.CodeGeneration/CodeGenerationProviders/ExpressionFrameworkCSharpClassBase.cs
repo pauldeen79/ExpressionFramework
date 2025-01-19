@@ -77,31 +77,96 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
             .WithNamespace(base.CurrentNamespace)
             .WithName($"{typeBase.WithoutInterfacePrefix()}Parser")
             .WithBaseClass($"{type}ParserBase")
-            .AddConstructors(
-                new ConstructorBuilder()
-                    .WithChainCall(CreateChainCall(typeBase, name))
-            )
+            .AddConstructors(CreateConstructors(typeBase, name, type))
             .AddMethods(new MethodBuilder()
                 .WithName("DoParse")
                 .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
-                .AddParameter("functionParseResult", typeof(FunctionParseResult))
-                .AddParameter("evaluator", typeof(IFunctionParseResultEvaluator))
-                .AddParameter("parser", typeof(IExpressionParser))
+                .AddParameter("context", "CrossCutting.Utilities.Parsers.FunctionCallContext")
                 .WithProtected()
                 .WithOverride()
                 .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
             )
-            .With(x => AddIsSupportedOverride(typeBase, x));
+            .AddAttributes(CreateAttributes(typeBase, settings, name));
 
-    private string CreateChainCall(TypeBase typeBase, string name)
+    private IEnumerable<ConstructorBuilder> CreateConstructors(TypeBase typeBase, string name, string type)
     {
-        var attr = typeBase.Attributes.FirstOrDefault(x => x.Name.GetClassName() == nameof(ExpressionNameAttribute));
-        if (attr is not null)
+        if (type != Constants.Types.Expression)
         {
-            return $"base({CsharpExpressionDumper.Dump(attr.Parameters.First().Value)}, {CsharpExpressionDumper.Dump(attr.Parameters.Last().Value)})";
+            yield break;
         }
 
-        return $"base({CsharpExpressionDumper.Dump(name)})";
+        var attr = typeBase.Attributes.FirstOrDefault(x => x.Name.GetClassName() == nameof(ExpressionNameAttribute));
+        var code = attr is not null
+            ? $"base({CsharpExpressionDumper.Dump(attr.Parameters.First().Value)}, {CsharpExpressionDumper.Dump(attr.Parameters.Last().Value)})"
+            : $"base({CsharpExpressionDumper.Dump(name)})";
+
+        yield return new ConstructorBuilder().WithChainCall(code);
+    }
+
+    private static IEnumerable<AttributeBuilder> CreateAttributes(TypeBase typeBase, PipelineSettings settings, string name)
+    {
+        yield return new AttributeBuilder().WithName("FunctionName").AddParameters(new AttributeParameterBuilder().WithValue(name));
+        foreach (var attribute in typeBase.Properties.Select(x => new AttributeBuilder()
+            .WithName("FunctionArgument")
+            .AddParameters(CreateParameters(x, settings))))
+        {
+            yield return attribute;
+        }
+    }
+
+    private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property property, PipelineSettings settings)
+    {
+        var typeName = property.TypeName.MapTypeName(settings);
+        var isOptional = typeName.EndsWith('?') || property.IsNullable;
+        typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
+
+        if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
+        {
+            typeName = typeName.GetGenericArguments();
+        }
+
+        if (typeName == "T")
+        {
+            // ITypedExpression<T> / T
+            // Cannot be determined at compile time, so assume System.Object
+            typeName = WellKnownTypes.Object;
+        }
+
+        if (typeName == Constants.TypeNames.Expression)
+        {
+            typeName = WellKnownTypes.Object;
+        }
+
+        if (typeName.WithoutGenerics() == typeof(IReadOnlyCollection<>).WithoutGenerics())
+        {
+            typeName = typeof(IEnumerable).FullName!;
+        }
+
+        var genericArguments = typeName.GetGenericArguments();
+        if (!string.IsNullOrEmpty(genericArguments))
+        {
+            // Something<Something, T, Something>
+            var newGenericTypeArgs = new List<string>();
+            foreach (var genericTypeArg in genericArguments.Split(','))
+            {
+                newGenericTypeArgs.Add(genericTypeArg switch
+                {
+                    "T" => WellKnownTypes.Object,
+                    Constants.TypeNames.Expression => WellKnownTypes.Object,
+                    _ => genericTypeArg
+                });
+            }
+            typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
+        }
+
+        yield return new AttributeParameterBuilder().WithValue(property.Name);
+        yield return new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeName})"));
+
+        if (isOptional)
+        {
+            //required = false
+            yield return new AttributeParameterBuilder().WithValue(false);
+        }
     }
 
     protected PipelineSettings CreateSettings()
@@ -115,26 +180,11 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         || parserProperty.TypeName == $"{Constants.CodeGenerationRootNamespace}.Contracts.{Constants.Types.ITypedExpression}<{typeof(IEnumerable).FullName}>"
         || parserProperty.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{Constants.Types.Expression}>";
 
-    private static void AddIsSupportedOverride(TypeBase model, ClassBuilder parserClass)
-    {
-        if (model.GenericTypeArguments.Count > 0)
-        {
-            parserClass.AddMethods(
-                new MethodBuilder()
-                    .WithProtected()
-                    .WithOverride()
-                    .WithReturnType(typeof(bool))
-                    .WithName("IsNameValid")
-                    .AddParameter("functionName", typeof(string))
-                    .AddStringCodeStatements("return base.IsNameValid(functionName.WithoutGenerics());"));
-        }
-    }
-
     private void AddParseCodeStatements(TypeBase typeBase, MethodBuilder parseMethod, string entityNamespace, string type, PipelineSettings settings)
     {
         if (entityNamespace == Constants.Namespaces.DomainExpressions && typeBase.GenericTypeArguments.Count > 0 && typeBase.Properties.Count == 1)
         {
-            parseMethod.AddStringCodeStatements($"return ParseTypedExpression(typeof({typeBase.WithoutInterfacePrefix()}<>), 0, {CsharpExpressionDumper.Dump(typeBase.Properties.First().Name)}, functionParseResult, evaluator, parser);");
+            parseMethod.AddStringCodeStatements($"return ParseTypedExpression(typeof({typeBase.WithoutInterfacePrefix()}<>), 0, {CsharpExpressionDumper.Dump(typeBase.Properties.First().Name)}, context);");
             return;
         }
 
@@ -161,7 +211,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         {
             parseMethod.AddStringCodeStatements
             (
-                "var typeResult = functionParseResult.FunctionName.GetGenericTypeResult();",
+                "var typeResult = context.FunctionCall.Name.GetGenericTypeResult();",
                 "if (!typeResult.IsSuccessful())",
                 "{",
                 $"    return Result.FromExistingResult<{Constants.Namespaces.Domain}.{type}>(typeResult);",
@@ -190,11 +240,11 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         var genericType = GetCustomType(property.TypeName.GetGenericArguments());
         if (property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression && !string.IsNullOrEmpty(genericType.MethodType))
         {
-            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = context.GetArgument{genericType.MethodType}ValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix});";
         }
         else if (property.TypeName == typeof(object).FullName || property.TypeName == "object")
         {
-            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = context.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix});";
         }
         else
         {
@@ -204,7 +254,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
                 "System.Collections.Generic.IReadOnlyCollection" => $"{typeof(IEnumerable<>).WithoutGenerics()}<{property.TypeName.GetGenericArguments().MapTypeName(settings)}>",
                 _ => property.TypeName.MapTypeName(settings)
             };
-            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = functionParseResult.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix});";
+            return $"var {property.Name.ToCamelCase(CultureInfo.InvariantCulture)}Result = context.GetArgumentExpressionResult<{typeName}>({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix});";
         }
     }
 
@@ -243,26 +293,26 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
 
         if (property.TypeName.GetClassName() == $"I{Constants.Types.Expression}")
         {
-            builder.Append($"new TypedConstantResultExpression<{typeof(object).FullName}{nullableSuffix}>(functionParseResult.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, functionParseResult.Context, evaluator, parser{defaultValueSuffix}))");
+            builder.Append($"new TypedConstantResultExpression<{typeof(object).FullName}{nullableSuffix}>(context.GetArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix}))");
         }
         else if (property.TypeName == $"{typeof(ITypedExpression<>).WithoutGenerics()}<{typeof(IEnumerable).FullName}>")
         {
-            builder.Append($"functionParseResult.GetTypedExpressionsArgumentValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
+            builder.Append($"context.GetTypedExpressionsArgumentValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)})");
         }
         else if (property.TypeName == $"{typeof(IReadOnlyCollection<>).WithoutGenerics()}<{Constants.CodeGenerationRootNamespace}.Models.I{type}>")
         {
-            builder.Append($"functionParseResult.GetExpressionsArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser)");
+            builder.Append($"context.GetExpressionsArgumentValueResult({index}, {CsharpExpressionDumper.Dump(property.Name)})");
         }
         else if (property.TypeName.WithoutGenerics().GetClassName() == Constants.Types.ITypedExpression)
         {
             var genericType = GetCustomType(property.TypeName.GetGenericArguments());
             if (!string.IsNullOrEmpty(genericType.MethodType))
             {
-                builder.Append($"functionParseResult.GetArgument{genericType.MethodType}ValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser{defaultValueSuffix})");
+                builder.Append($"context.GetArgument{genericType.MethodType}ValueExpression({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix})");
             }
             else
             {
-                builder.Append($"functionParseResult.GetArgumentValueExpression<{property.TypeName.GetGenericArguments()}>({index}, {CsharpExpressionDumper.Dump(property.Name)}, evaluator, parser{defaultValueSuffix})");
+                builder.Append($"context.GetArgumentValueExpression<{property.TypeName.GetGenericArguments()}>({index}, {CsharpExpressionDumper.Dump(property.Name)}{defaultValueSuffix})");
             }
         }
         else

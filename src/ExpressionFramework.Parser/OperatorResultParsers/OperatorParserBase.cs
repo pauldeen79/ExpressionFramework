@@ -1,20 +1,16 @@
 ﻿namespace ExpressionFramework.Parser.OperatorResultParsers;
 
-public abstract class OperatorParserBase : IFunctionResultParser
+public abstract class OperatorParserBase : IFunction
 {
-    private readonly string _functionName;
-
-    protected OperatorParserBase(string functionName)
+    public Result<object?> Evaluate(FunctionCallContext context)
     {
-        ArgumentGuard.IsNotNull(functionName, nameof(functionName));
+        context = ArgumentGuard.IsNotNull(context, nameof(context));
 
-        _functionName = functionName;
+        return Result.FromExistingResult<object?>(DoParse(context));
     }
 
-    public Result<object?> Parse(FunctionParseResult functionParseResult, object? context, IFunctionParseResultEvaluator evaluator, IExpressionParser parser)
-        => ArgumentGuard.IsNotNull(functionParseResult, nameof(functionParseResult)).FunctionName.Equals(_functionName, StringComparison.OrdinalIgnoreCase)
-            ? Result.FromExistingResult<object?>(DoParse(functionParseResult, evaluator, parser))
-            : Result.Continue<object?>();
+    public Result Validate(FunctionCallContext context)
+        => Result.Success();
 
-    protected abstract Result<Operator> DoParse(FunctionParseResult functionParseResult, IFunctionParseResultEvaluator evaluator, IExpressionParser parser);
+    protected abstract Result<Operator> DoParse(FunctionCallContext context);
 }
