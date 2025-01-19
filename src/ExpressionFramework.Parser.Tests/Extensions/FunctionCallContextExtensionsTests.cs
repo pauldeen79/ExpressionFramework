@@ -38,7 +38,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression<int>(0, "Dummy");
+        var result = sut.GetArgumentInt32ValueExpression(0, "Dummy");
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(13);
@@ -51,7 +51,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression(0, "Dummy", 33);
+        var result = sut.GetArgumentInt32ValueExpression(0, "Dummy", 33);
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(33);
@@ -64,7 +64,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13L)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression<long>(0, "Dummy");
+        var result = sut.GetArgumentInt64ValueExpression(0, "Dummy");
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(13L);
@@ -77,7 +77,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression(0, "Dummy", 33L);
+        var result = sut.GetArgumentInt64ValueExpression(0, "Dummy", 33L);
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(33L);
@@ -90,7 +90,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(4.6M)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression<decimal>(0, "Dummy");
+        var result = sut.GetArgumentDecimalValueExpression(0, "Dummy");
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(4.6M);
@@ -103,7 +103,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression(0, "Dummy", 4.9M);
+        var result = sut.GetArgumentDecimalValueExpression(0, "Dummy", 4.9M);
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(4.9M);
@@ -116,7 +116,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(true)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression<bool>(0, "Dummy");
+        var result = sut.GetArgumentBooleanValueExpression(0, "Dummy");
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(true);
@@ -129,7 +129,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression(0, "Dummy", true);
+        var result = sut.GetArgumentBooleanValueExpression(0, "Dummy", true);
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(true);
@@ -143,7 +143,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(now)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression<DateTime>(0, "Dummy");
+        var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy");
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(now);
@@ -157,7 +157,7 @@ public class FunctionCallContextExtensionsTests
         var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
 
         // Act
-        var result = sut.GetArgumentValueExpression(0, "Dummy", now);
+        var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy", now);
 
         // Assert
         result.EvaluateTyped().Value.Should().Be(now);
