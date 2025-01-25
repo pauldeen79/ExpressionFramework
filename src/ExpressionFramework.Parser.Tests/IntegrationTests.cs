@@ -17,7 +17,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Expression()
+    public void Can_Evaluate_Function_With_Expression()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -31,7 +31,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Expression_And_Using_FormattableStrings_As_Well()
+    public void Can_Evaluate_Function_With_Expression_And_Using_FormattableStrings_As_Well()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -45,7 +45,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Nested_Expression()
+    public void Can_Evaluate_Function_With_Nested_Expression()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -59,7 +59,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_Without_Nested_Expression()
+    public void Can_Evaluate_Function_Without_Nested_Expression()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -73,7 +73,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Context()
+    public void Can_Evaluate_Function_With_Context()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -87,7 +87,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Context_And_Operator()
+    public void Can_Evaluate_Function_With_Context_And_Operator()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -101,7 +101,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Generated_DefaultValue_On_Nullable_Property()
+    public void Can_Evaluate_Function_With_Generated_DefaultValue_On_Nullable_Property()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -115,7 +115,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Supplied_DefaultValue_On_Nullable_Property()
+    public void Can_Evaluate_Function_With_Supplied_DefaultValue_On_Nullable_Property()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -129,7 +129,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Can_Parse_Function_With_Correct_Typed_Arguments()
+    public void Can_Evaluate_Function_With_Correct_Typed_Arguments()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -143,7 +143,7 @@ public sealed class IntegrationTests : IDisposable
     }
 
     [Fact]
-    public void Function_With_String_Argument_Preserves_WhiteSpace()
+    public void Function_With_String_Argument_Preserves_Whitespace()
     {
         // Arrange
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
@@ -183,8 +183,5 @@ public sealed class IntegrationTests : IDisposable
         {
             return Result.Success<object?>(context.GetArgumentValueResult(0, "Expression", null).GetValue() is int i && i > 2);
         }
-
-        public Result Validate(FunctionCallContext context)
-            => Result.Success();
     }
 }

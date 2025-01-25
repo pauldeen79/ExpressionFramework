@@ -9,8 +9,5 @@ public abstract class EvaluatableParserBase : IFunction
         return Result.FromExistingResult<object?>(DoParse(context));
     }
 
-    public Result Validate(FunctionCallContext context)
-        => Result.Success();
-
     protected abstract Result<Evaluatable> DoParse(FunctionCallContext context);
 }

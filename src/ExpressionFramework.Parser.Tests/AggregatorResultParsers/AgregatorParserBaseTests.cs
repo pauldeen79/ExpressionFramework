@@ -8,7 +8,7 @@ public class AggregatorParserBaseTests
     public AggregatorParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(Substitute.For<Aggregator>()));
     }
 

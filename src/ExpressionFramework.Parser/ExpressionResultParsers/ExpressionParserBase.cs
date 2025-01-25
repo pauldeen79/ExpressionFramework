@@ -20,9 +20,6 @@ public abstract class ExpressionParserBase : IFunction, IExpressionResolver
             : Result.FromExistingResult<object?>(result);
     }
 
-    public Result Validate(FunctionCallContext context)
-        => Result.Success();
-
     public Result<Expression> ParseExpression(FunctionCallContext context)
     {
         context = ArgumentGuard.IsNotNull(context, nameof(context));
