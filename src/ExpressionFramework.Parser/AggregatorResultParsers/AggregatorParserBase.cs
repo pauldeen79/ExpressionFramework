@@ -9,8 +9,5 @@ public abstract class AggregatorParserBase : IFunction
         return Result.FromExistingResult<object?>(DoParse(context));
     }
 
-    public Result Validate(FunctionCallContext context)
-        => Result.Success();
-
     protected abstract Result<Aggregator> DoParse(FunctionCallContext context);
 }
