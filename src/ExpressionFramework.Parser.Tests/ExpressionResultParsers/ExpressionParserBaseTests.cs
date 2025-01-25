@@ -9,7 +9,7 @@ public class ExpressionParserBaseTests
     public ExpressionParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(_expressionMock));
         _expressionEvaluatorMock
             .Evaluate(Arg.Any<string>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
@@ -83,7 +83,7 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(null));
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
@@ -102,7 +102,7 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IExpressionEvaluator>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
             .Returns(Result.Error<object?>("Kaboom"));
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
