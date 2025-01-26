@@ -112,13 +112,32 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         {
             yield return attribute;
         }
+
+        switch (typeBase.Interfaces.FirstOrDefault())
+        {
+            case Constants.TypeNames.Aggregator:
+                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Aggregator})")));
+                break;
+            case Constants.TypeNames.Expression:
+                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Expression})")));
+                break;
+            case Constants.TypeNames.Evaluatable:
+                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Evaluatable})")));
+                break;
+            case Constants.TypeNames.Operator:
+                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Operator})")));
+                break;
+        }
     }
 
     private static IEnumerable<AttributeParameterBuilder> CreateParameters(Property property, PipelineSettings settings)
     {
         var typeName = property.TypeName.MapTypeName(settings);
         var isOptional = typeName.EndsWith('?') || property.IsNullable;
-        typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
+        // Fow now, assume System.Object, and let ExpressionFramework do the type checking
+        // This is not necessary when you entirely remove the Expression abstraction layer, and just use IFunction and ITypedFunction<T> everywhere...
+        typeName = typeof(object).FullName;
+        /*typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
 
         if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
         {
@@ -157,7 +176,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
                 });
             }
             typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
-        }
+        }*/
 
         yield return new AttributeParameterBuilder().WithValue(property.Name);
         yield return new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeName})"));

@@ -11,9 +11,10 @@
 namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
     [FunctionName(@"Aggregate")]
-    [FunctionArgument(@"Expressions", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"Aggregator", typeof(ExpressionFramework.Domain.Aggregator))]
-    [FunctionArgument(@"FormatProviderExpression", typeof(System.IFormatProvider), false)]
+    [FunctionArgument(@"Expressions", typeof(System.Object))]
+    [FunctionArgument(@"Aggregator", typeof(System.Object))]
+    [FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AggregateExpressionParser : ExpressionParserBase
     {
         public AggregateExpressionParser() : base(@"Aggregate")
@@ -40,8 +41,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"All")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AllExpressionParser : ExpressionParserBase
     {
         public AllExpressionParser() : base(@"All")
@@ -58,8 +60,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"And")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Boolean))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Boolean))]
+    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AndExpressionParser : ExpressionParserBase
     {
         public AndExpressionParser() : base(@"And")
@@ -76,8 +79,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Any")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AnyExpressionParser : ExpressionParserBase
     {
         public AnyExpressionParser() : base(@"Any")
@@ -94,7 +98,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Cast")]
-    [FunctionArgument(@"SourceExpression", typeof(object))]
+    [FunctionArgument(@"SourceExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CastExpressionParser : ExpressionParserBase
     {
         public CastExpressionParser() : base(@"Cast")
@@ -107,7 +112,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Chained")]
-    [FunctionArgument(@"Expressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Expressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ChainedExpressionParser : ExpressionParserBase
     {
         public ChainedExpressionParser() : base(@"Chained")
@@ -123,10 +129,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Compound")]
-    [FunctionArgument(@"FirstExpression", typeof(object))]
-    [FunctionArgument(@"SecondExpression", typeof(object))]
-    [FunctionArgument(@"Aggregator", typeof(ExpressionFramework.Domain.Aggregator))]
-    [FunctionArgument(@"FormatProviderExpression", typeof(System.IFormatProvider), false)]
+    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [FunctionArgument(@"Aggregator", typeof(System.Object))]
+    [FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CompoundExpressionParser : ExpressionParserBase
     {
         public CompoundExpressionParser() : base(@"Compound")
@@ -155,6 +162,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
     }
     [FunctionName(@"Constant")]
     [FunctionArgument(@"Value", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ConstantExpressionParser : ExpressionParserBase
     {
         public ConstantExpressionParser() : base(@"Constant")
@@ -179,7 +187,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ConstantResult")]
-    [FunctionArgument(@"Value", typeof(CrossCutting.Common.Results.Result))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ConstantResultExpressionParser : ExpressionParserBase
     {
         public ConstantResultExpressionParser() : base(@"ConstantResult")
@@ -204,6 +213,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Context")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ContextExpressionParser : ExpressionParserBase
     {
         public ContextExpressionParser() : base(@"Context")
@@ -219,8 +229,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Count")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CountExpressionParser : ExpressionParserBase
     {
         public CountExpressionParser() : base(@"Count")
@@ -237,7 +248,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Day")]
-    [FunctionArgument(@"Expression", typeof(System.DateTime))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DayExpressionParser : ExpressionParserBase
     {
         public DayExpressionParser() : base(@"Day")
@@ -253,6 +265,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Default")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DefaultExpressionParser : ExpressionParserBase
     {
         public DefaultExpressionParser() : base(@"Default")
@@ -272,7 +285,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Delegate")]
-    [FunctionArgument(@"Value", typeof(System.Func<System.Object?>))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DelegateExpressionParser : ExpressionParserBase
     {
         public DelegateExpressionParser() : base(@"Delegate")
@@ -297,7 +311,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"DelegateResult")]
-    [FunctionArgument(@"Result", typeof(System.Func<System.Object?>))]
+    [FunctionArgument(@"Result", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DelegateResultExpressionParser : ExpressionParserBase
     {
         public DelegateResultExpressionParser() : base(@"DelegateResult")
@@ -322,8 +337,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ElementAt")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Int32))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ElementAtExpressionParser : ExpressionParserBase
     {
         public ElementAtExpressionParser() : base(@"ElementAt")
@@ -340,9 +356,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ElementAtOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Int32))]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ElementAtOrDefaultExpressionParser : ExpressionParserBase
     {
         public ElementAtOrDefaultExpressionParser() : base(@"ElementAtOrDefault")
@@ -360,6 +377,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Empty")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EmptyExpressionParser : ExpressionParserBase
     {
         public EmptyExpressionParser() : base(@"Empty")
@@ -375,8 +393,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Equals")]
-    [FunctionArgument(@"FirstExpression", typeof(object))]
-    [FunctionArgument(@"SecondExpression", typeof(object))]
+    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EqualsExpressionParser : ExpressionParserBase
     {
         public EqualsExpressionParser() : base(@"Equals")
@@ -393,7 +412,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Error")]
-    [FunctionArgument(@"ErrorMessageExpression", typeof(System.String))]
+    [FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ErrorExpressionParser : ExpressionParserBase
     {
         public ErrorExpressionParser() : base(@"Error")
@@ -409,8 +429,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Evaluatable")]
-    [FunctionArgument(@"Condition", typeof(ExpressionFramework.Domain.Evaluatable))]
-    [FunctionArgument(@"Expression", typeof(object))]
+    [FunctionArgument(@"Condition", typeof(System.Object))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EvaluatableExpressionParser : ExpressionParserBase
     {
         public EvaluatableExpressionParser() : base(@"Evaluatable")
@@ -436,6 +457,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"False")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FalseExpressionParser : ExpressionParserBase
     {
         public FalseExpressionParser() : base(@"False")
@@ -451,8 +473,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Field")]
-    [FunctionArgument(@"Expression", typeof(object))]
-    [FunctionArgument(@"FieldNameExpression", typeof(System.String))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FieldExpressionParser : ExpressionParserBase
     {
         public FieldExpressionParser() : base(@"Field")
@@ -469,8 +492,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"First")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FirstExpressionParser : ExpressionParserBase
     {
         public FirstExpressionParser() : base(@"First")
@@ -487,9 +511,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"FirstOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FirstOrDefaultExpressionParser : ExpressionParserBase
     {
         public FirstOrDefaultExpressionParser() : base(@"FirstOrDefault")
@@ -507,8 +532,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"GroupBy")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"KeySelectorExpression", typeof(object))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"KeySelectorExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class GroupByExpressionParser : ExpressionParserBase
     {
         public GroupByExpressionParser() : base(@"GroupBy")
@@ -525,9 +551,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"If")]
-    [FunctionArgument(@"Condition", typeof(ExpressionFramework.Domain.Evaluatable))]
-    [FunctionArgument(@"ResultExpression", typeof(object))]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Condition", typeof(System.Object))]
+    [FunctionArgument(@"ResultExpression", typeof(System.Object))]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class IfExpressionParser : ExpressionParserBase
     {
         public IfExpressionParser() : base(@"If")
@@ -554,8 +581,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Invalid")]
-    [FunctionArgument(@"ErrorMessageExpression", typeof(System.String))]
-    [FunctionArgument(@"ValidationErrorExpressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
+    [FunctionArgument(@"ValidationErrorExpressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class InvalidExpressionParser : ExpressionParserBase
     {
         public InvalidExpressionParser() : base(@"Invalid")
@@ -581,8 +609,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Last")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LastExpressionParser : ExpressionParserBase
     {
         public LastExpressionParser() : base(@"Last")
@@ -599,9 +628,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"LastOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LastOrDefaultExpressionParser : ExpressionParserBase
     {
         public LastOrDefaultExpressionParser() : base(@"LastOrDefault")
@@ -619,8 +649,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Left")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Int32))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"LengthExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LeftExpressionParser : ExpressionParserBase
     {
         public LeftExpressionParser() : base(@"Left")
@@ -637,8 +668,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Max")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MaxExpressionParser : ExpressionParserBase
     {
         public MaxExpressionParser() : base(@"Max")
@@ -655,8 +687,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Min")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MinExpressionParser : ExpressionParserBase
     {
         public MinExpressionParser() : base(@"Min")
@@ -673,7 +706,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Month")]
-    [FunctionArgument(@"Expression", typeof(System.DateTime))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MonthExpressionParser : ExpressionParserBase
     {
         public MonthExpressionParser() : base(@"Month")
@@ -689,8 +723,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"NotEquals")]
-    [FunctionArgument(@"FirstExpression", typeof(object))]
-    [FunctionArgument(@"SecondExpression", typeof(object))]
+    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NotEqualsExpressionParser : ExpressionParserBase
     {
         public NotEqualsExpressionParser() : base(@"NotEquals")
@@ -707,7 +742,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Not")]
-    [FunctionArgument(@"Expression", typeof(System.Boolean))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NotExpressionParser : ExpressionParserBase
     {
         public NotExpressionParser() : base(@"Not")
@@ -723,7 +759,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Now")]
-    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider), false)]
+    [FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NowExpressionParser : ExpressionParserBase
     {
         public NowExpressionParser() : base(@"Now")
@@ -748,8 +785,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"OfType")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"TypeExpression", typeof(System.Type))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"TypeExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OfTypeExpressionParser : ExpressionParserBase
     {
         public OfTypeExpressionParser() : base(@"OfType")
@@ -766,9 +804,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Operator")]
-    [FunctionArgument(@"LeftExpression", typeof(object))]
-    [FunctionArgument(@"RightExpression", typeof(object))]
-    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
+    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [FunctionArgument(@"Operator", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OperatorExpressionParser : ExpressionParserBase
     {
         public OperatorExpressionParser() : base(@"Operator")
@@ -795,8 +834,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"OrderBy")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SortOrderExpressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"SortOrderExpressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OrderByExpressionParser : ExpressionParserBase
     {
         public OrderByExpressionParser() : base(@"OrderBy")
@@ -822,8 +862,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Or")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Boolean))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Boolean))]
+    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OrExpressionParser : ExpressionParserBase
     {
         public OrExpressionParser() : base(@"Or")
@@ -840,8 +881,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Right")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Int32))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"LengthExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class RightExpressionParser : ExpressionParserBase
     {
         public RightExpressionParser() : base(@"Right")
@@ -858,8 +900,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Select")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"SelectorExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SelectExpressionParser : ExpressionParserBase
     {
         public SelectExpressionParser() : base(@"Select")
@@ -876,7 +919,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Sequence")]
-    [FunctionArgument(@"Expressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Expressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SequenceExpressionParser : ExpressionParserBase
     {
         public SequenceExpressionParser() : base(@"Sequence")
@@ -892,8 +936,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Single")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SingleExpressionParser : ExpressionParserBase
     {
         public SingleExpressionParser() : base(@"Single")
@@ -910,9 +955,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"SingleOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SingleOrDefaultExpressionParser : ExpressionParserBase
     {
         public SingleOrDefaultExpressionParser() : base(@"SingleOrDefault")
@@ -930,8 +976,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Skip")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"CountExpression", typeof(System.Int32))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"CountExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SkipExpressionParser : ExpressionParserBase
     {
         public SkipExpressionParser() : base(@"Skip")
@@ -948,7 +995,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"StringConcatenate")]
-    [FunctionArgument(@"Expressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Expressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringConcatenateExpressionParser : ExpressionParserBase
     {
         public StringConcatenateExpressionParser() : base(@"StringConcatenate")
@@ -973,8 +1021,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"StringFind")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"FindExpression", typeof(System.String))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"FindExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringFindExpressionParser : ExpressionParserBase
     {
         public StringFindExpressionParser() : base(@"StringFind")
@@ -991,7 +1040,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"StringLength")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringLengthExpressionParser : ExpressionParserBase
     {
         public StringLengthExpressionParser() : base(@"StringLength")
@@ -1007,9 +1057,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"StringReplace")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"FindExpression", typeof(System.String))]
-    [FunctionArgument(@"ReplaceExpression", typeof(System.String))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"FindExpression", typeof(System.Object))]
+    [FunctionArgument(@"ReplaceExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringReplaceExpressionParser : ExpressionParserBase
     {
         public StringReplaceExpressionParser() : base(@"StringReplace")
@@ -1027,9 +1078,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Substring")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Int32))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Int32), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [FunctionArgument(@"LengthExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SubstringExpressionParser : ExpressionParserBase
     {
         public SubstringExpressionParser() : base(@"Substring")
@@ -1047,8 +1099,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Sum")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"SelectorExpression", typeof(object), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SumExpressionParser : ExpressionParserBase
     {
         public SumExpressionParser() : base(@"Sum")
@@ -1065,8 +1118,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Switch")]
-    [FunctionArgument(@"Cases", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"Cases", typeof(System.Object))]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SwitchExpressionParser : ExpressionParserBase
     {
         public SwitchExpressionParser() : base(@"Switch")
@@ -1092,8 +1146,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Take")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"CountExpression", typeof(System.Int32))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"CountExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TakeExpressionParser : ExpressionParserBase
     {
         public TakeExpressionParser() : base(@"Take")
@@ -1110,8 +1165,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ToCamelCase")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"Culture", typeof(System.Globalization.CultureInfo), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToCamelCaseExpressionParser : ExpressionParserBase
     {
         public ToCamelCaseExpressionParser() : base(@"ToCamelCase")
@@ -1128,7 +1184,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Today")]
-    [FunctionArgument(@"DateTimeProvider", typeof(CrossCutting.Common.Abstractions.IDateTimeProvider), false)]
+    [FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TodayExpressionParser : ExpressionParserBase
     {
         public TodayExpressionParser() : base(@"Today")
@@ -1153,8 +1210,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ToLowerCase")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"Culture", typeof(System.Globalization.CultureInfo), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToLowerCaseExpressionParser : ExpressionParserBase
     {
         public ToLowerCaseExpressionParser() : base(@"ToLowerCase")
@@ -1171,8 +1229,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ToPascalCase")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"Culture", typeof(System.Globalization.CultureInfo), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToPascalCaseExpressionParser : ExpressionParserBase
     {
         public ToPascalCaseExpressionParser() : base(@"ToPascalCase")
@@ -1189,8 +1248,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"ToUpperCase")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"Culture", typeof(System.Globalization.CultureInfo), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToUpperCaseExpressionParser : ExpressionParserBase
     {
         public ToUpperCaseExpressionParser() : base(@"ToUpperCase")
@@ -1207,8 +1267,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TrimEnd")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Char[]), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimEndExpressionParser : ExpressionParserBase
     {
         public TrimEndExpressionParser() : base(@"TrimEnd")
@@ -1225,8 +1286,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Trim")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Char[]), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimExpressionParser : ExpressionParserBase
     {
         public TrimExpressionParser() : base(@"Trim")
@@ -1243,8 +1305,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TrimStart")]
-    [FunctionArgument(@"Expression", typeof(System.String))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Char[]), false)]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimStartExpressionParser : ExpressionParserBase
     {
         public TrimStartExpressionParser() : base(@"TrimStart")
@@ -1261,6 +1324,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"True")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrueExpressionParser : ExpressionParserBase
     {
         public TrueExpressionParser() : base(@"True")
@@ -1276,8 +1340,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TryCast")]
-    [FunctionArgument(@"SourceExpression", typeof(object))]
-    [FunctionArgument(@"DefaultExpression", typeof(object), false)]
+    [FunctionArgument(@"SourceExpression", typeof(System.Object))]
+    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TryCastExpressionParser : ExpressionParserBase
     {
         public TryCastExpressionParser() : base(@"TryCast")
@@ -1297,7 +1362,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedChained")]
-    [FunctionArgument(@"Expressions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Expressions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedChainedExpressionParser : ExpressionParserBase
     {
         public TypedChainedExpressionParser() : base(@"TypedChained")
@@ -1310,7 +1376,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedConstant")]
-    [FunctionArgument(@"Value", typeof(object))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedConstantExpressionParser : ExpressionParserBase
     {
         public TypedConstantExpressionParser() : base(@"TypedConstant")
@@ -1323,7 +1390,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedConstantResult")]
-    [FunctionArgument(@"Value", typeof(CrossCutting.Common.Results.Result<object>))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedConstantResultExpressionParser : ExpressionParserBase
     {
         public TypedConstantResultExpressionParser() : base(@"TypedConstantResult")
@@ -1336,6 +1404,7 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedContext")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedContextExpressionParser : ExpressionParserBase
     {
         public TypedContextExpressionParser() : base(@"TypedContext")
@@ -1355,7 +1424,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedDelegate")]
-    [FunctionArgument(@"Value", typeof(System.Func<System.Object?>))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedDelegateExpressionParser : ExpressionParserBase
     {
         public TypedDelegateExpressionParser() : base(@"TypedDelegate")
@@ -1368,7 +1438,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedDelegateResult")]
-    [FunctionArgument(@"Value", typeof(System.Func<System.Object?>))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedDelegateResultExpressionParser : ExpressionParserBase
     {
         public TypedDelegateResultExpressionParser() : base(@"TypedDelegateResult")
@@ -1381,8 +1452,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"TypedField")]
-    [FunctionArgument(@"Expression", typeof(object))]
-    [FunctionArgument(@"FieldNameExpression", typeof(System.String))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedFieldExpressionParser : ExpressionParserBase
     {
         public TypedFieldExpressionParser() : base(@"TypedField")
@@ -1402,8 +1474,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Where")]
-    [FunctionArgument(@"Expression", typeof(System.Collections.IEnumerable))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Boolean))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionArgument(@"PredicateExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class WhereExpressionParser : ExpressionParserBase
     {
         public WhereExpressionParser() : base(@"Where")
@@ -1420,7 +1493,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
         }
     }
     [FunctionName(@"Year")]
-    [FunctionArgument(@"Expression", typeof(System.DateTime))]
+    [FunctionArgument(@"Expression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class YearExpressionParser : ExpressionParserBase
     {
         public YearExpressionParser() : base(@"Year")

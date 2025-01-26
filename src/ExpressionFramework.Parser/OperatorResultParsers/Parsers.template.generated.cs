@@ -11,6 +11,7 @@
 namespace ExpressionFramework.Parser.OperatorResultParsers
 {
     [FunctionName(@"EndsWithOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class EndsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -22,6 +23,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"EnumerableContainsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class EnumerableContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -33,6 +35,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"EnumerableNotContainsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class EnumerableNotContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -44,6 +47,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"EqualsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class EqualsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -55,6 +59,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsGreaterOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsGreaterOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -66,6 +71,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsGreaterOrEqualOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsGreaterOrEqualOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -77,6 +83,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNotNullOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNotNullOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -88,6 +95,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNotNullOrEmptyOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNotNullOrEmptyOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -99,6 +107,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNotNullOrWhiteSpaceOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNotNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -110,6 +119,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNullOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNullOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -121,6 +131,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNullOrEmptyOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNullOrEmptyOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -132,6 +143,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsNullOrWhiteSpaceOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -143,6 +155,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsSmallerOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsSmallerOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -154,6 +167,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"IsSmallerOrEqualOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class IsSmallerOrEqualOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -165,6 +179,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"NotEndsWithOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class NotEndsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -176,6 +191,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"NotEqualsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class NotEqualsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -187,6 +203,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"NotStartsWithOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class NotStartsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -198,6 +215,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"StartsWithOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class StartsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -209,6 +227,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"StringContainsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class StringContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -220,6 +239,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [FunctionName(@"StringNotContainsOperator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
     public class StringNotContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

@@ -11,6 +11,7 @@
 namespace ExpressionFramework.Parser.AggregatorResultParsers
 {
     [FunctionName(@"AddAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class AddAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -22,6 +23,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"DivideAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class DivideAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -33,6 +35,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"EnumerableConcatenateAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class EnumerableConcatenateAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -44,6 +47,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"ModulusAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class ModulusAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -55,6 +59,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"MultiplyAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class MultiplyAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -66,6 +71,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"PowerAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class PowerAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -77,6 +83,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"StringConcatenateAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class StringConcatenateAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -88,6 +95,7 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
         }
     }
     [FunctionName(@"SubtractAggregator")]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class SubtractAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

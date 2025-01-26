@@ -11,12 +11,13 @@
 namespace ExpressionFramework.Parser.EvaluatableResultParsers
 {
     [FunctionName(@"ComposableEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(object))]
-    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
-    [FunctionArgument(@"RightExpression", typeof(object))]
-    [FunctionArgument(@"Combination", typeof(System.Nullable<ExpressionFramework.Domain.Domains.Combination>), false)]
-    [FunctionArgument(@"StartGroup", typeof(System.Boolean))]
-    [FunctionArgument(@"EndGroup", typeof(System.Boolean))]
+    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [FunctionArgument(@"Operator", typeof(System.Object))]
+    [FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [FunctionArgument(@"Combination", typeof(System.Object), false)]
+    [FunctionArgument(@"StartGroup", typeof(System.Object))]
+    [FunctionArgument(@"EndGroup", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ComposableEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -48,7 +49,8 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
         }
     }
     [FunctionName(@"ComposedEvaluatable")]
-    [FunctionArgument(@"Conditions", typeof(System.Collections.IEnumerable))]
+    [FunctionArgument(@"Conditions", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ComposedEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -69,7 +71,8 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
         }
     }
     [FunctionName(@"ConstantEvaluatable")]
-    [FunctionArgument(@"Value", typeof(System.Boolean))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ConstantEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -90,7 +93,8 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
         }
     }
     [FunctionName(@"DelegateEvaluatable")]
-    [FunctionArgument(@"Value", typeof(System.Func<System.Boolean>))]
+    [FunctionArgument(@"Value", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class DelegateEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -111,9 +115,10 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
         }
     }
     [FunctionName(@"SingleEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(object))]
-    [FunctionArgument(@"Operator", typeof(ExpressionFramework.Domain.Operator))]
-    [FunctionArgument(@"RightExpression", typeof(object))]
+    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [FunctionArgument(@"Operator", typeof(System.Object))]
+    [FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class SingleEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
