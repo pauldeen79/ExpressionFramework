@@ -10,14 +10,14 @@
 #nullable enable
 namespace ExpressionFramework.Parser.EvaluatableResultParsers
 {
-    [FunctionName(@"ComposableEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
-    [FunctionArgument(@"Operator", typeof(System.Object))]
-    [FunctionArgument(@"RightExpression", typeof(System.Object))]
-    [FunctionArgument(@"Combination", typeof(System.Object), false)]
-    [FunctionArgument(@"StartGroup", typeof(System.Object))]
-    [FunctionArgument(@"EndGroup", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ComposableEvaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Operator", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Combination", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"StartGroup", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"EndGroup", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ComposableEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -48,9 +48,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ComposedEvaluatable")]
-    [FunctionArgument(@"Conditions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ComposedEvaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Conditions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ComposedEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -70,9 +70,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ConstantEvaluatable")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ConstantEvaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class ConstantEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -92,9 +92,9 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"DelegateEvaluatable")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"DelegateEvaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class DelegateEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -114,11 +114,11 @@ namespace ExpressionFramework.Parser.EvaluatableResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"SingleEvaluatable")]
-    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
-    [FunctionArgument(@"Operator", typeof(System.Object))]
-    [FunctionArgument(@"RightExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"SingleEvaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Operator", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Evaluatable))]
     public class SingleEvaluatableParser : EvaluatableParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Evaluatable> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

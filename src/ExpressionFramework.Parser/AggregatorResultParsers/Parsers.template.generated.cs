@@ -10,8 +10,8 @@
 #nullable enable
 namespace ExpressionFramework.Parser.AggregatorResultParsers
 {
-    [FunctionName(@"AddAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"AddAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class AddAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -22,8 +22,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"DivideAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"DivideAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class DivideAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -34,8 +34,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"EnumerableConcatenateAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"EnumerableConcatenateAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class EnumerableConcatenateAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -46,8 +46,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ModulusAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ModulusAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class ModulusAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -58,8 +58,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"MultiplyAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"MultiplyAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class MultiplyAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -70,8 +70,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"PowerAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"PowerAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class PowerAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -82,8 +82,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"StringConcatenateAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"StringConcatenateAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class StringConcatenateAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -94,8 +94,8 @@ namespace ExpressionFramework.Parser.AggregatorResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"SubtractAggregator")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"SubtractAggregator")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Aggregator))]
     public class SubtractAggregatorParser : AggregatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Aggregator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

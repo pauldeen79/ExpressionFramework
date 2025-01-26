@@ -72,6 +72,11 @@ public static class Constants
             public const string TypedConstantExpression = "TypedConstantExpression";
             public const string TypedDelegateExpression = "TypedDelegateExpression";
         }
+
+        public const string FunctionCallContext = "CrossCutting.Utilities.Parsers.FunctionCallContext";
+        public const string FunctionName = "CrossCutting.Utilities.Parsers.FunctionName";
+        public const string FunctionArgument = "CrossCutting.Utilities.Parsers.FunctionArgument";
+        public const string FunctionResultType = "CrossCutting.Utilities.Parsers.FunctionResultType";
     }
 
     [ExcludeFromCodeCoverage]

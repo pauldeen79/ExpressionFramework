@@ -81,7 +81,7 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
             .AddMethods(new MethodBuilder()
                 .WithName("DoParse")
                 .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{Constants.Namespaces.Domain}.{type}>")
-                .AddParameter("context", "CrossCutting.Utilities.Parsers.FunctionCallContext")
+                .AddParameter("context", Constants.TypeNames.FunctionCallContext)
                 .WithProtected()
                 .WithOverride()
                 .With(parseMethod => AddParseCodeStatements(typeBase, parseMethod, entityNamespace, type, settings))
@@ -105,9 +105,9 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
 
     private static IEnumerable<AttributeBuilder> CreateAttributes(TypeBase typeBase, PipelineSettings settings, string name)
     {
-        yield return new AttributeBuilder().WithName("FunctionName").AddParameters(new AttributeParameterBuilder().WithValue(name));
+        yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionName).AddParameters(new AttributeParameterBuilder().WithValue(name));
         foreach (var attribute in typeBase.Properties.Select(x => new AttributeBuilder()
-            .WithName("FunctionArgument")
+            .WithName(Constants.TypeNames.FunctionArgument)
             .AddParameters(CreateParameters(x, settings))))
         {
             yield return attribute;
@@ -116,16 +116,16 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         switch (typeBase.Interfaces.FirstOrDefault())
         {
             case Constants.TypeNames.Aggregator:
-                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Aggregator})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Aggregator})")));
                 break;
             case Constants.TypeNames.Expression:
-                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Expression})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Expression})")));
                 break;
             case Constants.TypeNames.Evaluatable:
-                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Evaluatable})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Evaluatable})")));
                 break;
             case Constants.TypeNames.Operator:
-                yield return new AttributeBuilder().WithName("FunctionResultType").AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Operator})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Operator})")));
                 break;
         }
     }
@@ -137,46 +137,46 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         // Fow now, assume System.Object, and let ExpressionFramework do the type checking
         // This is not necessary when you entirely remove the Expression abstraction layer, and just use IFunction and ITypedFunction<T> everywhere...
         typeName = typeof(object).FullName;
-        /*typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
+        ////typeName = typeName.ReplaceSuffix("?", string.Empty, StringComparison.Ordinal);
 
-        if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
-        {
-            typeName = typeName.GetGenericArguments();
-        }
+        ////if (typeName.WithoutGenerics() == Constants.TypeNames.TypedExpression)
+        ////{
+        ////    typeName = typeName.GetGenericArguments();
+        ////}
 
-        if (typeName == "T")
-        {
-            // ITypedExpression<T> / T
-            // Cannot be determined at compile time, so assume System.Object
-            typeName = WellKnownTypes.Object;
-        }
+        ////if (typeName == "T")
+        ////{
+        ////    // ITypedExpression<T> / T
+        ////    // Cannot be determined at compile time, so assume System.Object
+        ////    typeName = WellKnownTypes.Object;
+        ////}
 
-        if (typeName == Constants.TypeNames.Expression)
-        {
-            typeName = WellKnownTypes.Object;
-        }
+        ////if (typeName == Constants.TypeNames.Expression)
+        ////{
+        ////    typeName = WellKnownTypes.Object;
+        ////}
 
-        if (typeName.WithoutGenerics() == typeof(IReadOnlyCollection<>).WithoutGenerics())
-        {
-            typeName = typeof(IEnumerable).FullName!;
-        }
+        ////if (typeName.WithoutGenerics() == typeof(IReadOnlyCollection<>).WithoutGenerics())
+        ////{
+        ////    typeName = typeof(IEnumerable).FullName!;
+        ////}
 
-        var genericArguments = typeName.GetGenericArguments();
-        if (!string.IsNullOrEmpty(genericArguments))
-        {
-            // Something<Something, T, Something>
-            var newGenericTypeArgs = new List<string>();
-            foreach (var genericTypeArg in genericArguments.Split(','))
-            {
-                newGenericTypeArgs.Add(genericTypeArg switch
-                {
-                    "T" => WellKnownTypes.Object,
-                    Constants.TypeNames.Expression => WellKnownTypes.Object,
-                    _ => genericTypeArg
-                });
-            }
-            typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
-        }*/
+        ////var genericArguments = typeName.GetGenericArguments();
+        ////if (!string.IsNullOrEmpty(genericArguments))
+        ////{
+        ////    // Something<Something, T, Something>
+        ////    var newGenericTypeArgs = new List<string>();
+        ////    foreach (var genericTypeArg in genericArguments.Split(','))
+        ////    {
+        ////        newGenericTypeArgs.Add(genericTypeArg switch
+        ////        {
+        ////            "T" => WellKnownTypes.Object,
+        ////            Constants.TypeNames.Expression => WellKnownTypes.Object,
+        ////            _ => genericTypeArg
+        ////        });
+        ////    }
+        ////    typeName = typeName.WithoutGenerics().MakeGenericTypeName(string.Join(',', newGenericTypeArgs));
+        ////}
 
         yield return new AttributeParameterBuilder().WithValue(property.Name);
         yield return new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeName})"));

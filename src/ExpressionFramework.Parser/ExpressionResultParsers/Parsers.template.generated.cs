@@ -10,11 +10,11 @@
 #nullable enable
 namespace ExpressionFramework.Parser.ExpressionResultParsers
 {
-    [FunctionName(@"Aggregate")]
-    [FunctionArgument(@"Expressions", typeof(System.Object))]
-    [FunctionArgument(@"Aggregator", typeof(System.Object))]
-    [FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Aggregate")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Aggregator", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AggregateExpressionParser : ExpressionParserBase
     {
         public AggregateExpressionParser() : base(@"Aggregate")
@@ -40,10 +40,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"All")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"All")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AllExpressionParser : ExpressionParserBase
     {
         public AllExpressionParser() : base(@"All")
@@ -59,10 +59,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"And")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"And")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AndExpressionParser : ExpressionParserBase
     {
         public AndExpressionParser() : base(@"And")
@@ -78,10 +78,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Any")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Any")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class AnyExpressionParser : ExpressionParserBase
     {
         public AnyExpressionParser() : base(@"Any")
@@ -97,9 +97,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Cast")]
-    [FunctionArgument(@"SourceExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Cast")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SourceExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CastExpressionParser : ExpressionParserBase
     {
         public CastExpressionParser() : base(@"Cast")
@@ -111,9 +111,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(CastExpression<>), 0, @"SourceExpression", context);
         }
     }
-    [FunctionName(@"Chained")]
-    [FunctionArgument(@"Expressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Chained")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ChainedExpressionParser : ExpressionParserBase
     {
         public ChainedExpressionParser() : base(@"Chained")
@@ -128,12 +128,12 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Compound")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
-    [FunctionArgument(@"Aggregator", typeof(System.Object))]
-    [FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Compound")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Aggregator", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FormatProviderExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CompoundExpressionParser : ExpressionParserBase
     {
         public CompoundExpressionParser() : base(@"Compound")
@@ -160,9 +160,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Constant")]
-    [FunctionArgument(@"Value", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Constant")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ConstantExpressionParser : ExpressionParserBase
     {
         public ConstantExpressionParser() : base(@"Constant")
@@ -186,9 +186,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ConstantResult")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ConstantResult")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ConstantResultExpressionParser : ExpressionParserBase
     {
         public ConstantResultExpressionParser() : base(@"ConstantResult")
@@ -212,8 +212,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Context")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Context")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ContextExpressionParser : ExpressionParserBase
     {
         public ContextExpressionParser() : base(@"Context")
@@ -228,10 +228,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Count")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Count")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class CountExpressionParser : ExpressionParserBase
     {
         public CountExpressionParser() : base(@"Count")
@@ -247,9 +247,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Day")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Day")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DayExpressionParser : ExpressionParserBase
     {
         public DayExpressionParser() : base(@"Day")
@@ -264,8 +264,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Default")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Default")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DefaultExpressionParser : ExpressionParserBase
     {
         public DefaultExpressionParser() : base(@"Default")
@@ -284,9 +284,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Delegate")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Delegate")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DelegateExpressionParser : ExpressionParserBase
     {
         public DelegateExpressionParser() : base(@"Delegate")
@@ -310,9 +310,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"DelegateResult")]
-    [FunctionArgument(@"Result", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"DelegateResult")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Result", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class DelegateResultExpressionParser : ExpressionParserBase
     {
         public DelegateResultExpressionParser() : base(@"DelegateResult")
@@ -336,10 +336,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ElementAt")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ElementAt")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ElementAtExpressionParser : ExpressionParserBase
     {
         public ElementAtExpressionParser() : base(@"ElementAt")
@@ -355,11 +355,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ElementAtOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ElementAtOrDefault")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ElementAtOrDefaultExpressionParser : ExpressionParserBase
     {
         public ElementAtOrDefaultExpressionParser() : base(@"ElementAtOrDefault")
@@ -376,8 +376,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Empty")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Empty")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EmptyExpressionParser : ExpressionParserBase
     {
         public EmptyExpressionParser() : base(@"Empty")
@@ -392,10 +392,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Equals")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Equals")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EqualsExpressionParser : ExpressionParserBase
     {
         public EqualsExpressionParser() : base(@"Equals")
@@ -411,9 +411,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Error")]
-    [FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Error")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ErrorExpressionParser : ExpressionParserBase
     {
         public ErrorExpressionParser() : base(@"Error")
@@ -428,10 +428,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Evaluatable")]
-    [FunctionArgument(@"Condition", typeof(System.Object))]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Evaluatable")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Condition", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class EvaluatableExpressionParser : ExpressionParserBase
     {
         public EvaluatableExpressionParser() : base(@"Evaluatable")
@@ -456,8 +456,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"False")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"False")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FalseExpressionParser : ExpressionParserBase
     {
         public FalseExpressionParser() : base(@"False")
@@ -472,10 +472,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Field")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Field")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FieldExpressionParser : ExpressionParserBase
     {
         public FieldExpressionParser() : base(@"Field")
@@ -491,10 +491,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"First")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"First")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FirstExpressionParser : ExpressionParserBase
     {
         public FirstExpressionParser() : base(@"First")
@@ -510,11 +510,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"FirstOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"FirstOrDefault")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class FirstOrDefaultExpressionParser : ExpressionParserBase
     {
         public FirstOrDefaultExpressionParser() : base(@"FirstOrDefault")
@@ -531,10 +531,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"GroupBy")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"KeySelectorExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"GroupBy")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"KeySelectorExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class GroupByExpressionParser : ExpressionParserBase
     {
         public GroupByExpressionParser() : base(@"GroupBy")
@@ -550,11 +550,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"If")]
-    [FunctionArgument(@"Condition", typeof(System.Object))]
-    [FunctionArgument(@"ResultExpression", typeof(System.Object))]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"If")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Condition", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"ResultExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class IfExpressionParser : ExpressionParserBase
     {
         public IfExpressionParser() : base(@"If")
@@ -580,10 +580,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Invalid")]
-    [FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
-    [FunctionArgument(@"ValidationErrorExpressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Invalid")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"ErrorMessageExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"ValidationErrorExpressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class InvalidExpressionParser : ExpressionParserBase
     {
         public InvalidExpressionParser() : base(@"Invalid")
@@ -608,10 +608,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Last")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Last")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LastExpressionParser : ExpressionParserBase
     {
         public LastExpressionParser() : base(@"Last")
@@ -627,11 +627,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"LastOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"LastOrDefault")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LastOrDefaultExpressionParser : ExpressionParserBase
     {
         public LastOrDefaultExpressionParser() : base(@"LastOrDefault")
@@ -648,10 +648,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Left")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Left")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LengthExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class LeftExpressionParser : ExpressionParserBase
     {
         public LeftExpressionParser() : base(@"Left")
@@ -667,10 +667,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Max")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Max")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MaxExpressionParser : ExpressionParserBase
     {
         public MaxExpressionParser() : base(@"Max")
@@ -686,10 +686,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Min")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Min")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MinExpressionParser : ExpressionParserBase
     {
         public MinExpressionParser() : base(@"Min")
@@ -705,9 +705,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Month")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Month")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class MonthExpressionParser : ExpressionParserBase
     {
         public MonthExpressionParser() : base(@"Month")
@@ -722,10 +722,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"NotEquals")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"NotEquals")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NotEqualsExpressionParser : ExpressionParserBase
     {
         public NotEqualsExpressionParser() : base(@"NotEquals")
@@ -741,9 +741,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Not")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Not")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NotExpressionParser : ExpressionParserBase
     {
         public NotExpressionParser() : base(@"Not")
@@ -758,9 +758,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Now")]
-    [FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Now")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class NowExpressionParser : ExpressionParserBase
     {
         public NowExpressionParser() : base(@"Now")
@@ -784,10 +784,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"OfType")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"TypeExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"OfType")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"TypeExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OfTypeExpressionParser : ExpressionParserBase
     {
         public OfTypeExpressionParser() : base(@"OfType")
@@ -803,11 +803,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Operator")]
-    [FunctionArgument(@"LeftExpression", typeof(System.Object))]
-    [FunctionArgument(@"RightExpression", typeof(System.Object))]
-    [FunctionArgument(@"Operator", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Operator")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LeftExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"RightExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Operator", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OperatorExpressionParser : ExpressionParserBase
     {
         public OperatorExpressionParser() : base(@"Operator")
@@ -833,10 +833,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"OrderBy")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"SortOrderExpressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"OrderBy")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SortOrderExpressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OrderByExpressionParser : ExpressionParserBase
     {
         public OrderByExpressionParser() : base(@"OrderBy")
@@ -861,10 +861,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Or")]
-    [FunctionArgument(@"FirstExpression", typeof(System.Object))]
-    [FunctionArgument(@"SecondExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Or")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FirstExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SecondExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class OrExpressionParser : ExpressionParserBase
     {
         public OrExpressionParser() : base(@"Or")
@@ -880,10 +880,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Right")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Right")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LengthExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class RightExpressionParser : ExpressionParserBase
     {
         public RightExpressionParser() : base(@"Right")
@@ -899,10 +899,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Select")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"SelectorExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Select")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SelectorExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SelectExpressionParser : ExpressionParserBase
     {
         public SelectExpressionParser() : base(@"Select")
@@ -918,9 +918,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Sequence")]
-    [FunctionArgument(@"Expressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Sequence")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SequenceExpressionParser : ExpressionParserBase
     {
         public SequenceExpressionParser() : base(@"Sequence")
@@ -935,10 +935,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Single")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Single")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SingleExpressionParser : ExpressionParserBase
     {
         public SingleExpressionParser() : base(@"Single")
@@ -954,11 +954,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"SingleOrDefault")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"SingleOrDefault")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SingleOrDefaultExpressionParser : ExpressionParserBase
     {
         public SingleOrDefaultExpressionParser() : base(@"SingleOrDefault")
@@ -975,10 +975,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Skip")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"CountExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Skip")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"CountExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SkipExpressionParser : ExpressionParserBase
     {
         public SkipExpressionParser() : base(@"Skip")
@@ -994,9 +994,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"StringConcatenate")]
-    [FunctionArgument(@"Expressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"StringConcatenate")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringConcatenateExpressionParser : ExpressionParserBase
     {
         public StringConcatenateExpressionParser() : base(@"StringConcatenate")
@@ -1020,10 +1020,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"StringFind")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"FindExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"StringFind")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FindExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringFindExpressionParser : ExpressionParserBase
     {
         public StringFindExpressionParser() : base(@"StringFind")
@@ -1039,9 +1039,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"StringLength")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"StringLength")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringLengthExpressionParser : ExpressionParserBase
     {
         public StringLengthExpressionParser() : base(@"StringLength")
@@ -1056,11 +1056,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"StringReplace")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"FindExpression", typeof(System.Object))]
-    [FunctionArgument(@"ReplaceExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"StringReplace")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FindExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"ReplaceExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class StringReplaceExpressionParser : ExpressionParserBase
     {
         public StringReplaceExpressionParser() : base(@"StringReplace")
@@ -1077,11 +1077,11 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Substring")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"IndexExpression", typeof(System.Object))]
-    [FunctionArgument(@"LengthExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Substring")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"IndexExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"LengthExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SubstringExpressionParser : ExpressionParserBase
     {
         public SubstringExpressionParser() : base(@"Substring")
@@ -1098,10 +1098,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Sum")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Sum")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SelectorExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SumExpressionParser : ExpressionParserBase
     {
         public SumExpressionParser() : base(@"Sum")
@@ -1117,10 +1117,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Switch")]
-    [FunctionArgument(@"Cases", typeof(System.Object))]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Switch")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Cases", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class SwitchExpressionParser : ExpressionParserBase
     {
         public SwitchExpressionParser() : base(@"Switch")
@@ -1145,10 +1145,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Take")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"CountExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Take")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"CountExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TakeExpressionParser : ExpressionParserBase
     {
         public TakeExpressionParser() : base(@"Take")
@@ -1164,10 +1164,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ToCamelCase")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"Culture", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ToCamelCase")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToCamelCaseExpressionParser : ExpressionParserBase
     {
         public ToCamelCaseExpressionParser() : base(@"ToCamelCase")
@@ -1183,9 +1183,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Today")]
-    [FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Today")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DateTimeProvider", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TodayExpressionParser : ExpressionParserBase
     {
         public TodayExpressionParser() : base(@"Today")
@@ -1209,10 +1209,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ToLowerCase")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"Culture", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ToLowerCase")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToLowerCaseExpressionParser : ExpressionParserBase
     {
         public ToLowerCaseExpressionParser() : base(@"ToLowerCase")
@@ -1228,10 +1228,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ToPascalCase")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"Culture", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ToPascalCase")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToPascalCaseExpressionParser : ExpressionParserBase
     {
         public ToPascalCaseExpressionParser() : base(@"ToPascalCase")
@@ -1247,10 +1247,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"ToUpperCase")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"Culture", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"ToUpperCase")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Culture", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class ToUpperCaseExpressionParser : ExpressionParserBase
     {
         public ToUpperCaseExpressionParser() : base(@"ToUpperCase")
@@ -1266,10 +1266,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"TrimEnd")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TrimEnd")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimEndExpressionParser : ExpressionParserBase
     {
         public TrimEndExpressionParser() : base(@"TrimEnd")
@@ -1285,10 +1285,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Trim")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Trim")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimExpressionParser : ExpressionParserBase
     {
         public TrimExpressionParser() : base(@"Trim")
@@ -1304,10 +1304,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"TrimStart")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TrimStart")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"TrimCharsExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrimStartExpressionParser : ExpressionParserBase
     {
         public TrimStartExpressionParser() : base(@"TrimStart")
@@ -1323,8 +1323,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"True")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"True")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TrueExpressionParser : ExpressionParserBase
     {
         public TrueExpressionParser() : base(@"True")
@@ -1339,10 +1339,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"TryCast")]
-    [FunctionArgument(@"SourceExpression", typeof(System.Object))]
-    [FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TryCast")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"SourceExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"DefaultExpression", typeof(System.Object), false)]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TryCastExpressionParser : ExpressionParserBase
     {
         public TryCastExpressionParser() : base(@"TryCast")
@@ -1361,9 +1361,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"TypedChained")]
-    [FunctionArgument(@"Expressions", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedChained")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expressions", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedChainedExpressionParser : ExpressionParserBase
     {
         public TypedChainedExpressionParser() : base(@"TypedChained")
@@ -1375,9 +1375,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(TypedChainedExpression<>), 0, @"Expressions", context);
         }
     }
-    [FunctionName(@"TypedConstant")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedConstant")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedConstantExpressionParser : ExpressionParserBase
     {
         public TypedConstantExpressionParser() : base(@"TypedConstant")
@@ -1389,9 +1389,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(TypedConstantExpression<>), 0, @"Value", context);
         }
     }
-    [FunctionName(@"TypedConstantResult")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedConstantResult")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedConstantResultExpressionParser : ExpressionParserBase
     {
         public TypedConstantResultExpressionParser() : base(@"TypedConstantResult")
@@ -1403,8 +1403,8 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(TypedConstantResultExpression<>), 0, @"Value", context);
         }
     }
-    [FunctionName(@"TypedContext")]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedContext")]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedContextExpressionParser : ExpressionParserBase
     {
         public TypedContextExpressionParser() : base(@"TypedContext")
@@ -1423,9 +1423,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"TypedDelegate")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedDelegate")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedDelegateExpressionParser : ExpressionParserBase
     {
         public TypedDelegateExpressionParser() : base(@"TypedDelegate")
@@ -1437,9 +1437,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(TypedDelegateExpression<>), 0, @"Value", context);
         }
     }
-    [FunctionName(@"TypedDelegateResult")]
-    [FunctionArgument(@"Value", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedDelegateResult")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Value", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedDelegateResultExpressionParser : ExpressionParserBase
     {
         public TypedDelegateResultExpressionParser() : base(@"TypedDelegateResult")
@@ -1451,10 +1451,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             return ParseTypedExpression(typeof(TypedDelegateResultExpression<>), 0, @"Value", context);
         }
     }
-    [FunctionName(@"TypedField")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"TypedField")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"FieldNameExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class TypedFieldExpressionParser : ExpressionParserBase
     {
         public TypedFieldExpressionParser() : base(@"TypedField")
@@ -1473,10 +1473,10 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Where")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionArgument(@"PredicateExpression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Where")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"PredicateExpression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class WhereExpressionParser : ExpressionParserBase
     {
         public WhereExpressionParser() : base(@"Where")
@@ -1492,9 +1492,9 @@ namespace ExpressionFramework.Parser.ExpressionResultParsers
             #pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
         }
     }
-    [FunctionName(@"Year")]
-    [FunctionArgument(@"Expression", typeof(System.Object))]
-    [FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
+    [CrossCutting.Utilities.Parsers.FunctionName(@"Year")]
+    [CrossCutting.Utilities.Parsers.FunctionArgument(@"Expression", typeof(System.Object))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Expression))]
     public class YearExpressionParser : ExpressionParserBase
     {
         public YearExpressionParser() : base(@"Year")
