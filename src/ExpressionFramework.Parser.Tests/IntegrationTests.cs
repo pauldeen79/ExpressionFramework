@@ -23,7 +23,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=CONTEXT()", CultureInfo.InvariantCulture, "Hello world");
+        var result = parser.Evaluate("=CONTEXT()", new ExpressionStringEvaluatorSettingsBuilder(), "Hello world");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -37,7 +37,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=CONSTANT(@\"Hello world\")", CultureInfo.InvariantCulture, _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
+        var result = parser.Evaluate("=CONSTANT(@\"Hello world\")", new ExpressionStringEvaluatorSettingsBuilder(), _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -51,7 +51,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=LEFT(CONTEXT(), 5)", CultureInfo.InvariantCulture, "Hello world!");
+        var result = parser.Evaluate("=LEFT(CONTEXT(), 5)", new ExpressionStringEvaluatorSettingsBuilder(), "Hello world!");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -65,7 +65,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=LEFT(\"Hello world!\", 5)", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=LEFT(\"Hello world!\", 5)", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -79,7 +79,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=Aggregate(Context(),AddAggregator())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("=Aggregate(Context(),AddAggregator())", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -93,7 +93,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=Context() == \"Hello\"", CultureInfo.InvariantCulture, "Hello");
+        var result = parser.Evaluate("=Context() == \"Hello\"", new ExpressionStringEvaluatorSettingsBuilder(), "Hello");
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -107,7 +107,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=FirstOrDefault(Context(),MyPredicate())", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("=FirstOrDefault(Context(),MyPredicate())", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -121,7 +121,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("= FirstOrDefault(Context(), MyPredicate(), 13)", CultureInfo.InvariantCulture, new[] { 1, 2 });
+        var result = parser.Evaluate("= FirstOrDefault(Context(), MyPredicate(), 13)", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -135,7 +135,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=Constant(13)", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=Constant(13)", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -149,7 +149,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=ToUpperCase(\"  space  \")", CultureInfo.InvariantCulture);
+        var result = parser.Evaluate("=ToUpperCase(\"  space  \")", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
         result.Status.Should().Be(ResultStatus.Ok);
@@ -163,7 +163,7 @@ public sealed class IntegrationTests : IDisposable
         var parser = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
 
         // Act
-        var result = parser.Evaluate("=UNKNOWN()", CultureInfo.InvariantCulture, this);
+        var result = parser.Evaluate("=UNKNOWN()", new ExpressionStringEvaluatorSettingsBuilder(), this);
 
         // Assert
         result.Status.Should().Be(ResultStatus.Invalid);

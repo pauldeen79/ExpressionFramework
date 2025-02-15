@@ -1,20 +1,11 @@
 ﻿namespace ExpressionFramework.CodeGeneration.BuilderComponents;
 
 [ExcludeFromCodeCoverage]
-public class ExpressionBuilderComponentBuilder(IFormattableStringParser formattableStringParser) : IBuilderComponentBuilder
-{
-    private readonly IFormattableStringParser _formattableStringParser = formattableStringParser.IsNotNull(nameof(formattableStringParser));
-
-    public IPipelineComponent<BuilderContext> Build()
-        => new ExpressionBuilderComponent(_formattableStringParser);
-}
-
-[ExcludeFromCodeCoverage]
 public class ExpressionBuilderComponent(IFormattableStringParser formattableStringParser) : BuilderComponentBase(formattableStringParser), IPipelineComponent<BuilderContext>
 {
     private const string ExpressionTemplate = $"return {{$addMethodNameFormatString}}({{CsharpFriendlyName(ToCamelCase($property.Name))}}.Select(x => new {Constants.Namespaces.DomainBuildersExpressions}.{Constants.TypeNames.Expressions.ConstantExpression}Builder().WithValue(x)));";
 
-    public Task<Result> Process(PipelineContext<BuilderContext> context, CancellationToken token)
+    public Task<Result> ProcessAsync(PipelineContext<BuilderContext> context, CancellationToken token)
     {
         context = context.IsNotNull(nameof(context));
 
@@ -42,11 +33,11 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
             {
                 var results = context.Request.GetResultsForBuilderNonCollectionProperties(property, parentChildContext, FormattableStringParser);
 
-                var error = Array.Find(results, x => !x.Result.IsSuccessful());
+                var error = results.GetError();
                 if (error is not null)
                 {
                     // Error in formattable string parsing
-                    return Task.FromResult<Result>(error.Result);
+                    return Task.FromResult<Result>(error);
                 }
 
                 AddOverloadsForExpression(context, property, results);
@@ -62,11 +53,11 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
                     GetCodeStatementsForArrayOverload(context, property, parentChildContext, ExpressionTemplate)
                 );
 
-                var error = Array.Find(results, x => !x.Result.IsSuccessful());
+                var error = results.GetError();
                 if (error is not null)
                 {
                     // Error in formattable string parsing
-                    return Task.FromResult<Result>(error.Result);
+                    return Task.FromResult<Result>(error);
                 }
 
                 AddOverloadsForExpressions(context, property, results);
@@ -141,13 +132,13 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
         }
     }
 
-    private static void AddOverloadsForExpression(PipelineContext<BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)
+    private static void AddOverloadsForExpression(PipelineContext<BuilderContext> context, Property property, Dictionary<string, Result<GenericFormattableString>> results)
     {
         var builder = new MethodBuilder()
-            .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
+            .WithName(results["MethodName"].Value!)
             .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
                 ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
+                : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
             .AddParameters
             (
                 new ParameterBuilder()
@@ -168,10 +159,10 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
         context.Request.Builder.AddMethods(builder);
 
         builder = new MethodBuilder()
-            .WithName(results.First(x => x.Name == "MethodName").Result.Value!)
+            .WithName(results["MethodName"].Value!)
             .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
                   ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                  : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
+                  : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
             .AddParameters
             (
                 new ParameterBuilder()
@@ -192,14 +183,14 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
         context.Request.Builder.AddMethods(builder);
     }
 
-    private static void AddOverloadsForExpressions(PipelineContext<BuilderContext> context, Property property, NamedResult<Result<FormattableStringParserResult>>[] results)
+    private static void AddOverloadsForExpressions(PipelineContext<BuilderContext> context, Property property, Dictionary<string, Result<GenericFormattableString>> results)
     {
         var returnType = context.Request.IsBuilderForAbstractEntity
             ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-            : $"{results.First(x => x.Name == "Namespace").Result.Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results.First(x => x.Name == "BuilderName").Result.Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}";
+            : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}";
 
         context.Request.Builder.AddMethods(new MethodBuilder()
-            .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)
+            .WithName(results["AddMethodName"].Value!)
             .WithReturnTypeName(returnType)
             .AddParameters
             (
@@ -207,11 +198,11 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
                     .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                     .WithType(typeof(IEnumerable<object>))
             )
-            .AddStringCodeStatements(results.Where(x => x.Name == "EnumerableOverload").Select(x => x.Result.Value!.ToString()))
+            .AddStringCodeStatements(results.Where(x => x.Key.StartsWith("EnumerableOverload")).Select(x => x.Value.Value!.ToString()))
         );
 
         context.Request.Builder.AddMethods(new MethodBuilder()
-            .WithName(results.First(x => x.Name == "AddMethodName").Result.Value!)
+            .WithName(results["AddMethodName"].Value!)
             .WithReturnTypeName(returnType)
             .AddParameters
             (
@@ -220,7 +211,7 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
                     .WithType(typeof(object[]))
                     .WithIsParamArray()
             )
-            .AddStringCodeStatements(results.Where(x => x.Name == "ArrayOverload").Select(x => x.Result.Value!.ToString()))
+            .AddStringCodeStatements(results.Where(x => x.Key.StartsWith("ArrayOverload")).Select(x => x.Value.Value!.ToString()))
         );
     }
 }

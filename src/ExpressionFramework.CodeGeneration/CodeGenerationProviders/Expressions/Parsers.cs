@@ -8,7 +8,7 @@ public class Parsers(IPipelineService pipelineService, ICsharpExpressionDumper c
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
     {
         var settings = CreateSettings();
-        return (await GetOverrideModels(typeof(IExpression)))
+        return (await GetOverrideModels(typeof(Models.IExpression)))
             .OnSuccess(result =>
                 Result.Success(result.Value!.Select(x => CreateParserClass
                 (

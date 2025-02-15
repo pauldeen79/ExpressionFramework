@@ -22,7 +22,7 @@ public class Entities(IPipelineService pipelineService, ICsharpExpressionDumper 
                     .WithName("Aggregate")
                     .WithOverride()
                     .AddParameter("context", typeof(object), isNullable: true)
-                    .AddParameter("secondExpression", typeof(IExpression))
+                    .AddParameter("secondExpression", typeof(Models.IExpression))
                     .WithReturnTypeName($"{typeof(Result<>).WithoutGenerics()}<{typeof(object).FullName}?>")
                     .NotImplemented()
                 )

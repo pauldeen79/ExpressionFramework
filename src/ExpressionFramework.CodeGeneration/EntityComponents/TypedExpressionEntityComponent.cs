@@ -1,16 +1,9 @@
 ﻿namespace ExpressionFramework.CodeGeneration.EntityComponents;
 
 [ExcludeFromCodeCoverage]
-public class TypedExpressionEntityComponentBuilder : IEntityComponentBuilder
-{
-    public IPipelineComponent<EntityContext> Build()
-        => new TypedExpressionEntityComponent();
-}
-
-[ExcludeFromCodeCoverage]
 public class TypedExpressionEntityComponent : IPipelineComponent<EntityContext>
 {
-    public Task<Result> Process(PipelineContext<EntityContext> context, CancellationToken token)
+    public Task<Result> ProcessAsync(PipelineContext<EntityContext> context, CancellationToken token)
     {
         context = context.IsNotNull(nameof(context));
 
