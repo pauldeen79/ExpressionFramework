@@ -21,7 +21,8 @@ public class TypedExpressionEntityComponent : IPipelineComponent<EntityContext>
 
             //quirks for ITypedExpression<T> / ITypedExpressionBuilder<T>
             context.Request.Builder.Methods.First(x => x.Name == context.Request.Settings.ToTypedBuilderFormatString)
-                .WithReturnTypeName(Constants.TypeNames.TypedExpressionBuilder.MakeGenericTypeName(context.Request.SourceModel.Interfaces.First(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression).GetGenericArguments()));
+                .WithReturnTypeName(Constants.TypeNames.TypedExpressionBuilder.MakeGenericTypeName(context.Request.SourceModel.Interfaces.First(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression).GetGenericArguments()))
+                .With(x => x.ReturnTypeGenericTypeArguments.Clear());
 
             context.Request.Builder.Methods.First(x => x.Name == context.Request.Settings.ToBuilderFormatString)
                 .With(builder =>
