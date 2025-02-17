@@ -61,53 +61,48 @@ public class TypedExpressionBuilderComponent(IFormattableStringParser formattabl
             ? ".Value"
             : string.Empty;
 
-        var builder = new MethodBuilder()
-            .WithName(results["MethodName"].Value!)
-            .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
-                ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
-            .AddParameters
-            (
-                new ParameterBuilder()
-                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
-                    .WithTypeName(CreateTypeName(property))
-                    .WithIsNullable(property.IsNullable)
-                    .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
-            );
+        context.Request.Builder.AddMethods(
+            new MethodBuilder()
+                .WithName(results["MethodName"].Value!)
+                .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
+                    ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
+                    : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
+                .AddParameters
+                (
+                    new ParameterBuilder()
+                        .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
+                        .WithTypeName(CreateTypeName(property))
+                        .WithIsNullable(property.IsNullable)
+                        .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
+                ).AddStringCodeStatements
+                (
+                    property.IsNullable
+                        ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});"
+                        : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});",
+                    context.Request.ReturnValueStatementForFluentMethod
+                ));
 
-        builder.AddStringCodeStatements
-        (
-            property.IsNullable
-                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedConstantExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()}{suffix});",
-            context.Request.ReturnValueStatementForFluentMethod
-        );
-
-        context.Request.Builder.AddMethods(builder);
-
-        builder = new MethodBuilder()
-            .WithName(results["MethodName"].Value!)
-            .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
-                  ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                  : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
-            .AddParameters
-            (
-                new ParameterBuilder()
-                    .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
-                    .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {CreateTypeName(property)}>")
-                    .WithIsNullable(property.IsNullable)
-                    .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
-            );
-
-        builder.AddStringCodeStatements
-        (
-            property.IsNullable
-                ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
-                : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
-            context.Request.ReturnValueStatementForFluentMethod
-        );
-
-        context.Request.Builder.AddMethods(builder);
+        context.Request.Builder.AddMethods(
+            new MethodBuilder()
+                .WithName(results["MethodName"].Value!)
+                .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
+                      ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
+                      : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
+                .AddParameters
+                (
+                    new ParameterBuilder()
+                        .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
+                        .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {CreateTypeName(property)}>")
+                        .WithIsNullable(property.IsNullable)
+                        .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
+                )
+                .AddStringCodeStatements
+                (
+                    property.IsNullable
+                        ? $"{property.Name} = {property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()} is null ? null : new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});"
+                        : $"{property.Name} = new {Constants.TypeNames.Expressions.TypedDelegateExpression}Builder<{property.TypeName.GetGenericArguments()}>().WithValue({property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()});",
+                    context.Request.ReturnValueStatementForFluentMethod
+                ));
     }
 
     private static void AddOverloadsForTypedExpressions(PipelineContext<BuilderContext> context, Property property, Dictionary<string, Result<GenericFormattableString>> results)
