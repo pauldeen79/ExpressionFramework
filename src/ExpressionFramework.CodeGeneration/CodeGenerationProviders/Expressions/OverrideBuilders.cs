@@ -8,9 +8,9 @@ public class OverrideBuilders(IPipelineService pipelineService, ICsharpExpressio
     protected override bool EnableEntityInheritance => true;
     protected override bool EnableBuilderInhericance => true;
     protected override bool CreateAsObservable => true;
-    protected override Task<Result<TypeBase>> GetBaseClass() => CreateBaseClass(typeof(IExpression), Constants.Namespaces.Domain);
+    protected override Task<Result<TypeBase>> GetBaseClass() => CreateBaseClass(typeof(Models.IExpression), Constants.Namespaces.Domain);
     protected override string BaseClassBuilderNamespace => Constants.Namespaces.DomainBuilders;
 
     public override Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
-        => GetBuilders(GetOverrideModels(typeof(IExpression)), CurrentNamespace, Constants.Namespaces.DomainExpressions);
+        => GetBuilders(GetOverrideModels(typeof(Models.IExpression)), CurrentNamespace, Constants.Namespaces.DomainExpressions);
 }

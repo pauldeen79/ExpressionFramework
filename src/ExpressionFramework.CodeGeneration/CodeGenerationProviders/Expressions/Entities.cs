@@ -11,7 +11,7 @@ public class Entities(IPipelineService pipelineService, ICsharpExpressionDumper 
     protected override bool GenerateMultipleFiles => true;
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
-        => (await GetOverrideModels(typeof(IExpression)))
+        => (await GetOverrideModels(typeof(Models.IExpression)))
             .OnSuccess(result =>
                 Result.Success(result.Value!.Select(x =>
                 {

@@ -19,7 +19,7 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void ParseExpression_Returns_NotSupported_When_Expression_Is_Unknown()
     {
         // Arrange
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Unknown").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Unknown").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = ParseExpression(functionCallContext);
@@ -32,7 +32,7 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void ParseExpression_Returns_Success_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Alright()
     {
         // Arrange
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Context").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Context").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = ParseExpression(functionCallContext);
@@ -46,7 +46,7 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
     public void ParseExpression_Returns_Invalid_With_Expression_When_Expression_Is_Known_And_Arguments_Are_Not_Alright()
     {
         // Arrange
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Delegate").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Delegate").Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = ParseExpression(functionCallContext);
@@ -63,7 +63,7 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("TypedConstant<System.String>")
             .AddArguments(new ConstantArgumentBuilder().WithValue("Test"))
-            .Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), CultureInfo.InvariantCulture, null);
+            .Build(), _scope.ServiceProvider.GetRequiredService<IFunctionEvaluator>(), _scope.ServiceProvider.GetRequiredService<IExpressionEvaluator>(), new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = Parse<string>(context);

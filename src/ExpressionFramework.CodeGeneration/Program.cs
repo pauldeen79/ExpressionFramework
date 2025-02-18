@@ -13,18 +13,17 @@ internal static class Program
         var services = new ServiceCollection()
             .AddParsers()
             .AddClassFrameworkPipelines()
-            .AddScoped<IBuilderComponentBuilder, BuilderComponents.ExpressionBuilderComponentBuilder>()
-            .AddScoped<IBuilderComponentBuilder, BuilderComponents.RemoveExpressionNameAttributeComponentBuilder>()
-            .AddScoped<IBuilderComponentBuilder, BuilderComponents.TypedExpressionBuilderComponentBuilder>()
-            .AddScoped<IEntityComponentBuilder, EntityComponents.RemoveExpressionNameAttributeComponentBuilder>()
-            .AddScoped<IEntityComponentBuilder, EntityComponents.TypedExpressionEntityComponentBuilder>()
+            .AddScoped<IPipelineComponent<BuilderContext>, BuilderComponents.ExpressionBuilderComponent>()
+            .AddScoped<IPipelineComponent<BuilderContext>, BuilderComponents.RemoveExpressionNameAttributeComponent>()
+            .AddScoped<IPipelineComponent<BuilderContext>, BuilderComponents.TypedExpressionBuilderComponent>()
+            .AddScoped<IPipelineComponent<EntityContext>, EntityComponents.RemoveExpressionNameAttributeComponent>()
+            .AddScoped<IPipelineComponent<EntityContext>, EntityComponents.TypedExpressionEntityComponent>()
             .AddTemplateFramework()
             .AddTemplateFrameworkChildTemplateProvider()
             .AddTemplateFrameworkCodeGeneration()
             .AddTemplateFrameworkRuntime()
             .AddCsharpExpressionDumper()
             .AddClassFrameworkTemplates()
-            .AddExpressionParser()
             .AddScoped<IAssemblyInfoContextService, MyAssemblyInfoContextService>();
 
         var generators = typeof(Program).Assembly.GetExportedTypes()
@@ -41,14 +40,36 @@ internal static class Program
         var engine = scope.ServiceProvider.GetRequiredService<ICodeGenerationEngine>();
 
         // Generate code
-        await Task.WhenAll(generators
-            .Select(x => (ExpressionFrameworkCSharpClassBase)scope.ServiceProvider.GetRequiredService(x))
-            .Select(x => engine.Generate(x, new MultipleStringContentBuilderEnvironment(), new CodeGenerationSettings(basePath, Path.Combine(x.Path, $"{x.GetType().Name}.template.generated.cs")))));
+        foreach (var generatorType in generators)
+        {
+            var generator = (CsharpClassGeneratorCodeGenerationProviderBase)scope.ServiceProvider.GetRequiredService(generatorType);
+            var result = await engine.Generate(generator, new MultipleStringContentBuilderEnvironment(), new CodeGenerationSettings(basePath, Path.Combine(generator.Path, $"{generatorType.Name}.template.generated.cs"))).ConfigureAwait(false);
+            if (!result.IsSuccessful())
+            {
+                Console.WriteLine("Errors:");
+                WriteError(result);
+                break;
+            }
+        }
 
         // Log output to console
         if (!string.IsNullOrEmpty(basePath))
         {
             Console.WriteLine($"Code generation completed, check the output in {basePath}");
+        }
+    }
+
+    private static void WriteError(Result error)
+    {
+        Console.WriteLine($"{error.Status} {error.ErrorMessage}");
+        foreach (var validationError in error.ValidationErrors)
+        {
+            Console.WriteLine($"{string.Join(",", validationError.MemberNames)}: {validationError.ErrorMessage}");
+        }
+
+        foreach (var innerResult in error.InnerResults)
+        {
+            WriteError(innerResult);
         }
     }
 }

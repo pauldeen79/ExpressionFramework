@@ -9,7 +9,7 @@ public class ExpressionParserBaseTests
     public ExpressionParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(_expressionMock));
         _expressionEvaluatorMock
             .Evaluate(Arg.Any<string>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
@@ -37,7 +37,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Wrong")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = new MyExpressionParser().Evaluate(context);
@@ -52,7 +52,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = new MyExpressionParser().ParseExpression(context);
@@ -68,7 +68,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = new MyExpressionParser().Evaluate(context);
@@ -83,11 +83,11 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(null));
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = new MyExpressionParser().Evaluate(context);
@@ -102,11 +102,11 @@ public class ExpressionParserBaseTests
     {
         // Arrange
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Error<object?>("Kaboom"));
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = new MyExpressionParser().Evaluate(context);
@@ -122,7 +122,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
         var sut = new MyExpressionParser();
 
         // Act & Assert
@@ -147,7 +147,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
@@ -163,7 +163,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct<System.String>")
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
@@ -180,7 +180,7 @@ public class ExpressionParserBaseTests
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct<System.String>")
             .AddArguments(new ExpressionArgumentBuilder().WithValue("1"))
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
@@ -197,7 +197,7 @@ public class ExpressionParserBaseTests
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct<System.String>")
             .AddArguments(new ConstantArgumentBuilder().WithValue("string value"))
-            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+            .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
@@ -215,7 +215,7 @@ public class ExpressionParserBaseTests
         }
 
         protected override Result<Expression> DoParse(FunctionCallContext context)
-            => Result.FromExistingResult<Expression>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
+            => Result.FromExistingResult<Expression>(context.FunctionEvaluator.Evaluate(context.FunctionCall, new FunctionEvaluatorSettingsBuilder()));
 
         public static Result<Expression> DoParseTypedExpression(Type expressionType, int index, string argumentName, FunctionCallContext context)
             => ParseTypedExpression(expressionType, index, argumentName, context);

@@ -5,7 +5,7 @@ public abstract class BuilderComponentBase(IFormattableStringParser formattableS
 {
     protected IFormattableStringParser FormattableStringParser { get; } = formattableStringParser.IsNotNull(nameof(formattableStringParser));
 
-    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForEnumerableOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
+    protected IEnumerable<Result<GenericFormattableString>> GetCodeStatementsForEnumerableOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
     {
         if (context.Request.Settings.BuilderNewCollectionTypeName == typeof(IEnumerable<>).WithoutGenerics())
         {
@@ -22,13 +22,13 @@ public abstract class BuilderComponentBase(IFormattableStringParser formattableS
         // (in other words, materialization is always performed)
         if (context.Request.Settings.AddNullChecks)
         {
-            yield return Result.Success<FormattableStringParserResult>(context.Request.CreateArgumentNullException(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
+            yield return Result.Success<GenericFormattableString>(context.Request.CreateArgumentNullException(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()).GetCsharpFriendlyName()));
         }
 
         yield return FormattableStringParser.Parse("return {$addMethodNameFormatString}({CsharpFriendlyName(ToCamelCase($property.Name))}.ToArray());", context.Request.FormatProvider, parentChildContext);
     }
 
-    protected IEnumerable<Result<FormattableStringParserResult>> GetCodeStatementsForArrayOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
+    protected IEnumerable<Result<GenericFormattableString>> GetCodeStatementsForArrayOverload(PipelineContext<BuilderContext> context, Property property, ParentChildContext<PipelineContext<BuilderContext>, Property> parentChildContext, string expressionTemplate)
     {
         if (context.Request.Settings.AddNullChecks)
         {

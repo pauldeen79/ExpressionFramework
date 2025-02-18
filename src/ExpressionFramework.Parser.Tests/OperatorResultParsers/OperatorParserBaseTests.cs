@@ -8,7 +8,7 @@ public class OperatorParserBaseTests
     public OperatorParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(Substitute.For<Operator>()));
     }
 
@@ -28,7 +28,7 @@ public class OperatorParserBaseTests
     {
         // Arrange
         var parser = new MyOperatorParser();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = parser.Evaluate(functionCallContext);
@@ -42,6 +42,6 @@ public class OperatorParserBaseTests
     private sealed class MyOperatorParser : OperatorParserBase
     {
         protected override Result<Operator> DoParse(FunctionCallContext context)
-            => Result.FromExistingResult<Operator>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
+            => Result.FromExistingResult<Operator>(context.FunctionEvaluator.Evaluate(context.FunctionCall, new FunctionEvaluatorSettingsBuilder()));
     }
 }

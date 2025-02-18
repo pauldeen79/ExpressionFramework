@@ -12,7 +12,7 @@ public class ExtensionParserExtensions(IPipelineService pipelineService, ICsharp
     {
         var types = new[]
         {
-            typeof(IExpression),
+            typeof(Models.IExpression),
             typeof(Models.IAggregator),
             typeof(IOperator),
             typeof(IEvaluatable),
@@ -46,7 +46,7 @@ public class ExtensionParserExtensions(IPipelineService pipelineService, ICsharp
                         .WithName("AddExpressionParsers")
                         .AddParameter("services", typeof(IServiceCollection))
                         .WithReturnType(typeof(IServiceCollection))
-                        .AddStringCodeStatements(results[typeof(IExpression)].Value!
+                        .AddStringCodeStatements(results[typeof(Models.IExpression)].Value!
                             .SelectMany(x => new[]
                             {
                                 $"services.AddSingleton<{IFunctionTypeName}, {Constants.Namespaces.ParserExpressionResultParsers}.{x.WithoutInterfacePrefix()}Parser>();",

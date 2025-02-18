@@ -8,7 +8,7 @@ public class AggregatorParserBaseTests
     public AggregatorParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(Substitute.For<Aggregator>()));
     }
 
@@ -28,7 +28,7 @@ public class AggregatorParserBaseTests
     {
         // Arrange
         var parser = new MyAggregatorParser();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = parser.Evaluate(functionCallContext);
@@ -42,6 +42,6 @@ public class AggregatorParserBaseTests
     private sealed class MyAggregatorParser : AggregatorParserBase
     {
         protected override Result<Aggregator> DoParse(FunctionCallContext context)
-            => Result.FromExistingResult<Aggregator>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
+            => Result.FromExistingResult<Aggregator>(context.FunctionEvaluator.Evaluate(context.FunctionCall, new FunctionEvaluatorSettingsBuilder()));
     }
 }

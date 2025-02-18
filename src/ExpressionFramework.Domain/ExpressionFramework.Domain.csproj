@@ -13,9 +13,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.17.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.17.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.17.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.18.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.18.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.18.0" />
   </ItemGroup>
 
   <ItemGroup>

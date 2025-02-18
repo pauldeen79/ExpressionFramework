@@ -8,7 +8,7 @@ public class EvaluatableParserBaseTests
     public EvaluatableParserBaseTests()
     {
         _functionEvaluatorMock
-            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(Substitute.For<Evaluatable>()));
     }
 
@@ -28,7 +28,7 @@ public class EvaluatableParserBaseTests
     {
         // Arrange
         var parser = new MyEvaluatableParser();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("Correct").Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = parser.Evaluate(functionCallContext);
@@ -42,6 +42,6 @@ public class EvaluatableParserBaseTests
     private sealed class MyEvaluatableParser : EvaluatableParserBase
     {
         protected override Result<Evaluatable> DoParse(FunctionCallContext context)
-            => Result.FromExistingResult<Evaluatable>(context.FunctionEvaluator.Evaluate(context.FunctionCall, context.ExpressionEvaluator));
+            => Result.FromExistingResult<Evaluatable>(context.FunctionEvaluator.Evaluate(context.FunctionCall, new FunctionEvaluatorSettingsBuilder()));
     }
 }

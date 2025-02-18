@@ -2,14 +2,14 @@
 
 public class FunctionCallContextExtensionsTests
 {
-    private IFunctionEvaluator FunctionEvaluator = Substitute.For<IFunctionEvaluator>();
-    private IExpressionEvaluator ExpressionEvaluator = Substitute.For<IExpressionEvaluator>();
+    private readonly IFunctionEvaluator FunctionEvaluator = Substitute.For<IFunctionEvaluator>();
+    private readonly IExpressionEvaluator ExpressionEvaluator = Substitute.For<IExpressionEvaluator>();
 
     [Fact]
     public void GetArgumentValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentValueExpression<string>(0, "Dummy");
@@ -22,7 +22,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentValueExpression(0, "Dummy", "Some default value");
@@ -35,7 +35,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentInt32ValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13)).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentInt32ValueExpression(0, "Dummy");
@@ -48,7 +48,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentInt32ValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentInt32ValueExpression(0, "Dummy", 33);
@@ -61,7 +61,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentInt64ValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13L)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(13L)).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentInt64ValueExpression(0, "Dummy");
@@ -74,7 +74,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentInt64ValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentInt64ValueExpression(0, "Dummy", 33L);
@@ -87,7 +87,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentDecimalValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(4.6M)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(4.6M)).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentDecimalValueExpression(0, "Dummy");
@@ -100,7 +100,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentDecimalValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentDecimalValueExpression(0, "Dummy", 4.9M);
@@ -113,7 +113,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentBooleanValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(true)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(true)).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentBooleanValueExpression(0, "Dummy");
@@ -126,7 +126,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentBooleanValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentBooleanValueExpression(0, "Dummy", true);
@@ -140,7 +140,7 @@ public class FunctionCallContextExtensionsTests
     {
         // Arrange
         var now = DateTime.Now;
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(now)).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue(now)).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy");
@@ -154,7 +154,7 @@ public class FunctionCallContextExtensionsTests
     {
         // Arrange
         var now = DateTime.Now;
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy", now);
@@ -167,7 +167,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentStringValueExpression_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentStringValueExpression(0, "Dummy");
@@ -180,7 +180,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentStringValueExpression_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentStringValueExpression(0, "Dummy", "Some default value");
@@ -193,7 +193,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentExpressionResult_No_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").AddArguments(new ConstantArgumentBuilder().WithValue("Some value")).Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentExpressionResult<string>(0, "Dummy");
@@ -206,7 +206,7 @@ public class FunctionCallContextExtensionsTests
     public void GetArgumentExpressionResult_Default_Value_Returns_Correct_Result()
     {
         // Arrange
-        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, CultureInfo.InvariantCulture, null);
+        var sut = new FunctionCallContext(new FunctionCallBuilder().WithName("Dummy").Build(), FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act
         var result = sut.GetArgumentExpressionResult<string>(0, "Dummy", "Some default value");

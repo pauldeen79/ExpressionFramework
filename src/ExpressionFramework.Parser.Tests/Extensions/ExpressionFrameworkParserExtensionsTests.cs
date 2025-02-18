@@ -16,7 +16,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, new FunctionEvaluatorSettingsBuilder(), null);
         sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Error<Expression>("Kaboom"));
 
@@ -33,7 +33,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, new FunctionEvaluatorSettingsBuilder(), null);
         sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Success<Expression>(new TypedConstantExpression<string>("test")));
 
@@ -50,7 +50,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
     {
         // Arrange
         var sut = Fixture.Create<IExpressionFrameworkParser>();
-        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, CultureInfo.InvariantCulture, null);
+        var functionCallContext = new FunctionCallContext(new FunctionCallBuilder().WithName("MyFunction").Build(), Evaluator, ExpressionParser, new FunctionEvaluatorSettingsBuilder(), null);
         sut.ParseExpression(Arg.Any<FunctionCallContext>())
            .Returns(Result.Success<Expression>(new TypedConstantExpression<int>(1)));
 
