@@ -158,17 +158,8 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
         context.Request.Builder.AddMethods(
             new MethodBuilder()
                 .WithName(results["MethodName"].Value!)
-                .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
-                      ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                      : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
-                .AddParameters
-                (
-                    new ParameterBuilder()
-                        .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
-                        .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>")
-                        .WithIsNullable(property.IsNullable)
-                        .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
-                )
+                .WithReturnTypeName(CreateReturnTypeName(context, results))
+                .AddParameters(CreateParameter(context, property))
                 .AddStringCodeStatements
                 (
                     property.IsNullable
@@ -177,6 +168,18 @@ public class ExpressionBuilderComponent(IFormattableStringParser formattableStri
                     context.Request.ReturnValueStatementForFluentMethod
                 ));
     }
+
+    private static ParameterBuilder CreateParameter(PipelineContext<BuilderContext> context, Property property)
+        => new ParameterBuilder()
+            .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
+            .WithTypeName($"{typeof(Func<>).WithoutGenerics()}<{typeof(object).FullName}?, {typeof(object).FullName}>")
+            .WithIsNullable(property.IsNullable)
+            .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null));
+
+    private static string CreateReturnTypeName(PipelineContext<BuilderContext> context, Dictionary<string, Result<GenericFormattableString>> results)
+        => context.Request.IsBuilderForAbstractEntity
+            ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
+            : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}";
 
     private static void AddOverloadsForExpressions(PipelineContext<BuilderContext> context, Property property, Dictionary<string, Result<GenericFormattableString>> results)
     {

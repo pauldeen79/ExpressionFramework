@@ -63,15 +63,14 @@ public class TypedExpressionBuilderComponent(IFormattableStringParser formattabl
 
         context.Request.Builder.AddMethods(
             new MethodBuilder()
+                .WithReturnTypeName(CreateReturnTypeName(context, results))
                 .WithName(results["MethodName"].Value!)
-                .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
-                    ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                    : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
                 .AddParameters
                 (
                     new ParameterBuilder()
                         .WithName(property.Name.ToCamelCase(context.Request.FormatProvider.ToCultureInfo()))
                         .WithTypeName(CreateTypeName(property))
+                        .WithIsValueType(property.IsValueType)
                         .WithIsNullable(property.IsNullable)
                         .WithDefaultValue(context.Request.GetMappingMetadata(property.TypeName).GetValue<object?>(MetadataNames.CustomBuilderWithDefaultPropertyValue, () => null))
                 ).AddStringCodeStatements
@@ -85,9 +84,7 @@ public class TypedExpressionBuilderComponent(IFormattableStringParser formattabl
         context.Request.Builder.AddMethods(
             new MethodBuilder()
                 .WithName(results["MethodName"].Value!)
-                .WithReturnTypeName(context.Request.IsBuilderForAbstractEntity
-                      ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
-                      : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}")
+                .WithReturnTypeName(CreateReturnTypeName(context, results))
                 .AddParameters
                 (
                     new ParameterBuilder()
@@ -104,6 +101,11 @@ public class TypedExpressionBuilderComponent(IFormattableStringParser formattabl
                     context.Request.ReturnValueStatementForFluentMethod
                 ));
     }
+
+    private static string CreateReturnTypeName(PipelineContext<BuilderContext> context, Dictionary<string, Result<GenericFormattableString>> results)
+        => context.Request.IsBuilderForAbstractEntity
+            ? $"TBuilder{context.Request.SourceModel.GetGenericTypeArgumentsString()}"
+            : $"{results["Namespace"].Value!.ToString().AppendWhenNotNullOrEmpty(".")}{results["BuilderName"].Value}{context.Request.SourceModel.GetGenericTypeArgumentsString()}";
 
     private static void AddOverloadsForTypedExpressions(PipelineContext<BuilderContext> context, Property property, Dictionary<string, Result<GenericFormattableString>> results)
     {
