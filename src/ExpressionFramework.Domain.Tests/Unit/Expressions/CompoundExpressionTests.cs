@@ -16,8 +16,8 @@ public class CompoundExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1 + 2);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(1 + 2);
     }
 
     [Fact]
@@ -30,13 +30,13 @@ public class CompoundExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(CompoundExpression));
-        result.Parameters.Should().HaveCount(4);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.UsesContext.Should().BeTrue();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(CompoundExpression));
+        result.Parameters.Count.ShouldBe(4);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.UsesContext.ShouldBeTrue();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

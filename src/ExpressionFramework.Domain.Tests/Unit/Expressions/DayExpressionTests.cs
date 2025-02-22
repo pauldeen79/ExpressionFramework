@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class DayExpressionTests
 {
@@ -14,8 +14,8 @@ public class DayExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(2);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(2);
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class DayExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(2);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(2);
     }
 
     [Fact]
@@ -46,6 +46,6 @@ public class DayExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<DayExpression>();
+        actual.ShouldBeOfType<DayExpression>();
     }
 }

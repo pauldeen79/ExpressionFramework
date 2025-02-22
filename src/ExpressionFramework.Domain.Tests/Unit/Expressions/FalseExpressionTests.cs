@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class FalseExpressionTests
 {
@@ -12,8 +12,8 @@ public class FalseExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(false);
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class FalseExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class FalseExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<FalseExpression>();
+        actual.ShouldBeOfType<FalseExpression>();
     }
 
     [Fact]
@@ -53,10 +53,10 @@ public class FalseExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(FalseExpression));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(FalseExpression));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

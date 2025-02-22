@@ -14,8 +14,8 @@ public class TryCastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world");
     }
 
     [Fact]
@@ -31,8 +31,8 @@ public class TryCastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world");
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class TryCastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull(); // default of IEnumerable is null
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull(); // default of IEnumerable is null
     }
 
     [Fact]
@@ -63,8 +63,8 @@ public class TryCastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -80,8 +80,8 @@ public class TryCastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -96,7 +96,7 @@ public class TryCastExpressionTests
         var untypedExpression = expression.ToUntyped();
 
         // Assert
-        untypedExpression.Should().BeOfType<ConstantExpression>().Which.Value.Should().Be(1);
+        untypedExpression.ShouldBeOfType<ConstantExpression>().Value.ShouldBe(1);
     }
 
     [Fact]
@@ -109,12 +109,12 @@ public class TryCastExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TryCastExpression<IEnumerable>));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TryCastExpression<IEnumerable>));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -9,7 +9,7 @@ public class NotStartsWithOperatorTests
         var result = new NotStartsWithOperator().Evaluate(null, new EmptyExpression(), new ConstantExpression("B"));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -19,7 +19,7 @@ public class NotStartsWithOperatorTests
         var result = new NotStartsWithOperator().Evaluate(null, new ConstantExpression("A"), new EmptyExpression());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class NotStartsWithOperatorTests
         var result = new NotStartsWithOperator().Evaluate(null, new ConstantExpression("A"), new ConstantExpression(string.Empty));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeFalse();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeFalse();
     }
 
     [Fact]
@@ -43,13 +43,13 @@ public class NotStartsWithOperatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(NotStartsWithOperator));
-        result.Parameters.Should().BeEmpty();
-        result.UsesLeftValue.Should().BeTrue();
-        result.LeftValueTypeName.Should().NotBeEmpty();
-        result.UsesRightValue.Should().BeTrue();
-        result.RightValueTypeName.Should().NotBeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(NotStartsWithOperator));
+        result.Parameters.ShouldBeEmpty();
+        result.UsesLeftValue.ShouldBeTrue();
+        result.LeftValueTypeName.ShouldNotBeEmpty();
+        result.UsesRightValue.ShouldBeTrue();
+        result.RightValueTypeName.ShouldNotBeEmpty();
+        result.ReturnValues.Count.ShouldBe(2);
     }
 }

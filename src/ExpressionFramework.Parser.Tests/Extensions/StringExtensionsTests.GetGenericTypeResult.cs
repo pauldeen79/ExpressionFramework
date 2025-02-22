@@ -14,9 +14,9 @@ public partial class StringExtensionsTests
             var result = typeName.GetGenericTypeResult();
 
             // Assert
-            result.Should().NotBeNull();
-            result.IsSuccessful().Should().BeTrue();
-            result.GetValueOrThrow().Should().Be<int>();
+            result.ShouldNotBeNull();
+            result.IsSuccessful().ShouldBeTrue();
+            result.GetValueOrThrow().ShouldBe(typeof(int));
         }
 
         [Fact]
@@ -29,9 +29,9 @@ public partial class StringExtensionsTests
             var result = typeName.GetGenericTypeResult();
 
             // Assert
-            result.Should().NotBeNull();
-            result.IsSuccessful().Should().BeFalse();
-            result.ErrorMessage.Should().Be("No type defined");
+            result.ShouldNotBeNull();
+            result.IsSuccessful().ShouldBeFalse();
+            result.ErrorMessage.ShouldBe("No type defined");
         }
 
         [Fact]
@@ -44,9 +44,9 @@ public partial class StringExtensionsTests
             var result = typeName.GetGenericTypeResult();
 
             // Assert
-            result.Should().NotBeNull();
-            result.IsSuccessful().Should().BeFalse();
-            result.ErrorMessage.Should().Be("Unknown type: MyUndefinedType");
+            result.ShouldNotBeNull();
+            result.IsSuccessful().ShouldBeFalse();
+            result.ErrorMessage.ShouldBe("Unknown type: MyUndefinedType");
         }
     }
 }

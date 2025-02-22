@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit;
+namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class OperatorTests
 {
@@ -12,8 +12,8 @@ public class OperatorTests
         var actual = sut.Evaluate(null, new ErrorExpression(new TypedConstantExpression<string>("Kaboom")), new EmptyExpression());
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -26,7 +26,7 @@ public class OperatorTests
         var actual = sut.Evaluate(null, new EmptyExpression(), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 }

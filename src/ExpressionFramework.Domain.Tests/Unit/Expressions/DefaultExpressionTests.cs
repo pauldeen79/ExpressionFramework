@@ -12,8 +12,8 @@ public class DefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(default(int));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(default(int));
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class DefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(default(int?));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(default(int?));
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class DefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(default(string));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(default(string));
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class DefaultExpressionTests
         var untypedExpression = expression.ToUntyped();
 
         // Assert
-        untypedExpression.Should().BeOfType<ConstantExpression>().Which.Value.Should().BeNull();
+        untypedExpression.ShouldBeOfType<ConstantExpression>().Value.ShouldBeNull();
     }
 
     [Fact]
@@ -67,9 +67,9 @@ public class DefaultExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(DefaultExpression<int>));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(DefaultExpression<int>));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 }

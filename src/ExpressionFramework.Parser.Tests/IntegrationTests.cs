@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Parser.Tests;
+namespace ExpressionFramework.Parser.Tests;
 
 public sealed class IntegrationTests : IDisposable
 {
@@ -26,8 +26,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=CONTEXT()", new ExpressionStringEvaluatorSettingsBuilder(), "Hello world");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world");
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=CONSTANT(@\"Hello world\")", new ExpressionStringEvaluatorSettingsBuilder(), _scope.ServiceProvider.GetRequiredService<IFormattableStringParser>());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world");
     }
 
     [Fact]
@@ -54,8 +54,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=LEFT(CONTEXT(), 5)", new ExpressionStringEvaluatorSettingsBuilder(), "Hello world!");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello");
     }
 
     [Fact]
@@ -68,8 +68,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=LEFT(\"Hello world!\", 5)", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello");
     }
 
     [Fact]
@@ -82,8 +82,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=Aggregate(Context(),AddAggregator())", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(3);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(3);
     }
 
     [Fact]
@@ -96,8 +96,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=Context() == \"Hello\"", new ExpressionStringEvaluatorSettingsBuilder(), "Hello");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -110,8 +110,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=FirstOrDefault(Context(),MyPredicate())", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -124,8 +124,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("= FirstOrDefault(Context(), MyPredicate(), 13)", new ExpressionStringEvaluatorSettingsBuilder(), new[] { 1, 2 });
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(13);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(13);
     }
 
     [Fact]
@@ -138,8 +138,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=Constant(13)", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(13);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(13);
     }
 
     [Fact]
@@ -152,8 +152,8 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=ToUpperCase(\"  space  \")", new ExpressionStringEvaluatorSettingsBuilder());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("  SPACE  ");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("  SPACE  ");
     }
 
     [Fact]
@@ -166,7 +166,7 @@ public sealed class IntegrationTests : IDisposable
         var result = parser.Evaluate("=UNKNOWN()", new ExpressionStringEvaluatorSettingsBuilder(), this);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     public void Dispose()

@@ -12,8 +12,8 @@ public class EnumerableConcatenateAggregatorTests
         var result = sut.Aggregate(new EmptyExpression(), new ConstantExpression(new[] { "b" }));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("First expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("First expression is not of type enumerable");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class EnumerableConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class EnumerableConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(1));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Second expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Second expression is not of type enumerable");
     }
 
     [Fact]
@@ -54,8 +54,8 @@ public class EnumerableConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(new[] { "a" }), new ConstantExpression(new[] { "b" }));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "a", "b" });
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(new object[] { "a" }.Concat(new object[] { "b" }));
     }
 
     [Fact]
@@ -68,10 +68,10 @@ public class EnumerableConcatenateAggregatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(EnumerableConcatenateAggregator));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextDescription.Should().BeEmpty();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(EnumerableConcatenateAggregator));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextDescription.ShouldBeEmpty();
     }
 }

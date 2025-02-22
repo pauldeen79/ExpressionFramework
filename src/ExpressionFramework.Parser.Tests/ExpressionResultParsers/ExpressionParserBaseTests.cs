@@ -27,8 +27,8 @@ public class ExpressionParserBaseTests
     public void Evaluate_Without_Context_Throws_On_Null_Context()
     {
         // Act & Assert
-        this.Invoking(_ => new MyExpressionParser().Evaluate(context: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("context");
+        Action a = () => _ = new MyExpressionParser().Evaluate(context: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("context");
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class ExpressionParserBaseTests
         var result = new MyExpressionParser().Evaluate(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Continue);
+        result.Status.ShouldBe(ResultStatus.Continue);
     }
 
     [Fact]
@@ -58,8 +58,8 @@ public class ExpressionParserBaseTests
         var result = new MyExpressionParser().ParseExpression(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<Expression>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<Expression>();
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class ExpressionParserBaseTests
         var result = new MyExpressionParser().Evaluate(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("evaluated value");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("evaluated value");
     }
 
     [Fact]
@@ -93,8 +93,8 @@ public class ExpressionParserBaseTests
         var result = new MyExpressionParser().Evaluate(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -112,8 +112,8 @@ public class ExpressionParserBaseTests
         var result = new MyExpressionParser().Evaluate(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -123,22 +123,18 @@ public class ExpressionParserBaseTests
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct")
             .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
-        var sut = new MyExpressionParser();
 
         // Act & Assert
-        sut.Invoking(_ => MyExpressionParser.DoParseTypedExpression(expressionType: null!, 0, string.Empty, context))
-           .Should().Throw<ArgumentNullException>().WithParameterName("expressionType");
+        Action a = () => MyExpressionParser.DoParseTypedExpression(expressionType: null!, 0, string.Empty, context);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("expressionType");
     }
 
     [Fact]
     public void ParseTypedExpression_Throws_On_Null_Context()
     {
-        // Arrange
-        var sut = new MyExpressionParser();
-
         // Act & Assert
-        sut.Invoking(_ => MyExpressionParser.DoParseTypedExpression(typeof(string), 0, string.Empty, context: null!))
-           .Should().Throw<ArgumentNullException>().WithParameterName("context");
+        Action a = () => MyExpressionParser.DoParseTypedExpression(typeof(string), 0, string.Empty, context: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("context");
     }
 
     [Fact]
@@ -153,8 +149,8 @@ public class ExpressionParserBaseTests
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("No type defined");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("No type defined");
     }
 
     [Fact]
@@ -169,8 +165,8 @@ public class ExpressionParserBaseTests
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Missing argument: name");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Missing argument: name");
     }
 
     [Fact]
@@ -186,8 +182,8 @@ public class ExpressionParserBaseTests
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Could not create TypedConstantExpression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedConstantExpression`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Could not create TypedConstantExpression. Error: Constructor on type 'ExpressionFramework.Domain.Expressions.TypedConstantExpression`1[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]' not found.");
     }
 
     [Fact]
@@ -203,8 +199,8 @@ public class ExpressionParserBaseTests
         var result = MyExpressionParser.DoParseTypedExpression(typeof(TypedConstantExpression<>), 0, "name", context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<string>>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeOfType<TypedConstantExpression<string>>();
     }
 
     [FunctionName("Correct")]

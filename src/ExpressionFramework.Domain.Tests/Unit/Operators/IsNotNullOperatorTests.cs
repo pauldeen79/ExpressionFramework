@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Operators;
+namespace ExpressionFramework.Domain.Tests.Unit.Operators;
 
 public class IsNotNullOperatorTests
 {
@@ -12,13 +12,13 @@ public class IsNotNullOperatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(IsNotNullOperator));
-        result.Parameters.Should().BeEmpty();
-        result.UsesLeftValue.Should().BeTrue();
-        result.LeftValueTypeName.Should().NotBeEmpty();
-        result.UsesRightValue.Should().BeFalse();
-        result.RightValueTypeName.Should().BeNull();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(IsNotNullOperator));
+        result.Parameters.ShouldBeEmpty();
+        result.UsesLeftValue.ShouldBeTrue();
+        result.LeftValueTypeName.ShouldNotBeEmpty();
+        result.UsesRightValue.ShouldBeFalse();
+        result.RightValueTypeName.ShouldBeNull();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 }

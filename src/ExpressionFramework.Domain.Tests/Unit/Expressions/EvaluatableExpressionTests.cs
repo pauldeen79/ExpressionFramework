@@ -12,8 +12,8 @@ public class EvaluatableExpressionTests
         var actual = sut.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class EvaluatableExpressionTests
         var actual = sut.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.GetValueOrThrow().Should().BeEquivalentTo(true);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.GetValueOrThrow().ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class EvaluatableExpressionTests
         var actual = sut.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -54,8 +54,8 @@ public class EvaluatableExpressionTests
         var actual = sut.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.GetValueOrThrow().Should().Be(false);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.GetValueOrThrow().ShouldBe(false);
     }
 
     [Fact]
@@ -68,7 +68,7 @@ public class EvaluatableExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<EvaluatableExpression>();
+        actual.ShouldBeOfType<EvaluatableExpression>();
     }
 
     [Fact]
@@ -81,10 +81,10 @@ public class EvaluatableExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(EvaluatableExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(EvaluatableExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

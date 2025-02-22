@@ -17,8 +17,8 @@ public class OperatorExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(false);
     }
 
     [Fact]
@@ -36,8 +36,8 @@ public class OperatorExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeFalse();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeFalse();
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class OperatorExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<OperatorExpression>();
+        actual.ShouldBeOfType<OperatorExpression>();
     }
 
     [Fact]
@@ -67,12 +67,12 @@ public class OperatorExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(OperatorExpression));
-        result.Parameters.Should().HaveCount(3);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(OperatorExpression));
+        result.Parameters.Count.ShouldBe(3);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

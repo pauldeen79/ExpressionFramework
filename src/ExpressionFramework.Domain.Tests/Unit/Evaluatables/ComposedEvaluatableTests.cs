@@ -11,7 +11,7 @@ public class ComposedEvaluatableTests
             .Build());
 
         // Act & Assert
-        act.Should().ThrowExactly<ValidationException>().WithMessage("EndGroup not valid at index 0, because there is no corresponding StartGroup");
+        act.ShouldThrow<ValidationException>().Message.ShouldBe("EndGroup not valid at index 0, because there is no corresponding StartGroup");
     }
 
     [Fact]
@@ -23,7 +23,7 @@ public class ComposedEvaluatableTests
             .Build());
 
         // Act & Assert
-        act.Should().ThrowExactly<ValidationException>().WithMessage("Missing EndGroup");
+        act.ShouldThrow<ValidationException>().Message.ShouldBe("Missing EndGroup");
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class ComposedEvaluatableTests
             .Build());
 
         // Act & Assert
-        act.Should().ThrowExactly<ValidationException>().WithMessage("2 missing EndGroups");
+        act.ShouldThrow<ValidationException>().Message.ShouldBe("2 missing EndGroups");
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class ComposedEvaluatableTests
             .Build());
 
         // Act & Assert
-        act.Should().NotThrow();
+        act.ShouldNotThrow();
     }
 
     [Fact]
@@ -62,10 +62,10 @@ public class ComposedEvaluatableTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ComposedEvaluatable));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ComposedEvaluatable));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 
     private static ComposableEvaluatableBuilder CreateEvaluatableBuilder()

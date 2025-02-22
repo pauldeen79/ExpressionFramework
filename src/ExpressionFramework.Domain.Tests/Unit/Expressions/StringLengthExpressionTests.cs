@@ -14,7 +14,7 @@ public class StringLengthExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(4);
+        actual.GetValueOrThrow().ShouldBeEquivalentTo(4);
     }
 
     [Fact]
@@ -29,7 +29,7 @@ public class StringLengthExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(0);
+        actual.GetValueOrThrow().ShouldBeEquivalentTo(0);
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class StringLengthExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -56,7 +56,7 @@ public class StringLengthExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.GetValueOrThrow().Should().Be(4);
+        actual.GetValueOrThrow().ShouldBe(4);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class StringLengthExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.GetValueOrThrow().Should().Be(0);
+        actual.GetValueOrThrow().ShouldBe(0);
     }
 
     [Fact]
@@ -82,8 +82,8 @@ public class StringLengthExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -98,7 +98,7 @@ public class StringLengthExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<StringLengthExpression>();
+        actual.ShouldBeOfType<StringLengthExpression>();
     }
 
     [Fact]
@@ -111,12 +111,12 @@ public class StringLengthExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(StringLengthExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(StringLengthExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

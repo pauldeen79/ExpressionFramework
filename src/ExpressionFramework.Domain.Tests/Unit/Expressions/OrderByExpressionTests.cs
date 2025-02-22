@@ -12,7 +12,7 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SortOrderExpressions should have at least one item");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("SortOrderExpressions should have at least one item");
     }
 
     [Fact]
@@ -41,8 +41,8 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -59,8 +59,8 @@ public class OrderByExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -74,8 +74,8 @@ public class OrderByExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -89,9 +89,9 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEmpty();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<IEnumerable<object?>>();
+        (result.Value as IEnumerable<object?>).ShouldBeEmpty();
     }
 
     [Fact]
@@ -105,9 +105,9 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["A", "B", "C"]);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<IEnumerable<object?>>();
+        (result.Value as IEnumerable<object?>)!.ToArray().ShouldBeEquivalentTo(new object[] { "A", "B", "C" });
     }
 
     [Fact]
@@ -121,9 +121,9 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C", "B", "A"]);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<IEnumerable<object?>>();
+        (result.Value as IEnumerable<object?>)!.ToArray().ShouldBeEquivalentTo(new object[] { "C", "B", "A" });
     }
 
     [Fact]
@@ -138,12 +138,12 @@ public class OrderByExpressionTests
         }.Select(x => new TypedConstantExpression<SortOrder>(x)));
 
         // Act
-        var result = sut.Evaluate();
+        var result = sut.Evaluate().TryCast<IOrderedEnumerable<object>>();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C1", "C2", "B1", "B2", "A1", "A2"]);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<IEnumerable<object?>>();
+        result.GetValueOrThrow().ToArray().ShouldBeEquivalentTo(new object[] { "C1", "C2", "B1", "B2", "A1", "A2" });
     }
 
     [Fact]
@@ -161,9 +161,9 @@ public class OrderByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<IEnumerable<object?>>();
-        (result.Value as IEnumerable<object?>).Should().BeEquivalentTo(["C2", "C1", "B2", "B1", "A2", "A1"]);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<IEnumerable<object?>>();
+        (result.Value as IEnumerable<object?>)!.ToArray().ShouldBeEquivalentTo(new object[] { "C2", "C1", "B2", "B1", "A2", "A1" });
     }
 
     [Fact]
@@ -181,7 +181,7 @@ public class OrderByExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<OrderByExpression>();
+        actual.ShouldBeOfType<OrderByExpression>();
     }
 
     [Fact]
@@ -194,10 +194,10 @@ public class OrderByExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(OrderByExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(OrderByExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -12,8 +12,8 @@ public class TakeExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class TakeExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -40,11 +40,11 @@ public class TakeExpressionTests
             .Build();
 
         // Act
-        var result = sut.Evaluate();
+        var result = sut.Evaluate().TryCast<IEnumerable<object>>();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "A", "B" });
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.GetValueOrThrow().ToArray().ShouldBeEquivalentTo(new object[] { "A", "B" });
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class TakeExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<TakeExpression>();
+        actual.ShouldBeOfType<TakeExpression>();
     }
 
     [Fact]
@@ -73,10 +73,10 @@ public class TakeExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TakeExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TakeExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

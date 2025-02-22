@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class StringFindExpressionTests
 {
@@ -12,8 +12,8 @@ public class StringFindExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class StringFindExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FindExpression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("FindExpression is not of type string");
     }
 
     [Fact]
@@ -43,8 +43,8 @@ public class StringFindExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -60,8 +60,8 @@ public class StringFindExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world".IndexOf('e'));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world".IndexOf('e'));
     }
 
     [Fact]
@@ -77,7 +77,7 @@ public class StringFindExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<StringFindExpression>();
+        actual.ShouldBeOfType<StringFindExpression>();
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class StringFindExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world".IndexOf('e'));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world".IndexOf('e'));
     }
 }

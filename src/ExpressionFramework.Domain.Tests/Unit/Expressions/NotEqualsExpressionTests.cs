@@ -14,8 +14,8 @@ public class NotEqualsExpressionTests
         var actual = sut.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class NotEqualsExpressionTests
         var actual = expression.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class NotEqualsExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be(false);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -63,8 +63,8 @@ public class NotEqualsExpressionTests
         var actual = sut.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public class NotEqualsExpressionTests
         var actual = expression.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -96,8 +96,8 @@ public class NotEqualsExpressionTests
         var actual = expression.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be(false);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class NotEqualsExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<NotEqualsExpression>();
+        actual.ShouldBeOfType<NotEqualsExpression>();
     }
 
     [Fact]
@@ -126,10 +126,10 @@ public class NotEqualsExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(NotEqualsExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(NotEqualsExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

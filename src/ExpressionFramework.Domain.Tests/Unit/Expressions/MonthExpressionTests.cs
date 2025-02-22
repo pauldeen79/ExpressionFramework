@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class MonthExpressionTests
 {
@@ -14,8 +14,8 @@ public class MonthExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(1);
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class MonthExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(1);
     }
 
     [Fact]
@@ -46,6 +46,6 @@ public class MonthExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<MonthExpression>();
+        actual.ShouldBeOfType<MonthExpression>();
     }
 }

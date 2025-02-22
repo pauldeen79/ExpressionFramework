@@ -12,7 +12,7 @@ public class WhereExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -25,8 +25,8 @@ public class WhereExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class WhereExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -56,11 +56,11 @@ public class WhereExpressionTests
             .Build();
 
         // Act
-        var result = sut.Evaluate();
+        var result = sut.Evaluate().TryCast<IEnumerable<object>>();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.GetValueOrThrow().ToArray().ShouldBeEquivalentTo(new object[] { "A", "B", "C" });
     }
 
     [Fact]
@@ -73,7 +73,7 @@ public class WhereExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -89,8 +89,8 @@ public class WhereExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(["A", "B", "C"]);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.GetValueOrThrow().ToArray().ShouldBeEquivalentTo(new object[] { "A", "B", "C" });
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class WhereExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<WhereExpression>();
+        actual.ShouldBeOfType<WhereExpression>();
     }
 
     [Fact]
@@ -119,10 +119,10 @@ public class WhereExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(WhereExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(3);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(WhereExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(3);
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

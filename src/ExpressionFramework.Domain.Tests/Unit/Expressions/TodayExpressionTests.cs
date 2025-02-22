@@ -15,8 +15,8 @@ public class TodayExpressionTests : TestBase
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(dateTime.Date);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(dateTime.Date);
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class TodayExpressionTests : TestBase
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(dateTime.Date);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(dateTime.Date);
     }
 
     [Fact]
@@ -46,8 +46,8 @@ public class TodayExpressionTests : TestBase
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeCloseTo(DateTime.Now.Date, TimeSpan.FromDays(1));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeInRange(DateTime.Now.Date.AddDays(-1), DateTime.Now.Date.AddDays(1));
     }
 
     [Fact]
@@ -60,6 +60,6 @@ public class TodayExpressionTests : TestBase
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<TodayExpression>();
+        actual.ShouldBeOfType<TodayExpression>();
     }
 }

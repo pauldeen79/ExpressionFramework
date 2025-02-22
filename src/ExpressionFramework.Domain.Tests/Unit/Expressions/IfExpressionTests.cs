@@ -12,8 +12,8 @@ public class IfExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -29,8 +29,8 @@ public class IfExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Correct");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Correct");
     }
 
     [Fact]
@@ -46,8 +46,8 @@ public class IfExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class IfExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Incorrect");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Incorrect");
     }
 
     [Fact]
@@ -78,8 +78,8 @@ public class IfExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Correct");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Correct");
     }
 
     [Fact]
@@ -92,12 +92,12 @@ public class IfExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(IfExpression));
-        result.Parameters.Should().HaveCount(3);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(IfExpression));
+        result.Parameters.Count.ShouldBe(3);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

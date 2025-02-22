@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Operators;
+namespace ExpressionFramework.Domain.Tests.Unit.Operators;
 
 public class IsSmallerOrEqualOperatorTests
 {
@@ -12,14 +12,14 @@ public class IsSmallerOrEqualOperatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(IsSmallerOrEqualOperator));
-        result.Parameters.Should().BeEmpty();
-        result.UsesLeftValue.Should().BeTrue();
-        result.LeftValueTypeName.Should().NotBeEmpty();
-        result.UsesRightValue.Should().BeTrue();
-        result.RightValueTypeName.Should().NotBeEmpty();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(IsSmallerOrEqualOperator));
+        result.Parameters.ShouldBeEmpty();
+        result.UsesLeftValue.ShouldBeTrue();
+        result.LeftValueTypeName.ShouldNotBeEmpty();
+        result.UsesRightValue.ShouldBeTrue();
+        result.RightValueTypeName.ShouldNotBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class IsSmallerOrEqualOperatorTests
         var result = sut.Evaluate(null, new ConstantExpression("string value"), new ConstantExpression(1));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Object must be of type String.");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Object must be of type String.");
     }
 }

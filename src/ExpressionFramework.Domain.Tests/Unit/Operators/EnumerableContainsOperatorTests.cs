@@ -12,8 +12,8 @@ public class EnumerableContainsOperatorTests
         var actual = sut.Evaluate(null, new ConstantExpression(new[] { "A", "B", "C" }), new ConstantExpression("D"));
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeFalse();
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBeFalse();
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class EnumerableContainsOperatorTests
         var actual = sut.Evaluate(null, new ConstantExpression(new[] { "A", "B", "C" }), new ConstantExpression("B"));
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeTrue();
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBeTrue();
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class EnumerableContainsOperatorTests
         var actual = sut.Evaluate(null, new ConstantExpression(1), new ConstantExpression("B"));
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
+        actual.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -53,13 +53,13 @@ public class EnumerableContainsOperatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(EnumerableContainsOperator));
-        result.Parameters.Should().BeEmpty();
-        result.UsesLeftValue.Should().BeTrue();
-        result.LeftValueTypeName.Should().NotBeEmpty();
-        result.UsesRightValue.Should().BeTrue();
-        result.RightValueTypeName.Should().NotBeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(EnumerableContainsOperator));
+        result.Parameters.ShouldBeEmpty();
+        result.UsesLeftValue.ShouldBeTrue();
+        result.LeftValueTypeName.ShouldNotBeEmpty();
+        result.UsesRightValue.ShouldBeTrue();
+        result.RightValueTypeName.ShouldNotBeEmpty();
+        result.ReturnValues.Count.ShouldBe(2);
     }
 }

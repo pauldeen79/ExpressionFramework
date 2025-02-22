@@ -14,8 +14,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type enumerable");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("default value");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("default value");
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -82,8 +82,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("default");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("default");
     }
 
     [Fact]
@@ -98,8 +98,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Sequence contains more than one element");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Sequence contains more than one element");
     }
 
     [Fact]
@@ -115,8 +115,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Sequence contains more than one element");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Sequence contains more than one element");
     }
 
     [Fact]
@@ -131,8 +131,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(1);
     }
 
     [Fact]
@@ -148,8 +148,8 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(2);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(2);
     }
 
     [Fact]
@@ -162,12 +162,12 @@ public class SingleOrDefaultExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(SingleOrDefaultExpression));
-        result.Parameters.Should().HaveCount(3);
-        result.ReturnValues.Should().HaveCount(3);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(SingleOrDefaultExpression));
+        result.Parameters.Count.ShouldBe(3);
+        result.ReturnValues.Count.ShouldBe(3);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

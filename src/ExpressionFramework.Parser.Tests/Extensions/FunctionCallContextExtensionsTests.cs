@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Parser.Tests.Extensions;
+namespace ExpressionFramework.Parser.Tests.Extensions;
 
 public class FunctionCallContextExtensionsTests
 {
@@ -15,7 +15,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentValueExpression<string>(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be("Some value");
+        result.EvaluateTyped().Value.ShouldBe("Some value");
     }
 
     [Fact]
@@ -28,7 +28,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentValueExpression(0, "Dummy", "Some default value");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be("Some default value");
+        result.EvaluateTyped().Value.ShouldBe("Some default value");
     }
 
     [Fact]
@@ -41,7 +41,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentInt32ValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(13);
+        result.EvaluateTyped().Value.ShouldBe(13);
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentInt32ValueExpression(0, "Dummy", 33);
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(33);
+        result.EvaluateTyped().Value.ShouldBe(33);
     }
 
     [Fact]
@@ -67,7 +67,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentInt64ValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(13L);
+        result.EvaluateTyped().Value.ShouldBe(13L);
     }
 
     [Fact]
@@ -80,7 +80,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentInt64ValueExpression(0, "Dummy", 33L);
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(33L);
+        result.EvaluateTyped().Value.ShouldBe(33L);
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentDecimalValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(4.6M);
+        result.EvaluateTyped().Value.ShouldBe(4.6M);
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentDecimalValueExpression(0, "Dummy", 4.9M);
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(4.9M);
+        result.EvaluateTyped().Value.ShouldBe(4.9M);
     }
 
     [Fact]
@@ -119,7 +119,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentBooleanValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(true);
+        result.EvaluateTyped().Value.ShouldBe(true);
     }
 
     [Fact]
@@ -132,7 +132,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentBooleanValueExpression(0, "Dummy", true);
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(true);
+        result.EvaluateTyped().Value.ShouldBe(true);
     }
 
     [Fact]
@@ -146,7 +146,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(now);
+        result.EvaluateTyped().Value.ShouldBe(now);
     }
 
     [Fact]
@@ -160,7 +160,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentDateTimeValueExpression(0, "Dummy", now);
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be(now);
+        result.EvaluateTyped().Value.ShouldBe(now);
     }
 
     [Fact]
@@ -173,7 +173,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentStringValueExpression(0, "Dummy");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be("Some value");
+        result.EvaluateTyped().Value.ShouldBe("Some value");
     }
 
     [Fact]
@@ -186,7 +186,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentStringValueExpression(0, "Dummy", "Some default value");
 
         // Assert
-        result.EvaluateTyped().Value.Should().Be("Some default value");
+        result.EvaluateTyped().Value.ShouldBe("Some default value");
     }
 
     [Fact]
@@ -199,7 +199,7 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentExpressionResult<string>(0, "Dummy");
 
         // Assert
-        result.Value.Should().Be("Some value");
+        result.Value.ShouldBe("Some value");
     }
 
     [Fact]
@@ -212,6 +212,6 @@ public class FunctionCallContextExtensionsTests
         var result = sut.GetArgumentExpressionResult<string>(0, "Dummy", "Some default value");
 
         // Assert
-        result.Value.Should().Be("Some default value");
+        result.Value.ShouldBe("Some default value");
     }
 }

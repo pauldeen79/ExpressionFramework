@@ -12,8 +12,8 @@ public class TypedContextExpressionTests
         var result = expression.Evaluate(1);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(1);
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class TypedContextExpressionTests
         var result = expression.Evaluate("no integer");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Context is not of type System.Int32");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Context is not of type System.Int32");
     }
 
     [Fact]
@@ -40,12 +40,12 @@ public class TypedContextExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TypedContextExpression<int>));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TypedContextExpression<int>));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.ContextIsRequired.ShouldBe(true);
     }
 }

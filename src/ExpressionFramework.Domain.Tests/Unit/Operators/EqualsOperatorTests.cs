@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Operators;
+namespace ExpressionFramework.Domain.Tests.Unit.Operators;
 
 public class EqualsOperatorTests
 {
@@ -12,13 +12,13 @@ public class EqualsOperatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(EqualsOperator));
-        result.Parameters.Should().BeEmpty();
-        result.UsesLeftValue.Should().BeTrue();
-        result.LeftValueTypeName.Should().NotBeEmpty();
-        result.UsesRightValue.Should().BeTrue();
-        result.RightValueTypeName.Should().NotBeEmpty();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(EqualsOperator));
+        result.Parameters.ShouldBeEmpty();
+        result.UsesLeftValue.ShouldBeTrue();
+        result.LeftValueTypeName.ShouldNotBeEmpty();
+        result.UsesRightValue.ShouldBeTrue();
+        result.RightValueTypeName.ShouldNotBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 }

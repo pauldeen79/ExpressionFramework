@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Builders.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Builders.Expressions;
 
 public class LeftExpressionBuilderTests
 {
@@ -12,6 +12,6 @@ public class LeftExpressionBuilderTests
         var result = sut.Build();
 
         // Assert
-        result.Should().BeOfType<LeftExpression>();
+        result.ShouldBeOfType<LeftExpression>();
     }
 }

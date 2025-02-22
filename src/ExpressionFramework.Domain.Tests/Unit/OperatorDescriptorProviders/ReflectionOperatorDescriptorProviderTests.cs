@@ -5,8 +5,8 @@ public class ReflectionOperatorDescriptorProviderTests
     [Fact]
     public void Throws_On_Null_Type()
     {
-        this.Invoking(_ => new ReflectionOperatorDescriptorProvider(type: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+        Action a = () => _ = new ReflectionOperatorDescriptorProvider(type: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("type");
     }
 
     [Fact]
@@ -19,12 +19,12 @@ public class ReflectionOperatorDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().BeEmpty();
-        actual.UsesLeftValue.Should().BeFalse();
-        actual.UsesRightValue.Should().BeFalse();
-        actual.LeftValueTypeName.Should().BeNull();
-        actual.RightValueTypeName.Should().BeNull();
-        actual.ReturnValues.Should().BeEmpty();
+        actual.Description.ShouldBeEmpty();
+        actual.UsesLeftValue.ShouldBeFalse();
+        actual.UsesRightValue.ShouldBeFalse();
+        actual.LeftValueTypeName.ShouldBeNull();
+        actual.RightValueTypeName.ShouldBeNull();
+        actual.ReturnValues.ShouldBeEmpty();
     }
 
     [Fact]
@@ -37,19 +37,19 @@ public class ReflectionOperatorDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().NotBeEmpty();
-        actual.UsesLeftValue.Should().BeTrue();
-        actual.UsesRightValue.Should().BeTrue();
-        actual.LeftValueTypeName.Should().Be(typeof(string).FullName);
-        actual.RightValueTypeName.Should().Be(typeof(string).FullName);
-        actual.Parameters.Should().ContainSingle();
-        actual.Parameters.Single().TypeName.Should().Be(typeof(string).FullName);
-        actual.Parameters.Single().Description.Should().Be("Some other description");
-        actual.Parameters.Single().Name.Should().Be(nameof(SomeOperator.Parameter));
-        actual.ReturnValues.Should().ContainSingle();
-        actual.ReturnValues.Single().Description.Should().Be("Some description");
-        actual.ReturnValues.Single().Value.Should().Be("Some value");
-        actual.ReturnValues.Single().Status.Should().Be(ResultStatus.Ok);
+        actual.Description.ShouldNotBeEmpty();
+        actual.UsesLeftValue.ShouldBeTrue();
+        actual.UsesRightValue.ShouldBeTrue();
+        actual.LeftValueTypeName.ShouldBe(typeof(string).FullName);
+        actual.RightValueTypeName.ShouldBe(typeof(string).FullName);
+        actual.Parameters.ShouldHaveSingleItem();
+        actual.Parameters.Single().TypeName.ShouldBe(typeof(string).FullName);
+        actual.Parameters.Single().Description.ShouldBe("Some other description");
+        actual.Parameters.Single().Name.ShouldBe(nameof(SomeOperator.Parameter));
+        actual.ReturnValues.ShouldHaveSingleItem();
+        actual.ReturnValues.Single().Description.ShouldBe("Some description");
+        actual.ReturnValues.Single().Value.ShouldBe("Some value");
+        actual.ReturnValues.Single().Status.ShouldBe(ResultStatus.Ok);
     }
 
     [OperatorDescription("Some description")]
