@@ -15,8 +15,8 @@ public class AndExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(false);
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class AndExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class AndExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<AndExpression>();
+        actual.ShouldBeOfType<AndExpression>();
     }
 
     [Fact]
@@ -62,12 +62,12 @@ public class AndExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(AndExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(AndExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBe("Context to use on expression evaluation");
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

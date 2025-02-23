@@ -1,4 +1,4 @@
-﻿global using System.Globalization;
+global using System.Globalization;
 global using AutoFixture;
 global using AutoFixture.AutoNSubstitute;
 global using CrossCutting.Common.Results;
@@ -17,7 +17,7 @@ global using ExpressionFramework.Parser.EvaluatableResultParsers;
 global using ExpressionFramework.Parser.ExpressionResultParsers;
 global using ExpressionFramework.Parser.Extensions;
 global using ExpressionFramework.Parser.OperatorResultParsers;
-global using FluentAssertions;
+global using Shouldly;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
 global using Xunit;

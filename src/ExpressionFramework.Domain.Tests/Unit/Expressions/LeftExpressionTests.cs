@@ -15,7 +15,7 @@ public class LeftExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("te");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("te");
     }
 
     [Fact]
@@ -31,8 +31,8 @@ public class LeftExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Length must refer to a location within the string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Length must refer to a location within the string");
     }
 
     [Fact]
@@ -45,8 +45,8 @@ public class LeftExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -59,8 +59,8 @@ public class LeftExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -73,8 +73,8 @@ public class LeftExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("te");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("te");
     }
 
     [Fact]
@@ -87,8 +87,8 @@ public class LeftExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Length must refer to a location within the string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Length must refer to a location within the string");
     }
 
     [Fact]
@@ -101,8 +101,8 @@ public class LeftExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -118,7 +118,7 @@ public class LeftExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<LeftExpression>();
+        actual.ShouldBeOfType<LeftExpression>();
     }
 
     [Fact]
@@ -131,12 +131,12 @@ public class LeftExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(LeftExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(LeftExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

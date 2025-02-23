@@ -24,8 +24,8 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -41,8 +41,8 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<TypedConstantExpression<string>>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeOfType<TypedConstantExpression<string>>();
     }
 
     [Fact]
@@ -58,7 +58,7 @@ public class ExpressionFrameworkParserExtensionsTests : TestBase
         var result = sut.ParseExpression<string>(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not a typed expression of type System.String");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not a typed expression of type System.String");
     }
 }

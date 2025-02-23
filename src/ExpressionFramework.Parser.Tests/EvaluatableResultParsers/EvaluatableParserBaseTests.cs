@@ -19,8 +19,8 @@ public class EvaluatableParserBaseTests
         var parser = new MyEvaluatableParser();
 
         // Act & Assert
-        this.Invoking(_ => parser.Evaluate(context: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("context");
+        Action a = () => _ = parser.Evaluate(context: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("context");
     }
 
     [Fact]
@@ -34,8 +34,8 @@ public class EvaluatableParserBaseTests
         var result = parser.Evaluate(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<Evaluatable>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<Evaluatable>();
     }
 
     [FunctionName("Correct")]

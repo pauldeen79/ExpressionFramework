@@ -12,8 +12,8 @@ public class ErrorExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Error message");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Error message");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class ErrorExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().BeEmpty();
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBeEmpty();
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class ErrorExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -54,11 +54,11 @@ public class ErrorExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ErrorExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ErrorExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBeNull();
     }
 
     [Fact]
@@ -71,9 +71,9 @@ public class ErrorExpressionTests
         var expression = builder.BuildTyped();
 
         // Assert
-        expression.Should().BeOfType<ErrorExpression>();
-        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
-        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().BeEmpty();
+        expression.ShouldBeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.ShouldBeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.ShouldBeEmpty();
     }
 
     [Fact]
@@ -83,9 +83,8 @@ public class ErrorExpressionTests
         var builder = new ErrorExpressionBuilder();
 
         // Act & Assert
-        builder
-            .Invoking(x => x.WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!))
-            .Should().Throw<ArgumentNullException>();
+        Action a = () => builder.WithErrorMessageExpression(default(ITypedExpressionBuilder<string>)!);
+        a.ShouldThrow<ArgumentNullException>();
     }
 
     [Fact]
@@ -99,9 +98,9 @@ public class ErrorExpressionTests
         var expression = builder.BuildTyped();
 
         // Assert
-        expression.Should().BeOfType<ErrorExpression>();
-        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
-        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().Be("Kaboom");
+        expression.ShouldBeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.ShouldBeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -119,9 +118,9 @@ public class ErrorExpressionTests
         var expression = builder.BuildTyped();
 
         // Assert
-        expression.Should().BeOfType<ErrorExpression>();
-        expression.ErrorMessageExpression.Should().BeOfType<TypedConstantExpression<string>>();
-        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.Should().Be("Kaboom");
+        expression.ShouldBeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.ShouldBeOfType<TypedConstantExpression<string>>();
+        ((TypedConstantExpression<string>)expression.ErrorMessageExpression).Value.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -139,9 +138,9 @@ public class ErrorExpressionTests
         var expression = builder.BuildTyped();
 
         // Assert
-        expression.Should().BeOfType<ErrorExpression>();
-        expression.ErrorMessageExpression.Should().BeOfType<TypedDelegateExpression<string>>();
-        ((TypedDelegateExpression<string>)expression.ErrorMessageExpression).Value.Invoke(default).Should().Be("Kaboom");
+        expression.ShouldBeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.ShouldBeOfType<TypedDelegateExpression<string>>();
+        ((TypedDelegateExpression<string>)expression.ErrorMessageExpression).Value.Invoke(default).ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -159,8 +158,8 @@ public class ErrorExpressionTests
         var expression = builder.BuildTyped();
 
         // Assert
-        expression.Should().BeOfType<ErrorExpression>();
-        expression.ErrorMessageExpression.Should().BeOfType<LeftExpression>();
-        ((LeftExpression)expression.ErrorMessageExpression).EvaluateTyped().Value.Should().Be("K");
+        expression.ShouldBeOfType<ErrorExpression>();
+        expression.ErrorMessageExpression.ShouldBeOfType<LeftExpression>();
+        ((LeftExpression)expression.ErrorMessageExpression).EvaluateTyped().Value.ShouldBe("K");
     }
 }

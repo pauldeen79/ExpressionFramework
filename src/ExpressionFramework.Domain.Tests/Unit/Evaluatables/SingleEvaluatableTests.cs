@@ -12,9 +12,9 @@ public class SingleEvaluatableTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(SingleEvaluatable));
-        result.Parameters.Should().HaveCount(3);
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(SingleEvaluatable));
+        result.Parameters.Count.ShouldBe(3);
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 }

@@ -15,7 +15,7 @@ public class GroupByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -28,8 +28,8 @@ public class GroupByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class GroupByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -56,8 +56,22 @@ public class GroupByExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "a", "b", "cc" }.GroupBy(x => x.Length));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        using var provider = new ServiceCollection().AddCsharpExpressionDumper().BuildServiceProvider();
+        var dumper = provider.GetRequiredService<ICsharpExpressionDumper>();
+        var code = dumper.Dump(result.Value);
+        code.ShouldBe(@"new[]
+{
+    new[]
+    {
+        @""a"",
+        @""b"",
+    },
+    new[]
+    {
+        @""cc"",
+    },
+}");
     }
 
     [Fact]
@@ -70,10 +84,10 @@ public class GroupByExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(GroupByExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(GroupByExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

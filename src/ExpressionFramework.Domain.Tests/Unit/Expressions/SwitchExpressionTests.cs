@@ -16,8 +16,8 @@ public class SwitchExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class SwitchExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -44,8 +44,8 @@ public class SwitchExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -58,8 +58,8 @@ public class SwitchExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeNull();
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -77,8 +77,8 @@ public class SwitchExpressionTests
         var result = switchExpression.Evaluate("value");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("value");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("value");
     }
 
     [Fact]
@@ -96,8 +96,8 @@ public class SwitchExpressionTests
         var result = switchExpression.Evaluate("wrong value");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeNull();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -110,13 +110,13 @@ public class SwitchExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(SwitchExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(SwitchExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.ContextIsRequired.ShouldBe(false);
     }
 
     private sealed record ErrorEvaluatable : Evaluatable

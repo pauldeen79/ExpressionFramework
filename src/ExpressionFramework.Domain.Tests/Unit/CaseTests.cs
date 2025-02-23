@@ -9,7 +9,8 @@ public class CaseTests
         var builder = new CaseBuilder();
 
         // Act & Assert
-        builder.Invoking(x => x.Build()).Should().Throw<ValidationException>().WithMessage("The Condition field is required.");
+        Action a = () => builder.Build();
+        a.ShouldThrow<ValidationException>().Message.ShouldBe("The Condition field is required.");
     }
 
     [Fact]
@@ -23,6 +24,6 @@ public class CaseTests
         _ = builder.TryValidate(validationResults);
 
         // Assert
-        validationResults.Select(x => x.ErrorMessage).Should().BeEquivalentTo("The Condition field is required.", "The Expression field is required.");
+        validationResults.Select(x => x.ErrorMessage).ToArray().ShouldBeEquivalentTo(new[] { "The Condition field is required.", "The Expression field is required." });
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class TypedConstantResultExpressionTests
 {
@@ -12,8 +12,8 @@ public class TypedConstantResultExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(1);
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class TypedConstantResultExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(1);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(1);
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class TypedConstantResultExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<ConstantExpression>();
-        ((ConstantExpression)actual).Value.Should().BeEquivalentTo(sut.Value.Value);
+        actual.ShouldBeOfType<ConstantExpression>();
+        ((ConstantExpression)actual).Value.ShouldBeEquivalentTo(sut.Value.Value);
     }
 
     [Fact]
@@ -54,10 +54,10 @@ public class TypedConstantResultExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TypedConstantResultExpression<int>));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TypedConstantResultExpression<int>));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

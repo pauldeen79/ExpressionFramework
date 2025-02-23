@@ -12,7 +12,7 @@ public class ToCamelCaseExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("camel");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("camel");
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class ToCamelCaseExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(string.Empty);
+        actual.GetValueOrThrow().ShouldBeEquivalentTo(string.Empty);
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public class ToCamelCaseExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class ToCamelCaseExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("camel");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("camel");
     }
 
     [Fact]
@@ -66,7 +66,7 @@ public class ToCamelCaseExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEmpty();
+        actual.GetValueOrThrow().ShouldBeEmpty();
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public class ToCamelCaseExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class ToCamelCaseExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<ToCamelCaseExpression>();
+        actual.ShouldBeOfType<ToCamelCaseExpression>();
     }
 
     [Fact]
@@ -106,12 +106,12 @@ public class ToCamelCaseExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ToCamelCaseExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ToCamelCaseExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

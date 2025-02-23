@@ -15,8 +15,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("Test");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("Test");
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Fieldname [WrongPropertyName] is not found on type [ExpressionFramework.Domain.Tests.Unit.Expressions.TypedFieldExpressionTests+MyClass]");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Fieldname [WrongPropertyName] is not found on type [ExpressionFramework.Domain.Tests.Unit.Expressions.TypedFieldExpressionTests+MyClass]");
     }
 
     [Fact]
@@ -49,8 +49,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression cannot be empty");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression cannot be empty");
     }
 
     [Fact]
@@ -66,8 +66,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Field is not of type [System.Int32]");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Field is not of type [System.Int32]");
     }
 
     [Fact]
@@ -83,8 +83,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -97,8 +97,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("FieldNameExpression must be a non empty string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("FieldNameExpression must be a non empty string");
     }
 
     [Fact]
@@ -111,8 +111,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -128,8 +128,8 @@ public class TypedFieldExpressionTests
         var actual = expression.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Field is not of type [System.String]");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Field is not of type [System.String]");
     }
 
     [Fact]
@@ -142,13 +142,13 @@ public class TypedFieldExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TypedFieldExpression<string>));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TypedFieldExpression<string>));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 
     public class MyClass

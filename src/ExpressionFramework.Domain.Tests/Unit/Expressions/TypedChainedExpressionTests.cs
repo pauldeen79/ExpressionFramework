@@ -18,8 +18,8 @@ public class TypedChainedExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public class TypedChainedExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class TypedChainedExpressionTests
         var actual = expression.Evaluate("test");
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeEquivalentTo("test");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBeEquivalentTo("test");
     }
 
     [Fact]
@@ -66,8 +66,8 @@ public class TypedChainedExpressionTests
         var actual = expression.Evaluate(1);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().BeNull();
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBeNull();
     }
 
     [Fact]
@@ -80,8 +80,8 @@ public class TypedChainedExpressionTests
         var result = expression.EvaluateTyped("hello");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("HELLO");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("HELLO");
     }
 
     [Fact]
@@ -94,13 +94,13 @@ public class TypedChainedExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TypedChainedExpression<string>));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.UsesContext.Should().BeTrue();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TypedChainedExpression<string>));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.UsesContext.ShouldBeTrue();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

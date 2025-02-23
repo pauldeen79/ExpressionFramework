@@ -25,7 +25,7 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         var result = ParseExpression(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
+        result.Status.ShouldBe(ResultStatus.Invalid);
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         var result = ParseExpression(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeOfType<ContextExpression>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeOfType<ContextExpression>();
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         var result = ParseExpression(functionCallContext);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Missing argument: Value");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Missing argument: Value");
     }
 
     [Fact]
@@ -69,8 +69,8 @@ public sealed class ExpressionFrameworkParserTests : IDisposable
         var result = Parse<string>(context);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeAssignableTo<ITypedExpression<string>>();
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeAssignableTo<ITypedExpression<string>>();
     }
 
     public void Dispose()

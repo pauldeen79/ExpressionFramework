@@ -12,8 +12,8 @@ public class OfTypeExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type enumerable");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class OfTypeExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new[] { "A", "B", "C" });
+        result.Status.ShouldBe(ResultStatus.Ok);
+        ((IEnumerable)result.Value!).OfType<object?>().ToArray().ShouldBeEquivalentTo(new object[] { "A", "B", "C" });
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class OfTypeExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -54,7 +54,7 @@ public class OfTypeExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<OfTypeExpression>();
+        actual.ShouldBeOfType<OfTypeExpression>();
     }
 
     [Fact]
@@ -67,10 +67,10 @@ public class OfTypeExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(OfTypeExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(OfTypeExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class ConstantExpressionTests
 {
@@ -12,8 +12,8 @@ public class ConstantExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("The value");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("The value");
     }
 
     [Fact]
@@ -26,10 +26,10 @@ public class ConstantExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ConstantExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ConstantExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

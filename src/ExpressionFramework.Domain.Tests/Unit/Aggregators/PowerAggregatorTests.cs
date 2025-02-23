@@ -12,8 +12,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(true), new ConstantExpression(1));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("First expression is not of a supported type");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("First expression is not of a supported type");
     }
 
     [Fact]
@@ -27,8 +27,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(4));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(16);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(16);
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(input), new ConstantExpression(8));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(256);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(256);
     }
 
     [Fact]
@@ -56,8 +56,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(2), new ConstantExpression(8));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(256);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(256);
     }
 
     [Fact]
@@ -70,8 +70,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(2L), new ConstantExpression(8L));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(256L);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(256L);
     }
 
     [Fact]
@@ -84,8 +84,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(1f), new ConstantExpression(2f));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(Math.Pow(1f, 2f));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(Math.Pow(1f, 2f));
     }
 
     [Fact]
@@ -98,8 +98,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(1d), new ConstantExpression(2d));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(Math.Pow(1d, 2d));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(Math.Pow(1d, 2d));
     }
 
     [Fact]
@@ -112,8 +112,8 @@ public class PowerAggregatorTests
         var result = sut.Aggregate(new ConstantExpression(1M), new ConstantExpression(2M));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(Math.Pow(Convert.ToDouble(1M), Convert.ToDouble(2M)));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo((decimal)Math.Pow(Convert.ToDouble(1M), Convert.ToDouble(2M)));
     }
 
     [Fact]
@@ -126,10 +126,10 @@ public class PowerAggregatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(PowerAggregator));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().BeEmpty();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(PowerAggregator));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeEmpty();
     }
 }

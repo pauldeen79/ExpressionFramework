@@ -12,7 +12,7 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("trim");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("trim");
     }
 
     [Fact]
@@ -25,7 +25,7 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("trim");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("trim");
     }
 
     [Fact]
@@ -38,7 +38,7 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("trim");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("trim");
     }
 
     [Fact]
@@ -51,7 +51,7 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo(string.Empty);
+        actual.GetValueOrThrow().ShouldBeEquivalentTo(string.Empty);
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -78,8 +78,8 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -92,8 +92,8 @@ public class TrimExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -106,8 +106,8 @@ public class TrimExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("trim");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("trim");
     }
 
     [Fact]
@@ -123,7 +123,7 @@ public class TrimExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.GetValueOrThrow().Should().Be("trim");
+        actual.GetValueOrThrow().ShouldBe("trim");
     }
 
     [Fact]
@@ -136,7 +136,7 @@ public class TrimExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEmpty();
+        actual.GetValueOrThrow().ShouldBeEmpty();
     }
 
     [Fact]
@@ -149,8 +149,8 @@ public class TrimExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -163,7 +163,7 @@ public class TrimExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<TrimExpression>();
+        actual.ShouldBeOfType<TrimExpression>();
     }
 
     [Fact]
@@ -176,12 +176,12 @@ public class TrimExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TrimExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TrimExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit;
+namespace ExpressionFramework.Domain.Tests.Unit;
 
 public class ExpressionTests : TestBase
 {
@@ -13,8 +13,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world!");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world!");
     }
 
     [Fact]
@@ -28,8 +28,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world");
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world");
     }
 
     [Fact]
@@ -65,8 +65,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(1 + 2 + 3);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(1 + 2 + 3);
     }
 
     [Fact]
@@ -93,8 +93,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate(input);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("string");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("string");
     }
 
     [Fact]
@@ -107,8 +107,8 @@ public class ExpressionTests : TestBase
         var result = aggregator.Evaluate(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("ab");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("ab");
     }
 
     [Fact]
@@ -121,8 +121,8 @@ public class ExpressionTests : TestBase
         var result = aggregator.Evaluate(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("abc");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("abc");
     }
 
     [Fact]
@@ -136,8 +136,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world!".Length);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world!".Length);
     }
 
     [Fact]
@@ -150,8 +150,8 @@ public class ExpressionTests : TestBase
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world!".Length);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world!".Length);
     }
 
     [Fact]
@@ -171,7 +171,7 @@ public class ExpressionTests : TestBase
         var result = currentMonthExpression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(dateTime.Month);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(dateTime.Month);
     }
 }

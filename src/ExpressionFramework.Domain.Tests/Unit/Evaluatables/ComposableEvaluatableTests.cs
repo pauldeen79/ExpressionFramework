@@ -17,7 +17,7 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable]);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -36,7 +36,7 @@ public class ComposableEvaluatableTests
 
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -57,8 +57,8 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable]);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -80,8 +80,8 @@ public class ComposableEvaluatableTests
 
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -106,7 +106,7 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable1, evaluatable2]);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -131,7 +131,7 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable1, evaluatable2]);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -168,7 +168,7 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable1, evaluatable2, evaluatable3]);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -205,7 +205,7 @@ public class ComposableEvaluatableTests
         var actual = Evaluate([evaluatable1, evaluatable2, evaluatable3]);
 
         // Assert
-        actual.GetValueOrThrow().Should().BeTrue();
+        actual.GetValueOrThrow().ShouldBeTrue();
     }
 
     [Fact]
@@ -218,17 +218,17 @@ public class ComposableEvaluatableTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ComposableEvaluatable));
-        result.Parameters.Should().HaveCount(6);
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ComposableEvaluatable));
+        result.Parameters.Count.ShouldBe(6);
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 
     [Fact]
     public void Throws_On_Null_Delegate()
     {
-        this.Invoking(_ => new ComposableEvaluatable(_ => null, @operator: null!, _ => null))
-            .Should().Throw<ArgumentNullException>().WithParameterName("operator");
+        Action a = () => _ = new ComposableEvaluatable(_ => null, @operator: null!, _ => null);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("operator");
     }
 
     private static Result<bool> Evaluate(IEnumerable<ComposableEvaluatable> conditions)

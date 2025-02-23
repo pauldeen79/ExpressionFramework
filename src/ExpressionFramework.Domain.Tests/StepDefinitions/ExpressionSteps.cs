@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.StepDefinitions;
+namespace ExpressionFramework.Domain.Tests.StepDefinitions;
 
 [Binding]
 public sealed class ExpressionSteps
@@ -100,9 +100,9 @@ public sealed class ExpressionSteps
 
     [Then(@"the expression evaluation result value should be empty")]
     public void ThenTheExpressionEvaluationResultValueShouldBeEmpty()
-        => Result.Value.Should().BeNull();
+        => Result.Value.ShouldBeNull();
 
     [Then(@"the expression evaluation result value should be '([^']*)'")]
     public void ThenTheExpressionEvaluationResultValueShouldBe(string value)
-        => Result.Value.Should().BeEquivalentTo(StringExpressionParser.Parse(value));
+        => Result.Value.ShouldBeEquivalentTo(StringExpressionParser.Parse(value));
 }

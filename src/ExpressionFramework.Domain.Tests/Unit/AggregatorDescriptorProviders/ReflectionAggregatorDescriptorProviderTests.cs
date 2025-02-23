@@ -5,8 +5,8 @@ public class ReflectionAggregatorDescriptorProviderTests
     [Fact]
     public void Throws_On_Null_Type()
     {
-        this.Invoking(_ => new ReflectionAggregatorDescriptorProvider(type: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+        Action a = () => _ = new ReflectionAggregatorDescriptorProvider(type: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("type");
     }
 
     [Fact]
@@ -19,11 +19,11 @@ public class ReflectionAggregatorDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().BeEmpty();
-        actual.ContextDescription.Should().BeEmpty();
-        actual.ContextTypeName.Should().BeEmpty();
-        actual.Parameters.Should().BeEmpty();
-        actual.ReturnValues.Should().BeEmpty();
+        actual.Description.ShouldBeEmpty();
+        actual.ContextDescription.ShouldBeEmpty();
+        actual.ContextTypeName.ShouldBeEmpty();
+        actual.Parameters.ShouldBeEmpty();
+        actual.ReturnValues.ShouldBeEmpty();
     }
 
     [Fact]
@@ -36,17 +36,17 @@ public class ReflectionAggregatorDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().NotBeEmpty();
-        actual.ContextDescription.Should().NotBeEmpty();
-        actual.ContextTypeName.Should().NotBeEmpty();
-        actual.Parameters.Should().ContainSingle();
-        actual.Parameters.Single().TypeName.Should().Be(typeof(string).FullName);
-        actual.Parameters.Single().Description.Should().Be("Some other description");
-        actual.Parameters.Single().Name.Should().Be(nameof(SomeAggregator.Parameter));
-        actual.ReturnValues.Should().ContainSingle();
-        actual.ReturnValues.Single().Description.Should().Be("Some description");
-        actual.ReturnValues.Single().Value.Should().Be("Some value");
-        actual.ReturnValues.Single().Status.Should().Be(ResultStatus.Ok);
+        actual.Description.ShouldNotBeEmpty();
+        actual.ContextDescription.ShouldNotBeEmpty();
+        actual.ContextTypeName.ShouldNotBeEmpty();
+        actual.Parameters.ShouldHaveSingleItem();
+        actual.Parameters.Single().TypeName.ShouldBe(typeof(string).FullName);
+        actual.Parameters.Single().Description.ShouldBe("Some other description");
+        actual.Parameters.Single().Name.ShouldBe(nameof(SomeAggregator.Parameter));
+        actual.ReturnValues.ShouldHaveSingleItem();
+        actual.ReturnValues.Single().Description.ShouldBe("Some description");
+        actual.ReturnValues.Single().Value.ShouldBe("Some value");
+        actual.ReturnValues.Single().Status.ShouldBe(ResultStatus.Ok);
     }
 
     [AggregatorDescription("Some description")]

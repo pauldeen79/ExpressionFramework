@@ -5,8 +5,8 @@ public class BooleanExpressionTests
     [Fact]
     public void GetDescriptor_Throws_On_Null_Type()
     {
-        this.Invoking(_ => BooleanExpression.GetDescriptor(type: null!, string.Empty, string.Empty, string.Empty, null, string.Empty))
-            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+        Action a = () => _ = BooleanExpression.GetDescriptor(type: null!, string.Empty, string.Empty, string.Empty, null, string.Empty);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("type");
     }
 
     [Fact]
@@ -16,8 +16,8 @@ public class BooleanExpressionTests
         var result = BooleanExpression.EvaluateBooleanCombination(null, null!, new TypedConstantExpression<bool>(true), (x, y) => x && y);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("First expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("First expression is required");
     }
 
     [Fact]
@@ -27,8 +27,8 @@ public class BooleanExpressionTests
         var result = BooleanExpression.EvaluateBooleanCombination(null, new TypedConstantResultExpression<bool>(Result.Error<bool>("Kaboom")), new TypedConstantExpression<bool>(true), (x, y) => x && y);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public class BooleanExpressionTests
         var result = BooleanExpression.EvaluateBooleanCombination(null, new TypedConstantExpression<bool>(true), null!, (x, y) => x && y);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Second expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Second expression is required");
     }
 
     [Fact]
@@ -49,8 +49,8 @@ public class BooleanExpressionTests
         var result = BooleanExpression.EvaluateBooleanCombination(null, new TypedConstantExpression<bool>(true), new TypedConstantResultExpression<bool>(Result.Error<bool>("Kaboom")), (x, y) => x && y);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -60,8 +60,8 @@ public class BooleanExpressionTests
         var result = BooleanExpression.EvaluateBooleanCombination(null, new TypedConstantExpression<bool>(true), new TypedConstantExpression<bool>(true), null!);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Delegate is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Delegate is required");
     }
 
 }

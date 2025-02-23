@@ -15,9 +15,9 @@ public class InvalidExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEquivalentTo(sut.ValidationErrorExpressions!.Select(x => x.EvaluateTyped().Value));
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Error message");
+        result.ValidationErrors.ToArray().ShouldBeEquivalentTo(sut.ValidationErrorExpressions!.Select(x => x.EvaluateTyped().Value).ToArray());
     }
 
     [Fact]
@@ -32,9 +32,9 @@ public class InvalidExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Error message");
-        result.ValidationErrors.Should().BeEmpty();
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Error message");
+        result.ValidationErrors.ShouldBeEmpty();
     }
 
     [Fact]
@@ -47,9 +47,9 @@ public class InvalidExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().BeNull();
-        result.ValidationErrors.Should().BeEmpty();
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBeNull();
+        result.ValidationErrors.ShouldBeEmpty();
     }
 
     [Fact]
@@ -62,8 +62,8 @@ public class InvalidExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -76,8 +76,8 @@ public class InvalidExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -90,10 +90,10 @@ public class InvalidExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(InvalidExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(InvalidExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

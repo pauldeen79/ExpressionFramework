@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class TrueExpressionTests
 {
@@ -12,8 +12,8 @@ public class TrueExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class TrueExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(true);
     }
 
     [Fact]
@@ -40,7 +40,7 @@ public class TrueExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<TrueExpression>();
+        actual.ShouldBeOfType<TrueExpression>();
     }
 
     [Fact]
@@ -53,10 +53,10 @@ public class TrueExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(TrueExpression));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(TrueExpression));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -15,8 +15,8 @@ public class OrExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -32,8 +32,8 @@ public class OrExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(true);
     }
 
     [Fact]
@@ -49,7 +49,7 @@ public class OrExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<OrExpression>();
+        actual.ShouldBeOfType<OrExpression>();
     }
 
     [Fact]
@@ -62,12 +62,12 @@ public class OrExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(OrExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(OrExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

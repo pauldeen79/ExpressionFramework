@@ -5,8 +5,8 @@ public class ReflectionExpressionDescriptorProviderTests
     [Fact]
     public void Throws_On_Null_Type()
     {
-        this.Invoking(_ => new ReflectionExpressionDescriptorProvider(type: null!))
-            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+        Action a = () => _ = new ReflectionExpressionDescriptorProvider(type: null!);
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("type");
     }
 
     [Fact]
@@ -19,11 +19,11 @@ public class ReflectionExpressionDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().BeEmpty();
-        actual.UsesContext.Should().BeFalse();
-        actual.ContextDescription.Should().BeNull();
-        actual.ContextTypeName.Should().BeNull();
-        actual.ReturnValues.Should().BeEmpty();
+        actual.Description.ShouldBeEmpty();
+        actual.UsesContext.ShouldBeFalse();
+        actual.ContextDescription.ShouldBeNull();
+        actual.ContextTypeName.ShouldBeNull();
+        actual.ReturnValues.ShouldBeEmpty();
     }
 
     [Fact]
@@ -36,18 +36,18 @@ public class ReflectionExpressionDescriptorProviderTests
         var actual = sut.Get();
 
         // Assert
-        actual.Description.Should().NotBeEmpty();
-        actual.UsesContext.Should().BeTrue();
-        actual.ContextDescription.Should().NotBeEmpty();
-        actual.ContextTypeName.Should().NotBeEmpty();
-        actual.Parameters.Should().ContainSingle();
-        actual.Parameters.Single().TypeName.Should().Be(typeof(string).FullName);
-        actual.Parameters.Single().Description.Should().Be("Some other description");
-        actual.Parameters.Single().Name.Should().Be(nameof(SomeExpression.Parameter));
-        actual.ReturnValues.Should().ContainSingle();
-        actual.ReturnValues.Single().Description.Should().Be("Some description");
-        actual.ReturnValues.Single().Value.Should().Be("Some value");
-        actual.ReturnValues.Single().Status.Should().Be(ResultStatus.Ok);
+        actual.Description.ShouldNotBeEmpty();
+        actual.UsesContext.ShouldBeTrue();
+        actual.ContextDescription.ShouldNotBeEmpty();
+        actual.ContextTypeName.ShouldNotBeEmpty();
+        actual.Parameters.ShouldHaveSingleItem();
+        actual.Parameters.Single().TypeName.ShouldBe(typeof(string).FullName);
+        actual.Parameters.Single().Description.ShouldBe("Some other description");
+        actual.Parameters.Single().Name.ShouldBe(nameof(SomeExpression.Parameter));
+        actual.ReturnValues.ShouldHaveSingleItem();
+        actual.ReturnValues.Single().Description.ShouldBe("Some description");
+        actual.ReturnValues.Single().Value.ShouldBe("Some value");
+        actual.ReturnValues.Single().Status.ShouldBe(ResultStatus.Ok);
     }
 
     [ExpressionDescription("Some description")]

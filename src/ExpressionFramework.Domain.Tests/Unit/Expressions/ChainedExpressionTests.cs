@@ -18,8 +18,8 @@ public class ChainedExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -38,8 +38,8 @@ public class ChainedExpressionTests
         var actual = expression.Evaluate(default);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -52,8 +52,8 @@ public class ChainedExpressionTests
         var actual = expression.Evaluate("test");
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("test");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("test");
     }
 
     [Fact]
@@ -68,8 +68,8 @@ public class ChainedExpressionTests
         var result = expression.Evaluate("hello");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("HELLO");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("HELLO");
     }
 
     [Fact]
@@ -82,13 +82,13 @@ public class ChainedExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ChainedExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.UsesContext.Should().BeTrue();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ChainedExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.UsesContext.ShouldBeTrue();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

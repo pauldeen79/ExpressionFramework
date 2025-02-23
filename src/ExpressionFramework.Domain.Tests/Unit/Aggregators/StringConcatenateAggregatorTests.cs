@@ -12,8 +12,8 @@ public class StringConcatenateAggregatorTests
         var result = sut.Aggregate(new EmptyExpression(), new ConstantExpression("b"));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("First expression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("First expression is not of type string");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class StringConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression("a"), new ErrorExpression(new TypedConstantExpression<string>("Kaboom")));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -40,8 +40,8 @@ public class StringConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression("a"), new ConstantExpression(1));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Second expression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Second expression is not of type string");
     }
 
     [Fact]
@@ -54,8 +54,8 @@ public class StringConcatenateAggregatorTests
         var result = sut.Aggregate(new ConstantExpression("a"), new ConstantExpression("b"));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("ab");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("ab");
     }
 
     [Fact]
@@ -68,10 +68,10 @@ public class StringConcatenateAggregatorTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(StringConcatenateAggregator));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().BeEmpty();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(StringConcatenateAggregator));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeEmpty();
     }
 }

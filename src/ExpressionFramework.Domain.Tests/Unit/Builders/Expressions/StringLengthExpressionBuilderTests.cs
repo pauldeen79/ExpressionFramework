@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Builders.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Builders.Expressions;
 
 public class StringLengthExpressionBuilderTests
 {
@@ -12,6 +12,6 @@ public class StringLengthExpressionBuilderTests
         var result = sut.Build();
 
         // Assert
-        result.Should().BeOfType<StringLengthExpression>();
+        result.ShouldBeOfType<StringLengthExpression>();
     }
 }

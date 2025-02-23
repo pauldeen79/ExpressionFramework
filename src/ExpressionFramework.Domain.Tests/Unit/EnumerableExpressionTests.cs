@@ -6,8 +6,8 @@ public class EnumerableExpressionTests
     public void GetDescriptor_Throws_On_Null_Type()
     {
         // Act & Assert
-        this.Invoking(_ => EnumerableExpression.GetDescriptor(type: null!, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, typeof(object)))
-            .Should().Throw<ArgumentNullException>().WithParameterName("type");
+        Action a = () => _ = EnumerableExpression.GetDescriptor(type: null!, string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false, typeof(object));
+        a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("type");
     }
 
     [Fact]
@@ -17,8 +17,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success(x)));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is required");
     }
 
     [Fact]
@@ -28,8 +28,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetResultFromEnumerable(expression: new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), null, @delegate: null!);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Delegate is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Delegate is required");
     }
 
     [Fact]
@@ -39,8 +39,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: null!, null, @delegate: x => x.Select(x => Result.Success(x)));
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is required");
     }
 
     [Fact]
@@ -50,8 +50,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetTypedResultFromEnumerable(expression: new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), null, @delegate: null!);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Delegate is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Delegate is required");
     }
 
     [Fact]
@@ -61,8 +61,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetTypedResultFromEnumerableWithCount(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), countExpression: null!, null, (_, _) => Enumerable.Empty<Result<object?>>());
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Count expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Count expression is required");
     }
 
     [Fact]
@@ -72,8 +72,8 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetTypedResultFromEnumerableWithCount(new TypedConstantExpression<IEnumerable>(Enumerable.Empty<object?>()), new TypedConstantExpression<int>(23), null, @delegate: null!);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Delegate is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Delegate is required");
     }
 
     [Fact]
@@ -83,7 +83,7 @@ public class EnumerableExpressionTests
         var result = EnumerableExpression.GetRequiredScalarValue<int>(null, new TypedConstantExpression<IEnumerable>(new[] { 1, 2, 3 }), null, delegateWithoutPredicate: null!);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Delegate without predicate is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Delegate without predicate is required");
     }
 }

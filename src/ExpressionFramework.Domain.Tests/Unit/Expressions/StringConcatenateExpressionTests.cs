@@ -12,8 +12,8 @@ public class StringConcatenateExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("At least one expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("At least one expression is required");
     }
 
     [Fact]
@@ -28,8 +28,8 @@ public class StringConcatenateExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("abc");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("abc");
     }
 
     [Fact]
@@ -42,8 +42,8 @@ public class StringConcatenateExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -56,8 +56,8 @@ public class StringConcatenateExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("At least one expression is required");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("At least one expression is required");
     }
 
     [Fact]
@@ -72,8 +72,8 @@ public class StringConcatenateExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("abc");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("abc");
     }
 
     [Fact]
@@ -88,7 +88,7 @@ public class StringConcatenateExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<StringConcatenateExpression>();
+        actual.ShouldBeOfType<StringConcatenateExpression>();
     }
 
     [Fact]
@@ -101,13 +101,13 @@ public class StringConcatenateExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(StringConcatenateExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.UsesContext.Should().BeTrue();
-        result.ContextIsRequired.Should().BeFalse();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(StringConcatenateExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.UsesContext.ShouldBeTrue();
+        result.ContextIsRequired.ShouldBe(false);
     }
 }

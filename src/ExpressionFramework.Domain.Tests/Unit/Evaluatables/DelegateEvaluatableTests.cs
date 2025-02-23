@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Evaluatables;
+namespace ExpressionFramework.Domain.Tests.Unit.Evaluatables;
 
 public class DelegateEvaluatableTests
 {
@@ -14,8 +14,8 @@ public class DelegateEvaluatableTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be(input);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe(input);
     }
 
     [Fact]
@@ -28,9 +28,9 @@ public class DelegateEvaluatableTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(DelegateEvaluatable));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(DelegateEvaluatable));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.ShouldHaveSingleItem();
     }
 }

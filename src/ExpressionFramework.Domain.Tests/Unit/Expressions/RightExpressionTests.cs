@@ -15,7 +15,7 @@ public class RightExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.GetValueOrThrow().Should().BeEquivalentTo("st");
+        actual.GetValueOrThrow().ShouldBeEquivalentTo("st");
     }
 
     [Fact]
@@ -31,8 +31,8 @@ public class RightExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Length must refer to a location within the string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Length must refer to a location within the string");
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class RightExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -61,8 +61,8 @@ public class RightExpressionTests
         var actual = sut.Evaluate();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -78,8 +78,8 @@ public class RightExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be("st");
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe("st");
     }
 
     [Fact]
@@ -95,8 +95,8 @@ public class RightExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Length must refer to a location within the string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Length must refer to a location within the string");
     }
 
     [Fact]
@@ -109,8 +109,8 @@ public class RightExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Invalid);
-        actual.ErrorMessage.Should().Be("Expression is not of type string");
+        actual.Status.ShouldBe(ResultStatus.Invalid);
+        actual.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -123,8 +123,8 @@ public class RightExpressionTests
         var actual = sut.EvaluateTyped();
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -140,7 +140,7 @@ public class RightExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<RightExpression>();
+        actual.ShouldBeOfType<RightExpression>();
     }
 
     [Fact]
@@ -153,12 +153,12 @@ public class RightExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(RightExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(RightExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

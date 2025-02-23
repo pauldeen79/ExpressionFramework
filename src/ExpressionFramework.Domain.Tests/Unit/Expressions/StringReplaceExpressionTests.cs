@@ -12,8 +12,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("FindExpression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("FindExpression is not of type string");
     }
 
     [Fact]
@@ -44,8 +44,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -62,8 +62,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("ReplaceExpression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("ReplaceExpression is not of type string");
     }
 
     [Fact]
@@ -80,8 +80,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type string");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type string");
     }
 
     [Fact]
@@ -98,8 +98,8 @@ public class StringReplaceExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world".Replace("e", "f"));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world".Replace("e", "f"));
     }
 
     [Fact]
@@ -116,8 +116,8 @@ public class StringReplaceExpressionTests
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be("Hello world".Replace("e", "f"));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe("Hello world".Replace("e", "f"));
     }
 
     [Fact]
@@ -134,6 +134,6 @@ public class StringReplaceExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<StringReplaceExpression>();
+        actual.ShouldBeOfType<StringReplaceExpression>();
     }
 }

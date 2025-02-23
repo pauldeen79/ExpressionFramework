@@ -14,8 +14,8 @@ public class EqualsExpressionTests
         var actual = sut.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class EqualsExpressionTests
         var actual = expression.Evaluate(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -46,8 +46,8 @@ public class EqualsExpressionTests
         var actual = sut.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -62,8 +62,8 @@ public class EqualsExpressionTests
         var actual = expression.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Error);
-        actual.ErrorMessage.Should().Be("Kaboom");
+        actual.Status.ShouldBe(ResultStatus.Error);
+        actual.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -79,8 +79,8 @@ public class EqualsExpressionTests
         var actual = expression.EvaluateTyped(null);
 
         // Assert
-        actual.Status.Should().Be(ResultStatus.Ok);
-        actual.Value.Should().Be(true);
+        actual.Status.ShouldBe(ResultStatus.Ok);
+        actual.Value.ShouldBe(true);
     }
 
     [Fact]
@@ -93,7 +93,7 @@ public class EqualsExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<EqualsExpression>();
+        actual.ShouldBeOfType<EqualsExpression>();
     }
 
     [Fact]
@@ -106,10 +106,10 @@ public class EqualsExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(EqualsExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(EqualsExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
+namespace ExpressionFramework.Domain.Tests.Unit.Expressions;
 
 public class DelegateResultExpressionTests
 {
@@ -12,8 +12,8 @@ public class DelegateResultExpressionTests
         var result = sut.Evaluate("not used");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("ok");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("ok");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class DelegateResultExpressionTests
         var result = sut.Evaluate("not used");
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -40,10 +40,10 @@ public class DelegateResultExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(DelegateResultExpression));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(DelegateResultExpression));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

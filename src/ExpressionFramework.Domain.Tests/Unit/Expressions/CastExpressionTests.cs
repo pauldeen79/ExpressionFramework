@@ -14,8 +14,8 @@ public class CastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo("Hello world");
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo("Hello world");
     }
 
     [Fact]
@@ -30,8 +30,8 @@ public class CastExpressionTests
         var result = expression.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("SourceExpression is not of type System.Collections.IEnumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("SourceExpression is not of type System.Collections.IEnumerable");
     }
 
     [Fact]
@@ -46,7 +46,7 @@ public class CastExpressionTests
         var untypedExpression = expression.ToUntyped();
 
         // Assert
-        untypedExpression.Should().BeOfType<ConstantExpression>().Which.Value.Should().Be(1);
+        untypedExpression.ShouldBeOfType<ConstantExpression>().Value.ShouldBe(1);
     }
 
     [Fact]
@@ -59,12 +59,12 @@ public class CastExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(CastExpression<IEnumerable>));
-        result.Parameters.Should().ContainSingle();
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(CastExpression<IEnumerable>));
+        result.Parameters.ShouldHaveSingleItem();
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

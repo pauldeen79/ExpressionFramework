@@ -12,8 +12,8 @@ public class SkipExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -26,8 +26,8 @@ public class SkipExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Error);
-        result.ErrorMessage.Should().Be("Kaboom");
+        result.Status.ShouldBe(ResultStatus.Error);
+        result.ErrorMessage.ShouldBe("Kaboom");
     }
 
     [Fact]
@@ -43,8 +43,8 @@ public class SkipExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(new object[] { "B", 1, "C" });
+        result.Status.ShouldBe(ResultStatus.Ok);
+        ((IEnumerable)result.Value!).OfType<object>().ToArray().ShouldBeEquivalentTo(new object[] { "B", 1, "C" });
     }
 
     [Fact]
@@ -60,7 +60,7 @@ public class SkipExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<SkipExpression>();
+        actual.ShouldBeOfType<SkipExpression>();
     }
 
     [Fact]
@@ -73,10 +73,10 @@ public class SkipExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(SkipExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(2);
-        result.ContextIsRequired.Should().BeTrue();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(SkipExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(2);
+        result.ContextIsRequired.ShouldBe(true);
     }
 }

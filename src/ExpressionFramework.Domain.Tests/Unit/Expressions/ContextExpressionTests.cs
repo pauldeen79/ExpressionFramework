@@ -12,12 +12,12 @@ public class ContextExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(ContextExpression));
-        result.Parameters.Should().BeEmpty();
-        result.ReturnValues.Should().ContainSingle();
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeTrue();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(ContextExpression));
+        result.Parameters.ShouldBeEmpty();
+        result.ReturnValues.ShouldHaveSingleItem();
+        result.ContextDescription.ShouldNotBeEmpty();
+        result.ContextTypeName.ShouldNotBeEmpty();
+        result.ContextIsRequired.ShouldBe(true);
     }
 }

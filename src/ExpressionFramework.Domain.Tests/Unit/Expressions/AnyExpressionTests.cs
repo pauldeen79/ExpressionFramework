@@ -15,8 +15,8 @@ public class AnyExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type enumerable");
     }
 
     [Fact]
@@ -31,8 +31,8 @@ public class AnyExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(false);
     }
 
     [Fact]
@@ -48,8 +48,8 @@ public class AnyExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(false);
     }
 
     [Fact]
@@ -64,8 +64,8 @@ public class AnyExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -81,8 +81,8 @@ public class AnyExpressionTests
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(true);
     }
 
     [Fact]
@@ -95,8 +95,8 @@ public class AnyExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Invalid);
-        result.ErrorMessage.Should().Be("Expression is not of type enumerable");
+        result.Status.ShouldBe(ResultStatus.Invalid);
+        result.ErrorMessage.ShouldBe("Expression is not of type enumerable");
     }
 
     [Fact]
@@ -111,8 +111,8 @@ public class AnyExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -128,8 +128,8 @@ public class AnyExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(false);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(false);
     }
 
     [Fact]
@@ -142,8 +142,8 @@ public class AnyExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(true);
     }
 
     [Fact]
@@ -159,8 +159,8 @@ public class AnyExpressionTests
         var result = sut.EvaluateTyped(null);
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(true);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(true);
     }
 
     [Fact]
@@ -176,7 +176,7 @@ public class AnyExpressionTests
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<AnyExpression>();
+        actual.ShouldBeOfType<AnyExpression>();
     }
 
     [Fact]
@@ -189,12 +189,12 @@ public class AnyExpressionTests
         var result = sut.Get();
 
         // Assert
-        result.Should().NotBeNull();
-        result.Name.Should().Be(nameof(AnyExpression));
-        result.Parameters.Should().HaveCount(2);
-        result.ReturnValues.Should().HaveCount(3);
-        result.ContextDescription.Should().NotBeEmpty();
-        result.ContextTypeName.Should().NotBeEmpty();
-        result.ContextIsRequired.Should().BeNull();
+        result.ShouldNotBeNull();
+        result.Name.ShouldBe(nameof(AnyExpression));
+        result.Parameters.Count.ShouldBe(2);
+        result.ReturnValues.Count.ShouldBe(3);
+        result.ContextDescription.ShouldBeNull();
+        result.ContextTypeName.ShouldBeNull();
+        result.ContextIsRequired.ShouldBeNull();
     }
 }

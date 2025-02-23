@@ -15,8 +15,8 @@ public class NowExpressionTests : TestBase
         var result = sut.Evaluate();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeEquivalentTo(dateTime);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeEquivalentTo(dateTime);
     }
 
 
@@ -33,8 +33,8 @@ public class NowExpressionTests : TestBase
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().Be(dateTime);
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(dateTime);
     }
 
     [Fact]
@@ -47,8 +47,8 @@ public class NowExpressionTests : TestBase
         var result = sut.EvaluateTyped();
 
         // Assert
-        result.Status.Should().Be(ResultStatus.Ok);
-        result.Value.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(5));
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBeInRange(DateTime.Now.AddSeconds(-5), DateTime.Now.AddSeconds(5));
     }
 
     [Fact]
@@ -61,6 +61,6 @@ public class NowExpressionTests : TestBase
         var actual = sut.ToUntyped();
 
         // Assert
-        actual.Should().BeOfType<NowExpression>();
+        actual.ShouldBeOfType<NowExpression>();
     }
 }
