@@ -133,8 +133,8 @@ public class OrderByExpressionTests
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
         var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending)
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0, 1)), SortOrderDirection.Descending),
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1, 1)), SortOrderDirection.Ascending)
         }.Select(x => new TypedConstantExpression<SortOrder>(x)));
 
         // Act
@@ -153,8 +153,8 @@ public class OrderByExpressionTests
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
         var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Descending)
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0, 1)), SortOrderDirection.Descending),
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1, 1)), SortOrderDirection.Descending)
         }.Select(x => new TypedConstantExpression<SortOrder>(x)));
 
         // Act
@@ -173,8 +173,8 @@ public class OrderByExpressionTests
         var data = new[] { "B2", "B1", "C2", "C1", "A2", "A1" };
         var sut = new OrderByExpression(new TypedConstantExpression<IEnumerable>(data), new[]
         {
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0)), SortOrderDirection.Descending),
-            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1)), SortOrderDirection.Ascending)
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(0, 1)), SortOrderDirection.Descending),
+            new SortOrder(new DelegateExpression(x => x!.ToString()!.Substring(1, 1)), SortOrderDirection.Ascending)
         }.Select(x => new TypedConstantExpression<SortOrder>(x)));
 
         // Act
