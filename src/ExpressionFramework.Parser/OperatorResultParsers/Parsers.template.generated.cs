@@ -11,7 +11,7 @@
 namespace ExpressionFramework.Parser.OperatorResultParsers
 {
     [CrossCutting.Utilities.Parsers.FunctionName(@"EndsWithOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class EndsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -23,7 +23,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"EnumerableContainsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class EnumerableContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -35,7 +35,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"EnumerableNotContainsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class EnumerableNotContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -47,7 +47,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"EqualsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class EqualsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -59,7 +59,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsGreaterOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsGreaterOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -71,7 +71,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsGreaterOrEqualOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsGreaterOrEqualOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -83,7 +83,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNotNullOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNotNullOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -95,7 +95,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNotNullOrEmptyOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNotNullOrEmptyOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -107,7 +107,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNotNullOrWhiteSpaceOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNotNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -119,7 +119,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNullOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNullOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -131,7 +131,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNullOrEmptyOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNullOrEmptyOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -143,7 +143,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsNullOrWhiteSpaceOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsNullOrWhiteSpaceOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -155,7 +155,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsSmallerOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsSmallerOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -167,7 +167,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"IsSmallerOrEqualOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class IsSmallerOrEqualOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -179,7 +179,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"NotEndsWithOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class NotEndsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -191,7 +191,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"NotEqualsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class NotEqualsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -203,7 +203,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"NotStartsWithOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class NotStartsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -215,7 +215,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"StartsWithOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class StartsWithOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -227,7 +227,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"StringContainsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class StringContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -239,7 +239,7 @@ namespace ExpressionFramework.Parser.OperatorResultParsers
         }
     }
     [CrossCutting.Utilities.Parsers.FunctionName(@"StringNotContainsOperator")]
-    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(ExpressionFramework.Domain.Operator))]
+    [CrossCutting.Utilities.Parsers.FunctionResultType(typeof(System.Boolean))]
     public class StringNotContainsOperatorParser : OperatorParserBase
     {
         protected override CrossCutting.Common.Results.Result<ExpressionFramework.Domain.Operator> DoParse(CrossCutting.Utilities.Parsers.FunctionCallContext context)

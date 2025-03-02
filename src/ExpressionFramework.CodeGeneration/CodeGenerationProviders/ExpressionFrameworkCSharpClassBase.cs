@@ -116,16 +116,20 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
         switch (typeBase.Interfaces.FirstOrDefault())
         {
             case Constants.TypeNames.Aggregator:
-                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Aggregator})")));
-                break;
+                yield break;
             case Constants.TypeNames.Expression:
-                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Expression})")));
+                var typedExpression = typeBase.Interfaces.FirstOrDefault(x => x.WithoutGenerics() == Constants.TypeNames.TypedExpression);
+                var genericTypeArgumentsString = typedExpression.GetGenericArguments(addBrackets: false);
+                if (!string.IsNullOrEmpty(genericTypeArgumentsString) && genericTypeArgumentsString != "T")
+                {
+                    yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({genericTypeArgumentsString})")));
+                }
                 break;
             case Constants.TypeNames.Evaluatable:
-                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Evaluatable})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeof(bool).FullName})")));
                 break;
             case Constants.TypeNames.Operator:
-                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({Constants.TypeNames.Operator})")));
+                yield return new AttributeBuilder().WithName(Constants.TypeNames.FunctionResultType).AddParameters(new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeof(bool).FullName})")));
                 break;
         }
     }
