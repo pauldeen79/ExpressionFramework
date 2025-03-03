@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
+[Description("Returns a constant value")]
 public interface IConstantExpression : IExpression
 {
-    object? Value { get; }
+    [Description("Value to use")] object? Value { get; }
 }
