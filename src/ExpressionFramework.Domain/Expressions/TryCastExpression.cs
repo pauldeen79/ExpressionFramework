@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("This expression returns the value of the source expression cast to the specified type")]
+[ExpressionDescription("This expression returns the value of the source expression cast to the specified type, or the default value when this is not possible")]
 [UsesContext(false)]
 [ReturnValue(ResultStatus.Ok, "Value cast to specified type, when possible", "This result will be returned when the source expression can be cast to the specified type")]
 [ReturnValue(ResultStatus.Invalid, "Empty", "SourceExpression is not of type x")]

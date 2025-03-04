@@ -10,7 +10,7 @@ public partial record MaxExpression
         => EnumerableExpression.GetDescriptor
         (
             typeof(MaxExpression),
-            "Gets the greatest value from the (enumerable) expression, optionally using a selector expression",
+            "Gets the maximum value from the (enumerable) expression, optionally using a selector expression",
             "Smallest value",
             "This will be returned in case no error occurs",
             "Expression cannot be empty, Expression must be of type IEnumerable",

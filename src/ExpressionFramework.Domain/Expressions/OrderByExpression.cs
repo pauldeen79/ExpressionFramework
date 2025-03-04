@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Sorts items from an enumerable context value using sort expressions")]
+[ExpressionDescription("Sorts items from an enumerable expression using sort expressions")]
 [ContextDescription("The enumerable value to transform elements for")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(SortOrderExpressions), "Sort orders to use")]

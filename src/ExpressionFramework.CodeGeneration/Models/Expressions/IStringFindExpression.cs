@@ -1,11 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
-//Example how to customize the expression name, with a namespace:
-//[ExpressionName("Find", "String")]
-//Example how to customize the expression name, without a namespace:
-//[ExpressionName("StringFind")]
+[Description("Returns the position of the find expression within the (string) expression")]
 public interface IStringFindExpression : IExpression, ITypedExpression<int>
 {
-    [Required][ValidateObject] ITypedExpression<string> Expression { get; }
-    [Required][ValidateObject] ITypedExpression<string> FindExpression { get; }
+    [Required][ValidateObject][Description("String to find text in")] ITypedExpression<string> Expression { get; }
+    [Required][ValidateObject][Description("String to find")] ITypedExpression<string> FindExpression { get; }
 }

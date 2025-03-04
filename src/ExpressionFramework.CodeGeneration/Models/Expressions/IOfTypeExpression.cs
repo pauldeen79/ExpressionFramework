@@ -1,7 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
+[Description("Filters an enumerable expression on type")]
 public interface IOfTypeExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
-    [Required][ValidateObject] ITypedExpression<Type> TypeExpression { get; }
+    [Required][ValidateObject][Description("Enumerable expression to use")] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject][Description("Type to filter on")] ITypedExpression <Type> TypeExpression { get; }
 }

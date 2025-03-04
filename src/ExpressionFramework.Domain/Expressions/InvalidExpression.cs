@@ -3,7 +3,7 @@
 [ExpressionDescription("Returns an invalid result")]
 [ParameterDescription(nameof(ErrorMessageExpression), "Error message to use (may be empty)")]
 [ParameterRequired(nameof(ErrorMessageExpression), true)]
-[ParameterDescription(nameof(ValidationErrorExpressions), "Validation errors to use")]
+[ParameterDescription(nameof(ValidationErrorExpressions), "Optional validation errors to use")]
 [ParameterRequired(nameof(ValidationErrorExpressions), true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "This result will always be returned")]
 public partial record InvalidExpression

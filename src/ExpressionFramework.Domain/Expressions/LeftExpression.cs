@@ -28,8 +28,8 @@ public partial record LeftExpression
     public static ExpressionDescriptor GetExpressionDescriptor()
         => StringExpression.GetStringEdgeDescriptor(
             typeof(LeftExpression),
-            "Gets a number of characters of the start of a string value of the context",
+            "Gets a number of characters of the start of a string value of the specified expression",
             "String to get the first characters for",
             "The first characters of the expression",
-            "This result will be returned when the context is of type string");
+            "This result will be returned when the specified expression is of type string");
 }

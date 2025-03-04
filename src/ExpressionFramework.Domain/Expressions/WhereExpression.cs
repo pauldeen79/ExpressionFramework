@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Filters an enumerable context value using a predicate")]
+[ExpressionDescription("Filters an enumerable expression using a predicate")]
 [ContextDescription("Value to use as context in the expression")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(PredicateExpression), "Predicate to apply to each value. Return value must be a boolean value, so we can filter on it")]

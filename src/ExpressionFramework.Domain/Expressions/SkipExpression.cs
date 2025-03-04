@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Skips a number of items on an enumerable context value")]
+[ExpressionDescription("Skips a number of items on an enumerable expression")]
 [ContextType(typeof(IEnumerable))]
 [ContextDescription("The enumerable value to skip elements from")]
 [ContextRequired(true)]

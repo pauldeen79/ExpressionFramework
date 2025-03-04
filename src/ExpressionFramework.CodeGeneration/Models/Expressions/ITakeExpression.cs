@@ -1,7 +1,8 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
+[Description("Takes a number of items from an enumerable expression")]
 public interface ITakeExpression : IExpression, ITypedExpression<IEnumerable<object?>>
 {
-    [Required][ValidateObject] ITypedExpression<IEnumerable> Expression { get; }
-    [Required][ValidateObject] ITypedExpression<int> CountExpression { get; }
+    [Required][ValidateObject][Description("Enumerable expression to use")] ITypedExpression<IEnumerable> Expression { get; }
+    [Required][ValidateObject][Description("Number of items to take")] ITypedExpression<int> CountExpression { get; }
 }
