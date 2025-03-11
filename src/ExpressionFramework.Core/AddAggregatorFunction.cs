@@ -1,10 +1,11 @@
 ﻿namespace ExpressionFramework.Core;
 
 [FunctionName("AddAggregator")]
-public class AddAggregatorFunction : IFunction
+public class AddAggregatorFunction : IFunction, IAggregator
 {
-    private static readonly AddAggregator _addAggregator = new AddAggregator();
+    public Result<object?> Aggregate(object value1, object value2, IFormatProvider formatProvider)
+        => Add.Evaluate(value1, value2, formatProvider);
 
     public Result<object?> Evaluate(FunctionCallContext context)
-        => Result.Success<object?>(_addAggregator);
+        => Result.Success<object?>(this);
 }
