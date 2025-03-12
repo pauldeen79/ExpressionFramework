@@ -1,6 +1,5 @@
 ﻿namespace ExpressionFramework.Core;
 
-[FunctionName("AddAggregator")]
 public class AddAggregatorFunction : IFunction, IAggregator
 {
     public Result<object?> Aggregate(object value1, object value2, IFormatProvider formatProvider)

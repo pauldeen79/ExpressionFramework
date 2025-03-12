@@ -1,6 +1,5 @@
 ﻿namespace ExpressionFramework.Core;
 
-[FunctionName("Aggregate")]
 [FunctionArgument("Expressions", typeof(IEnumerable), "Expressions to aggregate")]
 [FunctionArgument("Aggregator", typeof(IAggregator), "Aggregator to evaluate")]
 [FunctionArgument("FormatProvider", typeof(IFormatProvider), "Optional format provider (default is invariant)", false)]
