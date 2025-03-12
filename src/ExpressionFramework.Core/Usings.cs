@@ -5,4 +5,7 @@ global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Aggregators;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
+global using ExpressionFramework.Core.Abstractions;
+global using ExpressionFramework.Core.Domains;
+global using ExpressionFramework.Core.Evaluatables;
 global using Microsoft.Extensions.DependencyInjection;

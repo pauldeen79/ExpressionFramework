@@ -25,7 +25,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
         {
             // Arrange
             var sequence = Enumerable.Empty<object>();
-            var aggregator = Fixture.Freeze<IAggregator>();
+            var aggregator = Fixture.Freeze<Abstractions.IAggregator>();
             var functionCall = new FunctionCallBuilder()
                 .WithName("Aggregate")
                 .AddArguments(
@@ -49,7 +49,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
         {
             // Arrange
             var sequence = new object[] { 1, 2, 3 };
-            var aggregator = new AddAggregator();
+            var aggregator = new AddAggregatorFunction();
             var functionCall = new FunctionCallBuilder()
                 .WithName("Aggregate")
                 .AddArguments(
@@ -73,7 +73,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
         {
             // Arrange
             var sequence = new object[] { 1, 2, 3 };
-            var aggregator = Fixture.Freeze<IAggregator>();
+            var aggregator = Fixture.Freeze<Abstractions.IAggregator>();
             aggregator
                 .Aggregate(Arg.Any<object>(), Arg.Any<object>(), Arg.Any<IFormatProvider>())
                 .Returns(Result.Error<object?>("Kaboom"));
