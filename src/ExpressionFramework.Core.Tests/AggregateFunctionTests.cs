@@ -9,9 +9,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
         {
             // Arrange
             var functionCall = new FunctionCallBuilder().WithName("Aggregate");
-            var functionEvaluator = Fixture.Freeze<IFunctionEvaluator>();
-            var expressionEvaluator = Fixture.Freeze<IExpressionEvaluator>();
-            var context = new FunctionCallContext(functionCall, functionEvaluator, expressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
+            var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
             // Act
@@ -35,9 +33,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
                     new ConstantArgumentBuilder().WithValue(aggregator)
                 );
 
-            var functionEvaluator = Fixture.Freeze<IFunctionEvaluator>();
-            var expressionEvaluator = Fixture.Freeze<IExpressionEvaluator>();
-            var context = new FunctionCallContext(functionCall, functionEvaluator, expressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
+            var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
             // Act
@@ -61,9 +57,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
                     new ConstantArgumentBuilder().WithValue(aggregator)
                 );
 
-            var functionEvaluator = Fixture.Freeze<IFunctionEvaluator>();
-            var expressionEvaluator = Fixture.Freeze<IExpressionEvaluator>();
-            var context = new FunctionCallContext(functionCall, functionEvaluator, expressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
+            var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
             // Act
@@ -91,9 +85,7 @@ public class AggregateFunctionTests : TestBase<AggregateFunction>
                     new ConstantArgumentBuilder().WithValue(aggregator)
                 );
 
-            var functionEvaluator = Fixture.Freeze<IFunctionEvaluator>();
-            var expressionEvaluator = Fixture.Freeze<IExpressionEvaluator>();
-            var context = new FunctionCallContext(functionCall, functionEvaluator, expressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
+            var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
             // Act

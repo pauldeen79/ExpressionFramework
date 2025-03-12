@@ -15,6 +15,18 @@ public abstract class TestBase
 public abstract class TestBase<TSut> : TestBase
 {
     protected TSut CreateSut() => Fixture.Create<TSut>();
+
+    protected IFunctionEvaluator FunctionEvaluator { get; } 
+    protected IExpressionEvaluator ExpressionEvaluator { get; }
+
+    protected FunctionCallContext CreateFunctionCallContext(FunctionCall functionCall)
+        => new FunctionCallContext(functionCall, FunctionEvaluator, ExpressionEvaluator, new FunctionEvaluatorSettingsBuilder(), null);
+
+    protected TestBase()
+    {
+        FunctionEvaluator = Fixture.Freeze<IFunctionEvaluator>();
+        ExpressionEvaluator = Fixture.Freeze<IExpressionEvaluator>();
+    }
 }
 
 internal sealed class BuilderOmitter : ISpecimenBuilder
