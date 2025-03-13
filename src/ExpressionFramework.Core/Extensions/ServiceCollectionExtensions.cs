@@ -7,5 +7,6 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, AggregateFunction>()
             .AddSingleton<IFunction, AddAggregatorFunction>()
             .AddSingleton<IFunction, ComposableEvaluatableFunction>()
-            .AddSingleton<IFunction, ComposedEvaluatableFunction>();
+            .AddSingleton<IFunction, ComposedEvaluatableFunction>()
+            .AddSingleton<IFunction, SingleEvaluatableFunction>();
 }
