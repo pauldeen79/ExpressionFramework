@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core.Tests;
+﻿namespace ExpressionFramework.Core.Tests.Functions.Evaluatables;
 
 public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatableFunction>
 {
@@ -32,8 +32,8 @@ public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatable
             composableEvaluatble.Operator.ShouldBeSameAs(@operator);
             composableEvaluatble.StartGroup.ShouldBeFalse();
             composableEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
-            composableEvaluatble.Value1.ShouldBeEquivalentTo(1);
-            composableEvaluatble.Value2.ShouldBeEquivalentTo(2);
+            composableEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
+            composableEvaluatble.RightValue.ShouldBeEquivalentTo(2);
         }
     }
 }

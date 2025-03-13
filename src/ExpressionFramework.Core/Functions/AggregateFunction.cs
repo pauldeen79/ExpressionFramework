@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core;
+﻿namespace ExpressionFramework.Core.Functions;
 
 [FunctionArgument("Expressions", typeof(IEnumerable), "Expressions to aggregate")]
 [FunctionArgument("Aggregator", typeof(Abstractions.IAggregator), "Aggregator to evaluate")]

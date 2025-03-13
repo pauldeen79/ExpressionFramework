@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core;
+﻿namespace ExpressionFramework.Core.Functions.Evaluatables;
 
 [FunctionArgument("LeftExpression", typeof(object))]
 [FunctionArgument("Operator", typeof(IOperator))]

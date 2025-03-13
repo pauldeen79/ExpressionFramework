@@ -2,19 +2,19 @@
 
 public class ComposableEvaluatable : IEvaluatable
 {
-    public object? Value1 { get; }
+    public object? LeftValue { get; }
     public IOperator Operator { get; }
-    public object? Value2 { get; }
+    public object? RightValue { get; }
     public StringComparison StringComparison { get; }
     public Combination? Combination { get; }
     public bool StartGroup { get; }
     public bool EndGroup { get; }
 
-    public ComposableEvaluatable(object? value1, IOperator @operator, object? value2, StringComparison stringComparison, Combination? combination, bool startGroup, bool endGroup)
+    public ComposableEvaluatable(object? leftValue, IOperator @operator, object? rightValue, StringComparison stringComparison, Combination? combination, bool startGroup, bool endGroup)
     {
-        Value1 = value1;
+        LeftValue = leftValue;
         Operator = @operator;
-        Value2 = value2;
+        RightValue = rightValue;
         StringComparison = stringComparison;
         Combination = combination;
         StartGroup = startGroup;
@@ -22,5 +22,5 @@ public class ComposableEvaluatable : IEvaluatable
     }
 
     public Result<bool> Evaluate(object? context)
-        => Operator.Evaluate(Value1, Value2, StringComparison);
+        => Operator.Evaluate(LeftValue, RightValue, StringComparison);
 }

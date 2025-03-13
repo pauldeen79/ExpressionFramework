@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core;
+﻿namespace ExpressionFramework.Core.Functions;
 
 public class AddAggregatorFunction : IFunction, Abstractions.IAggregator
 {

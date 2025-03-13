@@ -1,4 +1,4 @@
-﻿namespace ExpressionFramework.Core.Tests;
+﻿namespace ExpressionFramework.Core.Tests.Functions;
 
 public class AggregateFunctionTests : TestBase<AggregateFunction>
 {

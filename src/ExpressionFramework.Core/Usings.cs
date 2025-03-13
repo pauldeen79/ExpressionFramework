@@ -8,4 +8,6 @@ global using CrossCutting.Utilities.Parsers.Contracts;
 global using ExpressionFramework.Core.Abstractions;
 global using ExpressionFramework.Core.Domains;
 global using ExpressionFramework.Core.Evaluatables;
+global using ExpressionFramework.Core.Functions;
+global using ExpressionFramework.Core.Functions.Evaluatables;
 global using Microsoft.Extensions.DependencyInjection;

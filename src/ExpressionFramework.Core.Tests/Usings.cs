@@ -11,6 +11,8 @@ global using CrossCutting.Utilities.Parsers.Extensions;
 global using ExpressionFramework.Core.Abstractions;
 global using ExpressionFramework.Core.Evaluatables;
 global using ExpressionFramework.Core.Extensions;
+global using ExpressionFramework.Core.Functions;
+global using ExpressionFramework.Core.Functions.Evaluatables;
 global using Microsoft.Extensions.DependencyInjection;
 global using NSubstitute;
 global using Shouldly;
