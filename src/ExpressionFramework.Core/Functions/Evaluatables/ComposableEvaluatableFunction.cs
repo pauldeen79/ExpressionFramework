@@ -7,7 +7,7 @@
 [FunctionArgument("Combination", typeof(Combination), false)]
 [FunctionArgument("StartGroup", typeof(bool), false)]
 [FunctionArgument("EndGroup", typeof(bool), false)]
-public partial class ComposableEvaluatableFunction : ITypedFunction<IEvaluatable>
+public class ComposableEvaluatableFunction : ITypedFunction<IEvaluatable>
 {
     public Result<object?> Evaluate(FunctionCallContext context)
         => EvaluateTyped(context).Transform<object?>(x => x);
