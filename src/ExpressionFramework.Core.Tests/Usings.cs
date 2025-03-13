@@ -2,6 +2,7 @@
 global using AutoFixture;
 global using AutoFixture.AutoNSubstitute;
 global using AutoFixture.Kernel;
+global using Castle.DynamicProxy.Internal;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Builders;
