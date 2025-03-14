@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Core.Tests.Evaluatables;
 
-public class ComposedEvaluatableTests : TestBase
+public class ComposedEvaluatableTests : TestBase<ComposableEvaluatableBuilder>
 {
     [Fact]
     public void Construction_With_Too_Many_EndGroups_Fails()
@@ -53,7 +53,7 @@ public class ComposedEvaluatableTests : TestBase
     }
 
     private ComposableEvaluatableBuilder CreateEvaluatableBuilder()
-        => new ComposableEvaluatableBuilder()
+        => CreateSut()
             .WithInnerEvaluatable(
                 new OperatorEvaluatableBuilder()
                     .WithLeftValue(null)
