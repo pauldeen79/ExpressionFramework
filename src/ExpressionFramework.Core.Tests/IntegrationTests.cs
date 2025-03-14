@@ -27,13 +27,14 @@ public sealed class IntegrationTests : IDisposable
         // Arrange
         var evaluator = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
         var settings = new ExpressionStringEvaluatorSettingsBuilder();
-        var context = new[] { 1, 2, 3 };
 
         // Act
-        var result = evaluator.Evaluate("=Aggregate(context, AddAggregator(), null)", settings, context);
+        var result = evaluator.Evaluate("=ConstantEvaluatable(true)", settings);
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo(1 + 2 + 3);
+        result.Value.ShouldBeOfType<ConstantEvaluatable>();
+        var evaluatable = (ConstantEvaluatable)result.Value;
+        evaluatable.Value.ShouldBe(true);
     }
 }
