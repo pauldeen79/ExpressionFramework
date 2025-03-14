@@ -225,7 +225,7 @@ public class ComposableEvaluatableTests
     }
 
     [Fact]
-    public void Throws_On_Null_Delegate()
+    public void Throws_On_Null_Operator()
     {
         Action a = () => _ = new ComposableEvaluatable(_ => null, @operator: null!, _ => null);
         a.ShouldThrow<ArgumentNullException>().ParamName.ShouldBe("operator");
