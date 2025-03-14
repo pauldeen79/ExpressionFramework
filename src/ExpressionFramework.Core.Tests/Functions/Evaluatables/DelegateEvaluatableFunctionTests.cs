@@ -20,8 +20,8 @@ public class DelegateEvaluatableFunctionTests : TestBase<DelegateEvaluatableFunc
             // Assert
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<DelegateEvaluatable>();
-            var DelegateEvaluatble = (DelegateEvaluatable)result.Value;
-            DelegateEvaluatble.Delegate().ShouldBe(true);
+            var delegateEvaluatable = (DelegateEvaluatable)result.Value;
+            delegateEvaluatable.Delegate().ShouldBe(true);
         }
     }
 }

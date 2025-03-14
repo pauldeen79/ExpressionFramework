@@ -20,8 +20,8 @@ public class ConstantEvaluatableFunctionTests : TestBase<ConstantEvaluatableFunc
             // Assert
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<ConstantEvaluatable>();
-            var ConstantEvaluatble = (ConstantEvaluatable)result.Value;
-            ConstantEvaluatble.Value.ShouldBe(true);
+            var constantEvaluatble = (ConstantEvaluatable)result.Value;
+            constantEvaluatble.Value.ShouldBe(true);
         }
     }
 }
