@@ -148,8 +148,6 @@ namespace ExpressionFramework.Core.Evaluatables
     }
     public partial record OperatorEvaluatable : ExpressionFramework.Core.EvaluatableBase, ExpressionFramework.Core.Abstractions.IEvaluatable
     {
-        [System.ComponentModel.DataAnnotations.RequiredAttribute]
-        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public object? LeftValue
         {
             get;
@@ -162,8 +160,6 @@ namespace ExpressionFramework.Core.Evaluatables
             get;
         }
 
-        [System.ComponentModel.DataAnnotations.RequiredAttribute]
-        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public object? RightValue
         {
             get;

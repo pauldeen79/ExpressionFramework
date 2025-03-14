@@ -316,8 +316,6 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
 
         private System.StringComparison _stringComparison;
 
-        [System.ComponentModel.DataAnnotations.RequiredAttribute]
-        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public object? LeftValue
         {
             get
@@ -348,8 +346,6 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
             }
         }
 
-        [System.ComponentModel.DataAnnotations.RequiredAttribute]
-        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
         public object? RightValue
         {
             get

@@ -2,8 +2,8 @@
 
 public interface IOperatorEvaluatable : IEvaluatableBase
 {
-    [Required][ValidateObject] object? LeftValue { get; }
+    object? LeftValue { get; }
     [Required][ValidateObject] Abstractions.IOperator Operator { get; }
-    [Required][ValidateObject] object? RightValue { get; }
+    object? RightValue { get; }
     StringComparison StringComparison { get; }
 }
