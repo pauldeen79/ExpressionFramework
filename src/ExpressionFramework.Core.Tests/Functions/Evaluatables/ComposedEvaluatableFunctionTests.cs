@@ -25,7 +25,7 @@ public class ComposedEvaluatableFunctionTests : TestBase<ComposedEvaluatableFunc
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<ComposedEvaluatable>();
             var composedEvaluatble = (ComposedEvaluatable)result.Value;
-            composedEvaluatble.Conditions.Count().ShouldBe(1);
+            composedEvaluatble.Conditions.Count.ShouldBe(1);
             var composableEvaluatable = composedEvaluatble.Conditions.First();
             composableEvaluatable.Combination.ShouldBeNull();
             composableEvaluatable.EndGroup.ShouldBeFalse();

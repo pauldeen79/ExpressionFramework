@@ -2,7 +2,6 @@
 global using System.ComponentModel.DataAnnotations;
 global using System.Globalization;
 global using System.Text;
-global using CrossCutting.Common;
 global using CrossCutting.Common.Extensions;
 global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Aggregators;

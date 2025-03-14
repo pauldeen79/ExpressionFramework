@@ -1,14 +1,7 @@
 ﻿namespace ExpressionFramework.Core.Evaluatables;
 
-public class DelegateEvaluatable : IEvaluatable
+public partial record DelegateEvaluatable : IEvaluatable
 {
-    public Func<bool> Delegate { get; }
-
-    public DelegateEvaluatable(Func<bool> @delegate)
-    {
-        Delegate = @delegate;
-    }
-
-    public Result<bool> Evaluate(object? context)
+    public override Result<bool> Evaluate(object? context)
         => Result.Success(Delegate());
 }

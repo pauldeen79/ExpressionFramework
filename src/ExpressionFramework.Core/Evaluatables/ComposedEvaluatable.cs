@@ -1,17 +1,8 @@
 ﻿namespace ExpressionFramework.Core.Evaluatables;
 
-public class ComposedEvaluatable : IEvaluatable
+public partial record ComposedEvaluatable : IEvaluatable, IValidatableObject
 {
-    public ComposedEvaluatable(IEnumerable<ComposableEvaluatable> conditions)
-    {
-        ArgumentGuard.IsNotNull(conditions, nameof(conditions));
-
-        Conditions = conditions;
-    }
-
-    public IEnumerable<ComposableEvaluatable> Conditions { get; }
-
-    public Result<bool> Evaluate(object? context)
+    public override Result<bool> Evaluate(object? context)
     {
         if (CanEvaluateSimpleConditions(Conditions))
         {

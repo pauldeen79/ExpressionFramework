@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Core.Abstractions;
 
-public interface IEvaluatable
+public partial interface IEvaluatable
 {
     Result<bool> Evaluate(object? context);
 }
