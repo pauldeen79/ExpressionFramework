@@ -1,6 +1,7 @@
 ﻿namespace ExpressionFramework.CodeGeneration.Models.Expressions;
 
+[Description("Returns a result from a delegate")]
 public interface IDelegateResultExpression : IExpression
 {
-    [Required] Func<object?, Result<object?>> Result { get; }
+    [Required][Description("Delegate to use")] Func<object?, Result<object?>> Result { get; }
 }

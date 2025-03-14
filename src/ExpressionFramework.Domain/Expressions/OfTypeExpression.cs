@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Filters an enumerable context value on type")]
+[ExpressionDescription("Filters an enumerable expression on type")]
 [ContextDescription("Value to use as context in the expression")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(TypeExpression), "Type to filter on")]

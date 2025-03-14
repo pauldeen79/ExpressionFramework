@@ -175,7 +175,7 @@ public class ExpressionParserBaseTests
         // Arrange
         var context = new FunctionCallContext(new FunctionCallBuilder()
             .WithName("Correct<System.String>")
-            .AddArguments(new ExpressionArgumentBuilder().WithValue("1"))
+            .AddArguments(new ExpressionArgumentBuilder().WithExpression("1"))
             .Build(), _functionEvaluatorMock, _expressionEvaluatorMock, new FunctionEvaluatorSettingsBuilder(), null);
 
         // Act

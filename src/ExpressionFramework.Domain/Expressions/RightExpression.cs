@@ -33,8 +33,8 @@ public partial record RightExpression
     public static ExpressionDescriptor GetExpressionDescriptor()
         => StringExpression.GetStringEdgeDescriptor(
             typeof(RightExpression),
-            "Gets a number of characters of the end of a string value of the context",
+            "Gets a number of characters of the end of a string value of the specified expression",
             "String to get the last characters for",
             "The last characters of the expression",
-            "This result will be returned when the context is of type string");
+            "This result will be returned when the specified expression is of type string");
 }

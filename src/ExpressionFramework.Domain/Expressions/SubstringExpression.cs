@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Gets a number of characters from the specified position of a string value of the context")]
+[ExpressionDescription("Gets a number of characters from the specified position of a string value of the specified expression")]
 [UsesContext(true)]
 [ContextDescription("Context to use on expression evaluation")]
 [ParameterDescription(nameof(IndexExpression), "Zero-based start position of the characters to return")]
@@ -9,11 +9,11 @@
 [ParameterDescription(nameof(LengthExpression), "Number of characters to use")]
 [ParameterRequired(nameof(LengthExpression), true)]
 [ParameterType(nameof(LengthExpression), typeof(int))]
-[ParameterDescription(nameof(Expression), "String to get characters for")]
+[ParameterDescription(nameof(Expression), "String to get characters from")]
 [ParameterRequired(nameof(Expression), true)]
 [ParameterType(nameof(Expression), typeof(string))]
-[ReturnValue(ResultStatus.Ok, typeof(string), "A set of characters of the context", "This result will be returned when the context is of type string")]
-[ReturnValue(ResultStatus.Invalid, "Empty", "Context must be of type string, IndexExpression did not return an integer, LengthExpression did not return an integer, Index and length must refer to a location within the string")]
+[ReturnValue(ResultStatus.Ok, typeof(string), "A set of characters of the context", "This result will be returned when the specified expression is of type string")]
+[ReturnValue(ResultStatus.Invalid, "Empty", "Expression must be of type string, IndexExpression did not return an integer, LengthExpression did not return an integer, Index and length must refer to a location within the string")]
 public partial record SubstringExpression
 {
     public override Result<object?> Evaluate(object? context)

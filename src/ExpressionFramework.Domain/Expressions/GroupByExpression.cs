@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Groups items from an enumerable context value using a key selector expression")]
+[ExpressionDescription("Groups items from an enumerable expression using a key selector expression")]
 [ContextDescription("Value to use as context in the expression")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(KeySelectorExpression), "Expression to use on each item to select the key")]

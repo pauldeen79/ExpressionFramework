@@ -10,7 +10,7 @@ public partial record MinExpression
         => EnumerableExpression.GetDescriptor
         (
             typeof(MinExpression),
-            "Gets the smallest value from the (enumerable) expression, optionally using a selector expression",
+            "Gets the minimum value from the (enumerable) expression, optionally using a selector expression",
             "Smallest value",
             "This will be returned in case no error occurs",
             "Expression cannot be empty, Expression must be of type IEnumerable",

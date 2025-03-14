@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Takes a number of items from an enumerable context value")]
+[ExpressionDescription("Takes a number of items from an enumerable expression")]
 [ContextDescription("The enumerable value to take elements from")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(CountExpression), "Number of items to take")]

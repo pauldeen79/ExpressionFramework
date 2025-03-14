@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Returns the typed value of a field (property) of the context")]
+[ExpressionDescription("Returns the typed value of a field (property) of the specified expression")]
 [ParameterDescription(nameof(FieldNameExpression), "Name of the property (can also be nested, like Address.Street)")]
 [ParameterRequired(nameof(FieldNameExpression), true)]
 [ReturnValue(ResultStatus.Invalid, "Empty", "Expression cannot be empty, Fieldname [x] is not found on type [y], Field is not of type [z]")]

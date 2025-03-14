@@ -7,7 +7,7 @@
 [ContextRequired(false)]
 [ParameterDescription(nameof(Cases), "Set of cases (scenarios)")]
 [ParameterRequired(nameof(Cases), true)]
-[ParameterDescription(nameof(DefaultExpression), "Optional expression to use when none of the cases evaluates to false. When left empty, and empty expression will be used.")]
+[ParameterDescription(nameof(DefaultExpression), "Optional expression to use when none of the cases evaluates to false. When left empty, an empty expression will be used.")]
 [ParameterRequired(nameof(DefaultExpression), false)]
 [ReturnValue(ResultStatus.Ok, typeof(object), "Value of the ResultExpression of the first valid case, value of the DefaultExpression or empty value", "Value of the ResultExpression of the first valid case when condition evaluates to true, value of the DefaultExpression (when available and all cases evaluate to false), or empty value (when DefaultExpression is not provided and condition evaluates to false")]
 [ReturnValue(ResultStatus.Error, "Empty", "Any unsuccessful result from either the case evaluations, result expression evaluation or default expression evaluation")]

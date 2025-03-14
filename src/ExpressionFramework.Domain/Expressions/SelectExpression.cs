@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Domain.Expressions;
 
-[ExpressionDescription("Transforms items from an enumerable context value using an expression")]
+[ExpressionDescription("Transforms items from an enumerable expression using an expression")]
 [ContextDescription("The enumerable value to transform elements for")]
 [ContextType(typeof(IEnumerable))]
 [ParameterDescription(nameof(SelectorExpression), "Expression to use on each item")]

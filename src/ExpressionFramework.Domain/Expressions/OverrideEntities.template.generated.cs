@@ -10,10 +10,12 @@
 #nullable enable
 namespace ExpressionFramework.Domain.Expressions
 {
+    [System.ComponentModel.DescriptionAttribute(@"Aggregates context with other expressions")]
     public partial record AggregateExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Aggregator to evaluate")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression> Expressions
         {
             get;
@@ -21,12 +23,14 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expressions to use in aggregator")]
         public ExpressionFramework.Domain.Aggregator Aggregator
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional format provider to use on parsing numeric or date values")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.IFormatProvider>? FormatProviderExpression
         {
             get;
@@ -50,10 +54,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.AggregateExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns an indicator whether all items from the (enumerable) expression conform to the predicate")]
     public partial record AllExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -61,6 +67,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> PredicateExpression
         {
             get;
@@ -88,10 +95,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the AND-combination value of two boolean expressions")]
     public partial record AndExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"First boolean expression to perform AND combination on")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> FirstExpression
         {
             get;
@@ -99,6 +108,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Second boolean expression to perform AND combination on")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> SecondExpression
         {
             get;
@@ -126,16 +136,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns an indicator whether any item from the (enumerable) expression conform to the optional predicate")]
     public partial record AnyExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
@@ -163,10 +176,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"This expression returns the value of the source expression cast to the specified type")]
     public partial record CastExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to cast")]
         public ExpressionFramework.Domain.Expression SourceExpression
         {
             get;
@@ -188,10 +203,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.CastExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Chains the result of an expression onto the next one, and so on")]
     public partial record ChainedExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expressions to use on chaining. The context is chained to the first expression.")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression> Expressions
         {
             get;
@@ -213,10 +230,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ChainedExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Executes an aggregator on two expressions")]
     public partial record CompoundExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use as first expression in aggregator")]
         public ExpressionFramework.Domain.Expression FirstExpression
         {
             get;
@@ -224,6 +243,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use as second expression in aggregator")]
         public ExpressionFramework.Domain.Expression SecondExpression
         {
             get;
@@ -231,12 +251,14 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Aggregator to evaluate")]
         public ExpressionFramework.Domain.Aggregator Aggregator
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional format provider to use on parsing numeric or date values")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.IFormatProvider>? FormatProviderExpression
         {
             get;
@@ -261,8 +283,10 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.CompoundExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a constant value")]
     public partial record ConstantExpression : ExpressionFramework.Domain.Expression
     {
+        [System.ComponentModel.DescriptionAttribute(@"Value to use")]
         public object? Value
         {
             get;
@@ -284,10 +308,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ConstantExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a constant result")]
     public partial record ConstantResultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Result to use")]
         public CrossCutting.Common.Results.Result Value
         {
             get;
@@ -309,6 +335,7 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ConstantResultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the value of the context")]
     public partial record ContextExpression : ExpressionFramework.Domain.Expression
     {
         public ContextExpression() : base()
@@ -326,16 +353,19 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ContextExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the number of items from the (enumerable) expression, optionally using a predicate")]
     public partial record CountExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
@@ -363,10 +393,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the day from the specified DateTime expression")]
     public partial record DayExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"DateTime source expression")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime> Expression
         {
             get;
@@ -393,6 +425,7 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"This expression always returns the default value for the specified type")]
     public partial record DefaultExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         public DefaultExpression() : base()
@@ -410,9 +443,11 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.DefaultExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a value from a delegate")]
     public partial record DelegateExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Delegate to use")]
         public System.Func<object?,object?> Value
         {
             get;
@@ -434,9 +469,11 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.DelegateExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a result from a delegate")]
     public partial record DelegateResultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Delegate to use")]
         public System.Func<object?,CrossCutting.Common.Results.Result<object?>> Result
         {
             get;
@@ -458,10 +495,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.DelegateResultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the value at the specified index from the (enumerable) expression")]
     public partial record ElementAtExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -469,6 +508,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Index of the item to get")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> IndexExpression
         {
             get;
@@ -491,10 +531,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ElementAtExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the value at the specified index from the (enumerable) expression, or default value when not found")]
     public partial record ElementAtOrDefaultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -502,12 +544,14 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Index of the item to get")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> IndexExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use in case the index could not be found")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -531,6 +575,7 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ElementAtOrDefaultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"This expression always returns an empty value (null)")]
     public partial record EmptyExpression : ExpressionFramework.Domain.Expression
     {
         public EmptyExpression() : base()
@@ -548,10 +593,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.EmptyExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates two expressions, and compares the two results. It will return true when they are equal, or false otherwise.")]
     public partial record EqualsExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"First expression to perform Equals operation on")]
         public ExpressionFramework.Domain.Expression FirstExpression
         {
             get;
@@ -559,6 +606,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Second expression to perform Equals operation on")]
         public ExpressionFramework.Domain.Expression SecondExpression
         {
             get;
@@ -586,10 +634,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns an error result")]
     public partial record ErrorExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Error message to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> ErrorMessageExpression
         {
             get;
@@ -611,10 +661,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.ErrorExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates the specified condition, and returns the result")]
     public partial record EvaluatableExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Condition to evaluate on the expression")]
         public ExpressionFramework.Domain.Evaluatable Condition
         {
             get;
@@ -622,6 +674,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use")]
         public ExpressionFramework.Domain.Expression Expression
         {
             get;
@@ -649,6 +702,7 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns false")]
     public partial record FalseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         public FalseExpression() : base()
@@ -671,10 +725,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the value of a field (property) of the specified expression")]
     public partial record FieldExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to get the field (property) value for")]
         public ExpressionFramework.Domain.Expression Expression
         {
             get;
@@ -682,6 +738,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Name of the field (property). Can also be nested, like Address.Street")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> FieldNameExpression
         {
             get;
@@ -704,16 +761,19 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.FieldExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the first value from the (enumerable) expression, optionally using a predicate to select an item")]
     public partial record FirstExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
@@ -736,22 +796,26 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.FirstExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the first value from the (enumerable) expression, optionally using a predicate to select an item, or default value when not found")]
     public partial record FirstOrDefaultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use in case no items of the enumerable expression match the predicate")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -775,10 +839,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.FirstOrDefaultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Groups items from an enumerable expression using a key selector expression")]
     public partial record GroupByExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -786,6 +852,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use on each item to select the key")]
         public ExpressionFramework.Domain.Expression KeySelectorExpression
         {
             get;
@@ -808,10 +875,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.GroupByExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates a condition")]
     public partial record IfExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Condition to evaluate")]
         public ExpressionFramework.Domain.Evaluatable Condition
         {
             get;
@@ -819,12 +888,14 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use when the condition evaluates to true")]
         public ExpressionFramework.Domain.Expression ResultExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional expression to use when the condition evaluates to false. When left empty, an empty expression will be used.")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -848,10 +919,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.IfExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns an invalid result")]
     public partial record InvalidExpression : ExpressionFramework.Domain.Expression
     {
-        [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DataAnnotations.RequiredAttribute(AllowEmptyStrings = true)]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Error message to use (may be empty)")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> ErrorMessageExpression
         {
             get;
@@ -859,6 +932,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional validation errors to use")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Contracts.ITypedExpression<CrossCutting.Common.Results.ValidationError>> ValidationErrorExpressions
         {
             get;
@@ -881,16 +955,19 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.InvalidExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the last value from the (enumerable) expression, optionally using a predicate to select an item")]
     public partial record LastExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
@@ -913,22 +990,26 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.LastExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the last value from the (enumerable) expression, optionally using a predicate to select an item, or default value when not found")]
     public partial record LastOrDefaultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use in case no items of the enumerable expression match the predicate")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -952,10 +1033,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.LastOrDefaultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets a number of characters of the start of a string value of the specified expression")]
     public partial record LeftExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the first characters for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -963,6 +1046,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Number of characters to get")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> LengthExpression
         {
             get;
@@ -990,16 +1074,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the maximum value from the (enumerable) expression, optionally using a selector expression")]
     public partial record MaxExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional selection expression")]
         public ExpressionFramework.Domain.Expression? SelectorExpression
         {
             get;
@@ -1022,16 +1109,19 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.MaxExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the minimum value from the (enumerable) expression, optionally using a selector expression")]
     public partial record MinExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional selection expression")]
         public ExpressionFramework.Domain.Expression? SelectorExpression
         {
             get;
@@ -1054,10 +1144,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.MinExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the month from the specified DateTime expression")]
     public partial record MonthExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"DateTime source expression")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime> Expression
         {
             get;
@@ -1084,10 +1176,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates two expressions, and compares the two results. It will return true when they are not equal, or false otherwise.")]
     public partial record NotEqualsExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"First expression to perform Not Equals operation on")]
         public ExpressionFramework.Domain.Expression FirstExpression
         {
             get;
@@ -1095,6 +1189,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Second expression to perform Not Equals operation on")]
         public ExpressionFramework.Domain.Expression SecondExpression
         {
             get;
@@ -1122,10 +1217,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the inverted value of the boolean value")]
     public partial record NotExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Boolean to invert")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> Expression
         {
             get;
@@ -1152,8 +1249,10 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the current date and time")]
     public partial record NowExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>
     {
+        [System.ComponentModel.DescriptionAttribute(@"Optional provider for date time to use instead of the system clock")]
         public CrossCutting.Common.Abstractions.IDateTimeProvider? DateTimeProvider
         {
             get;
@@ -1180,10 +1279,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Filters an enumerable expression on type")]
     public partial record OfTypeExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -1191,6 +1292,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Type to filter on")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Type> TypeExpression
         {
             get;
@@ -1218,10 +1320,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates an operator")]
     public partial record OperatorExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Left expression to use on operator")]
         public ExpressionFramework.Domain.Expression LeftExpression
         {
             get;
@@ -1229,6 +1333,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Right expression to use on operator")]
         public ExpressionFramework.Domain.Expression RightExpression
         {
             get;
@@ -1236,6 +1341,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Operator to evaluate")]
         public ExpressionFramework.Domain.Operator Operator
         {
             get;
@@ -1264,10 +1370,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Sorts items from an enumerable expression using sort expressions")]
     public partial record OrderByExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -1302,10 +1410,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the OR-combination value of two boolean expressions")]
     public partial record OrExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"First boolean expression to perform OR combination on")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> FirstExpression
         {
             get;
@@ -1313,6 +1423,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Second boolean expression to perform OR combination on")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> SecondExpression
         {
             get;
@@ -1340,10 +1451,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets a number of characters of the end of a string value of the specified expression")]
     public partial record RightExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the last characters for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -1351,6 +1464,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Number of characters to get")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> LengthExpression
         {
             get;
@@ -1378,10 +1492,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Transforms items from an enumerable expression using an expression")]
     public partial record SelectExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -1389,6 +1505,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Selector expression to use on each item")]
         public ExpressionFramework.Domain.Expression SelectorExpression
         {
             get;
@@ -1416,10 +1533,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns all supplied expressions into a sequence (enumerable)")]
     public partial record SequenceExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expressions to put in a sequence (enumerable)")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression> Expressions
         {
             get;
@@ -1446,16 +1565,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets a single value from the (enumerable) expression, optionally using a predicate to select an item")]
     public partial record SingleExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
@@ -1478,22 +1600,26 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SingleExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets a single value from the (enumerable) expression, optionally using a predicate to select an item, or default value when not found")]
     public partial record SingleOrDefaultExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool>? PredicateExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to use in case no items of the enumerable expression match the predicate")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -1517,10 +1643,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SingleOrDefaultExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Skips a number of items on an enumerable expression")]
     public partial record SkipExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -1528,6 +1656,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Number of items to skip")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> CountExpression
         {
             get;
@@ -1555,10 +1684,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Concatenates strings")]
     public partial record StringConcatenateExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Strings to concatenate")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Contracts.ITypedExpression<string>> Expressions
         {
             get;
@@ -1585,10 +1716,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the position of the find expression within the (string) expression")]
     public partial record StringFindExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to find text in")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -1596,6 +1729,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to find")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> FindExpression
         {
             get;
@@ -1623,10 +1757,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the length of the (string) expression")]
     public partial record StringLengthExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the length for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -1653,10 +1789,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the position of the find expression within the (string) expression")]
     public partial record StringReplaceExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to find text in")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -1664,6 +1802,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to find")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> FindExpression
         {
             get;
@@ -1671,6 +1810,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to replace the found text with")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> ReplaceExpression
         {
             get;
@@ -1699,10 +1839,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets a number of characters from the specified position of a string value of the specified expression")]
     public partial record SubstringExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get characters from")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
@@ -1710,12 +1852,14 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Zero-based start position of the characters to return")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> IndexExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Number of characters to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int>? LengthExpression
         {
             get;
@@ -1744,16 +1888,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the sum from the (enumerable) expression, optionally using a selector expression")]
     public partial record SumExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional selection expression")]
         public ExpressionFramework.Domain.Expression? SelectorExpression
         {
             get;
@@ -1776,16 +1923,19 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SumExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Evaluates a set of cases, and returns the result of the first valid case")]
     public partial record SwitchExpression : ExpressionFramework.Domain.Expression
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Set of cases (scenarios)")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Case> Cases
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional expression to use when none of the cases evaluates to false. When left empty, an empty expression will be used.")]
         public ExpressionFramework.Domain.Expression? DefaultExpression
         {
             get;
@@ -1808,10 +1958,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.SwitchExpressionBuilder(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Takes a number of items from an enumerable expression")]
     public partial record TakeExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -1819,6 +1971,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Number of items to take")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<int> CountExpression
         {
             get;
@@ -1846,15 +1999,18 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Converts the expression to camel case")]
     public partial record ToCamelCaseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the camel case for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
+        [System.ComponentModel.DescriptionAttribute(@"Optional CultureInfo to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -1882,8 +2038,10 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Gets the current date")]
     public partial record TodayExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime>
     {
+        [System.ComponentModel.DescriptionAttribute(@"Optional provider for date time to use instead of the system clock")]
         public CrossCutting.Common.Abstractions.IDateTimeProvider? DateTimeProvider
         {
             get;
@@ -1910,15 +2068,18 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Converts the expression to lower case")]
     public partial record ToLowerCaseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the lower case for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
+        [System.ComponentModel.DescriptionAttribute(@"Optional CultureInfo to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -1946,15 +2107,18 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Converts the expression to pascal case")]
     public partial record ToPascalCaseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the pascal case for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
+        [System.ComponentModel.DescriptionAttribute(@"Optional CultureInfo to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -1982,15 +2146,18 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Converts the expression to upper case")]
     public partial record ToUpperCaseExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the upper case for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
+        [System.ComponentModel.DescriptionAttribute(@"Optional CultureInfo to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Globalization.CultureInfo>? Culture
         {
             get;
@@ -2018,16 +2185,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Trims the end characters of the expression")]
     public partial record TrimEndExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the trimmed value for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional trim characters, or space when empty")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<char[]>? TrimCharsExpression
         {
             get;
@@ -2055,16 +2225,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Trims the start and end characters of the expression")]
     public partial record TrimExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the trimmed value for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional trim characters, or space when empty")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<char[]>? TrimCharsExpression
         {
             get;
@@ -2092,16 +2265,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Trims the start characters of the expression")]
     public partial record TrimStartExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<string>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"String to get the trimmed value for")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> Expression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Optional trim characters, or space when empty")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<char[]>? TrimCharsExpression
         {
             get;
@@ -2129,6 +2305,7 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns true")]
     public partial record TrueExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<bool>
     {
         public TrueExpression() : base()
@@ -2151,16 +2328,19 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"This expression returns the value of the source expression cast to the specified type, or the default value when this is not possible")]
     public partial record TryCastExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to cast")]
         public ExpressionFramework.Domain.Expression SourceExpression
         {
             get;
         }
 
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Value to use, in case the expression could not be cast")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<T>? DefaultExpression
         {
             get;
@@ -2183,10 +2363,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TryCastExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Chains the result of an expression onto the next one, and so on")]
     public partial record TypedChainedExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expressions to use on chaining. The context is chained to the first expression.")]
         public System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Domain.Expression> Expressions
         {
             get;
@@ -2208,8 +2390,10 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedChainedExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a typed constant value")]
     public partial record TypedConstantExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
+        [System.ComponentModel.DescriptionAttribute(@"Value to use")]
         public T Value
         {
             get;
@@ -2231,9 +2415,11 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a typed result constant value")]
     public partial record TypedConstantResultExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Value to use")]
         public CrossCutting.Common.Results.Result<T> Value
         {
             get;
@@ -2255,6 +2441,7 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedConstantResultExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the typed value of the context")]
     public partial record TypedContextExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         public TypedContextExpression() : base()
@@ -2272,9 +2459,11 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedContextExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a value from a typed delegate")]
     public partial record TypedDelegateExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Delegate to use")]
         public System.Func<object?,T> Value
         {
             get;
@@ -2296,9 +2485,11 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns a typed result value from a typed delegate")]
     public partial record TypedDelegateResultExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Delegate to use")]
         public System.Func<object?,CrossCutting.Common.Results.Result<T>> Value
         {
             get;
@@ -2320,10 +2511,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedDelegateResultExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the typed value of a field (property) of the specified expression")]
     public partial record TypedFieldExpression<T> : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<T>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Expression to get the field (property) value for")]
         public ExpressionFramework.Domain.Expression Expression
         {
             get;
@@ -2331,6 +2524,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Name of the field (property). Can also be nested, like Address.Street")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<string> FieldNameExpression
         {
             get;
@@ -2353,10 +2547,12 @@ namespace ExpressionFramework.Domain.Expressions
             return new ExpressionFramework.Domain.Builders.Expressions.TypedFieldExpressionBuilder<T>(this);
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Filters an enumerable expression using a predicate")]
     public partial record WhereExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.Generic.IEnumerable<object?>>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Enumerable expression to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.Collections.IEnumerable> Expression
         {
             get;
@@ -2364,6 +2560,7 @@ namespace ExpressionFramework.Domain.Expressions
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"Predicate to use")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<bool> PredicateExpression
         {
             get;
@@ -2391,10 +2588,12 @@ namespace ExpressionFramework.Domain.Expressions
             return this;
         }
     }
+    [System.ComponentModel.DescriptionAttribute(@"Returns the year from the specified DateTime expression")]
     public partial record YearExpression : ExpressionFramework.Domain.Expression, ExpressionFramework.Domain.Contracts.ITypedExpression<int>
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        [System.ComponentModel.DescriptionAttribute(@"DateTime source expression")]
         public ExpressionFramework.Domain.Contracts.ITypedExpression<System.DateTime> Expression
         {
             get;

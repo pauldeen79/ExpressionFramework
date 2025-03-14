@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>13.0</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AnalysisLevel>latest-All</AnalysisLevel>
+    <PackageId>pauldeen79.ExpressionFramework.Core</PackageId>
+    <RepositoryUrl>https://github.com/pauldeen79/ExpressionFramework</RepositoryUrl>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.19.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.19.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.19.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="9.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\Readme.md" Pack="true" PackagePath="\" />
+    <None Include="..\..\LICENSE" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
