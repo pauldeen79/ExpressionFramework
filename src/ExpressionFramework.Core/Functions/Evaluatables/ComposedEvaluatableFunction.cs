@@ -10,5 +10,7 @@ public class ComposedEvaluatableFunction : ITypedFunction<IEvaluatable>
         => new ResultDictionaryBuilder()
             .Add("Conditions", () => context.GetArgumentValueResult<IEnumerable<ComposableEvaluatable>>(0, "Conditions"))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new ComposedEvaluatable(results.GetValue<IEnumerable<ComposableEvaluatable>>("Conditions"))));
+            .OnSuccess(results => Result.Success<IEvaluatable>(new ComposedEvaluatableBuilder()
+                .AddConditions(results.GetValue<IEnumerable<ComposableEvaluatable>>("Conditions").Select(x => x.ToTypedBuilder()))
+                .Build()));
 }

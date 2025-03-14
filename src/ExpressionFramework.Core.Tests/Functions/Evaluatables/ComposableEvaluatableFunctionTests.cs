@@ -8,7 +8,7 @@ public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatable
         public void Returns_ComposableEvaluatable_On_Valid_Arguments()
         {
             // Arrange
-            var @operator = Fixture.Freeze<IOperator>();
+            var @operator = new EqualsOperatorBuilder().Build();
             var functionCall = new FunctionCallBuilder()
                 .WithName("ComposableEvaluatable")
                 .AddArguments
@@ -33,7 +33,7 @@ public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatable
 
             composableEvaluatable.InnerEvaluatable.ShouldBeOfType<OperatorEvaluatable>();
             var operatorEvaluatable = (OperatorEvaluatable)composableEvaluatable.InnerEvaluatable;
-            operatorEvaluatable.Operator.ShouldBeSameAs(@operator);
+            operatorEvaluatable.Operator.ShouldBeEquivalentTo(@operator);
             operatorEvaluatable.StringComparison.ShouldBe(StringComparison.InvariantCulture);
             operatorEvaluatable.LeftValue.ShouldBeEquivalentTo(1);
             operatorEvaluatable.RightValue.ShouldBeEquivalentTo(2);

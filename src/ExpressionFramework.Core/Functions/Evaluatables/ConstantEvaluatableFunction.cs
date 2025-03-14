@@ -10,5 +10,5 @@ public class ConstantEvaluatableFunction : ITypedFunction<IEvaluatable>
         => new ResultDictionaryBuilder()
             .Add("Value", () => context.GetArgumentBooleanValueResult(0, "Value"))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new ConstantEvaluatable(results.GetValue<bool>("Value"))));
+            .OnSuccess(results => Result.Success<IEvaluatable>(new ConstantEvaluatableBuilder().WithValue(results.GetValue<bool>("Value")).Build()));
 }

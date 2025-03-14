@@ -8,7 +8,7 @@ public class OperatorEvaluatableFunctionTests : TestBase<OperatorEvaluatableFunc
         public void Returns_OperatorEvaluatable_On_Valid_Arguments()
         {
             // Arrange
-            var @operator = Fixture.Freeze<IOperator>();
+            var @operator = new EqualsOperatorBuilder().Build();
             var functionCall = new FunctionCallBuilder()
                 .WithName("OperatorEvaluatable")
                 .AddArguments
@@ -27,7 +27,7 @@ public class OperatorEvaluatableFunctionTests : TestBase<OperatorEvaluatableFunc
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<OperatorEvaluatable>();
             var operatorEvaluatble = (OperatorEvaluatable)result.Value;
-            operatorEvaluatble.Operator.ShouldBeSameAs(@operator);
+            operatorEvaluatble.Operator.ShouldBeEquivalentTo(@operator);
             operatorEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
             operatorEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
             operatorEvaluatble.RightValue.ShouldBeEquivalentTo(2);

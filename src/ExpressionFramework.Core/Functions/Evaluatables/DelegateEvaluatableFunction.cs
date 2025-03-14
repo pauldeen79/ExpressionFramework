@@ -10,5 +10,5 @@ public class DelegateEvaluatableFunction : ITypedFunction<IEvaluatable>
         => new ResultDictionaryBuilder()
             .Add("Delegate", () => context.GetArgumentValueResult<Func<bool>>(0, "Delegate"))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new DelegateEvaluatable(results.GetValue<Func<bool>>("Delegate"))));
+            .OnSuccess(results => Result.Success<IEvaluatable>(new DelegateEvaluatableBuilder().WithDelegate(results.GetValue<Func<bool>>("Delegate")).Build()));
 }

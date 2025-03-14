@@ -22,14 +22,15 @@ public class ComposableEvaluatableFunction : ITypedFunction<IEvaluatable>
             .Add("StartGroup", () => context.GetArgumentBooleanValueResult(5, "StartGroup", false))
             .Add("EndGroup", () => context.GetArgumentBooleanValueResult(6, "EndGroup", false))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new ComposableEvaluatable(
-                    new OperatorEvaluatable(
-                        results.GetValue("LeftExpression"),
-                        results.GetValue<IOperator>("Operator"),
-                        results.GetValue("RightExpression"),
-                        results.GetValue<StringComparison>("StringComparison")),
-                    results.GetValue<Combination?>("Combination"),
-                    results.GetValue<bool>("StartGroup"),
-                    results.GetValue<bool>("EndGroup")))
-            );
+            .OnSuccess(results => Result.Success<IEvaluatable>(new ComposableEvaluatableBuilder()
+                .WithInnerEvaluatable(
+                    new OperatorEvaluatableBuilder()
+                        .WithLeftValue(results.GetValue("LeftExpression"))
+                        .WithOperator(results.GetValue<IOperator>("Operator").ToBuilder())
+                        .WithRightValue(results.GetValue("RightExpression"))
+                        .WithStringComparison(results.GetValue<StringComparison>("StringComparison")))
+                .WithCombination(results.GetValue<Combination?>("Combination"))
+                .WithStartGroup(results.GetValue<bool>("StartGroup"))
+                .WithEndGroup(results.GetValue<bool>("EndGroup"))
+                .Build()));
 }

@@ -16,10 +16,11 @@ public class OperatorEvaluatableFunction : ITypedFunction<IEvaluatable>
             .Add("RightExpression", () => context.GetArgumentValueResult(2, "RightExpression"))
             .Add("StringComparison", () => context.GetArgumentValueResult(3, "StringComparison", StringComparison.InvariantCulture))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new OperatorEvaluatable(
-                    results.GetValue("LeftExpression"),
-                    results.GetValue<IOperator>("Operator"),
-                    results.GetValue("RightExpression"),
-                    results.GetValue<StringComparison>("StringComparison")))
+            .OnSuccess(results => Result.Success<IEvaluatable>(new OperatorEvaluatableBuilder()
+                    .WithLeftValue(results.GetValue("LeftExpression"))
+                    .WithOperator(results.GetValue<IOperator>("Operator").ToBuilder())
+                    .WithRightValue(results.GetValue("RightExpression"))
+                    .WithStringComparison(results.GetValue<StringComparison>("StringComparison"))
+                    .Build())
             );
 }
