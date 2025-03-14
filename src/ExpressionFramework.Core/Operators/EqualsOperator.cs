@@ -1,12 +1,7 @@
-﻿namespace ExpressionFramework.Core.Operators
+﻿namespace ExpressionFramework.Core.Operators;
+
+public partial record EqualsOperator
 {
-#nullable enable
-    public partial record EqualsOperator
-    {
-        public override CrossCutting.Common.Results.Result<bool> Evaluate(object? leftValue, object? rightValue, System.StringComparison stringComparison)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
+        => Equal.Evaluate(leftValue, rightValue, StringComparison.CurrentCultureIgnoreCase);
 }

@@ -1,15 +1,12 @@
-﻿global using System.Collections;
-global using System.ComponentModel.DataAnnotations;
-global using System.Globalization;
+﻿global using System.ComponentModel.DataAnnotations;
 global using System.Text;
 global using CrossCutting.Common.Extensions;
 global using CrossCutting.Common.Results;
-global using CrossCutting.Utilities.Aggregators;
+global using CrossCutting.Utilities.Operators;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using ExpressionFramework.Core.Abstractions;
 global using ExpressionFramework.Core.Domains;
 global using ExpressionFramework.Core.Evaluatables;
-global using ExpressionFramework.Core.Functions;
 global using ExpressionFramework.Core.Functions.Evaluatables;
 global using Microsoft.Extensions.DependencyInjection;
