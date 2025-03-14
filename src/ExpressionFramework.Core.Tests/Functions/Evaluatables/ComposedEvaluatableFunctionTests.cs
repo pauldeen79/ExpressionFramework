@@ -13,7 +13,7 @@ public class ComposedEvaluatableFunctionTests : TestBase<ComposedEvaluatableFunc
                 .WithName("ComposedEvaluatable")
                 .AddArguments
                 (
-                    new ConstantArgumentBuilder().WithValue(new ComposableEvaluatable[] { new ComposableEvaluatable(1, @operator, 2, StringComparison.InvariantCulture, null, false, false) })
+                    new ConstantArgumentBuilder().WithValue(new ComposableEvaluatable[] { new ComposableEvaluatable(new OperatorEvaluatable(1, @operator, 2, StringComparison.InvariantCulture), null, false, false) })
                 );
             var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
@@ -29,11 +29,14 @@ public class ComposedEvaluatableFunctionTests : TestBase<ComposedEvaluatableFunc
             var composableEvaluatable = composedEvaluatble.Conditions.First();
             composableEvaluatable.Combination.ShouldBeNull();
             composableEvaluatable.EndGroup.ShouldBeFalse();
-            composableEvaluatable.Operator.ShouldBeSameAs(@operator);
             composableEvaluatable.StartGroup.ShouldBeFalse();
-            composableEvaluatable.StringComparison.ShouldBe(StringComparison.InvariantCulture);
-            composableEvaluatable.LeftValue.ShouldBeEquivalentTo(1);
-            composableEvaluatable.RightValue.ShouldBeEquivalentTo(2);
+
+            composableEvaluatable.InnerEvaluatable.ShouldBeOfType<OperatorEvaluatable>();
+            var operatorEvaluatable = (OperatorEvaluatable)composableEvaluatable.InnerEvaluatable;
+            operatorEvaluatable.Operator.ShouldBeSameAs(@operator);
+            operatorEvaluatable.StringComparison.ShouldBe(StringComparison.InvariantCulture);
+            operatorEvaluatable.LeftValue.ShouldBeEquivalentTo(1);
+            operatorEvaluatable.RightValue.ShouldBeEquivalentTo(2);
         }
     }
 }

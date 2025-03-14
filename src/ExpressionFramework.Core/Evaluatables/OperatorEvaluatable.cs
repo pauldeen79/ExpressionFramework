@@ -1,13 +1,13 @@
 ﻿namespace ExpressionFramework.Core.Evaluatables;
 
-public class SingleEvaluatable : IEvaluatable
+public class OperatorEvaluatable : IEvaluatable
 {
     public object? LeftValue { get; }
     public IOperator Operator { get; }
     public object? RightValue { get; }
     public StringComparison StringComparison { get; }
 
-    public SingleEvaluatable(object? leftValue, IOperator @operator, object? rightValue, StringComparison stringComparison)
+    public OperatorEvaluatable(object? leftValue, IOperator @operator, object? rightValue, StringComparison stringComparison)
     {
         LeftValue = leftValue;
         Operator = @operator;

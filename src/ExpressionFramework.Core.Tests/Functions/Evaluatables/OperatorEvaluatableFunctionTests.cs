@@ -1,16 +1,16 @@
 ﻿namespace ExpressionFramework.Core.Tests.Functions.Evaluatables;
 
-public class SingleEvaluatableFunctionTests : TestBase<SingleEvaluatableFunction>
+public class OperatorEvaluatableFunctionTests : TestBase<OperatorEvaluatableFunction>
 {
-    public class Evaluate : SingleEvaluatableFunctionTests
+    public class Evaluate : OperatorEvaluatableFunctionTests
     {
         [Fact]
-        public void Returns_SingleEvaluatable_On_Valid_Arguments()
+        public void Returns_OperatorEvaluatable_On_Valid_Arguments()
         {
             // Arrange
             var @operator = Fixture.Freeze<IOperator>();
             var functionCall = new FunctionCallBuilder()
-                .WithName("SingleEvaluatable")
+                .WithName("OperatorEvaluatable")
                 .AddArguments
                 (
                     new ConstantArgumentBuilder().WithValue(1),
@@ -25,12 +25,12 @@ public class SingleEvaluatableFunctionTests : TestBase<SingleEvaluatableFunction
 
             // Assert
             result.Status.ShouldBe(ResultStatus.Ok);
-            result.Value.ShouldBeOfType<SingleEvaluatable>();
-            var singleEvaluatble = (SingleEvaluatable)result.Value;
-            singleEvaluatble.Operator.ShouldBeSameAs(@operator);
-            singleEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
-            singleEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
-            singleEvaluatble.RightValue.ShouldBeEquivalentTo(2);
+            result.Value.ShouldBeOfType<OperatorEvaluatable>();
+            var operatorEvaluatble = (OperatorEvaluatable)result.Value;
+            operatorEvaluatble.Operator.ShouldBeSameAs(@operator);
+            operatorEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
+            operatorEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
+            operatorEvaluatble.RightValue.ShouldBeEquivalentTo(2);
         }
     }
 }

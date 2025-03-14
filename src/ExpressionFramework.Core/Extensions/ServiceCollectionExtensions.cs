@@ -10,5 +10,5 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, ComposedEvaluatableFunction>()
             .AddSingleton<IFunction, ConstantEvaluatableFunction>()
             .AddSingleton<IFunction, DelegateEvaluatableFunction>()
-            .AddSingleton<IFunction, SingleEvaluatableFunction>();
+            .AddSingleton<IFunction, OperatorEvaluatableFunction>();
 }

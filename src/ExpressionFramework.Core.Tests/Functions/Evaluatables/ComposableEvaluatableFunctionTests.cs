@@ -26,14 +26,17 @@ public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatable
             // Assert
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<ComposableEvaluatable>();
-            var composableEvaluatble = (ComposableEvaluatable)result.Value;
-            composableEvaluatble.Combination.ShouldBeNull();
-            composableEvaluatble.EndGroup.ShouldBeFalse();
-            composableEvaluatble.Operator.ShouldBeSameAs(@operator);
-            composableEvaluatble.StartGroup.ShouldBeFalse();
-            composableEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
-            composableEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
-            composableEvaluatble.RightValue.ShouldBeEquivalentTo(2);
+            var composableEvaluatable = (ComposableEvaluatable)result.Value;
+            composableEvaluatable.Combination.ShouldBeNull();
+            composableEvaluatable.EndGroup.ShouldBeFalse();
+            composableEvaluatable.StartGroup.ShouldBeFalse();
+
+            composableEvaluatable.InnerEvaluatable.ShouldBeOfType<OperatorEvaluatable>();
+            var operatorEvaluatable = (OperatorEvaluatable)composableEvaluatable.InnerEvaluatable;
+            operatorEvaluatable.Operator.ShouldBeSameAs(@operator);
+            operatorEvaluatable.StringComparison.ShouldBe(StringComparison.InvariantCulture);
+            operatorEvaluatable.LeftValue.ShouldBeEquivalentTo(1);
+            operatorEvaluatable.RightValue.ShouldBeEquivalentTo(2);
         }
     }
 }

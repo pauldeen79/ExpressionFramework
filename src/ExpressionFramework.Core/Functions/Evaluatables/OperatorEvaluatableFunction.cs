@@ -4,7 +4,7 @@
 [FunctionArgument("Operator", typeof(IOperator))]
 [FunctionArgument("RightExpression", typeof(object))]
 [FunctionArgument("StringComparison", typeof(StringComparison), false)]
-public class SingleEvaluatableFunction : ITypedFunction<IEvaluatable>
+public class OperatorEvaluatableFunction : ITypedFunction<IEvaluatable>
 {
     public Result<object?> Evaluate(FunctionCallContext context)
         => EvaluateTyped(context).Transform<object?>(x => x);
@@ -16,7 +16,7 @@ public class SingleEvaluatableFunction : ITypedFunction<IEvaluatable>
             .Add("RightExpression", () => context.GetArgumentValueResult(2, "RightExpression"))
             .Add("StringComparison", () => context.GetArgumentValueResult(3, "StringComparison", StringComparison.InvariantCulture))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new SingleEvaluatable(
+            .OnSuccess(results => Result.Success<IEvaluatable>(new OperatorEvaluatable(
                     results.GetValue("LeftExpression"),
                     results.GetValue<IOperator>("Operator"),
                     results.GetValue("RightExpression"),

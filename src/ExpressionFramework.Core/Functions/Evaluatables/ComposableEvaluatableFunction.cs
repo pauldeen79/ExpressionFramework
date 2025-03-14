@@ -23,10 +23,11 @@ public class ComposableEvaluatableFunction : ITypedFunction<IEvaluatable>
             .Add("EndGroup", () => context.GetArgumentBooleanValueResult(6, "EndGroup", false))
             .Build()
             .OnSuccess(results => Result.Success<IEvaluatable>(new ComposableEvaluatable(
-                    results.GetValue("LeftExpression"),
-                    results.GetValue<IOperator>("Operator"),
-                    results.GetValue("RightExpression"),
-                    results.GetValue<StringComparison>("StringComparison"),
+                    new OperatorEvaluatable(
+                        results.GetValue("LeftExpression"),
+                        results.GetValue<IOperator>("Operator"),
+                        results.GetValue("RightExpression"),
+                        results.GetValue<StringComparison>("StringComparison")),
                     results.GetValue<Combination?>("Combination"),
                     results.GetValue<bool>("StartGroup"),
                     results.GetValue<bool>("EndGroup")))
