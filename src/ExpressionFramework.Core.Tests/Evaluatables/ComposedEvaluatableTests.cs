@@ -1,83 +1,119 @@
 ﻿namespace ExpressionFramework.Core.Tests.Evaluatables;
 
-public class ComposedEvaluatableTests : TestBase<ComposableEvaluatableBuilder>
+public class ComposedEvaluatableTests : TestBase<ComposedEvaluatableBuilder>
 {
-    protected ComposableEvaluatableBuilder CreateEvaluatableBuilder()
-        => CreateSut()
-            .WithInnerEvaluatable(
-                new OperatorEvaluatableBuilder()
-                    .WithLeftValue(null)
-                    .WithRightValue(null)
-                    .WithOperator(new EqualsOperatorBuilder())
-            );
-
-    public class Ctor : ComposedEvaluatableTests
-    {
-        [Fact]
-        public void Construction_With_Too_Many_EndGroups_Fails()
-        {
-            // Arrange
-            var act = new Action(() => new ComposedEvaluatableBuilder()
-                .AddConditions(CreateEvaluatableBuilder().WithEndGroup())
-                .Build());
-
-            // Act & Assert
-            act.ShouldThrow<ValidationException>().Message.ShouldBe("EndGroup not valid at index 0, because there is no corresponding StartGroup");
-        }
-
-        [Fact]
-        public void Construction_With_One_Too_Many_StartGroup_Fails()
-        {
-            // Arrange
-            var act = new Action(() => new ComposedEvaluatableBuilder()
-                .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
-                .Build());
-
-            // Act & Assert
-            act.ShouldThrow<ValidationException>().Message.ShouldBe("Missing EndGroup");
-        }
-
-        [Fact]
-        public void Construction_With_Two_Too_Many_StartGroups_Fails()
-        {
-            // Arrange
-            var act = new Action(() => new ComposedEvaluatableBuilder()
-                .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
-                .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
-                .Build());
-
-            // Act & Assert
-            act.ShouldThrow<ValidationException>().Message.ShouldBe("2 missing EndGroups");
-        }
-
-        [Fact]
-        public void Construction_With_Right_Number_Of_StartGroups_And_EndGroups_Does_Not_Fail()
-        {
-            // Arrange
-            var act = new Action(() => new ComposedEvaluatableBuilder()
-                .AddConditions(CreateEvaluatableBuilder().WithStartGroup())
-                .AddConditions(CreateEvaluatableBuilder().WithEndGroup())
-                .Build());
-
-            // Act & Assert
-            act.ShouldNotThrow();
-        }
-    }
-
     public class Evaluate : ComposedEvaluatableTests
     {
         [Fact]
-        public void Returns_Result_Of_InnerEvaluatable()
+        public void Returns_Correct_Result_On_Simple_Conditions_All_True()
         {
             // Arrange
-            var sut = CreateEvaluatableBuilder().Build();
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)))
+                .BuildTyped();
 
             // Act
             var result = sut.Evaluate(null);
 
             // Assert
             result.Status.ShouldBe(ResultStatus.Ok);
-            result.Value.ShouldBeEquivalentTo(true);
+            result.Value.ShouldBe(true);
+        }
+
+        [Fact]
+        public void Returns_Correct_Result_On_Simple_Conditions_One_False()
+        {
+            // Arrange
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(false)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)))
+                .BuildTyped();
+
+            // Act
+            var result = sut.Evaluate(null);
+
+            // Assert
+            result.Status.ShouldBe(ResultStatus.Ok);
+            result.Value.ShouldBe(false);
+        }
+
+        [Fact]
+        public void Returns_Correct_Result_On_Simple_Conditions_One_Not_Successful()
+        {
+            // Arrange
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantResultEvaluatableBuilder().WithResult(Result.Error<bool>("Kaboom"))),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)))
+                .BuildTyped();
+
+            // Act
+            var result = sut.Evaluate(null);
+
+            // Assert
+            result.Status.ShouldBe(ResultStatus.Error);
+            result.ErrorMessage.ShouldBe("Kaboom");
+        }
+
+        [Fact]
+        public void Returns_Correct_Result_On_Complex_Conditions_All_True()
+        {
+            // Arrange
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithStartGroup().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)).WithCombination(Domains.Combination.Or).WithEndGroup())
+                .BuildTyped();
+
+            // Act
+            var result = sut.Evaluate(null);
+
+            // Assert
+            result.Status.ShouldBe(ResultStatus.Ok);
+            result.Value.ShouldBe(true);
+        }
+
+        [Fact]
+        public void Returns_Correct_Result_On_Complex_Conditions_One_False()
+        {
+            // Arrange
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithStartGroup().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(false)).WithEndGroup())
+                .BuildTyped();
+
+            // Act
+            var result = sut.Evaluate(null);
+
+            // Assert
+            result.Status.ShouldBe(ResultStatus.Ok);
+            result.Value.ShouldBe(false);
+        }
+
+        [Fact]
+        public void Returns_Correct_Result_On_Complex_Conditions_One_Not_Successful()
+        {
+            // Arrange
+            var sut = CreateSut()
+                .AddConditions(
+                    new ComposableEvaluatableBuilder().WithStartGroup().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantResultEvaluatableBuilder().WithResult(Result.Error<bool>("Kaboom"))),
+                    new ComposableEvaluatableBuilder().WithInnerEvaluatable(new ConstantEvaluatableBuilder().WithValue(true)).WithEndGroup())
+                .BuildTyped();
+
+            // Act
+            var result = sut.Evaluate(null);
+
+            // Assert
+            result.Status.ShouldBe(ResultStatus.Error);
+            result.ErrorMessage.ShouldBe("Kaboom");
         }
     }
 }

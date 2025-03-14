@@ -250,6 +250,60 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
             return entity.BuildTyped();
         }
     }
+    public partial class ConstantResultEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<ConstantResultEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.ConstantResultEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
+    {
+        private CrossCutting.Common.Results.Result<bool> _result;
+
+        public CrossCutting.Common.Results.Result<bool> Result
+        {
+            get
+            {
+                return _result;
+            }
+            set
+            {
+                bool hasChanged = !System.Collections.Generic.EqualityComparer<CrossCutting.Common.Results.Result<System.Boolean>>.Default.Equals(_result!, value!);
+                _result = value ?? throw new System.ArgumentNullException(nameof(value));
+                if (hasChanged) HandlePropertyChanged(nameof(Result));
+            }
+        }
+
+        public ConstantResultEvaluatableBuilder(ExpressionFramework.Core.Evaluatables.ConstantResultEvaluatable source) : base(source)
+        {
+            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            _result = source.Result;
+        }
+
+        public ConstantResultEvaluatableBuilder() : base()
+        {
+            _result = default(CrossCutting.Common.Results.Result<System.Boolean>)!;
+            SetDefaultValues();
+        }
+
+        public override ExpressionFramework.Core.Evaluatables.ConstantResultEvaluatable BuildTyped()
+        {
+            return new ExpressionFramework.Core.Evaluatables.ConstantResultEvaluatable(Result);
+        }
+
+        ExpressionFramework.Core.Abstractions.IEvaluatable ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder.Build()
+        {
+            return BuildTyped();
+        }
+
+        partial void SetDefaultValues();
+
+        public ExpressionFramework.Core.Builders.Evaluatables.ConstantResultEvaluatableBuilder WithResult(CrossCutting.Common.Results.Result<bool> result)
+        {
+            if (result is null) throw new System.ArgumentNullException(nameof(result));
+            Result = result;
+            return this;
+        }
+
+        public static implicit operator ExpressionFramework.Core.Evaluatables.ConstantResultEvaluatable(ConstantResultEvaluatableBuilder entity)
+        {
+            return entity.BuildTyped();
+        }
+    }
     public partial class DelegateEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<DelegateEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.DelegateEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
     {
         private System.Func<bool> _delegate;

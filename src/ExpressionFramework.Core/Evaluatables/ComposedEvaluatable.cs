@@ -80,7 +80,9 @@ public partial record ComposedEvaluatable : IEvaluatable, IValidatableObject
         {
             if (builder.Length > 0)
             {
-                builder.Append(evaluatable.Combination == Combination.And ? "&" : "|");
+                builder.Append(evaluatable.Combination == Combination.Or
+                    ? "|"
+                    : "&");
             }
 
             var prefix = evaluatable.StartGroup ? "(" : string.Empty;

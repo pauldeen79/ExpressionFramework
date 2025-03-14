@@ -116,6 +116,34 @@ namespace ExpressionFramework.Core.Evaluatables
             return ToTypedBuilder();
         }
     }
+    public partial record ConstantResultEvaluatable : ExpressionFramework.Core.EvaluatableBase, ExpressionFramework.Core.Abstractions.IEvaluatable
+    {
+        public CrossCutting.Common.Results.Result<bool> Result
+        {
+            get;
+        }
+
+        public ConstantResultEvaluatable(CrossCutting.Common.Results.Result<bool> result) : base()
+        {
+            this.Result = result;
+            System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
+        }
+
+        public override ExpressionFramework.Core.Builders.EvaluatableBaseBuilder ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+
+        public ExpressionFramework.Core.Builders.Evaluatables.ConstantResultEvaluatableBuilder ToTypedBuilder()
+        {
+            return new ExpressionFramework.Core.Builders.Evaluatables.ConstantResultEvaluatableBuilder(this);
+        }
+
+        ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder ExpressionFramework.Core.Abstractions.IEvaluatable.ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+    }
     public partial record DelegateEvaluatable : ExpressionFramework.Core.EvaluatableBase, ExpressionFramework.Core.Abstractions.IEvaluatable
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
