@@ -9,14 +9,20 @@ public class ComposableEvaluatableFunctionTests : TestBase<ComposableEvaluatable
         {
             // Arrange
             var @operator = new EqualsOperatorBuilder().Build();
+            var innerEvaluatable = new OperatorEvaluatableBuilder()
+                .WithLeftValue(1)
+                .WithOperator(new EqualsOperatorBuilder())
+                .WithRightValue(2)
+                .WithStringComparison(StringComparison.InvariantCulture)
+                .Build();
+
             var functionCall = new FunctionCallBuilder()
                 .WithName("ComposableEvaluatable")
                 .AddArguments
                 (
-                    new ConstantArgumentBuilder().WithValue(1),
-                    new ConstantArgumentBuilder().WithValue(@operator),
-                    new ConstantArgumentBuilder().WithValue(2)
+                    new ConstantArgumentBuilder().WithValue(innerEvaluatable)
                 );
+
             var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
