@@ -12,7 +12,7 @@ public static class Constants
         public const string CoreBuilders = "ExpressionFramework.Core.Builders";
 
         public const string CoreEvaluatables = "ExpressionFramework.Core.Evaluatables";
-        public const string DomainOperators = "ExpressionFramework.Domain.Operators";
+        public const string CoreOperators = "ExpressionFramework.Core.Operators";
     }
 
     public static class Paths
