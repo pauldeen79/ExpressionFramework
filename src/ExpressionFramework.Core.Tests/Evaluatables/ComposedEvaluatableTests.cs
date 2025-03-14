@@ -58,6 +58,6 @@ public class ComposedEvaluatableTests : TestBase<ComposableEvaluatableBuilder>
                 new OperatorEvaluatableBuilder()
                     .WithLeftValue(null)
                     .WithRightValue(null)
-                    .WithOperator(/*new EqualsOperatorBuilder()*/ Fixture.Freeze<IOperatorBuilder>())
+                    .WithOperator(new EqualsOperatorBuilder())
             );
 }
