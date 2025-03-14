@@ -360,6 +360,62 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
             return entity.BuildTyped();
         }
     }
+    public partial class DelegateResultEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<DelegateResultEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
+    {
+        private System.Func<CrossCutting.Common.Results.Result<bool>> _delegate;
+
+        [System.ComponentModel.DataAnnotations.RequiredAttribute]
+        [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
+        public System.Func<CrossCutting.Common.Results.Result<bool>> Delegate
+        {
+            get
+            {
+                return _delegate;
+            }
+            set
+            {
+                bool hasChanged = !System.Collections.Generic.EqualityComparer<System.Func<CrossCutting.Common.Results.Result<System.Boolean>>>.Default.Equals(_delegate!, value!);
+                _delegate = value ?? throw new System.ArgumentNullException(nameof(value));
+                if (hasChanged) HandlePropertyChanged(nameof(Delegate));
+            }
+        }
+
+        public DelegateResultEvaluatableBuilder(ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable source) : base(source)
+        {
+            if (source is null) throw new System.ArgumentNullException(nameof(source));
+            _delegate = source.Delegate;
+        }
+
+        public DelegateResultEvaluatableBuilder() : base()
+        {
+            _delegate = default(System.Func<CrossCutting.Common.Results.Result<System.Boolean>>)!;
+            SetDefaultValues();
+        }
+
+        public override ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable BuildTyped()
+        {
+            return new ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable(Delegate);
+        }
+
+        ExpressionFramework.Core.Abstractions.IEvaluatable ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder.Build()
+        {
+            return BuildTyped();
+        }
+
+        partial void SetDefaultValues();
+
+        public ExpressionFramework.Core.Builders.Evaluatables.DelegateResultEvaluatableBuilder WithDelegate(System.Func<CrossCutting.Common.Results.Result<bool>> @delegate)
+        {
+            if (@delegate is null) throw new System.ArgumentNullException(nameof(@delegate));
+            Delegate = @delegate;
+            return this;
+        }
+
+        public static implicit operator ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable(DelegateResultEvaluatableBuilder entity)
+        {
+            return entity.BuildTyped();
+        }
+    }
     public partial class OperatorEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<OperatorEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.OperatorEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
     {
         private object? _leftValue;
