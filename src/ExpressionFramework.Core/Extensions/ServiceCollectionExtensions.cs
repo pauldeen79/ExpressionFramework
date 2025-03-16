@@ -10,5 +10,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, ConstantResultEvaluatableFunction>()
             .AddSingleton<IFunction, DelegateEvaluatableFunction>()
             .AddSingleton<IFunction, DelegateResultEvaluatableFunction>()
-            .AddSingleton<IFunction, OperatorEvaluatableFunction>();
+            .AddSingleton<IFunction, OperatorEvaluatableFunction>()
+            .AddSingleton<IFunction, EqualsOperatorFunction>()
+            .AddSingleton<IFunction, NotEqualsOperatorFunction>();
 }

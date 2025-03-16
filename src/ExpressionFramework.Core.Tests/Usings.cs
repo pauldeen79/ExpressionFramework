@@ -16,6 +16,8 @@ global using ExpressionFramework.Core.Builders.Operators;
 global using ExpressionFramework.Core.Evaluatables;
 global using ExpressionFramework.Core.Extensions;
 global using ExpressionFramework.Core.Functions.Evaluatables;
+global using ExpressionFramework.Core.Functions.Operators;
+global using ExpressionFramework.Core.Operators;
 global using Microsoft.Extensions.DependencyInjection;
 global using Shouldly;
 global using Xunit;

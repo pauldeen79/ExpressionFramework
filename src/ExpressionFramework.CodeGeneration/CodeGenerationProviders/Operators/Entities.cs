@@ -9,6 +9,7 @@ public class Entities(IPipelineService pipelineService, ICsharpExpressionDumper 
     protected override bool CreateCodeGenerationHeader => false;
     protected override bool SkipWhenFileExists => true; // scaffold instead of generate
     protected override bool GenerateMultipleFiles => true;
+    protected override bool EnableNullablePragmas => false;
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
         => (await GetOverrideModels(typeof(IOperator)))

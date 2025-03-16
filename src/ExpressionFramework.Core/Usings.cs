@@ -10,4 +10,6 @@ global using ExpressionFramework.Core.Builders.Evaluatables;
 global using ExpressionFramework.Core.Domains;
 global using ExpressionFramework.Core.Evaluatables;
 global using ExpressionFramework.Core.Functions.Evaluatables;
+global using ExpressionFramework.Core.Functions.Operators;
+global using ExpressionFramework.Core.Operators;
 global using Microsoft.Extensions.DependencyInjection;

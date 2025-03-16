@@ -33,4 +33,8 @@
     <ProjectReference Include="..\ExpressionFramework.Core\ExpressionFramework.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Operators\" />
+  </ItemGroup>
+
 </Project>
