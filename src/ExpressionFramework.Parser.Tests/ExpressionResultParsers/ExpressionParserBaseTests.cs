@@ -12,9 +12,9 @@ public class ExpressionParserBaseTests
             .Evaluate(Arg.Any<FunctionCall>(), Arg.Any<FunctionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(Result.Success<object?>(_expressionMock));
         _expressionEvaluatorMock
-            .Evaluate(Arg.Any<string>(), Arg.Any<IFormatProvider>(), Arg.Any<object?>())
+            .Evaluate(Arg.Any<string>(), Arg.Any<ExpressionEvaluatorSettings>(), Arg.Any<object?>())
             .Returns(x =>
-                int.TryParse(x.ArgAt<string>(0), x.ArgAt<IFormatProvider>(1), out var result)
+                int.TryParse(x.ArgAt<string>(0), x.ArgAt<ExpressionEvaluatorSettings>(1).FormatProvider, out var result)
                 ? Result.Success<object?>(result)
                 : Result.Success<object?>(x.ArgAt<string>(0)));
 
