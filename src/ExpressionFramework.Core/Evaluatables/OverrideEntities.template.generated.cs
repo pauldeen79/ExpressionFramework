@@ -148,12 +148,12 @@ namespace ExpressionFramework.Core.Evaluatables
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
-        public System.Func<bool> Delegate
+        public System.Func<object?,bool> Delegate
         {
             get;
         }
 
-        public DelegateEvaluatable(System.Func<bool> @delegate) : base()
+        public DelegateEvaluatable(System.Func<object?,bool> @delegate) : base()
         {
             this.Delegate = @delegate;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
@@ -178,12 +178,12 @@ namespace ExpressionFramework.Core.Evaluatables
     {
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
-        public System.Func<CrossCutting.Common.Results.Result<bool>> Delegate
+        public System.Func<object?,CrossCutting.Common.Results.Result<bool>> Delegate
         {
             get;
         }
 
-        public DelegateResultEvaluatable(System.Func<CrossCutting.Common.Results.Result<bool>> @delegate) : base()
+        public DelegateResultEvaluatable(System.Func<object?,CrossCutting.Common.Results.Result<bool>> @delegate) : base()
         {
             this.Delegate = @delegate;
             System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);

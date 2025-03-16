@@ -2,5 +2,5 @@
 
 public interface IDelegateEvaluatable : IEvaluatableBase
 {
-    [Required][ValidateObject] Func<bool> Delegate { get; }
+    [Required][ValidateObject] Func<object?, bool> Delegate { get; }
 }

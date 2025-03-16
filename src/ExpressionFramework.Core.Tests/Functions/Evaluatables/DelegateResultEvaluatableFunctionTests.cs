@@ -8,7 +8,7 @@ public class DelegateResultEvaluatableFunctionTests : TestBase<DelegateResultEva
         public void Returns_DelegateResultEvaluatable_On_Valid_Arguments()
         {
             // Arrange
-            var @delegate = new Func<Result<bool>>(() => Result.Success(true));
+            var @delegate = new Func<object?, Result<bool>>(_ => Result.Success(true));
             var functionCall = new FunctionCallBuilder()
                 .WithName("DelegateResultEvaluatable")
                 .AddArguments(new ConstantArgumentBuilder().WithValue(@delegate));

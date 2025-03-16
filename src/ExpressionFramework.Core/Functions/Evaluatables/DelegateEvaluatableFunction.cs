@@ -1,6 +1,6 @@
 ﻿namespace ExpressionFramework.Core.Functions.Evaluatables;
 
-[FunctionArgument("Delegate", typeof(Func<bool>))]
+[FunctionArgument("Delegate", typeof(Func<object?, bool>))]
 public class DelegateEvaluatableFunction : ITypedFunction<IEvaluatable>
 {
     public Result<object?> Evaluate(FunctionCallContext context)
@@ -8,7 +8,7 @@ public class DelegateEvaluatableFunction : ITypedFunction<IEvaluatable>
 
     public Result<IEvaluatable> EvaluateTyped(FunctionCallContext context)
         => new ResultDictionaryBuilder()
-            .Add("Delegate", () => context.GetArgumentValueResult<Func<bool>>(0, "Delegate"))
+            .Add("Delegate", () => context.GetArgumentValueResult<Func<object?, bool>>(0, "Delegate"))
             .Build()
-            .OnSuccess(results => Result.Success<IEvaluatable>(new DelegateEvaluatableBuilder().WithDelegate(results.GetValue<Func<bool>>("Delegate")).Build()));
+            .OnSuccess(results => Result.Success<IEvaluatable>(new DelegateEvaluatableBuilder().WithDelegate(results.GetValue<Func<object?, bool>>("Delegate")).Build()));
 }

@@ -10,7 +10,7 @@ public class DelegateEvaluatableFunctionTests : TestBase<DelegateEvaluatableFunc
             // Arrange
             var functionCall = new FunctionCallBuilder()
                 .WithName("DelegateEvaluatable")
-                .AddArguments(new ConstantArgumentBuilder().WithValue(new Func<bool>(() => true)));
+                .AddArguments(new ConstantArgumentBuilder().WithValue(new Func<object?, bool>(_ => true)));
             var context = CreateFunctionCallContext(functionCall);
             var sut = CreateSut();
 
@@ -21,7 +21,7 @@ public class DelegateEvaluatableFunctionTests : TestBase<DelegateEvaluatableFunc
             result.Status.ShouldBe(ResultStatus.Ok);
             result.Value.ShouldBeOfType<DelegateEvaluatable>();
             var delegateEvaluatable = (DelegateEvaluatable)result.Value;
-            delegateEvaluatable.Delegate().ShouldBe(true);
+            delegateEvaluatable.Delegate(null).ShouldBe(true);
         }
     }
 }

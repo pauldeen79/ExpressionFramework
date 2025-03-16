@@ -306,11 +306,11 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
     }
     public partial class DelegateEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<DelegateEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.DelegateEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
     {
-        private System.Func<bool> _delegate;
+        private System.Func<object?,bool> _delegate;
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
-        public System.Func<bool> Delegate
+        public System.Func<object?,bool> Delegate
         {
             get
             {
@@ -318,7 +318,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
             }
             set
             {
-                bool hasChanged = !System.Collections.Generic.EqualityComparer<System.Func<System.Boolean>>.Default.Equals(_delegate!, value!);
+                bool hasChanged = !System.Collections.Generic.EqualityComparer<System.Func<System.Object?,System.Boolean>>.Default.Equals(_delegate!, value!);
                 _delegate = value ?? throw new System.ArgumentNullException(nameof(value));
                 if (hasChanged) HandlePropertyChanged(nameof(Delegate));
             }
@@ -332,7 +332,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
 
         public DelegateEvaluatableBuilder() : base()
         {
-            _delegate = default(System.Func<System.Boolean>)!;
+            _delegate = default(System.Func<System.Object?,System.Boolean>)!;
             SetDefaultValues();
         }
 
@@ -348,7 +348,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
 
         partial void SetDefaultValues();
 
-        public ExpressionFramework.Core.Builders.Evaluatables.DelegateEvaluatableBuilder WithDelegate(System.Func<bool> @delegate)
+        public ExpressionFramework.Core.Builders.Evaluatables.DelegateEvaluatableBuilder WithDelegate(System.Func<object?,bool> @delegate)
         {
             if (@delegate is null) throw new System.ArgumentNullException(nameof(@delegate));
             Delegate = @delegate;
@@ -362,11 +362,11 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
     }
     public partial class DelegateResultEvaluatableBuilder : ExpressionFramework.Core.Builders.EvaluatableBaseBuilder<DelegateResultEvaluatableBuilder, ExpressionFramework.Core.Evaluatables.DelegateResultEvaluatable>, ExpressionFramework.Core.Builders.Abstractions.IEvaluatableBuilder
     {
-        private System.Func<CrossCutting.Common.Results.Result<bool>> _delegate;
+        private System.Func<object?,CrossCutting.Common.Results.Result<bool>> _delegate;
 
         [System.ComponentModel.DataAnnotations.RequiredAttribute]
         [CrossCutting.Common.DataAnnotations.ValidateObjectAttribute]
-        public System.Func<CrossCutting.Common.Results.Result<bool>> Delegate
+        public System.Func<object?,CrossCutting.Common.Results.Result<bool>> Delegate
         {
             get
             {
@@ -374,7 +374,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
             }
             set
             {
-                bool hasChanged = !System.Collections.Generic.EqualityComparer<System.Func<CrossCutting.Common.Results.Result<System.Boolean>>>.Default.Equals(_delegate!, value!);
+                bool hasChanged = !System.Collections.Generic.EqualityComparer<System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Boolean>>>.Default.Equals(_delegate!, value!);
                 _delegate = value ?? throw new System.ArgumentNullException(nameof(value));
                 if (hasChanged) HandlePropertyChanged(nameof(Delegate));
             }
@@ -388,7 +388,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
 
         public DelegateResultEvaluatableBuilder() : base()
         {
-            _delegate = default(System.Func<CrossCutting.Common.Results.Result<System.Boolean>>)!;
+            _delegate = default(System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Boolean>>)!;
             SetDefaultValues();
         }
 
@@ -404,7 +404,7 @@ namespace ExpressionFramework.Core.Builders.Evaluatables
 
         partial void SetDefaultValues();
 
-        public ExpressionFramework.Core.Builders.Evaluatables.DelegateResultEvaluatableBuilder WithDelegate(System.Func<CrossCutting.Common.Results.Result<bool>> @delegate)
+        public ExpressionFramework.Core.Builders.Evaluatables.DelegateResultEvaluatableBuilder WithDelegate(System.Func<object?,CrossCutting.Common.Results.Result<bool>> @delegate)
         {
             if (@delegate is null) throw new System.ArgumentNullException(nameof(@delegate));
             Delegate = @delegate;

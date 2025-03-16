@@ -3,5 +3,5 @@
 public partial record DelegateEvaluatable : IEvaluatable
 {
     public override Result<bool> Evaluate(object? context)
-        => Result.Success(Delegate());
+        => Result.Success(Delegate(context));
 }
