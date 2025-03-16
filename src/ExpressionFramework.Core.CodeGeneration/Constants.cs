@@ -25,11 +25,15 @@ public static class Constants
         public const string CoreBuilders = "ExpressionFramework.Core/Builders";
         public const string CoreBuildersAbstractions = "ExpressionFramework.Core/Builders/Abstractions";
         public const string CoreBuildersExtensions = "ExpressionFramework.Core/Builders/Extensions";
+        public const string CoreFunctions = "ExpressionFramework.Core/Functions";
 
         public const string Evaluatables = $"{Core}/{nameof(Evaluatables)}";
         public const string Operators = $"{Core}/{nameof(Operators)}";
 
         public const string EvaluatableBuilders = $"{CoreBuilders}/{nameof(Evaluatables)}";
         public const string OperatorBuilders = $"{CoreBuilders}/{nameof(Operators)}";
+
+        public const string EvaluatableFunctions = $"{CoreFunctions}/{nameof(Evaluatables)}";
+        public const string OperatorFuntions = $"{CoreFunctions}/{nameof(Operators)}";
     }
 }
