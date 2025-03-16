@@ -3,9 +3,9 @@
 #nullable enable
     public partial record IsSmallerOrEqualOperator
     {
-        public override CrossCutting.Common.Results.Result<bool> Evaluate(object? leftValue, object? rightValue, System.StringComparison stringComparison)
+        public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 #nullable restore

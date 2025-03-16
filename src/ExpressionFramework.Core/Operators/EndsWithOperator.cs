@@ -1,12 +1,9 @@
-﻿namespace ExpressionFramework.Core.Operators
+﻿namespace ExpressionFramework.Core.Operators;
+
+public partial record EndsWithOperator
 {
-#nullable enable
-    public partial record EndsWithOperator
-    {
-        public override CrossCutting.Common.Results.Result<bool> Evaluate(object? leftValue, object? rightValue, System.StringComparison stringComparison)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
+        => leftValue is string leftString && rightValue is string rightString
+            ? Result.Success(leftString.EndsWith(rightString, stringComparison))
+            : Result.Invalid<bool>("LeftValue and RightValue both need to be of type string");
 }
