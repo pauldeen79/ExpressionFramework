@@ -37,4 +37,23 @@ public sealed class IntegrationTests : IDisposable
         var evaluatable = (ConstantEvaluatable)result.Value;
         evaluatable.Value.ShouldBe(true);
     }
+
+    [Fact]
+    public void Can_Evaluate_OperatorEvaluatable_With_Functions()
+    {
+        // Arrange
+        var evaluator = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
+        var settings = new ExpressionStringEvaluatorSettingsBuilder();
+
+        // Act
+        var result = evaluator.Evaluate("=OperatorEvaluatable(1,EqualsOperator(),1)", settings);
+
+        // Assert
+        result.Status.ShouldBe(ResultStatus.Ok);
+        //TODO: Review if we can perform the Evaluate method in a short-mannered way, e.g. =EvaluateOperator(OperatorEvaluatable(...))
+        result.Value.ShouldBeOfType<OperatorEvaluatable>();
+        var operatorResult = ((OperatorEvaluatable)result.Value).Evaluate();
+        operatorResult.Status.ShouldBe(ResultStatus.Ok);
+        operatorResult.Value.ShouldBe(true);
+    }
 }
