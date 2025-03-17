@@ -34,6 +34,6 @@ public static class Constants
         public const string OperatorBuilders = $"{CoreBuilders}/{nameof(Operators)}";
 
         public const string EvaluatableFunctions = $"{CoreFunctions}/{nameof(Evaluatables)}";
-        public const string OperatorFuntions = $"{CoreFunctions}/{nameof(Operators)}";
+        public const string OperatorFunctions = $"{CoreFunctions}/{nameof(Operators)}";
     }
 }
