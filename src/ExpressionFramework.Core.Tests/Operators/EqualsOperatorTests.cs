@@ -5,7 +5,7 @@ public class EqualsOperatorTests : TestBase<EqualsOperator>
     public class Evaluate : EqualsOperatorTests
     {
         [Fact]
-        public void Returns_Correct_Result_With_Equals_Operator()
+        public void Returns_Correct_Result()
         {
             // Arrange
             var sut = CreateSut();

@@ -5,7 +5,7 @@ public class NotEqualsOperatorTests : TestBase<NotEqualsOperator>
     public class Evaluate : NotEqualsOperatorTests
     {
         [Fact]
-        public void Returns_Correct_Result_With_Equals_Operator()
+        public void Returns_Correct_Resul()
         {
             // Arrange
             var sut = CreateSut();
