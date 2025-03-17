@@ -28,7 +28,7 @@ public class OperatorEvaluatableFunctionTests : TestBase<OperatorEvaluatableFunc
             result.Value.ShouldBeOfType<OperatorEvaluatable>();
             var operatorEvaluatble = (OperatorEvaluatable)result.Value;
             operatorEvaluatble.Operator.ShouldBeEquivalentTo(@operator);
-            operatorEvaluatble.StringComparison.ShouldBe(StringComparison.InvariantCulture);
+            operatorEvaluatble.StringComparison.ShouldBe(StringComparison.CurrentCulture);
             operatorEvaluatble.LeftValue.ShouldBeEquivalentTo(1);
             operatorEvaluatble.RightValue.ShouldBeEquivalentTo(2);
         }
