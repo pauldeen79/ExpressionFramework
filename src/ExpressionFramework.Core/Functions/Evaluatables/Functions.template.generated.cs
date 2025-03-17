@@ -10,6 +10,10 @@
 #nullable enable
 namespace ExpressionFramework.Core.Functions.Evaluatables
 {
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"InnerEvaluatable", typeof(ExpressionFramework.Core.Abstractions.IEvaluatable), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Combination", typeof(System.Nullable<ExpressionFramework.Core.Domains.Combination>), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"StartGroup", typeof(System.Boolean), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"EndGroup", typeof(System.Boolean), false)]
     public class ComposableEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -22,6 +26,7 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("InnerEvaluatable", () => context.GetArgumentValueResult<ExpressionFramework.Core.Abstractions.IEvaluatable>(0, "InnerEvaluatable")).Add("Combination", () => context.GetArgumentValueResult<System.Nullable<ExpressionFramework.Core.Domains.Combination>>(1, "Combination")).Add("StartGroup", () => context.GetArgumentValueResult<System.Boolean>(2, "StartGroup")).Add("EndGroup", () => context.GetArgumentValueResult<System.Boolean>(3, "EndGroup")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new ComposableEvaluatable(results.GetValue<ExpressionFramework.Core.Abstractions.IEvaluatable>("InnerEvaluatable"), results.GetValue<System.Nullable<ExpressionFramework.Core.Domains.Combination>>("Combination"), results.GetValue<System.Boolean>("StartGroup"), results.GetValue<System.Boolean>("EndGroup"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Conditions", typeof(System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Core.Evaluatables.ComposableEvaluatable>), false)]
     public class ComposedEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -34,6 +39,7 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("Conditions", () => context.GetArgumentValueResult<System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Core.Evaluatables.ComposableEvaluatable>>(0, "Conditions")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new ComposedEvaluatable(results.GetValue<System.Collections.Generic.IReadOnlyCollection<ExpressionFramework.Core.Evaluatables.ComposableEvaluatable>>("Conditions"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Value", typeof(System.Boolean), false)]
     public class ConstantEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -46,6 +52,7 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("Value", () => context.GetArgumentValueResult<System.Boolean>(0, "Value")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new ConstantEvaluatable(results.GetValue<System.Boolean>("Value"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Result", typeof(CrossCutting.Common.Results.Result<System.Boolean>), false)]
     public class ConstantResultEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -58,6 +65,7 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("Result", () => context.GetArgumentValueResult<CrossCutting.Common.Results.Result<System.Boolean>>(0, "Result")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new ConstantResultEvaluatable(results.GetValue<CrossCutting.Common.Results.Result<System.Boolean>>("Result"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Delegate", typeof(System.Func<System.Object?,System.Boolean>), false)]
     public class DelegateEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -70,6 +78,7 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("Delegate", () => context.GetArgumentValueResult<System.Func<System.Object?,System.Boolean>>(0, "Delegate")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new DelegateEvaluatable(results.GetValue<System.Func<System.Object?,System.Boolean>>("Delegate"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Delegate", typeof(System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Boolean>>), false)]
     public class DelegateResultEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -82,6 +91,10 @@ namespace ExpressionFramework.Core.Functions.Evaluatables
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("Delegate", () => context.GetArgumentValueResult<System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Boolean>>>(0, "Delegate")).Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new DelegateResultEvaluatable(results.GetValue<System.Func<System.Object?,CrossCutting.Common.Results.Result<System.Boolean>>>("Delegate"))));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"LeftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"Operator", typeof(ExpressionFramework.Core.Abstractions.IOperator), false)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"RightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"StringComparison", typeof(System.StringComparison), false)]
     public class OperatorEvaluatableFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IEvaluatable>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)

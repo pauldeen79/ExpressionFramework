@@ -19,6 +19,7 @@ global using CrossCutting.Common.Results;
 global using CrossCutting.Utilities.Parsers;
 global using CrossCutting.Utilities.Parsers.Contracts;
 global using CrossCutting.Utilities.Parsers.Extensions;
+global using CsharpExpressionDumper.Core;
 global using CsharpExpressionDumper.Core.Extensions;
 global using ExpressionFramework.CodeGeneration.CodeGenerationProviders;
 global using ExpressionFramework.CodeGeneration.Models;

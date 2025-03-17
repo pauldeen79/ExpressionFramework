@@ -24,7 +24,17 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
                         .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("ExpressionFramework.Core.Abstractions.IEvaluatable"))
                         .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){AddArguments(x)}.Build().OnSuccess(results => {typeof(Result).FullName}.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new {x.WithoutInterfacePrefix()}({GetArguments(x)})));")
                 )
+                .AddAttributes(GetAttributes(x))
                 .Build())));
+
+    private static IEnumerable<AttributeBuilder> GetAttributes(TypeBase typeBase)
+        => typeBase.Properties.Select(x => new AttributeBuilder()
+            .WithName(typeof(FunctionArgumentAttribute))
+            .AddParameters(
+                new AttributeParameterBuilder().WithValue(x.Name),
+                new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({FixTypeName(x.TypeName)})")),
+                new AttributeParameterBuilder().WithValue(x.IsNullable) //TODO: Detect nullability correctly
+            ));
 
     private static string AddArguments(TypeBase typeBase)
     {
