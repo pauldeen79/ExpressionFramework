@@ -5,12 +5,6 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
 {
     public override string Path => Constants.Paths.EvaluatableFunctions;
 
-    //protected override string FilenameSuffix => string.Empty;
-    //protected override bool CreateCodeGenerationHeader => false;
-    //protected override bool SkipWhenFileExists => true; // scaffold instead of generate
-    //protected override bool GenerateMultipleFiles => true;
-    //protected override bool EnableNullablePragmas => false;
-
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
         => (await GetOverrideModels(typeof(IEvaluatableBase)))
             .OnSuccess(result =>
@@ -28,37 +22,69 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
                         .WithName("EvaluateTyped")
                         .AddParameter("context", typeof(FunctionCallContext))
                         .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("ExpressionFramework.Core.Abstractions.IEvaluatable"))
-                        .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){AddArguments(x)}.Build().OnSuccess(results => {typeof(Result).FullName}.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new {x.WithoutInterfacePrefix()}Builder(){GetArguments(x)}.Build()));")
+                        .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){AddArguments(x)}.Build().OnSuccess(results => {typeof(Result).FullName}.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new {x.WithoutInterfacePrefix()}({GetArguments(x)})));")
                 )
                 .Build())));
 
-    private string AddArguments(TypeBase typeBase)
+    private static string AddArguments(TypeBase typeBase)
     {
-        //.Add("InnerEvaluatable", () => context.GetArgumentValueResult<IEvaluatable>(0, "InnerEvaluatable"))
         var builder = new StringBuilder();
         var counter = 0;
         foreach (var prop in typeBase.Properties)
         {
-            builder.Append(@$".Add(""{prop.Name}"", () => context.GetArgumentValueResult<{prop.TypeName.GetClassName()}>({counter}, ""{prop.Name}""))");
+            builder.Append(@$".Add(""{prop.Name}"", () => context.GetArgumentValueResult<{FixTypeName(prop.TypeName)}>({counter}, ""{prop.Name}""))");
             counter++;
         }
 
         return builder.ToString();
     }
 
-    private string GetArguments(TypeBase typeBase)
+    private static string GetArguments(TypeBase typeBase)
     {
-        //.WithInnerEvaluatable(results.GetValue<IEvaluatable>("InnerEvaluatable").ToBuilder())
         var builder = new StringBuilder();
+        var counter = 0;
         foreach (var prop in typeBase.Properties)
         {
-            var suffix = prop.TypeName.GetClassName() == "IEvaluatable"
-                ? ".ToBuilder()"
-                : string.Empty;
+            var prefix = counter == 0
+                ? string.Empty
+                : ", ";
 
-            builder.Append($@".With{prop.Name}(results.GetValue<{prop.TypeName.GetClassName()}>(""{prop.Name}""){suffix})");
+            builder.Append($@"{prefix}results.GetValue<{FixTypeName(prop.TypeName)}>(""{prop.Name}"")");
+            counter++;
         }
 
         return builder.ToString();
+    }
+
+    private static string FixTypeName(string typeName)
+    {
+        var genericArguments = typeName.GetGenericArguments();
+        if (!string.IsNullOrEmpty(genericArguments))
+        {
+            return $"{FixTypeName(typeName.WithoutGenerics())}<{FixTypeName(genericArguments)}>";
+        }
+
+        var ns = typeName.GetNamespaceWithDefault();
+        if (string.IsNullOrEmpty(ns))
+        {
+            return ns;
+        }
+
+        var className = typeName.GetClassName();
+        if (ns == "ExpressionFramework.CodeGeneration.Models.Abstractions")
+        {
+            ns = "ExpressionFramework.Core.Abstractions";
+        }
+        else if (ns == "ExpressionFramework.CodeGeneration.Models.Domains")
+        {
+            ns = "ExpressionFramework.Core.Domains";
+        }
+        else if (ns == "ExpressionFramework.CodeGeneration.Models.Evaluatables")
+        {
+            ns = "ExpressionFramework.Core.Evaluatables";
+            className = className.Substring(1); // remove interface prefix
+        }
+        
+        return $"{ns}.{className}";
     }
 }
