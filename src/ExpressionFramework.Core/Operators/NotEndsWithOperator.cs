@@ -1,12 +1,9 @@
-﻿namespace ExpressionFramework.Core.Operators
+﻿namespace ExpressionFramework.Core.Operators;
+
+public partial record NotEndsWithOperator
 {
-#nullable enable
-    public partial record NotEndsWithOperator
-    {
-        public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
-        {
-            throw new NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
+        => leftValue is string leftString && rightValue is string rightString
+            ? Result.Success(!leftString.EndsWith(rightString, StringComparison.CurrentCultureIgnoreCase))
+            : Result.Invalid<bool>("LeftValue and RightValue both need to be of type string");
 }
