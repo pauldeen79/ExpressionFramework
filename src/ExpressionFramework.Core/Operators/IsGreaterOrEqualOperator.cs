@@ -1,12 +1,7 @@
-﻿namespace ExpressionFramework.Core.Operators
+﻿namespace ExpressionFramework.Core.Operators;
+
+public partial record IsGreaterOrEqualOperator
 {
-#nullable enable
-    public partial record IsGreaterOrEqualOperator
-    {
-        public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
-        {
-            throw new NotImplementedException();
-        }
-    }
-#nullable restore
+    public override Result<bool> Evaluate(object? leftValue, object? rightValue, StringComparison stringComparison)
+        => GreaterOrEqualThan.Evaluate(leftValue, rightValue);
 }
