@@ -4,6 +4,7 @@
 public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCSharpClassBase(pipelineService)
 {
     private static readonly string[] StringComparisonKeywords = ["StartsWith", "EndsWith", "String"];
+    private const string ContextParameterName = "context";
 
     public override string Path => Constants.Paths.OperatorFunctions;
 
@@ -20,12 +21,12 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .AddMethods(
                 new MethodBuilder()
                     .WithName("Evaluate")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("System.Object?"))
                     .AddStringCodeStatements("return EvaluateTyped(context).Transform<object?>(x => x);"),
                 new MethodBuilder()
                     .WithName("EvaluateTyped")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("ExpressionFramework.Core.Abstractions.IOperator"))
                     .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){GetFunctionArgumentsAddString(typeBase)}.Build().OnSuccess(results => {typeof(Result).FullName}.Success<ExpressionFramework.Core.Abstractions.IOperator>(new {typeBase.WithoutInterfacePrefix()}({GetFunctionArgumentsGetString(typeBase)})));")
             )
@@ -40,12 +41,12 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .AddMethods(
                 new MethodBuilder()
                     .WithName("Evaluate")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("System.Object?"))
                     .AddStringCodeStatements("return EvaluateTyped(context).Transform<object?>(x => x);"),
                 new MethodBuilder()
                     .WithName("EvaluateTyped")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName(typeof(bool)))
                     .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){GetOperatorArgumentsAddString()}.Build().OnSuccess(results => new {typeBase.WithoutInterfacePrefix()}().Evaluate({GetOperatorArgumentsGetString()}));")
 
@@ -59,7 +60,7 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .WithName(typeof(FunctionArgumentAttribute))
             .AddParameters
             (
-                new AttributeParameterBuilder().WithValue("leftValue"),
+                new AttributeParameterBuilder().WithValue("LeftValue"),
                 new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeof(object).FullName})")),
                 new AttributeParameterBuilder().WithValue(true)
             );
@@ -68,7 +69,7 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .WithName(typeof(FunctionArgumentAttribute))
             .AddParameters
             (
-                new AttributeParameterBuilder().WithValue("rightValue"),
+                new AttributeParameterBuilder().WithValue("RightValue"),
                 new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeof(object).FullName})")),
                 new AttributeParameterBuilder().WithValue(true)
             );
@@ -79,7 +80,7 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
                 .WithName(typeof(FunctionArgumentAttribute))
                 .AddParameters
                 (
-                    new AttributeParameterBuilder().WithValue("stringComparison"),
+                    new AttributeParameterBuilder().WithValue("StringComparison"),
                     new AttributeParameterBuilder().WithValue(new StringLiteral($"typeof({typeof(StringComparison).FullName})")),
                     new AttributeParameterBuilder().WithValue(false)
                 );
