@@ -52,4 +52,19 @@ public sealed class IntegrationTests : IDisposable
         result.Status.ShouldBe(ResultStatus.Ok);
         result.Value.ShouldBe(true);
     }
+
+    [Fact]
+    public void Can_Evaluate_Operator_With_Functions()
+    {
+        // Arrange
+        var evaluator = _scope.ServiceProvider.GetRequiredService<IExpressionStringEvaluator>();
+        var settings = new ExpressionStringEvaluatorSettingsBuilder();
+
+        // Act
+        var result = evaluator.Evaluate("=Equals(1, 1)", settings);
+
+        // Assert
+        result.Status.ShouldBe(ResultStatus.Ok);
+        result.Value.ShouldBe(true);
+    }
 }

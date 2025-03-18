@@ -10,6 +10,21 @@
 #nullable enable
 namespace ExpressionFramework.Core.Functions.Operators
 {
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class EndsWithFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new EndsWithOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class EndsWithOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -20,6 +35,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new EndsWithOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class EnumerableContainsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new EnumerableContainsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class EnumerableContainsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -34,6 +63,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new EnumerableContainsOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class EnumerableNotContainsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new EnumerableNotContainsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class EnumerableNotContainsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -44,6 +87,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new EnumerableNotContainsOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class EqualsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new EqualsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class EqualsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -58,6 +115,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new EqualsOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsGreaterFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsGreaterOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class IsGreaterOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -68,6 +139,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsGreaterOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsGreaterOrEqualFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsGreaterOrEqualOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class IsGreaterOrEqualOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -82,6 +167,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsGreaterOrEqualOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNotNullFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNotNullOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class IsNotNullOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -92,6 +191,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNotNullOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNotNullOrEmptyFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNotNullOrEmptyOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class IsNotNullOrEmptyOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -106,6 +219,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNotNullOrEmptyOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNotNullOrWhiteSpaceFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNotNullOrWhiteSpaceOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class IsNotNullOrWhiteSpaceOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -116,6 +243,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNotNullOrWhiteSpaceOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNullFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNullOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class IsNullOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -130,6 +271,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNullOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNullOrEmptyFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNullOrEmptyOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class IsNullOrEmptyOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -140,6 +295,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNullOrEmptyOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsNullOrWhiteSpaceFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsNullOrWhiteSpaceOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class IsNullOrWhiteSpaceOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -154,6 +323,20 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsNullOrWhiteSpaceOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsSmallerFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsSmallerOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class IsSmallerOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -164,6 +347,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsSmallerOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class IsSmallerOrEqualFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new IsSmallerOrEqualOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class IsSmallerOrEqualOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -178,6 +375,21 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new IsSmallerOrEqualOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class NotEndsWithFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new NotEndsWithOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class NotEndsWithOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -188,6 +400,20 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new NotEndsWithOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    public class NotEqualsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new NotEqualsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class NotEqualsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -202,6 +428,21 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new NotEqualsOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class NotStartsWithFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new NotStartsWithOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class NotStartsWithOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -212,6 +453,21 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new NotStartsWithOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class StartsWithFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new StartsWithOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class StartsWithOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
@@ -226,6 +482,21 @@ namespace ExpressionFramework.Core.Functions.Operators
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new StartsWithOperator()));
         }
     }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class StringContainsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new StringContainsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
+        }
+    }
     public class StringContainsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
     {
         public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
@@ -236,6 +507,21 @@ namespace ExpressionFramework.Core.Functions.Operators
         public CrossCutting.Common.Results.Result<ExpressionFramework.Core.Abstractions.IOperator> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
         {
             return new CrossCutting.Common.Results.ResultDictionaryBuilder().Build().OnSuccess(results => CrossCutting.Common.Results.Result.Success<ExpressionFramework.Core.Abstractions.IOperator>(new StringContainsOperator()));
+        }
+    }
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"leftValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"rightValue", typeof(System.Object), true)]
+    [CrossCutting.Utilities.Parsers.FunctionArgumentAttribute(@"stringComparison", typeof(System.StringComparison), false)]
+    public class StringNotContainsFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<bool>
+    {
+        public CrossCutting.Common.Results.Result<object?> Evaluate(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return EvaluateTyped(context).Transform<object?>(x => x);
+        }
+
+        public CrossCutting.Common.Results.Result<bool> EvaluateTyped(CrossCutting.Utilities.Parsers.FunctionCallContext context)
+        {
+            return new CrossCutting.Common.Results.ResultDictionaryBuilder().Add("LeftValue", () => context.GetArgumentValueResult<System.Object>(0, "LeftValue", default(System.Object))).Add("RightValue", () => context.GetArgumentValueResult<System.Object>(1, "RightValue", default(System.Object))).Add("stringComparison", () => context.GetArgumentValueResult<System.StringComparison>(2, "stringComparison", default(System.StringComparison))).Build().OnSuccess(results => new StringNotContainsOperator().Evaluate(results.GetValue<System.Object?>("LeftValue"), results.GetValue<System.Object?>("RightValue"), results.GetValue<System.StringComparison>("stringComparison")));
         }
     }
     public class StringNotContainsOperatorFunction : CrossCutting.Utilities.Parsers.Contracts.ITypedFunction<ExpressionFramework.Core.Abstractions.IOperator>
