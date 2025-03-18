@@ -10,8 +10,7 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
 
     public override async Task<Result<IEnumerable<TypeBase>>> GetModel(CancellationToken cancellationToken)
         => (await GetOverrideModels(typeof(IOperatorBase)))
-            .OnSuccess(result =>
-                Result.Success(result.Value!.SelectMany(x => new TypeBase[] { CreateOperatorFunction(x), CreateOperatorEvaluationFunction(x) })));
+            .OnSuccess(result => Result.Success(result.Value!.SelectMany(x => new TypeBase[] { CreateOperatorFunction(x), CreateOperatorEvaluationFunction(x) })));
 
     private TypeBase CreateOperatorFunction(TypeBase typeBase)
         => new ClassBuilder()
