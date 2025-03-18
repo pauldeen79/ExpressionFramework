@@ -4,7 +4,6 @@ public static class ServiceCollectionExtensions
 {
     public static IServiceCollection AddExpressionFramework(this IServiceCollection services)
         => services
-            .AddSingleton<IFunction, EvaluateEvaluatableFunction>()
             // Evaluatables
             .AddSingleton<IFunction, ComposableEvaluatableFunction>()
             .AddSingleton<IFunction, ComposedEvaluatableFunction>()
