@@ -561,6 +561,35 @@ namespace ExpressionFramework.Core.Builders.Operators
             return entity.BuildTyped();
         }
     }
+    public partial class StringEqualsOperatorBuilder : ExpressionFramework.Core.Builders.OperatorBaseBuilder<StringEqualsOperatorBuilder, ExpressionFramework.Core.Operators.StringEqualsOperator>, ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder
+    {
+        public StringEqualsOperatorBuilder(ExpressionFramework.Core.Operators.StringEqualsOperator source) : base(source)
+        {
+            if (source is null) throw new System.ArgumentNullException(nameof(source));
+        }
+
+        public StringEqualsOperatorBuilder() : base()
+        {
+            SetDefaultValues();
+        }
+
+        public override ExpressionFramework.Core.Operators.StringEqualsOperator BuildTyped()
+        {
+            return new ExpressionFramework.Core.Operators.StringEqualsOperator();
+        }
+
+        ExpressionFramework.Core.Abstractions.IOperator ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder.Build()
+        {
+            return BuildTyped();
+        }
+
+        partial void SetDefaultValues();
+
+        public static implicit operator ExpressionFramework.Core.Operators.StringEqualsOperator(StringEqualsOperatorBuilder entity)
+        {
+            return entity.BuildTyped();
+        }
+    }
     public partial class StringNotContainsOperatorBuilder : ExpressionFramework.Core.Builders.OperatorBaseBuilder<StringNotContainsOperatorBuilder, ExpressionFramework.Core.Operators.StringNotContainsOperator>, ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder
     {
         public StringNotContainsOperatorBuilder(ExpressionFramework.Core.Operators.StringNotContainsOperator source) : base(source)
@@ -586,6 +615,35 @@ namespace ExpressionFramework.Core.Builders.Operators
         partial void SetDefaultValues();
 
         public static implicit operator ExpressionFramework.Core.Operators.StringNotContainsOperator(StringNotContainsOperatorBuilder entity)
+        {
+            return entity.BuildTyped();
+        }
+    }
+    public partial class StringNotEqualsOperatorBuilder : ExpressionFramework.Core.Builders.OperatorBaseBuilder<StringNotEqualsOperatorBuilder, ExpressionFramework.Core.Operators.StringNotEqualsOperator>, ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder
+    {
+        public StringNotEqualsOperatorBuilder(ExpressionFramework.Core.Operators.StringNotEqualsOperator source) : base(source)
+        {
+            if (source is null) throw new System.ArgumentNullException(nameof(source));
+        }
+
+        public StringNotEqualsOperatorBuilder() : base()
+        {
+            SetDefaultValues();
+        }
+
+        public override ExpressionFramework.Core.Operators.StringNotEqualsOperator BuildTyped()
+        {
+            return new ExpressionFramework.Core.Operators.StringNotEqualsOperator();
+        }
+
+        ExpressionFramework.Core.Abstractions.IOperator ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder.Build()
+        {
+            return BuildTyped();
+        }
+
+        partial void SetDefaultValues();
+
+        public static implicit operator ExpressionFramework.Core.Operators.StringNotEqualsOperator(StringNotEqualsOperatorBuilder entity)
         {
             return entity.BuildTyped();
         }

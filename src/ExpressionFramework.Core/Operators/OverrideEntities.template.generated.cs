@@ -428,6 +428,28 @@ namespace ExpressionFramework.Core.Operators
             return ToTypedBuilder();
         }
     }
+    public partial record StringEqualsOperator : ExpressionFramework.Core.OperatorBase, ExpressionFramework.Core.Abstractions.IOperator
+    {
+        public StringEqualsOperator() : base()
+        {
+            System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
+        }
+
+        public override ExpressionFramework.Core.Builders.OperatorBaseBuilder ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+
+        public ExpressionFramework.Core.Builders.Operators.StringEqualsOperatorBuilder ToTypedBuilder()
+        {
+            return new ExpressionFramework.Core.Builders.Operators.StringEqualsOperatorBuilder(this);
+        }
+
+        ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder ExpressionFramework.Core.Abstractions.IOperator.ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+    }
     public partial record StringNotContainsOperator : ExpressionFramework.Core.OperatorBase, ExpressionFramework.Core.Abstractions.IOperator
     {
         public StringNotContainsOperator() : base()
@@ -443,6 +465,28 @@ namespace ExpressionFramework.Core.Operators
         public ExpressionFramework.Core.Builders.Operators.StringNotContainsOperatorBuilder ToTypedBuilder()
         {
             return new ExpressionFramework.Core.Builders.Operators.StringNotContainsOperatorBuilder(this);
+        }
+
+        ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder ExpressionFramework.Core.Abstractions.IOperator.ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+    }
+    public partial record StringNotEqualsOperator : ExpressionFramework.Core.OperatorBase, ExpressionFramework.Core.Abstractions.IOperator
+    {
+        public StringNotEqualsOperator() : base()
+        {
+            System.ComponentModel.DataAnnotations.Validator.ValidateObject(this, new System.ComponentModel.DataAnnotations.ValidationContext(this, null, null), true);
+        }
+
+        public override ExpressionFramework.Core.Builders.OperatorBaseBuilder ToBuilder()
+        {
+            return ToTypedBuilder();
+        }
+
+        public ExpressionFramework.Core.Builders.Operators.StringNotEqualsOperatorBuilder ToTypedBuilder()
+        {
+            return new ExpressionFramework.Core.Builders.Operators.StringNotEqualsOperatorBuilder(this);
         }
 
         ExpressionFramework.Core.Builders.Abstractions.IOperatorBuilder ExpressionFramework.Core.Abstractions.IOperator.ToBuilder()

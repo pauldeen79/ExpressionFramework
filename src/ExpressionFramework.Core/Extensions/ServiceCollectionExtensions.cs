@@ -33,7 +33,9 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, NotStartsWithOperatorFunction>()
             .AddSingleton<IFunction, StartsWithOperatorFunction>()
             .AddSingleton<IFunction, StringContainsOperatorFunction>()
+            .AddSingleton<IFunction, StringEqualsOperatorFunction>()
             .AddSingleton<IFunction, StringNotContainsOperatorFunction>()
+            .AddSingleton<IFunction, StringNotEqualsOperatorFunction>()
             .AddSingleton<IFunction, EndsWithFunction>()
             .AddSingleton<IFunction, EnumerableContainsFunction>()
             .AddSingleton<IFunction, EnumerableNotContainsFunction>()
@@ -53,5 +55,7 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, NotStartsWithFunction>()
             .AddSingleton<IFunction, StartsWithFunction>()
             .AddSingleton<IFunction, StringContainsFunction>()
-            .AddSingleton<IFunction, StringNotContainsFunction>();
+            .AddSingleton<IFunction, StringEqualsFunction>()
+            .AddSingleton<IFunction, StringNotContainsFunction>()
+            .AddSingleton<IFunction, StringNotEqualsFunction>();
 }
