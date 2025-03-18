@@ -46,7 +46,7 @@ public sealed class IntegrationTests : IDisposable
         var settings = new ExpressionStringEvaluatorSettingsBuilder();
 
         // Act
-        var result = evaluator.Evaluate("=EvaluateEvaluatable(OperatorEvaluatable(1,EqualsOperator(),1))", settings);
+        var result = evaluator.Evaluate("=EvaluateOperator(1,EqualsOperator(),1)", settings);
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);

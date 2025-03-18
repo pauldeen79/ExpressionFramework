@@ -13,6 +13,13 @@ public static class ServiceCollectionExtensions
             .AddSingleton<IFunction, DelegateEvaluatableFunction>()
             .AddSingleton<IFunction, DelegateResultEvaluatableFunction>()
             .AddSingleton<IFunction, OperatorEvaluatableFunction>()
+            .AddSingleton<IFunction, EvaluateComposableFunction>()
+            .AddSingleton<IFunction, EvaluateComposedFunction>()
+            .AddSingleton<IFunction, EvaluateConstantFunction>()
+            .AddSingleton<IFunction, EvaluateConstantResultFunction>()
+            .AddSingleton<IFunction, EvaluateDelegateFunction>()
+            .AddSingleton<IFunction, EvaluateDelegateResultFunction>()
+            .AddSingleton<IFunction, EvaluateOperatorFunction>()
             // Operators
             .AddSingleton<IFunction, EndsWithOperatorFunction>()
             .AddSingleton<IFunction, EnumerableContainsOperatorFunction>()
