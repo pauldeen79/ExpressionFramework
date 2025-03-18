@@ -19,6 +19,8 @@ public abstract class ExpressionFrameworkCSharpClassBase(IPipelineService pipeli
     protected override bool GenerateMultipleFiles => false;
     protected override bool EnableGlobalUsings => true;
 
+    protected const string ContextParameterName = "context";
+
     protected static IEnumerable<AttributeBuilder> GetFunctionAttributes(TypeBase typeBase)
     {
         var propertiesRequired = typeBase.Properties.Select(GetRequired).ToArray();

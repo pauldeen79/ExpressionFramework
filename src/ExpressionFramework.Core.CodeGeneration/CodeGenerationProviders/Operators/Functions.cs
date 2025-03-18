@@ -4,7 +4,6 @@
 public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCSharpClassBase(pipelineService)
 {
     private static readonly string[] StringComparisonKeywords = ["StartsWith", "EndsWith", "String"];
-    private const string ContextParameterName = "context";
 
     public override string Path => Constants.Paths.OperatorFunctions;
 

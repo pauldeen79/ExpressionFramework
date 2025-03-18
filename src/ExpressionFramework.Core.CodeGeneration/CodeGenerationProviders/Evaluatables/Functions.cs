@@ -17,12 +17,12 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .AddMethods(
                 new MethodBuilder()
                     .WithName("Evaluate")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("System.Object?"))
                     .AddStringCodeStatements("return EvaluateTyped(context).Transform<object?>(x => x);"),
                 new MethodBuilder()
                     .WithName("EvaluateTyped")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("ExpressionFramework.Core.Abstractions.IEvaluatable"))
                     .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){GetFunctionArgumentsAddString(typeBase)}.Build().OnSuccess(results => {typeof(Result).FullName}.Success<ExpressionFramework.Core.Abstractions.IEvaluatable>(new {typeBase.WithoutInterfacePrefix()}({GetFunctionArgumentsGetString(typeBase)})));")
             )
@@ -37,12 +37,12 @@ public class Functions(IPipelineService pipelineService) : ExpressionFrameworkCS
             .AddMethods(
                 new MethodBuilder()
                     .WithName("Evaluate")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName("System.Object?"))
                     .AddStringCodeStatements("return EvaluateTyped(context).Transform<object?>(x => x);"),
                 new MethodBuilder()
                     .WithName("EvaluateTyped")
-                    .AddParameter("context", typeof(FunctionCallContext))
+                    .AddParameter(ContextParameterName, typeof(FunctionCallContext))
                     .WithReturnTypeName(typeof(Result<>).ReplaceGenericTypeName(typeof(bool)))
                     .AddStringCodeStatements($"return new {typeof(ResultDictionaryBuilder).FullName}(){GetFunctionArgumentsAddString(typeBase)}.Build().OnSuccess(results => new {typeBase.WithoutInterfacePrefix()}({GetFunctionArgumentsGetString(typeBase)}).Evaluate(context.Context));")
             )
