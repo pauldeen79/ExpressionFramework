@@ -13,10 +13,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.20.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.20.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.20.0" />
-    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="10.0.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Common" Version="3.21.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Aggregators" Version="3.21.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Operators" Version="3.21.0" />
+    <PackageReference Include="pauldeen79.CrossCutting.Utilities.Parsers" Version="10.1.1" />
   </ItemGroup>
 
   <ItemGroup>
