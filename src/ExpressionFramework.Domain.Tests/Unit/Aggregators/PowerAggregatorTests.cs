@@ -28,7 +28,7 @@ public class PowerAggregatorTests
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo(16);
+        result.Value.ShouldBe(16);
     }
 
     [Fact]
@@ -43,7 +43,7 @@ public class PowerAggregatorTests
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo(256);
+        result.Value.ShouldBe(256);
     }
 
     [Fact]
@@ -57,7 +57,7 @@ public class PowerAggregatorTests
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo(256);
+        result.Value.ShouldBe(256);
     }
 
     [Fact]
@@ -71,7 +71,7 @@ public class PowerAggregatorTests
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo(256L);
+        result.Value.ShouldBe(256L);
     }
 
     [Fact]
@@ -113,7 +113,7 @@ public class PowerAggregatorTests
 
         // Assert
         result.Status.ShouldBe(ResultStatus.Ok);
-        result.Value.ShouldBeEquivalentTo((decimal)Math.Pow(Convert.ToDouble(1M), Convert.ToDouble(2M)));
+        result.Value.ShouldBe((decimal)Math.Pow(Convert.ToDouble(1M), Convert.ToDouble(2M)));
     }
 
     [Fact]
