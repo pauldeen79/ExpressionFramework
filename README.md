@@ -30,3 +30,7 @@ This will replace almost all generated code.
 
 There are some files (evaluatables, expressions, operators and aggregators) being generated for the first time only.
 This is known as code scaffolding, which happens when you add a new evaluatable, expression, operator or aggregator type.
+
+# Deprecated
+
+This framework is now replaced with the ExpressionEvaluator component, which is part of my CrossCutting repository.
